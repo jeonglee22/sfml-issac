@@ -189,9 +189,33 @@ void Isaac::Update(float dt)
 		{
 			shootTimer = 0.f;
 			FireTear(shootDirection);
+			if (shootDirection.x > 0.f)
+			{
+				SetScale({ 2.f, 2.f });
+				headAnimator.Play("animations/isaac_head_side_tears.csv");
+			}
+			if (shootDirection.x < 0.f)
+			{
+				SetScale({ -2.f, 2.f });
+				headAnimator.Play("animations/isaac_head_side_tears.csv");
+			}
+			if (shootDirection.y < 0.f)
+			{
+				headAnimator.Play("animations/isaac_head_rare_tears.csv");
+			}
+			if (shootDirection.y > 0.f)
+			{
+				headAnimator.Play("animations/isaac_head_front_tears.csv");
+			}
+
 		}
 		shootTimer += dt;
 		wasKeyPressed = true;
+	}
+
+	if (InputMgr::GetKeyUp(sf::Keyboard::Up) || InputMgr::GetKeyUp(sf::Keyboard::Down) || InputMgr::GetKeyUp(sf::Keyboard::Left) || InputMgr::GetKeyUp(sf::Keyboard::Right))
+	{
+		headAnimator.Play("animations/isaac_head_front.csv");
 	}
 
 	hitBox.UpdateTransform(head, head.getLocalBounds());

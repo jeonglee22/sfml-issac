@@ -14,7 +14,7 @@ protected:
 	float distance = 0.f;
 	float maxRange = 300.f;
 	sf::Vector2f startPosition;
-	sf::Vector2f gravity = { 0.f, 1000.f };
+	sf::Vector2f gravity = { 0.f, 800.f };
 
 public:
 	Tears(const std::string& name = "");
