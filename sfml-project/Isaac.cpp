@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Isaac.h"
 #include "HitBox.h"
+#include "Tears.h"
 
 Isaac::Isaac(const std::string& name)
 	: GameObject(name)
@@ -62,6 +63,14 @@ void Isaac::Reset()
 
 	headAnimator.Play("animations/isaac_head_front.csv");
 	bodyAnimator.Play("animations/isaac_body_idle.csv");
+
+	for (Tears* tears : tearsList)
+	{
+		tears->SetActive(false);
+		tearsPool.push_back(tears);
+	}
+	tearsList.clear();
+
 	SetScale({ 2.0f, 2.0f });
 	SetOrigin(Origins::BC);
 }
@@ -70,6 +79,20 @@ void Isaac::Update(float dt)
 {
 	headAnimator.Update(dt);
 	bodyAnimator.Update(dt);
+
+	auto it = tearsList.begin();
+	while (it != tearsList.end())
+	{
+		if (!(*it)->GetActive())
+		{
+			tearsPool.push_back(*it);
+			it = tearsList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
 
 	float h = 0.f;
 	float w = 0.f;
@@ -116,10 +139,34 @@ void Isaac::Update(float dt)
 		}
 	}
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::Right))
+	{
+		Tears* tears = nullptr;
+		if (tearsPool.empty())
+		{
+			tears = new Tears();
+			tears->Init();
+		}
+		else
+		{
+			tears = tearsPool.front();
+			tearsPool.pop_front();
+			tears->SetActive(true);
+		}
+
+		tears->Reset();
+		tears->Fire(position * 10.f, velocity, 1000.f, 10);
+
+		tearsList.push_back(tears);
+	}
 
 
 
-	hitBox.UpdateTransform(body, body.getLocalBounds());
+
+
+
+	hitBox.UpdateTransform(head, head.getLocalBounds());
+	//hitBox.UpdateTransform(body, body.getLocalBounds());
 }
 
 void Isaac::Draw(sf::RenderWindow& window)

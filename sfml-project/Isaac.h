@@ -3,6 +3,7 @@
 #include "HitBox.h"
 
 class HitBox;
+class Tears;
 
 class Isaac : public GameObject
 {
@@ -12,9 +13,12 @@ protected:
 	Animator bodyAnimator;
 	Animator headAnimator;
 
+	std::list<Tears*> tearsList;
+	std::list<Tears*> tearsPool;
+
 	sf::Vector2f velocity = { 0.f, 0.f };
 	bool isGrounded = true;
-	float speed = 400.f;
+	float speed = 500.f;
 
 	HitBox hitBox;
 
