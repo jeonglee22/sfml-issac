@@ -35,5 +35,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void LoadBackGround(const std::string& filePath);
+
+	std::vector<sf::Sprite> GetActiveSprites() { return basementGround; }
 };
 

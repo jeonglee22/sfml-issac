@@ -31,10 +31,43 @@ void SceneEditor::Enter()
 	worldView.setSize(size);
 	worldView.setCenter(center);
 
+	isChoosed = false;
+
 	Scene::Enter();
 }
 
 void SceneEditor::Update(float dt)
 {
 	Scene::Update(dt);
+
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && !isChoosed)
+	{
+		std::vector<sf::Sprite> sprites = editBox->GetActiveSprites();
+		auto mousePos = Scene::ScreenToUi(InputMgr::GetMousePosition());
+		for (auto sprite : sprites)
+		{
+			if (Utils::PointInTransformBounds(sprite, sprite.getLocalBounds(), mousePos))
+			{
+				spriteChoosed = sf::Sprite(sprite);
+				isChoosed = true;
+			}
+		}
+	}
+	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isChoosed)
+	{
+		auto mousePos = Scene::ScreenToUi(InputMgr::GetMousePosition());
+		spriteChoosed.setPosition(mousePos);
+		std::cout << "sprite" << std::endl;
+	}
+	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left) && isChoosed)
+	{
+
+	}
+}
+
+void SceneEditor::Draw(sf::RenderWindow& window)
+{
+	Scene::Draw(window);
+
+	window.draw(spriteChoosed);
 }

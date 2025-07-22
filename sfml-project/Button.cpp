@@ -53,11 +53,9 @@ void Button::Update(float dt)
 	if (SCENE_MGR.GetCurrentScene())
 	{
 		sf::Vector2f mousePos = SCENE_MGR.GetCurrentScene()->ScreenToUi(InputMgr::GetMousePosition());
-		std::cout << mousePos.x << ", " << mousePos.y << std::endl;
 
 		if (Utils::PointInTransformBounds(*rect, rect->getLocalBounds(), mousePos))
 		{
-			std::cout << "Mouse In" << std::endl;
 			sprite.setColor(sf::Color(sprite.getColor().r, sprite.getColor().g, sprite.getColor().b, originAlpha * 0.5f));
 			rect->setFillColor(sf::Color(rect->getFillColor().r, rect->getFillColor().g, rect->getFillColor().b, originAlpha * 0.5f));
 			text->SetFillColor(sf::Color(text->GetText().getFillColor().r,

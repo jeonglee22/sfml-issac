@@ -11,6 +11,8 @@ protected:
 	int gridYcount = 16;
 	sf::Vector2f gridSize = { 60.f,60.f };
 
+	std::vector<sf::IntRect> gridRect;
+
 public:
 	MapBoxUI(const std::string& name = "");
 	virtual ~MapBoxUI() = default;
@@ -27,6 +29,9 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
+	void SetGridRectValue();
+	sf::Vector2f GetRectCenterHavePoint(const sf::Vector2f& point);
 	sf::Vector2f GetGridSize() { return gridSize; }
+
 };
 
