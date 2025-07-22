@@ -40,28 +40,38 @@ void SceneEditor::Update(float dt)
 {
 	Scene::Update(dt);
 
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && !isChoosed)
+	auto mousePos = Scene::ScreenToUi(InputMgr::GetMousePosition());
+	editBoxBody = editBox->GetMainUIBody();
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && 
+		Utils::PointInTransformBounds(editBoxBody, editBoxBody.getLocalBounds(), mousePos))
 	{
-		std::vector<sf::Sprite> sprites = editBox->GetActiveSprites();
-		auto mousePos = Scene::ScreenToUi(InputMgr::GetMousePosition());
+		std::vector<SpriteGo*> sprites = editBox->GetActiveSprites();
 		for (auto sprite : sprites)
 		{
-			if (Utils::PointInTransformBounds(sprite, sprite.getLocalBounds(), mousePos))
+			if (Utils::PointInTransformBounds(sprite->GetSprite(), sprite->GetSprite().getLocalBounds(), mousePos))
 			{
-				spriteChoosed = sf::Sprite(sprite);
 				isChoosed = true;
+				spriteChoosed = editBox->SetChoosedSprite(sprite);
 			}
 		}
 	}
-	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isChoosed)
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && isChoosed)
 	{
-		auto mousePos = Scene::ScreenToUi(InputMgr::GetMousePosition());
-		spriteChoosed.setPosition(mousePos);
-		std::cout << "sprite" << std::endl;
+		sf::Vector2f boxPos = mapBox->GetRectCenterHavePoint(mousePos);
+		if (boxPos != sf::Vector2f(0.f,0.f))
+		{
+			SpriteGo* sprite = new SpriteGo(*spriteChoosed);
+			sprite->SetOrigin(Origins::MC);
+			sprite->SetPosition(boxPos);
+			backgroundSprites.push_back(sprite);
+		}
 	}
-	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left) && isChoosed)
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right) && 
+		Utils::PointInTransformBounds(editBoxBody, editBoxBody.getLocalBounds(), mousePos))
 	{
-
+		isChoosed = false;
+		editBox->SetOffChoosedSprite();
+		spriteChoosed = nullptr;
 	}
 }
 
@@ -69,5 +79,8 @@ void SceneEditor::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 
-	window.draw(spriteChoosed);
+	for (auto sprite : backgroundSprites)
+	{
+		sprite->Draw(window);
+	}
 }

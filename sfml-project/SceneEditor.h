@@ -3,15 +3,18 @@
 
 class EditBoxUI;
 class MapBoxUI;
+class SpriteGo;
 
 class SceneEditor :
     public Scene
 {
 protected:
-	EditBoxUI* editBox;
-	MapBoxUI* mapBox;
+	EditBoxUI* editBox = nullptr;
+	MapBoxUI* mapBox = nullptr;
 
-	sf::Sprite spriteChoosed;
+	SpriteGo* spriteChoosed = nullptr;
+	sf::RectangleShape editBoxBody;
+	std::list<SpriteGo*> backgroundSprites;
 
 	bool isChoosed = false;
 

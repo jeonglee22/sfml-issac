@@ -3,20 +3,26 @@
 #include "Button.h"
 
 class Scene;
+class SpriteGo;
 
 class EditBoxUI : public GameObject
 {
 protected:
 	sf::RectangleShape body;
+	sf::RectangleShape pickBox;
+	SpriteGo* pickedSprite;
+
 	std::vector<Button*> typeButtons;
 	Scene* scene;
 
 	sf::Vector2f typeButtonPos;
 
 	std::string basementGroundId;
-	std::vector<sf::Sprite> basementGround;
+	std::vector<SpriteGo*> basementGround;
 
 	sf::Vector2f gridSize = { 60.f,60.f };
+
+	bool isPicked = false;
 
 public:
 	EditBoxUI(const std::string& name = "");
@@ -36,6 +42,10 @@ public:
 
 	void LoadBackGround(const std::string& filePath);
 
-	std::vector<sf::Sprite> GetActiveSprites() { return basementGround; }
+	std::vector<SpriteGo*> GetActiveSprites() { return basementGround; }
+	sf::RectangleShape GetMainUIBody() { return body; }
+
+	SpriteGo* SetChoosedSprite(SpriteGo* sp);
+	void SetOffChoosedSprite();
 };
 
