@@ -66,7 +66,7 @@
     <ClCompile Include="Framework\Animator.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="AniPlayer.cpp">
+    <ClCompile Include="Isaac.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,7 +131,7 @@
     <ClInclude Include="Framework\Animator.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="AniPlayer.h">
+    <ClInclude Include="Isaac.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

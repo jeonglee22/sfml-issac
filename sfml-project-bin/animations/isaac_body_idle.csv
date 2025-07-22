@@ -1,0 +1,5 @@
+ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
+Isaac_body_idle,10,"1	",,,
+"				",,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
+graphics/character_001_isaac.png,9,45,14,10,0

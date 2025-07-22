@@ -1,0 +1,14 @@
+ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
+Isaac_run_weight,10,"1	",,,
+"				",,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
+graphics/character_001_isaac.png,9,77,14,11,0
+graphics/character_001_isaac.png,41,77,14,11,0
+graphics/character_001_isaac.png,73,77,14,11,0
+graphics/character_001_isaac.png,105,77,14,11,0
+graphics/character_001_isaac.png,137,77,14,11,0
+graphics/character_001_isaac.png,169,77,14,11,0
+graphics/character_001_isaac.png,201,77,14,11,0
+graphics/character_001_isaac.png,233,77,14,11,0
+graphics/character_001_isaac.png,9,110,14,11,0
+graphics/character_001_isaac.png,41,110,14,11,0

@@ -2,7 +2,7 @@
 
 int main()
 {
-    FRAMEWORK.Init(1280, 720, "TITLE!!");
+    FRAMEWORK.Init(960, 540, "Binding of Isaac: Rebirth");
     FRAMEWORK.Do();
     FRAMEWORK.Release();
 
