@@ -9,15 +9,23 @@ class EditBoxUI : public GameObject
 {
 protected:
 	sf::RectangleShape body;
+
 	sf::RectangleShape pickBox;
 	SpriteGo* pickedSprite;
 
 	std::vector<Button*> typeButtons;
+	std::vector<Button*> styleTypeButtons;
+	std::vector<Button*> obstacleTypeButtons;
+	std::vector<Button*> enemyTypeButtons;
+
 	Scene* scene;
 
 	sf::Vector2f typeButtonPos;
 
 	std::string basementGroundId;
+	std::string sheolGroundId;
+	std::string depthsGroundId;
+	std::string cavesGroundId;
 	std::vector<SpriteGo*> basementGround;
 
 	sf::Vector2f gridSize = { 60.f,60.f };
@@ -40,6 +48,13 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
+	void InitStyleTypeButtons();
+	void InitObstacleTypeButtons();
+	void InitEnemyTypeButtons();
+	void ResetStyleTypeButtons();
+	void ResetObstacleTypeButtons(float yPos);
+	void ResetEnemyTypeButtons();
+
 	void LoadBackGround(const std::string& filePath);
 
 	std::vector<SpriteGo*> GetActiveSprites() { return basementGround; }
@@ -47,5 +62,7 @@ public:
 
 	SpriteGo* SetChoosedSprite(SpriteGo* sp);
 	void SetOffChoosedSprite();
+
+	void DisableAllButtons();
 };
 

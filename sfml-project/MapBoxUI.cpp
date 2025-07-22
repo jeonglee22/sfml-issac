@@ -87,6 +87,18 @@ void MapBoxUI::Reset()
 
 void MapBoxUI::Update(float dt)
 {
+	if (InputMgr::GetKeyDown(sf::Keyboard::Z))
+	{
+		sortingLayer = SortingLayers::Foreground;
+		sortingOrder = -100;
+		isCheckingMap = true;
+	}
+	else if(InputMgr::GetKeyDown(sf::Keyboard::X))
+	{
+		sortingLayer = SortingLayers::UI;
+		sortingOrder = 2;
+		isCheckingMap = false;
+	}
 }
 
 void MapBoxUI::Draw(sf::RenderWindow& window)

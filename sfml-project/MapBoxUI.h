@@ -13,6 +13,8 @@ protected:
 
 	std::vector<sf::IntRect> gridRect;
 
+	bool isCheckingMap = false;
+
 public:
 	MapBoxUI(const std::string& name = "");
 	virtual ~MapBoxUI() = default;
@@ -32,6 +34,6 @@ public:
 	void SetGridRectValue();
 	sf::Vector2f GetRectCenterHavePoint(const sf::Vector2f& point);
 	sf::Vector2f GetGridSize() { return gridSize; }
-
+	bool GetCheckingMap() { return isCheckingMap; }
 };
 

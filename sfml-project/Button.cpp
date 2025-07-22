@@ -30,7 +30,8 @@ void Button::Reset()
 {
 	text->Reset();
 
-	SpriteGo::Reset();
+	if(textureId != "")
+		SpriteGo::Reset();
 
 	text->SetPosition(position);
 	if (textureId != "")

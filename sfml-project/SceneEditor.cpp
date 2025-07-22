@@ -10,7 +10,7 @@ SceneEditor::SceneEditor()
 
 void SceneEditor::Init()
 {
-	texIds.push_back("graphics/basement/01_basement.png");
+	texIds.push_back("graphics/background/01_basement.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 
@@ -62,7 +62,10 @@ void SceneEditor::Update(float dt)
 		{
 			SpriteGo* sprite = new SpriteGo(*spriteChoosed);
 			sprite->SetOrigin(Origins::MC);
-			sprite->SetPosition(boxPos);
+			sprite->SetPosition(ScreenToWorld(UiToScreen(boxPos)));
+			sprite->sortingLayer = SortingLayers::Foreground;
+			sprite->sortingOrder = 1;
+			AddGameObject(sprite);
 			backgroundSprites.push_back(sprite);
 		}
 	}
@@ -73,14 +76,27 @@ void SceneEditor::Update(float dt)
 		editBox->SetOffChoosedSprite();
 		spriteChoosed = nullptr;
 	}
+
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::D) && !mapBox->GetCheckingMap())
+	{
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(-60.f, 0.f));
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::A) && !mapBox->GetCheckingMap())
+	{
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(60.f, 0.f));
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::W) && !mapBox->GetCheckingMap())
+	{
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, 60.f));
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::S) && !mapBox->GetCheckingMap())
+	{
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, -60.f));
+	}
 }
 
 void SceneEditor::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
-
-	for (auto sprite : backgroundSprites)
-	{
-		sprite->Draw(window);
-	}
 }
