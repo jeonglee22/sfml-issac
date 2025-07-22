@@ -7,9 +7,14 @@ protected:
 	std::string texture = "graphics/only_tears.png";
 
 	sf::Vector2f direction;
+	sf::Vector2f velocity;
 	float speed = 0.f;
 	int damage = 0;
 
+	float distance = 0.f;
+	float maxRange = 300.f;
+	sf::Vector2f startPosition;
+	sf::Vector2f gravity = { 0.f, 1000.f };
 
 public:
 	Tears(const std::string& name = "");

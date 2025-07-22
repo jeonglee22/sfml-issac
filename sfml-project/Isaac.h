@@ -4,6 +4,7 @@
 
 class HitBox;
 class Tears;
+class SceneDev2;
 
 class Isaac : public GameObject
 {
@@ -15,10 +16,15 @@ protected:
 
 	std::list<Tears*> tearsList;
 	std::list<Tears*> tearsPool;
+	SceneDev2* sceneDev2 = nullptr;
 
 	sf::Vector2f velocity = { 0.f, 0.f };
-	bool isGrounded = true;
-	float speed = 500.f;
+	float speed = 350.f;
+
+	float shootTimer = 0.0f;
+	float shootInterval = 0.4f;
+	sf::Vector2f shootDirection = { 0.f, 0.f };
+	bool wasKeyPressed = false;
 
 	HitBox hitBox;
 
@@ -38,4 +44,6 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void FireTear(const sf::Vector2f& direction);
 };

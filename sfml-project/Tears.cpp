@@ -53,13 +53,25 @@ void Tears::Reset()
 {
 	sprite.setTexture(TEXTURE_MGR.Get(texture));
 	Utils::SetOrigin(sprite, Origins::MC);
-	SetPosition({ 10.f,10.f });
-	SetScale({ 2.f, 2.f });
+	SetScale({ 1.5f, 1.5f });
 }
 
 void Tears::Update(float dt)
 {
-	SetPosition(position + direction * speed * dt);
+	sf::Vector2f moveVector = velocity * dt;
+	distance += Utils::Magnitude(moveVector);
+
+	if (distance > maxRange && abs(direction.y) < 0.5f)
+	{
+		velocity += gravity * dt;
+	}
+
+	SetPosition(position + velocity * dt);
+
+	if (direction.y <= 0.f && position.y > startPosition.y + 30.f)
+	{
+		SetActive(false);
+	}
 }
 
 void Tears::Draw(sf::RenderWindow& window)
@@ -70,9 +82,12 @@ void Tears::Draw(sf::RenderWindow& window)
 void Tears::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d)
 {
 	SetPosition(pos);
+	startPosition = pos;
 	direction = dir;
+	velocity = dir * s;
 	speed = s;
 	damage = d;
+	distance = 0.f;
 }
 
 

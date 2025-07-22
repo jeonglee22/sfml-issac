@@ -2,6 +2,7 @@
 #include "Isaac.h"
 #include "HitBox.h"
 #include "Tears.h"
+#include "SceneDev2.h"
 
 Isaac::Isaac(const std::string& name)
 	: GameObject(name)
@@ -58,6 +59,15 @@ void Isaac::Release()
 
 void Isaac::Reset()
 {
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Dev2)
+	{
+		sceneDev2 = (SceneDev2*)SCENE_MGR.GetCurrentScene();
+	}
+	else
+	{
+		sceneDev2 = nullptr;
+	}
+
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 
@@ -71,6 +81,10 @@ void Isaac::Reset()
 	}
 	tearsList.clear();
 
+	shootTimer = 0.0f;
+	wasKeyPressed = false;
+	shootDirection = { 0.f, 0.f };
+
 	SetScale({ 2.0f, 2.0f });
 	SetOrigin(Origins::BC);
 }
@@ -79,6 +93,14 @@ void Isaac::Update(float dt)
 {
 	headAnimator.Update(dt);
 	bodyAnimator.Update(dt);
+
+	for (auto* tears : tearsList)
+	{
+		if (tears->GetActive())
+		{
+			tears->Update(dt);
+		}
+	}
 
 	auto it = tearsList.begin();
 	while (it != tearsList.end())
@@ -139,31 +161,38 @@ void Isaac::Update(float dt)
 		}
 	}
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Right))
+	bool keyPressed = false;
+	if (InputMgr::GetKey(sf::Keyboard::Right))
 	{
-		Tears* tears = nullptr;
-		if (tearsPool.empty())
-		{
-			tears = new Tears();
-			tears->Init();
-		}
-		else
-		{
-			tears = tearsPool.front();
-			tearsPool.pop_front();
-			tears->SetActive(true);
-		}
-
-		tears->Reset();
-		tears->Fire(position * 10.f, velocity, 1000.f, 10);
-
-		tearsList.push_back(tears);
+		shootDirection = sf::Vector2f(1.f, 0.f);
+		keyPressed = true;
+	}
+	else if (InputMgr::GetKey(sf::Keyboard::Left))
+	{
+		shootDirection = sf::Vector2f(-1.f, 0.f);
+		keyPressed = true;
+	}
+	else if (InputMgr::GetKey(sf::Keyboard::Up))
+	{
+		shootDirection = sf::Vector2f(0.f, -1.f);
+		keyPressed = true;
+	}
+	else if (InputMgr::GetKey(sf::Keyboard::Down))
+	{
+		shootDirection = sf::Vector2f(0.f, 1.f);
+		keyPressed = true;
 	}
 
-
-
-
-
+	if (keyPressed)
+	{
+		if (!wasKeyPressed || shootTimer >= shootInterval)
+		{
+			shootTimer = 0.f;
+			FireTear(shootDirection);
+		}
+		shootTimer += dt;
+		wasKeyPressed = true;
+	}
 
 	hitBox.UpdateTransform(head, head.getLocalBounds());
 	//hitBox.UpdateTransform(body, body.getLocalBounds());
@@ -175,4 +204,47 @@ void Isaac::Draw(sf::RenderWindow& window)
 	window.draw(head);
 
 	hitBox.Draw(window);
+}
+
+void Isaac::FireTear(const sf::Vector2f& direction)
+{
+	if (!sceneDev2)
+	{
+		return;
+	}
+
+	Tears* tears = nullptr;
+
+	if (tearsPool.empty())
+	{
+		tears = new Tears();
+		tears->Init();
+	}
+	else
+	{
+		tears = tearsPool.front();
+		tearsPool.pop_front();
+		tears->SetActive(true);
+	}
+
+	tears->Reset();
+
+	sf::Vector2f firePosition;
+	if (direction.x != 0.f && direction.y == 0.f)
+	{
+		firePosition = { position.x + 20.f, position.y + Utils::RandomRange(-43.f, -23.f) };
+	}
+	else if (direction.y < 0.f && direction.x == 0.f)
+	{
+		firePosition = { position.x + Utils::RandomRange(-15.f, 15.f), position.y - 50.f };
+	}
+	else if (direction.y > 0.f && direction.x == 0.f)
+	{
+		firePosition = { position.x + Utils::RandomRange(-15.f, 15.f), position.y - 20.f };
+	}
+
+	tears->Fire( firePosition, direction, 300.f, 10);
+	tearsList.push_back(tears);
+
+	sceneDev2->AddGameObject(tears);
 }

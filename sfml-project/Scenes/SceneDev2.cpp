@@ -30,9 +30,8 @@ void SceneDev2::Init()
 	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears.csv");
 
 
-
 	AddGameObject(new Isaac());
-	AddGameObject(new Tears());
+	//AddGameObject(new Tears());
 
 
 	Scene::Init();
