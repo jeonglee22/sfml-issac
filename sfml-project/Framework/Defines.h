@@ -21,6 +21,7 @@ enum class Origins
 enum class SceneIds
 {
 	None = -1,
+	Editor,
 	Dev1,
 	Dev2,
 	Count,
