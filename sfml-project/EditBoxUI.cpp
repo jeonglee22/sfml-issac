@@ -59,6 +59,11 @@ void EditBoxUI::Init()
 	depthsGroundId = "graphics/background/05_depths.png";
 	sheolGroundId = "graphics/background/09_sheol.png";
 
+	for (int i = 0; i < 3; i++)
+	{
+		filenames.push_back("");
+	}
+
 	for(int i = 0; i < 3; i++)
 	{
 		typeButtons.push_back(new Button());
@@ -99,8 +104,11 @@ void EditBoxUI::Reset()
 		typeButtons[i]->SetTextColor(sf::Color::White);
 		typeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
 		auto buttonFunc = [this, i]() {
-			auto buttons = i == 0 ? styleTypeButtons : (i==1 ? obstacleTypeButtons : enemyTypeButtons) ;
+			auto buttons = i == 0 ? styleTypeButtons : (i==1 ? obstacleTypeButtons : enemyTypeButtons);
+			filenames[0] = (i == 0 ? "backgrounds" : (i == 1 ? "obstacles" : "enemies"));
 			DisableAllButtons();
+			if (i == 0)
+				ResetStyleTypeButtons();
 			for (auto button : buttons)
 			{
 				button->SetActive(true);
@@ -111,11 +119,11 @@ void EditBoxUI::Reset()
 
 	ResetStyleTypeButtons();
 	ResetEnemyTypeButtons();
-	ResetObstacleTypeButtons(-450.f);
+	ResetObstacleTypeButtons();
 
 	LoadBackGround("graphics/background/basement.csv");
 
-	pickBox.setPosition(position + sf::Vector2f(0.f, 500.f));
+	pickBox.setPosition(position + sf::Vector2f(0.f, 400.f));
 }
 
 void EditBoxUI::Update(float dt)
@@ -212,12 +220,12 @@ void EditBoxUI::InitEnemyTypeButtons()
 	}
 }
 
-void EditBoxUI::ResetStyleTypeButtons()
+void EditBoxUI::ResetStyleTypeButtons(float yPos)
 {
 	for (int i = 0; i < 4; i++)
 	{
 		styleTypeButtons[i]->Reset();
-		styleTypeButtons[i]->SetPosition(position + sf::Vector2f(-225.f + i * 150.f, -450.f));
+		styleTypeButtons[i]->SetPosition(position + sf::Vector2f(-225.f + i * 150.f, yPos));
 		styleTypeButtons[i]->SetTextPosition({ 0.f, -10.f });
 		if (i == 0)
 			styleTypeButtons[i]->SetTextString("Basement");
@@ -229,26 +237,31 @@ void EditBoxUI::ResetStyleTypeButtons()
 			styleTypeButtons[i]->SetTextString("cave");
 		styleTypeButtons[i]->SetTextColor(sf::Color::White);
 		styleTypeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
+		styleTypeButtons[i]->SetButtonFunc([]() {std::cout << "Style" << std::endl; });
 	}
 }
 
-void EditBoxUI::ResetObstacleTypeButtons(float yPos)
+void EditBoxUI::ResetObstacleTypeButtons()
 {
+	std::string names[4] = {"Rocks", "Fire", "Spike", "Pit"};
 	for (int i = 0; i < 4; i++)
 	{
 		obstacleTypeButtons[i]->Reset();
-		obstacleTypeButtons[i]->SetPosition(position + sf::Vector2f(-225.f + i * 150.f, yPos));
+		obstacleTypeButtons[i]->SetPosition(position + sf::Vector2f(-225.f + i * 150.f, -450.f));
 		obstacleTypeButtons[i]->SetTextPosition({ 0.f, -10.f });
-		if (i == 0)
-			obstacleTypeButtons[i]->SetTextString("Rocks");
-		else if (i == 1)
-			obstacleTypeButtons[i]->SetTextString("CampFile");
-		else if (i == 2)
-			obstacleTypeButtons[i]->SetTextString("Spike");
-		else if (i == 3)
-			obstacleTypeButtons[i]->SetTextString("Pit");
+		obstacleTypeButtons[i]->SetTextString(names[i]);
 		obstacleTypeButtons[i]->SetTextColor(sf::Color::White);
 		obstacleTypeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
+		auto buttonFunc = [this, i, names]() {
+			auto buttons = styleTypeButtons;
+			filenames[1] = names[i];
+			ResetStyleTypeButtons(-400.f);
+			for (auto button : buttons)
+			{
+				button->SetActive(true);
+			}
+		};
+		obstacleTypeButtons[i]->SetButtonFunc(buttonFunc);
 	}
 }
 
@@ -267,6 +280,7 @@ void EditBoxUI::ResetEnemyTypeButtons()
 			enemyTypeButtons[i]->SetTextString("Boss");
 		enemyTypeButtons[i]->SetTextColor(sf::Color::White);
 		enemyTypeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
+		enemyTypeButtons[i]->SetButtonFunc([]() {std::cout << "Enemy" << std::endl; });
 	}
 }
 

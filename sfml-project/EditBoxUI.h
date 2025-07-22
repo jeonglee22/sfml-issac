@@ -17,6 +17,7 @@ protected:
 	std::vector<Button*> styleTypeButtons;
 	std::vector<Button*> obstacleTypeButtons;
 	std::vector<Button*> enemyTypeButtons;
+	std::vector<std::string> filenames;
 
 	Scene* scene;
 
@@ -27,6 +28,8 @@ protected:
 	std::string depthsGroundId;
 	std::string cavesGroundId;
 	std::vector<SpriteGo*> basementGround;
+
+
 
 	sf::Vector2f gridSize = { 60.f,60.f };
 
@@ -51,8 +54,8 @@ public:
 	void InitStyleTypeButtons();
 	void InitObstacleTypeButtons();
 	void InitEnemyTypeButtons();
-	void ResetStyleTypeButtons();
-	void ResetObstacleTypeButtons(float yPos);
+	void ResetStyleTypeButtons(float yPos = -450.f);
+	void ResetObstacleTypeButtons();
 	void ResetEnemyTypeButtons();
 
 	void LoadBackGround(const std::string& filePath);

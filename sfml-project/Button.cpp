@@ -55,7 +55,7 @@ void Button::Update(float dt)
 	{
 		sf::Vector2f mousePos = SCENE_MGR.GetCurrentScene()->ScreenToUi(InputMgr::GetMousePosition());
 
-		if (Utils::PointInTransformBounds(*rect, rect->getLocalBounds(), mousePos))
+		if (Utils::PointInTransformBounds(*rect, rect->getLocalBounds(), mousePos) && active)
 		{
 			sprite.setColor(sf::Color(sprite.getColor().r, sprite.getColor().g, sprite.getColor().b, originAlpha * 0.5f));
 			rect->setFillColor(sf::Color(rect->getFillColor().r, rect->getFillColor().g, rect->getFillColor().b, originAlpha * 0.5f));
@@ -90,6 +90,7 @@ void Button::Draw(sf::RenderWindow& window)
 void Button::SetInitState()
 {
 	sprite.setColor(sf::Color(sprite.getColor().r, sprite.getColor().g, sprite.getColor().b, originAlpha));
+	rect->setFillColor(sf::Color(rect->getFillColor().r, rect->getFillColor().g, rect->getFillColor().b, originAlpha));
 	text->SetFillColor(sf::Color(text->GetText().getFillColor().r,
 		text->GetText().getFillColor().g,
 		text->GetText().getFillColor().b,
