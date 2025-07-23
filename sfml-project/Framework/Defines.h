@@ -32,3 +32,8 @@ enum class Sides
 	Right,
 	None,
 };
+
+enum class Monsters
+{
+	fly,
+};

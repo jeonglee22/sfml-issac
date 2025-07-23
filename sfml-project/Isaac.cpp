@@ -137,7 +137,7 @@ void Isaac::Update(float dt)
 	// Ani
 	if (bodyAnimator.GetCurrentClipId() == "Isaac_body_idle")
 	{
-		if (h != 0.f)
+		if (InputMgr::GetKey(sf::Keyboard::A)||InputMgr::GetKey(sf::Keyboard::D))
 		{
 			bodyAnimator.Play("animations/isaac_run_weight.csv");
 			headAnimator.Play("animations/isaac_head_side.csv");
@@ -254,9 +254,13 @@ void Isaac::FireTear(const sf::Vector2f& direction)
 	tears->Reset();
 
 	sf::Vector2f firePosition;
-	if (direction.x != 0.f && direction.y == 0.f)
+	if (direction.x > 0.f && direction.y == 0.f)
 	{
 		firePosition = { position.x + 20.f, position.y + Utils::RandomRange(-43.f, -23.f) };
+	}
+	else if (direction.x < 0.f && direction.y == 0.f)
+	{
+		firePosition = { position.x - 20.f, position.y + Utils::RandomRange(-43.f, -23.f) };
 	}
 	else if (direction.y < 0.f && direction.x == 0.f)
 	{

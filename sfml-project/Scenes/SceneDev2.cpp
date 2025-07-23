@@ -3,6 +3,8 @@
 #include "TextGo.h"
 #include "Isaac.h"
 #include "Tears.h"
+#include "Monster.h"
+#include "SpriteGo.h"
 
 SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 {
@@ -12,7 +14,8 @@ void SceneDev2::Init()
 {
 	texIds.push_back("graphics/character_001_isaac.png");
 	texIds.push_back("graphics/only_tears.png");
-
+	texIds.push_back("graphics/monster_010_fly.png");
+	texIds.push_back("graphics/temp_background.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
@@ -28,10 +31,17 @@ void SceneDev2::Init()
 	ANI_CLIP_MGR.Load("animations/isaac_head_front_tears.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears.csv");
+	ANI_CLIP_MGR.Load("animations/fly.csv");
 
+	SpriteGo* background = new SpriteGo("graphics/temp_background.png");
+	background->sortingLayer = SortingLayers::Background;
+	background->SetPosition({ -500.f, -500.f });
+	AddGameObject(background);
 
 	AddGameObject(new Isaac());
-	//AddGameObject(new Tears());
+
+	monster = new Monster("", Monsters::fly);
+	AddGameObject(monster);
 
 
 	Scene::Init();
