@@ -45,25 +45,38 @@ void MapBoxUI::Init()
 	sortingLayer = SortingLayers::UI;
 	sortingOrder = 2;
 
-	body.setSize({ 960.f, 540.f });
-	SetOrigin({ 480.f, 270.f });
+	body.setSize({ 884.f, 572.f });
+	SetOrigin({ 442.f, 286.f });
 
-	for (int i = 0; i < gridXcount + gridYcount; i++)
+	for (int i = 0; i < obstacleGridXcount + obstacleGridYcount; i++)
 	{
-		grid.push_back(sf::RectangleShape());
-		if (i < gridXcount)
+		obstacleGrid.push_back(sf::RectangleShape());
+		if (i < obstacleGridXcount)
 		{
-			grid[i].setSize({1080.f, 2.f});
+			obstacleGrid[i].setSize({52.f * 13.f, 2.f});
 		}
 		else
 		{
-			grid[i].setSize({ 2.f, 660.f });
+			obstacleGrid[i].setSize({ 2.f, 52.f * 7.f });
 		}
-		grid[i].setOrigin(grid[i].getSize() * 0.5f);
-		grid[i].setFillColor(sf::Color::Green);
+		obstacleGrid[i].setOrigin(obstacleGrid[i].getSize() * 0.5f);
+		obstacleGrid[i].setFillColor(sf::Color::Green);
 	}
 
-	SetGridRectValue();
+	for (int i = 0; i < backgroundGridXcount + backgroundGridYcount; i++)
+	{
+		backgroundGrid.push_back(sf::RectangleShape());
+		if (i < backgroundGridXcount)
+		{
+			backgroundGrid[i].setSize({104.f * 8.5f, 2.f});
+		}
+		else
+		{
+			backgroundGrid[i].setSize({ 2.f, 104.f * 5.5f });
+		}
+		backgroundGrid[i].setOrigin(backgroundGrid[i].getSize() * 0.5f);
+		backgroundGrid[i].setFillColor(sf::Color::Green);
+	}
 }
 
 void MapBoxUI::Release()
@@ -74,19 +87,41 @@ void MapBoxUI::Reset()
 {
 	editorScene = (SceneEditor*)SCENE_MGR.GetCurrentScene();
 
-	SetPosition({ (FRAMEWORK.GetWindowSizeF().x - 600.f) * 0.5f , FRAMEWORK.GetWindowSizeF().y * 0.5f});
+	SetPosition({ (FRAMEWORK.GetWindowSizeF().x - 800.f) * 0.5f , FRAMEWORK.GetWindowSizeF().y * 0.5f});
 
-	for (int i = 0; i < gridXcount + gridYcount; i++)
+	for (int i = 0; i < obstacleGridXcount + obstacleGridYcount; i++)
 	{
-		if (i < gridXcount)
+		if (i < obstacleGridXcount)
 		{
-			grid[i].setPosition(position + sf::Vector2f(0.f, (i - gridXcount * 0.5f + 0.5f) * gridSize.y));
+			obstacleGrid[i].setPosition(position + sf::Vector2f(0.f, (i - obstacleGridXcount * 0.5f + 0.5f) * obstacleGridSize.y));
 		}
 		else
 		{
-			grid[i].setPosition(position + sf::Vector2f(((i-gridXcount) - gridYcount * 0.5f + 0.5f) * gridSize.x, 0.f));
+			obstacleGrid[i].setPosition(position + sf::Vector2f(((i-obstacleGridXcount) - obstacleGridYcount * 0.5f + 0.5f) * obstacleGridSize.x, 0.f));
 		}
 	}
+
+	for (int i = 0; i < backgroundGridXcount + backgroundGridYcount; i++)
+	{
+		if (i < backgroundGridXcount)
+		{
+			float posdiff;
+			if (i < 4)
+				posdiff = 1.25f;
+			else
+				posdiff = -0.25f;
+			sf::Vector2f localPos = sf::Vector2f(0.f, (i - backgroundGridXcount * 0.5f + posdiff) * backgroundGridSize.y);
+			backgroundGrid[i].setPosition(position + localPos);
+		}
+		else
+		{
+			int yCount = i - backgroundGridXcount;
+			sf::Vector2f localPos = sf::Vector2f((yCount - backgroundGridYcount * 0.5f + (yCount < 5 ? 0.75f : 0.25f)) * backgroundGridSize.x, 0.f);
+			backgroundGrid[i].setPosition(position + localPos);
+		}
+	}
+
+	SetGridRectValue();
 }
 
 void MapBoxUI::Update(float dt)
@@ -95,7 +130,7 @@ void MapBoxUI::Update(float dt)
 	{
 		sortingLayer = SortingLayers::Background;
 		sortingOrder = -100;
-		for (auto grid : grid)
+		for (auto grid : obstacleGrid)
 		{
 			grid.setPosition(editorScene->ScreenToWorld(editorScene->UiToScreen(grid.getPosition())));
 		}
@@ -105,47 +140,126 @@ void MapBoxUI::Update(float dt)
 	{
 		sortingLayer = SortingLayers::UI;
 		sortingOrder = 2;
-		for (auto grid : grid)
+		for (auto grid : obstacleGrid)
 		{
 			grid.setPosition(editorScene->ScreenToUi(editorScene->WorldToScreen(grid.getPosition())));
 		}
 		isCheckingMap = false;
+	}
+
+	std::string type = editorScene->GetCurrentType();
+	if (type == "background")
+	{
+		currentType = Mode::Background;
+	}
+	else if (type == "obstacles")
+	{
+		currentType = Mode::obstacles;
+	}
+	else if (type == "enemies")
+	{
+		currentType = Mode::enemies;
 	}
 }
 
 void MapBoxUI::Draw(sf::RenderWindow& window)
 {
 	//window.draw(body);
-	for (int i = 0; i < gridXcount + gridYcount; i++)
+	if (currentType == Mode::obstacles || currentType == Mode::enemies)
 	{
-		window.draw(grid[i]);
+		for (int i = 0; i < obstacleGridXcount + obstacleGridYcount; i++)
+		{
+			window.draw(obstacleGrid[i]);
+		}
+	}
+	if (currentType == Mode::Background)
+	{
+		for (int i = 0; i < backgroundGridXcount + backgroundGridYcount; i++)
+		{
+			window.draw(backgroundGrid[i]);
+		}
 	}
 }
 
 void MapBoxUI::SetGridRectValue()
 {
-	for (int i = 0; i < (gridXcount - 1) * (gridYcount - 1); i++)
+	for (int i = 0; i < (obstacleGridXcount - 1) * (obstacleGridYcount - 1); i++)
 	{
 		sf::FloatRect rect;
-		rect.top = topLeft.y + (i / (gridYcount - 1)) * 60.f;
-		rect.left = topLeft.x + (i % (gridYcount - 1)) * 60.f;
-		rect.width = 60.f;
-		rect.height = 60.f;
-		gridRect.push_back(rect);
+		rect.left = topLeft.x + (i % (obstacleGridYcount - 1)) * obstacleGridSize.x;
+		rect.top = topLeft.y + (i / (obstacleGridYcount - 1)) * obstacleGridSize.y;
+		rect.width = obstacleGridSize.x;
+		rect.height = obstacleGridSize.y;
+		obstacleGridRect.push_back(rect);
+	}
+
+	for (int i = 0; i < (backgroundGridXcount - 1) * (backgroundGridYcount - 1); i++)
+	{
+		sf::FloatRect rect;
+		int xCount = i / (backgroundGridYcount - 1);
+		if (xCount == 3)
+			continue;
+		int yCount = i % (backgroundGridYcount - 1) + backgroundGridXcount;
+		
+		rect.left = backgroundGrid[yCount].getPosition().x;
+		rect.top = backgroundGrid[xCount].getPosition().y;
+		rect.width = backgroundGrid[yCount + 1].getPosition().x - rect.left;
+		rect.height = backgroundGrid[xCount + 1].getPosition().y - rect.top;
+		backgroundGridRect.push_back(rect);
 	}
 }
 
-sf::Vector2f MapBoxUI::GetRectCenterHavePoint(const sf::Vector2f& point)
+sf::RectangleShape MapBoxUI::GetRectHavePoint(const sf::Vector2f& point)
 {
-	for (auto rect : gridRect)
+	for (auto rect : GetMapRect())
 	{
 		sf::RectangleShape shape;
 		shape.setSize(rect.getSize());
 		shape.setPosition(rect.getPosition());
 		if (Utils::PointInTransformBounds(shape, shape.getLocalBounds(), point))
 		{
-			return shape.getPosition() + gridSize * 0.5f;
+			shape.setPosition(shape.getPosition() + rect.getSize() * 0.5f);
+			return shape;
 		}
 	}
-	return sf::Vector2f(0.f,0.f);
+	return sf::RectangleShape();
+}
+
+std::vector<sf::RectangleShape> MapBoxUI::GetMapGird()
+{
+	switch (currentType)
+	{
+	case MapBoxUI::Mode::Background:
+		return backgroundGrid;
+		break;
+	case MapBoxUI::Mode::obstacles:
+		return obstacleGrid;
+		break;
+	case MapBoxUI::Mode::enemies:
+		return enemyGrid;
+		break;
+	default:
+		return std::vector<sf::RectangleShape>();
+		break;
+	}
+}
+
+std::vector<sf::FloatRect> MapBoxUI::GetMapRect()
+{
+	switch (currentType)
+	{
+	case MapBoxUI::Mode::Background:
+		return backgroundGridRect;
+		break;
+	case MapBoxUI::Mode::obstacles:
+		return obstacleGridRect;
+		break;
+	case MapBoxUI::Mode::enemies:
+		return enemyGridRect;
+		break;
+	default:
+		return std::vector<sf::FloatRect>();
+		break;
+	}
+
 }

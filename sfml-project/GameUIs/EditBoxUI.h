@@ -56,6 +56,7 @@ public:
 	void LoadTextureFile(const std::vector<std::string>& filenames);
 
 	std::vector<SpriteGo*> GetActiveSprites() { return textures; }
+	std::string GetActiveType() { return filenames[0]; }
 	sf::RectangleShape GetMainUIBody() { return body; }
 
 	SpriteGo* SetChoosedSprite(SpriteGo* sp);

@@ -107,12 +107,13 @@ void SceneEditor::Update(float dt)
 	}
 	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isChoosed && isSetDrop)
 	{
-		sf::Vector2f boxPos = mapBox->GetRectCenterHavePoint(mouseUIPos);
-		if (boxPos != sf::Vector2f(0.f, 0.f) && CheckAlreadySetGrid(spriteChoosed) == nullptr && IsNotOnGrid())
+		sf::RectangleShape box = mapBox->GetRectHavePoint(mouseUIPos);
+		if (box.getSize() != sf::Vector2f(0.f,0.f) && CheckAlreadySetGrid(spriteChoosed) == nullptr && IsNotOnGrid())
 		{
 			SpriteGo* sprite = new SpriteGo(*spriteChoosed);
 			sprite->SetOrigin(Origins::MC);
-			sprite->SetPosition(ScreenToWorld(UiToScreen(boxPos)));
+			sprite->SetScale({ 2.f, 2.f });
+			sprite->SetPosition(ScreenToWorld(UiToScreen(box.getPosition())));
 			sprite->sortingLayer = spriteChoosed->sortingLayer;
 			sprite->sortingOrder = spriteChoosed->sortingOrder;
 			AddGameObject(sprite);
@@ -156,8 +157,6 @@ void SceneEditor::Update(float dt)
 	{
 		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, -60.f));
 	}
-
-	std::cout << mapSprites.size() << std::endl;
 }
 
 void SceneEditor::Draw(sf::RenderWindow& window)
@@ -372,4 +371,9 @@ bool SceneEditor::IsNotOnGrid()
 		}
 	}
 	return true;
+}
+
+std::string SceneEditor::GetCurrentType() const
+{
+	return editBox->GetActiveType();
 }

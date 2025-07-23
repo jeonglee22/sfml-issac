@@ -42,5 +42,7 @@ public:
 	SpriteGo* CheckAlreadySetGrid(const SpriteGo* sp);
 	SpriteGo* CheckAlreadySetGrid();
 	bool IsNotOnGrid();
+
+	std::string GetCurrentType() const;
 };
 

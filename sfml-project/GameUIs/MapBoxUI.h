@@ -5,20 +5,38 @@ class SceneEditor;
 
 class MapBoxUI : public GameObject
 {
+public:
+	enum class Mode
+	{
+		None = -1,
+		Background,
+		obstacles,
+		enemies,
+	};
+
 protected:
 	sf::RectangleShape body;
-	std::vector<sf::RectangleShape> grid;
+	std::vector<sf::RectangleShape> obstacleGrid;
+	std::vector<sf::RectangleShape> backgroundGrid;
+	std::vector<sf::RectangleShape> enemyGrid;
 
 	SceneEditor* editorScene = nullptr;
 
-	int gridXcount = 10;
-	int gridYcount = 16;
-	sf::Vector2f gridSize = { 60.f,60.f };
-	sf::Vector2f topLeft = { 600.f - gridSize.x * 6.5f, 540.f - gridSize.y * 4.5f };
+	int backgroundGridXcount = 8;
+	int backgroundGridYcount = 10;
+	int obstacleGridXcount = 8;
+	int obstacleGridYcount = 14;
+	
+	sf::Vector2f backgroundGridSize = { 104.f,104.f };
+	sf::Vector2f obstacleGridSize = { 52.f,52.f };
+	sf::Vector2f topLeft = { 560.f - obstacleGridSize.x * 6.5f, 540.f - obstacleGridSize.y * 3.5f };
 
-	std::vector<sf::FloatRect> gridRect;
+	std::vector<sf::FloatRect> obstacleGridRect;
+	std::vector<sf::FloatRect> enemyGridRect;
+	std::vector<sf::FloatRect> backgroundGridRect;
 
 	bool isCheckingMap = false;
+	Mode currentType = Mode::None;
 
 public:
 	MapBoxUI(const std::string& name = "");
@@ -37,10 +55,12 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetGridRectValue();
-	sf::Vector2f GetRectCenterHavePoint(const sf::Vector2f& point);
-	sf::Vector2f GetGridSize() { return gridSize; }
+	sf::RectangleShape GetRectHavePoint(const sf::Vector2f& point);
+	sf::Vector2f GetObstacleGridSize() { return obstacleGridSize; }
+	sf::Vector2f GetBackGroundGridSize() { return backgroundGridSize; }
 	sf::Vector2f GetTopLeft() { return topLeft; }
 	bool GetCheckingMap() { return isCheckingMap; }
-	std::vector<sf::RectangleShape> GetMapGird() { return grid; }
+	std::vector<sf::RectangleShape> GetMapGird();
+	std::vector<sf::FloatRect> GetMapRect();
 };
 

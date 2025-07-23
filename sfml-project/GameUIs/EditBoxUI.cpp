@@ -45,7 +45,7 @@ void EditBoxUI::Init()
 {
 	sortingLayer = SortingLayers::UI;
 	sortingOrder = 2;
-	body.setSize({ 600.f, 1080.f });
+	body.setSize({ 800.f, 1080.f });
 	SetOrigin(Origins::MC);
 
 	pickBox.setSize({60.f,60.f});
@@ -83,7 +83,7 @@ void EditBoxUI::Release()
 
 void EditBoxUI::Reset()
 {
-	SetPosition({ 1920.f - 300.f, 540.f });
+	SetPosition({ 1920.f - 400.f, 540.f });
 
 	std::string typeNames[3] = { "background", "obstacles", "enemies" };
 	for (int i = 0; i < 3; i++)
@@ -358,8 +358,7 @@ void EditBoxUI::LoadTextureFile(const std::vector<std::string>& filenames )
 		textures[i]->GetSprite().setTexture(TEXTURE_MGR.Get(row[0]));
 		textures[i]->GetSprite().setTextureRect({std::stoi(row[1]), std::stoi(row[2]) ,std::stoi(row[3]) ,std::stoi(row[4]) });
 		textures[i]->SetOrigin(sf::Vector2f(std::stoi(row[3]) ,std::stoi(row[4])) * 0.5f);
-		textures[i]->SetPosition(position + sf::Vector2f((i % 5 - 2) * 60.f * 1.5f,(i / 5 - 4.5f) * 60.f * 1.5f) + sf::Vector2f(0,100.f));
-		textures[i]->SetScale({ gridSize.x / std::stof(row[3]), gridSize.y / std::stof(row[4]) });
+		textures[i]->SetPosition(position + sf::Vector2f((i % 9 - 4) * 60.f * 1.5f,(i / 9 - 4.5f) * 60.f * 1.5f) + sf::Vector2f(0,100.f));
 	}
 }
 
