@@ -157,8 +157,37 @@ void SceneEditor::Draw(sf::RenderWindow& window)
 rapidcsv::Document SceneEditor::SaveFile()
 {
 	rapidcsv::Document doc;
+	doc.SetColumnName(0,"TEXTURE_ID");
+	doc.SetColumnName(1,"TEXTURERECT_TOP");
+	doc.SetColumnName(2,"TEXTURERECT_LEFT");
+	doc.SetColumnName(3,"TEXTURERECT_WIDTH");
+	doc.SetColumnName(4,"TEXTURERECT_HEIGHT");
+	doc.SetColumnName(5,"NAME");
+	doc.SetColumnName(6,"XPOSITION");
+	doc.SetColumnName(7,"YPOSITION");
+	doc.SetColumnName(8,"WIDTH");
+	doc.SetColumnName(9,"HEIGHT");
 
-	//sprites();
+	std::vector<std::string> infos;
+
+	int i = 0;
+	for (auto sprite : mapSprites)
+	{
+		infos.clear();
+		sf::Vector2f pos = sprite->GetPosition();
+		sf::FloatRect bounds = sprite->GetSprite().getGlobalBounds();
+		infos.push_back(sprite->GetTextureId());
+		infos.push_back(std::to_string(sprite->GetSprite().getTextureRect().top));
+		infos.push_back(std::to_string(sprite->GetSprite().getTextureRect().left));
+		infos.push_back(std::to_string(sprite->GetSprite().getTextureRect().width));
+		infos.push_back(std::to_string(sprite->GetSprite().getTextureRect().height));
+		infos.push_back(sprite->GetName());
+		infos.push_back(std::to_string(pos.x));
+		infos.push_back(std::to_string(pos.y));
+		infos.push_back(std::to_string(bounds.width));
+		infos.push_back(std::to_string(bounds.height));
+		doc.InsertRow(i++, infos);
+	}
 
 	return doc;
 }
