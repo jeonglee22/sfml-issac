@@ -54,11 +54,6 @@ void EditBoxUI::Init()
 	pickBox.setOutlineThickness(3.f);
 	pickBox.setOrigin({ 30.f,30.f });
 
-	basementGroundId = "graphics/background/01_basement.png";
-	cavesGroundId = "graphics/background/03_caves.png";
-	depthsGroundId = "graphics/background/05_depths.png";
-	sheolGroundId = "graphics/background/09_sheol.png";
-
 	for (int i = 0; i < 3; i++)
 	{
 		filenames.push_back("");
@@ -90,22 +85,19 @@ void EditBoxUI::Reset()
 {
 	SetPosition({ 1920.f - 300.f, 540.f });
 
+	std::string typeNames[3] = { "background", "obstacles", "enemies" };
 	for (int i = 0; i < 3; i++)
 	{
 		typeButtons[i]->Reset();
 		typeButtons[i]->SetPosition(position + sf::Vector2f(-150.f + i * 150.f, -500.f));
 		typeButtons[i]->SetTextPosition({ 0.f, -10.f });
-		if (i == 0)
-			typeButtons[i]->SetTextString("Tile");
-		else if(i == 1)
-			typeButtons[i]->SetTextString("Obstacles");
-		else if(i == 2)
-			typeButtons[i]->SetTextString("Enemies");
+		typeButtons[i]->SetTextString(typeNames[i]);
 		typeButtons[i]->SetTextColor(sf::Color::White);
 		typeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
-		auto buttonFunc = [this, i]() {
+		auto buttonFunc = [this, i, typeNames]() {
 			auto buttons = i == 0 ? styleTypeButtons : (i==1 ? obstacleTypeButtons : enemyTypeButtons);
-			filenames[0] = (i == 0 ? "backgrounds" : (i == 1 ? "obstacles" : "enemies"));
+			std::fill(filenames.begin(), filenames.end(), "");
+			filenames[0] = typeNames[i];
 			DisableAllButtons();
 			if (i == 0)
 				ResetStyleTypeButtons();
@@ -121,9 +113,9 @@ void EditBoxUI::Reset()
 	ResetEnemyTypeButtons();
 	ResetObstacleTypeButtons();
 
-	LoadBackGround("graphics/background/basement.csv");
-
 	pickBox.setPosition(position + sf::Vector2f(0.f, 400.f));
+
+	isFinishFilename = false;
 }
 
 void EditBoxUI::Update(float dt)
@@ -141,6 +133,12 @@ void EditBoxUI::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::R) && pickedSprite != nullptr)
 	{
 		pickedSprite->SetRotation(pickedSprite->GetRotation() + 90.f);
+	}
+
+	if(isFinishFilename)
+	{
+		std::cout << filenames[0] << "/" << filenames[1] << "/" << filenames[2] << std::endl;
+		isFinishFilename = false;
 	}
 }
 
@@ -161,9 +159,9 @@ void EditBoxUI::Draw(sf::RenderWindow& window)
 		if(obstacleTypeButtons[i]->GetActive())
 			obstacleTypeButtons[i]->Draw(window);
 	}
-	for (int i = 0; i < basementGround.size(); i++)
+	for (int i = 0; i < textures.size(); i++)
 	{
-		basementGround[i]->Draw(window);
+		textures[i]->Draw(window);
 	}
 	window.draw(pickBox);
 	if(isPicked)
@@ -222,43 +220,63 @@ void EditBoxUI::InitEnemyTypeButtons()
 
 void EditBoxUI::ResetStyleTypeButtons(float yPos)
 {
+	std::string names[4] = { "basement", "sheol", "depth", "cave" };
 	for (int i = 0; i < 4; i++)
 	{
+		std::string name = names[i];
 		styleTypeButtons[i]->Reset();
 		styleTypeButtons[i]->SetPosition(position + sf::Vector2f(-225.f + i * 150.f, yPos));
 		styleTypeButtons[i]->SetTextPosition({ 0.f, -10.f });
-		if (i == 0)
-			styleTypeButtons[i]->SetTextString("Basement");
-		else if (i == 1)
-			styleTypeButtons[i]->SetTextString("sheol");
-		else if (i == 2)
-			styleTypeButtons[i]->SetTextString("depth");
-		else if (i == 3)
-			styleTypeButtons[i]->SetTextString("cave");
+		styleTypeButtons[i]->SetTextString(name);
 		styleTypeButtons[i]->SetTextColor(sf::Color::White);
 		styleTypeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
-		styleTypeButtons[i]->SetButtonFunc([]() {std::cout << "Style" << std::endl; });
+		auto styleFunc = [this, name, yPos]() {
+			if (yPos == -400.f)
+			{
+				filenames[2] = name;
+				LoadTextureFile(filenames);
+			}
+			else
+			{
+				filenames[1] = name;
+			}
+			isFinishFilename = true;
+		};
+		styleTypeButtons[i]->SetButtonFunc(styleFunc);
 	}
 }
 
 void EditBoxUI::ResetObstacleTypeButtons()
 {
-	std::string names[4] = {"Rocks", "Fire", "Spike", "Pit"};
+	std::string names[4] = {"rocks", "fire", "spike", "pit"};
 	for (int i = 0; i < 4; i++)
 	{
+		std::string name = names[i];
 		obstacleTypeButtons[i]->Reset();
 		obstacleTypeButtons[i]->SetPosition(position + sf::Vector2f(-225.f + i * 150.f, -450.f));
 		obstacleTypeButtons[i]->SetTextPosition({ 0.f, -10.f });
-		obstacleTypeButtons[i]->SetTextString(names[i]);
+		obstacleTypeButtons[i]->SetTextString(name);
 		obstacleTypeButtons[i]->SetTextColor(sf::Color::White);
 		obstacleTypeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
-		auto buttonFunc = [this, i, names]() {
-			auto buttons = styleTypeButtons;
-			filenames[1] = names[i];
-			ResetStyleTypeButtons(-400.f);
-			for (auto button : buttons)
+		auto buttonFunc = [this, name]() {
+			if (name == "rocks" || name == "pit")
 			{
-				button->SetActive(true);
+				filenames[1] = name;
+				ResetStyleTypeButtons(-400.f);
+				for (auto button : styleTypeButtons)
+				{
+					button->SetActive(true);
+				}
+			}
+			else
+			{
+				for (auto button : styleTypeButtons)
+				{
+					button->SetActive(false);
+				}
+				filenames[1] = name;
+				filenames[2] = "";
+				isFinishFilename = true;
 			}
 		};
 		obstacleTypeButtons[i]->SetButtonFunc(buttonFunc);
@@ -267,38 +285,41 @@ void EditBoxUI::ResetObstacleTypeButtons()
 
 void EditBoxUI::ResetEnemyTypeButtons()
 {
+	std::string names[3] = { "ground", "flight", "boss" };
 	for (int i = 0; i < 3; i++)
 	{
+		std::string name = names[i];
 		enemyTypeButtons[i]->Reset();
 		enemyTypeButtons[i]->SetPosition(position + sf::Vector2f(-150.f + i * 150.f, -450.f));
 		enemyTypeButtons[i]->SetTextPosition({ 0.f, -10.f });
-		if (i == 0)
-			enemyTypeButtons[i]->SetTextString("Ground");
-		else if (i == 1)
-			enemyTypeButtons[i]->SetTextString("Flight");
-		else if (i == 2)
-			enemyTypeButtons[i]->SetTextString("Boss");
+		enemyTypeButtons[i]->SetTextString(name);
 		enemyTypeButtons[i]->SetTextColor(sf::Color::White);
 		enemyTypeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
-		enemyTypeButtons[i]->SetButtonFunc([]() {std::cout << "Enemy" << std::endl; });
+		auto enemyFunc = [this, name]() {
+			filenames[1] = name;
+			filenames[2] = "";
+			isFinishFilename = true;
+		};
+		enemyTypeButtons[i]->SetButtonFunc(enemyFunc);
 	}
 }
 
-void EditBoxUI::LoadBackGround(const std::string& filePath )
+void EditBoxUI::LoadTextureFile(const std::vector<std::string>& filenames )
 {
-	rapidcsv::Document doc(filePath);
+	rapidcsv::Document doc("graphics/background/basement.csv");
+	textures.clear();
 
 	int count = doc.GetRowCount();
 
 	for (int i = 0; i < count; i++)
 	{
 		auto row = doc.GetRow<std::string>(i);
-		basementGround.push_back(new SpriteGo());
-		basementGround[i]->GetSprite().setTexture(TEXTURE_MGR.Get(basementGroundId));
-		basementGround[i]->GetSprite().setTextureRect({std::stoi(row[0]), std::stoi(row[1]) ,std::stoi(row[2]) ,std::stoi(row[3]) });
-		basementGround[i]->SetOrigin(sf::Vector2f(std::stoi(row[2]) ,std::stoi(row[3])) * 0.5f);
-		basementGround[i]->SetPosition(position + sf::Vector2f((i % 5 - 2) * (std::stof(row[2]) * 2.f),(i / 5 - (count / 5)) * std::stof(row[3]) * 2.f));
-		basementGround[i]->SetScale({ gridSize.x / std::stof(row[2]), gridSize.y / std::stof(row[3]) });
+		textures.push_back(new SpriteGo());
+		textures[i]->GetSprite().setTexture(TEXTURE_MGR.Get(row[0]));
+		textures[i]->GetSprite().setTextureRect({std::stoi(row[1]), std::stoi(row[2]) ,std::stoi(row[3]) ,std::stoi(row[4]) });
+		textures[i]->SetOrigin(sf::Vector2f(std::stoi(row[3]) ,std::stoi(row[4])) * 0.5f);
+		textures[i]->SetPosition(position + sf::Vector2f((i % 5 - 2) * (std::stof(row[3]) * 2.f),(i / 5 - (count / 5)) * std::stof(row[4]) * 2.f));
+		textures[i]->SetScale({ gridSize.x / std::stof(row[3]), gridSize.y / std::stof(row[4]) });
 	}
 }
 

@@ -10,7 +10,7 @@ SceneEditor::SceneEditor()
 
 void SceneEditor::Init()
 {
-	texIds.push_back("graphics/background/01_basement.png");
+	texIds.push_back("graphics/background/basement.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 

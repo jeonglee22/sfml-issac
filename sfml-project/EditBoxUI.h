@@ -23,17 +23,12 @@ protected:
 
 	sf::Vector2f typeButtonPos;
 
-	std::string basementGroundId;
-	std::string sheolGroundId;
-	std::string depthsGroundId;
-	std::string cavesGroundId;
-	std::vector<SpriteGo*> basementGround;
-
-
+	std::vector<SpriteGo*> textures;
 
 	sf::Vector2f gridSize = { 60.f,60.f };
 
 	bool isPicked = false;
+	bool isFinishFilename = false;
 
 public:
 	EditBoxUI(const std::string& name = "");
@@ -58,9 +53,9 @@ public:
 	void ResetObstacleTypeButtons();
 	void ResetEnemyTypeButtons();
 
-	void LoadBackGround(const std::string& filePath);
+	void LoadTextureFile(const std::vector<std::string>& filenames);
 
-	std::vector<SpriteGo*> GetActiveSprites() { return basementGround; }
+	std::vector<SpriteGo*> GetActiveSprites() { return textures; }
 	sf::RectangleShape GetMainUIBody() { return body; }
 
 	SpriteGo* SetChoosedSprite(SpriteGo* sp);
