@@ -11,6 +11,9 @@ SceneEditor::SceneEditor()
 void SceneEditor::Init()
 {
 	texIds.push_back("graphics/background/basement.png");
+	texIds.push_back("graphics/background/sheol.png");
+	texIds.push_back("graphics/background/caves.png");
+	texIds.push_back("graphics/background/depths.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 

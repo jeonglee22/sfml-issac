@@ -137,7 +137,6 @@ void EditBoxUI::Update(float dt)
 
 	if(isFinishFilename)
 	{
-		std::cout << filenames[0] << "/" << filenames[1] << "/" << filenames[2] << std::endl;
 		isFinishFilename = false;
 	}
 }
@@ -220,7 +219,7 @@ void EditBoxUI::InitEnemyTypeButtons()
 
 void EditBoxUI::ResetStyleTypeButtons(float yPos)
 {
-	std::string names[4] = { "basement", "sheol", "depth", "cave" };
+	std::string names[4] = { "basement", "depth", "sheol", "cave" };
 	for (int i = 0; i < 4; i++)
 	{
 		std::string name = names[i];
@@ -234,12 +233,12 @@ void EditBoxUI::ResetStyleTypeButtons(float yPos)
 			if (yPos == -400.f)
 			{
 				filenames[2] = name;
-				LoadTextureFile(filenames);
 			}
 			else
 			{
 				filenames[1] = name;
 			}
+			LoadTextureFile(filenames);
 			isFinishFilename = true;
 		};
 		styleTypeButtons[i]->SetButtonFunc(styleFunc);
@@ -263,9 +262,11 @@ void EditBoxUI::ResetObstacleTypeButtons()
 			{
 				filenames[1] = name;
 				ResetStyleTypeButtons(-400.f);
-				for (auto button : styleTypeButtons)
+				for (int i = 0; i < styleTypeButtons.size(); i++)
 				{
-					button->SetActive(true);
+					if (name != "pit" && i > 1)
+						styleTypeButtons[i]->SetActive(true);
+					styleTypeButtons[i]->SetActive(true);
 				}
 			}
 			else
@@ -276,6 +277,7 @@ void EditBoxUI::ResetObstacleTypeButtons()
 				}
 				filenames[1] = name;
 				filenames[2] = "";
+				LoadTextureFile(filenames);
 				isFinishFilename = true;
 			}
 		};
@@ -298,6 +300,7 @@ void EditBoxUI::ResetEnemyTypeButtons()
 		auto enemyFunc = [this, name]() {
 			filenames[1] = name;
 			filenames[2] = "";
+			LoadTextureFile(filenames);
 			isFinishFilename = true;
 		};
 		enemyTypeButtons[i]->SetButtonFunc(enemyFunc);
@@ -306,7 +309,17 @@ void EditBoxUI::ResetEnemyTypeButtons()
 
 void EditBoxUI::LoadTextureFile(const std::vector<std::string>& filenames )
 {
-	rapidcsv::Document doc("graphics/background/basement.csv");
+	std::string filePath = "graphics";
+	for (auto name : filenames)
+	{
+		if (name != "")
+		{
+			filePath += "/" + name;
+		}
+	}
+	filePath += ".csv";
+
+	rapidcsv::Document doc(filePath);
 	textures.clear();
 
 	int count = doc.GetRowCount();
