@@ -6,6 +6,7 @@
 #include "Monster.h"
 #include "SpriteGo.h"
 #include "Fly.h"
+#include "Spider.h"
 
 SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 {
@@ -17,6 +18,7 @@ void SceneDev2::Init()
 	texIds.push_back("graphics/only_tears.png");
 	texIds.push_back("graphics/monster_010_fly.png");
 	texIds.push_back("graphics/temp_background.png");
+	texIds.push_back("graphics/monster_214_level2spider_small.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
@@ -33,6 +35,9 @@ void SceneDev2::Init()
 	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears.csv");
 	ANI_CLIP_MGR.Load("animations/fly.csv");
+	ANI_CLIP_MGR.Load("animations/spider_patrol.csv");
+	ANI_CLIP_MGR.Load("animations/spider_charge.csv");
+	ANI_CLIP_MGR.Load("animations/spider_jump.csv");
 
 	SpriteGo* background = new SpriteGo("graphics/temp_background.png");
 	background->sortingLayer = SortingLayers::Background;
@@ -44,6 +49,10 @@ void SceneDev2::Init()
 	auto fly = new Fly();
 	fly->SetPosition({ 0.f,0.f });
 	AddGameObject(fly);
+
+	auto spider = new Spider();
+	spider->SetPosition({ 0.f, 0.f });
+	AddGameObject(spider);
 
 	Scene::Init();
 }
@@ -62,10 +71,25 @@ void SceneDev2::Enter()
 
 void SceneDev2::Update(float dt)
 {
-	Scene::Update(dt);
+	Isaac* isaac = nullptr;
+	std::vector<Monster*> monsters;
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
-	{
-		SCENE_MGR.ChangeScene(SceneIds::Dev1);
+	for (auto& gameObject : gameObjects) {
+		if (auto player = dynamic_cast<Isaac*>(gameObject)) {
+			isaac = player;
+		}
+		if (auto monster = dynamic_cast<Monster*>(gameObject)) {
+			monsters.push_back(monster);
+		}
 	}
+
+	if (isaac) {
+		sf::Vector2f playerPos = isaac->GetPosition();
+		for (auto& monster : monsters) {
+			monster->SetPlayerPosition(playerPos);
+		}
+	}
+
+
+	Scene::Update(dt);
 }

@@ -87,6 +87,18 @@
     <ClCompile Include="WanderState.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SpiderChargeState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SpiderJumpState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SpiderPatrolState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Spider.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\InputMgr.h">
@@ -168,6 +180,18 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="WanderState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SpiderChargeState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SpiderJumpState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SpiderPatrolState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Spider.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

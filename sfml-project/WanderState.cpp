@@ -2,8 +2,10 @@
 #include "WanderState.h"
 #include "Monster.h"
 #include <cmath>
+#include "SpiderPatrolState.h"
 
-WanderState::WanderState() : directionChangeTimer(0.0f)
+WanderState::WanderState()
+    :directionChangeTimer(0.0f)
 {
     directionChangeInterval = 2.0f;
     ChangeDirection();

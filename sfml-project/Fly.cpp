@@ -3,7 +3,6 @@
 #include "IdleState.h"
 #include "WanderState.h"
 
-//IdleState Fly::idleState;
 WanderState Fly::wanderState;
 
 Fly::Fly(const std::string& name)
@@ -30,10 +29,6 @@ void Fly::Reset()
 
 void Fly::UseSkill()
 {
-    //if (CanUseSkill()) {
-    //    ChangeState(&skillState);
-    //    StartSkillCooldown();
-    //}
 }
 
 void Fly::SetInitialState()

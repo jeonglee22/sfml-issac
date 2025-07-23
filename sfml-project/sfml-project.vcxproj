@@ -158,6 +158,10 @@
     <ClCompile Include="Scenes\SceneDev2.cpp" />
     <ClCompile Include="Framework\SceneMgr.cpp" />
     <ClCompile Include="Framework\SoundMgr.cpp" />
+    <ClCompile Include="Spider.cpp" />
+    <ClCompile Include="SpiderChargeState.cpp" />
+    <ClCompile Include="SpiderJumpState.cpp" />
+    <ClCompile Include="SpiderPatrolState.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -189,6 +193,10 @@
     <ClInclude Include="Scenes\SceneDev2.h" />
     <ClInclude Include="Framework\SceneMgr.h" />
     <ClInclude Include="Framework\SoundMgr.h" />
+    <ClInclude Include="Spider.h" />
+    <ClInclude Include="SpiderChargeState.h" />
+    <ClInclude Include="SpiderJumpState.h" />
+    <ClInclude Include="SpiderPatrolState.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Framework\TextGo.h" />
     <ClInclude Include="Framework\Utils.h" />
