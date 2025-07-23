@@ -271,6 +271,10 @@ void SceneEditor::LoadFile(const std::string& fileName)
 {
 	rapidcsv::Document doc(fileName);
 
+	for (auto sprite : mapSprites)
+	{
+		RemoveGameObject(sprite);
+	}
 	mapSprites.clear();
 	for (int i = 0; i < doc.GetRowCount(); i++)
 	{

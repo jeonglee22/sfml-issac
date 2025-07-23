@@ -89,7 +89,7 @@ void MapBoxUI::Update(float dt)
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::Z))
 	{
-		sortingLayer = SortingLayers::Foreground;
+		sortingLayer = SortingLayers::Background;
 		sortingOrder = -100;
 		isCheckingMap = true;
 	}
