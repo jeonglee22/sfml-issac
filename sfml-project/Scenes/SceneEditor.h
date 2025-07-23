@@ -22,6 +22,7 @@ protected:
 	std::list<SpriteGo*> mapSprites;
 
 	bool isChoosed = false;
+	bool isSetDrop = false;
 
 public:
 	SceneEditor();
@@ -38,6 +39,7 @@ public:
 	void LoadField();
 	void LoadFile(const std::string& fileName);
 
-
+	SpriteGo* CheckAlreadySetGrid();
+	bool IsNotOnGrid();
 };
 

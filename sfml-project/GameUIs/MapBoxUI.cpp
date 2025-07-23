@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "MapBoxUI.h"
+#include "SceneEditor.h"
 
 MapBoxUI::MapBoxUI(const std::string& name)
 	: GameObject(name)
@@ -52,11 +53,11 @@ void MapBoxUI::Init()
 		grid.push_back(sf::RectangleShape());
 		if (i < gridXcount)
 		{
-			grid[i].setSize({1080.f, 1.f});
+			grid[i].setSize({1080.f, 2.f});
 		}
 		else
 		{
-			grid[i].setSize({ 1.f, 660.f });
+			grid[i].setSize({ 2.f, 660.f });
 		}
 		grid[i].setOrigin(grid[i].getSize() * 0.5f);
 		grid[i].setFillColor(sf::Color::Green);
@@ -71,7 +72,10 @@ void MapBoxUI::Release()
 
 void MapBoxUI::Reset()
 {
+	editorScene = (SceneEditor*)SCENE_MGR.GetCurrentScene();
+
 	SetPosition({ (FRAMEWORK.GetWindowSizeF().x - 600.f) * 0.5f , FRAMEWORK.GetWindowSizeF().y * 0.5f});
+
 	for (int i = 0; i < gridXcount + gridYcount; i++)
 	{
 		if (i < gridXcount)
@@ -91,12 +95,20 @@ void MapBoxUI::Update(float dt)
 	{
 		sortingLayer = SortingLayers::Background;
 		sortingOrder = -100;
+		for (auto grid : grid)
+		{
+			grid.setPosition(editorScene->ScreenToWorld(editorScene->UiToScreen(grid.getPosition())));
+		}
 		isCheckingMap = true;
 	}
 	else if(InputMgr::GetKeyDown(sf::Keyboard::X))
 	{
 		sortingLayer = SortingLayers::UI;
 		sortingOrder = 2;
+		for (auto grid : grid)
+		{
+			grid.setPosition(editorScene->ScreenToUi(editorScene->WorldToScreen(grid.getPosition())));
+		}
 		isCheckingMap = false;
 	}
 }

@@ -1,11 +1,15 @@
 #pragma once
 #include "GameObject.h"
-class MapBoxUI :
-    public GameObject
+
+class SceneEditor;
+
+class MapBoxUI : public GameObject
 {
 protected:
 	sf::RectangleShape body;
 	std::vector<sf::RectangleShape> grid;
+
+	SceneEditor* editorScene = nullptr;
 
 	int gridXcount = 10;
 	int gridYcount = 16;
@@ -37,5 +41,6 @@ public:
 	sf::Vector2f GetGridSize() { return gridSize; }
 	sf::Vector2f GetTopLeft() { return topLeft; }
 	bool GetCheckingMap() { return isCheckingMap; }
+	std::vector<sf::RectangleShape> GetMapGird() { return grid; }
 };
 

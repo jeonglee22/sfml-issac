@@ -77,6 +77,8 @@ void SceneEditor::Enter()
 	save->SetTextString("Save");
 	save->SetButtonRectPosition({ 0.f,0.f });
 	save->SetButtonFunc([this]() {SaveField(); });
+
+	isSetDrop = false;
 }
 
 void SceneEditor::Update(float dt)
@@ -101,8 +103,12 @@ void SceneEditor::Update(float dt)
 	}
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && isChoosed)
 	{
+		isSetDrop = true;
+	}
+	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isChoosed && isSetDrop)
+	{
 		sf::Vector2f boxPos = mapBox->GetRectCenterHavePoint(mouseUIPos);
-		if (boxPos != sf::Vector2f(0.f,0.f))
+		if (boxPos != sf::Vector2f(0.f, 0.f) && CheckAlreadySetGrid() == nullptr && IsNotOnGrid())
 		{
 			SpriteGo* sprite = new SpriteGo(*spriteChoosed);
 			sprite->SetOrigin(Origins::MC);
@@ -113,6 +119,10 @@ void SceneEditor::Update(float dt)
 			mapSprites.push_back(sprite);
 		}
 	}
+	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left) && isSetDrop)
+	{
+		isSetDrop = false;
+	}
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right) && 
 		Utils::PointInTransformBounds(editBoxBody, editBoxBody.getLocalBounds(), mouseUIPos))
 	{
@@ -122,18 +132,11 @@ void SceneEditor::Update(float dt)
 	}
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
 	{
-		auto it = mapSprites.begin();
-		while(it != mapSprites.end())
+		if (CheckAlreadySetGrid() != nullptr)
 		{
-			if (Utils::PointInTransformBounds((*it)->GetSprite(), (*it)->GetSprite().getLocalBounds(), mouseWorldPos))
-			{
-				RemoveGameObject(*it);
-				it = mapSprites.erase(it);
-			}
-			else
-			{
-				it++;
-			}
+			SpriteGo* sprite = CheckAlreadySetGrid();
+			mapSprites.remove(sprite);
+			RemoveGameObject(sprite);
 		}
 	}
 
@@ -153,6 +156,8 @@ void SceneEditor::Update(float dt)
 	{
 		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, -60.f));
 	}
+
+	std::cout << mapSprites.size() << std::endl;
 }
 
 void SceneEditor::Draw(sf::RenderWindow& window)
@@ -293,4 +298,41 @@ void SceneEditor::LoadFile(const std::string& fileName)
 		mapSprites.push_back(loadSprite);
 		AddGameObject(loadSprite);
 	}
+}
+
+SpriteGo* SceneEditor::CheckAlreadySetGrid()
+{
+	auto mouseWorldPos = Scene::ScreenToWorld(InputMgr::GetMousePosition());
+	auto it = mapSprites.begin();
+	while (it != mapSprites.end())
+	{
+		if (Utils::PointInTransformBounds((*it)->GetSprite(), (*it)->GetSprite().getLocalBounds(), mouseWorldPos))
+		{
+			return *it;
+		}
+		else
+		{
+			it++;
+		}
+	}
+	return nullptr;
+}
+
+bool SceneEditor::IsNotOnGrid()
+{
+	auto mouseUIPos = Scene::ScreenToUi(InputMgr::GetMousePosition());
+	auto grid = mapBox->GetMapGird();
+	auto it = grid.begin();
+	while (it != grid.end())
+	{
+		if (Utils::PointInTransformBounds(*it, (*it).getLocalBounds(), mouseUIPos))
+		{
+			return false;
+		}
+		else
+		{
+			it++;
+		}
+	}
+	return true;
 }
