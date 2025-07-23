@@ -69,16 +69,16 @@
     <ClCompile Include="AniPlayer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SceneEditor.cpp">
+    <ClCompile Include="Scenes\SceneEditor.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="EditBoxUI.cpp">
+    <ClCompile Include="GameUIs\EditBoxUI.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MapBoxUI.cpp">
+    <ClCompile Include="GameUIs\MapBoxUI.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
+    <ClCompile Include="Framework\Button.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -146,16 +146,16 @@
     <ClInclude Include="AniPlayer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SceneEditor.h">
+    <ClInclude Include="Scenes\SceneEditor.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="EditBoxUI.h">
+    <ClInclude Include="GameUIs\EditBoxUI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MapBoxUI.h">
+    <ClInclude Include="GameUIs\MapBoxUI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
+    <ClInclude Include="Framework\Button.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

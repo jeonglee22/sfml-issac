@@ -134,6 +134,14 @@ void EditBoxUI::Update(float dt)
 	{
 		pickedSprite->SetRotation(pickedSprite->GetRotation() + 90.f);
 	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Q) && pickedSprite != nullptr)
+	{
+		pickedSprite->SetScale({pickedSprite->GetScale().x * -1.f,pickedSprite->GetScale().y});
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::E) && pickedSprite != nullptr)
+	{
+		pickedSprite->SetScale({ pickedSprite->GetScale().x,pickedSprite->GetScale().y * -1.f });
+	}
 
 	if(isFinishFilename)
 	{
@@ -333,7 +341,11 @@ void EditBoxUI::LoadTextureFile(const std::vector<std::string>& filenames )
 	for (int i = 0; i < count; i++)
 	{
 		auto row = doc.GetRow<std::string>(i);
-		textures.push_back(new SpriteGo());
+		std::string name;
+		int pos = row[0].find_last_of("/");
+		int pos2 = row[0].find_last_of(".");
+		name = row[0].substr(pos + 1, pos2 - pos-1);
+		textures.push_back(new SpriteGo(row[0], name));
 		textures[i]->GetSprite().setTexture(TEXTURE_MGR.Get(row[0]));
 		textures[i]->GetSprite().setTextureRect({std::stoi(row[1]), std::stoi(row[2]) ,std::stoi(row[3]) ,std::stoi(row[4]) });
 		textures[i]->SetOrigin(sf::Vector2f(std::stoi(row[3]) ,std::stoi(row[4])) * 0.5f);
