@@ -332,7 +332,6 @@ void EditBoxUI::LoadTextureFile(const std::vector<std::string>& filenames )
 		}
 	}
 	filePath += ".csv";
-
 	rapidcsv::Document doc(filePath);
 	textures.clear();
 
@@ -359,7 +358,7 @@ void EditBoxUI::LoadTextureFile(const std::vector<std::string>& filenames )
 		textures[i]->GetSprite().setTexture(TEXTURE_MGR.Get(row[0]));
 		textures[i]->GetSprite().setTextureRect({std::stoi(row[1]), std::stoi(row[2]) ,std::stoi(row[3]) ,std::stoi(row[4]) });
 		textures[i]->SetOrigin(sf::Vector2f(std::stoi(row[3]) ,std::stoi(row[4])) * 0.5f);
-		textures[i]->SetPosition(position + sf::Vector2f((i % 5 - 2) * (std::stof(row[3]) * 2.f),(i / 5 - (count / 5)) * std::stof(row[4]) * 2.f));
+		textures[i]->SetPosition(position + sf::Vector2f((i % 5 - 2) * 60.f * 1.5f,(i / 5 - 4.5f) * 60.f * 1.5f) + sf::Vector2f(0,100.f));
 		textures[i]->SetScale({ gridSize.x / std::stof(row[3]), gridSize.y / std::stof(row[4]) });
 	}
 }

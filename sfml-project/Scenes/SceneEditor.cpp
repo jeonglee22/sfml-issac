@@ -21,6 +21,12 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/background/depths.png");
 	texIds.push_back("graphics/obstacles/grid_spikes.png");
 	texIds.push_back("graphics/obstacles/rocks/rocks_basement.png");
+	texIds.push_back("graphics/obstacles/rocks/rocks_caves.png");
+	texIds.push_back("graphics/obstacles/rocks/rocks_depths.png");
+	texIds.push_back("graphics/obstacles/rocks/rocks_sheol.png");
+	texIds.push_back("graphics/obstacles/pit/grid_pit_basement.png");
+	texIds.push_back("graphics/obstacles/pit/grid_pit_depths.png");
+	texIds.push_back("graphics/obstacles/grid_fireplace.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 
@@ -264,4 +270,23 @@ void SceneEditor::LoadField()
 void SceneEditor::LoadFile(const std::string& fileName)
 {
 	rapidcsv::Document doc(fileName);
+
+	mapSprites.clear();
+	for (int i = 0; i < doc.GetRowCount(); i++)
+	{
+		std::vector<std::string> infos = doc.GetRow<std::string>(i);
+		SpriteGo* loadSprite = new SpriteGo(infos[0], infos[5]);
+		loadSprite->Init();
+		loadSprite->SetOrigin(Origins::MC);
+		loadSprite->Reset();
+		loadSprite->GetSprite().setTextureRect({ std::stoi(infos[2]),std::stoi(infos[1]), std::stoi(infos[3]), std::stoi(infos[4]) });
+		loadSprite->SetScale({ 60.f / std::stof(infos[3]) , 60.f / std::stof(infos[4]) });
+		loadSprite->SetOrigin(Origins::MC);
+		loadSprite->SetPosition(sf::Vector2f( std::stof(infos[6]), std::stof(infos[7]) ) + mapBox->GetTopLeft());
+		loadSprite->SetRotation(std::stof(infos[12]));
+		loadSprite->sortingLayer = (SortingLayers)std::stoi(infos[10]);
+		loadSprite->sortingOrder = std::stoi(infos[11]);
+		mapSprites.push_back(loadSprite);
+		AddGameObject(loadSprite);
+	}
 }
