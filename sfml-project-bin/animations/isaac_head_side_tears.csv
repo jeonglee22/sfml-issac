@@ -2,6 +2,6 @@ ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
 Isaac_head_side_tears,10,"1	",,,
 "				",,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/character_001_isaac.png,98,3,26,23,0
-graphics/character_001_isaac.png,66,3,26,23,0
-graphics/character_001_isaac.png,66,3,26,23,0
+graphics/character_001_isaac.png,98,3,28,25,0
+graphics/character_001_isaac.png,66,3,28,25,0
+graphics/character_001_isaac.png,66,3,28,25,0

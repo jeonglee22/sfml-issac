@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "Monster.h"
+#include "MonsterState.h"
 
-Monster::Monster(const std::string& name, Monsters monsters)
-	: GameObject(name), monsterType(monsters)
+Monster::Monster(const std::string& name, Monsters type)
+	: GameObject(name), monsterType(type)
 {
 }
 
@@ -42,34 +43,75 @@ void Monster::SetOrigin(Origins preset)
 void Monster::Init()
 {
 	animator.SetTarget(&body);
+
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 1;
 }
 
 void Monster::Release()
 {
 }
 
-void Monster::Reset()
-{
-	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 1;
-
-	if (monsterType == Monsters::fly)
-	{
-		animator.Play("animations/fly.csv");
-	}
-
-
-
-	SetScale({ 2.0f, 2.0f });
-	SetOrigin(Origins::BC);
-}
-
 void Monster::Update(float dt)
 {
+	if (currentState)
+	{
+		currentState->Update(this, dt);
+	}
+
+	UpdateSkillTimer(dt);
 	animator.Update(dt);
+
+	position += velocity * dt;
+	SetPosition(position);
 }
 
 void Monster::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+}
+
+void Monster::ChangeState(MonsterState* newState)
+{
+	if (currentState)
+	{
+		currentState->Exit(this);
+	}
+	currentState = newState;
+	if (currentState)
+	{
+		currentState->Enter(this);
+	}
+}
+
+std::string Monster::GetCurrentStateName() const
+{
+	return currentState ? currentState->GetStateName() : "None";
+}
+
+void Monster::TakeDamage(int damage)
+{
+	currentHP -= damage;
+	if (currentHP < 0)
+	{
+		currentHP = 0;
+	}
+}
+
+float Monster::GetDistanceToPlayer() const
+{
+	sf::Vector2f diff = playerPosition - position;
+	return std::sqrt(diff.x * diff.x + diff.y * diff.y);
+}
+
+void Monster::UpdateSkillTimer(float dt)
+{
+	if (skillTimer > 0)
+	{
+		skillTimer -= dt;
+		if (skillTimer <= 0)
+		{
+			canUseSkill = true;
+		}
+	}
 }

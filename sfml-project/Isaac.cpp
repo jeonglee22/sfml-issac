@@ -13,7 +13,7 @@ void Isaac::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	body.setPosition(position);
-	head.setPosition(position.x, position.y - 13.f);
+	head.setPosition(position.x, position.y - 17.f);
 }
 
 void Isaac::SetRotation(float angle)
@@ -218,8 +218,8 @@ void Isaac::Update(float dt)
 		headAnimator.Play("animations/isaac_head_front.csv");
 	}
 
-	hitBox.UpdateTransform(head, head.getLocalBounds());
-	//hitBox.UpdateTransform(body, body.getLocalBounds());
+	//hitBox.UpdateTransform(head, head.getLocalBounds());
+	hitBox.UpdateTransform(body, body.getLocalBounds());
 }
 
 void Isaac::Draw(sf::RenderWindow& window)

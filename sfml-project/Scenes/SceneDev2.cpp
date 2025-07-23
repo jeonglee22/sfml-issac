@@ -5,6 +5,7 @@
 #include "Tears.h"
 #include "Monster.h"
 #include "SpriteGo.h"
+#include "Fly.h"
 
 SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 {
@@ -40,9 +41,9 @@ void SceneDev2::Init()
 
 	AddGameObject(new Isaac());
 
-	monster = new Monster("", Monsters::fly);
-	AddGameObject(monster);
-
+	auto fly = new Fly();
+	fly->SetPosition({ 0.f,0.f });
+	AddGameObject(fly);
 
 	Scene::Init();
 }

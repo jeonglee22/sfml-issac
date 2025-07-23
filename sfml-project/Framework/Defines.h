@@ -35,5 +35,6 @@ enum class Sides
 
 enum class Monsters
 {
-	fly,
+	Fly,
+	Spider,
 };

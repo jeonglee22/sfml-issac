@@ -140,8 +140,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Fly.cpp" />
     <ClCompile Include="Framework\AnimationClip.cpp" />
     <ClCompile Include="Framework\Animator.cpp" />
+    <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="Isaac.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Framework\GameObject.cpp" />
@@ -151,6 +153,7 @@
     <ClCompile Include="Framework\Scene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterState.cpp" />
     <ClCompile Include="Scenes\SceneDev1.cpp" />
     <ClCompile Include="Scenes\SceneDev2.cpp" />
     <ClCompile Include="Framework\SceneMgr.cpp" />
@@ -162,10 +165,13 @@
     <ClCompile Include="Framework\Utils.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
     <ClCompile Include="Tears.cpp" />
+    <ClCompile Include="WanderState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Fly.h" />
     <ClInclude Include="Framework\AnimationClip.h" />
     <ClInclude Include="Framework\Animator.h" />
+    <ClInclude Include="IdleState.h" />
     <ClInclude Include="Isaac.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\Defines.h" />
@@ -178,6 +184,7 @@
     <ClInclude Include="Framework\SpriteGo.h" />
     <ClInclude Include="Framework\Scene.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterState.h" />
     <ClInclude Include="Scenes\SceneDev1.h" />
     <ClInclude Include="Scenes\SceneDev2.h" />
     <ClInclude Include="Framework\SceneMgr.h" />
@@ -187,6 +194,7 @@
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="Framework\Variables.h" />
     <ClInclude Include="Tears.h" />
+    <ClInclude Include="WanderState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

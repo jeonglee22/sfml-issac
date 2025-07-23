@@ -2,13 +2,13 @@ ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
 Isaac_run_height,10,"1	",,,
 "				",,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/character_001_isaac.png,201,11,14,11,0
-graphics/character_001_isaac.png,233,11,14,11,0
-graphics/character_001_isaac.png,9,44,14,11,0
-graphics/character_001_isaac.png,41,44,14,11,0
-graphics/character_001_isaac.png,73,44,14,11,0
-graphics/character_001_isaac.png,105,44,14,11,0
-graphics/character_001_isaac.png,137,44,14,11,0
-graphics/character_001_isaac.png,169,44,14,11,0
-graphics/character_001_isaac.png,201,44,14,11,0
-graphics/character_001_isaac.png,233,44,14,11,0
+graphics/character_001_isaac.png,199,11,19,15,0
+graphics/character_001_isaac.png,231,11,19,15,0
+graphics/character_001_isaac.png,7,44,19,15,0
+graphics/character_001_isaac.png,39,44,19,15,0
+graphics/character_001_isaac.png,71,44,19,15,0
+graphics/character_001_isaac.png,103,44,19,15,0
+graphics/character_001_isaac.png,135,44,19,15,0
+graphics/character_001_isaac.png,167,44,19,15,0
+graphics/character_001_isaac.png,199,44,19,15,0
+graphics/character_001_isaac.png,231,44,19,15,0
