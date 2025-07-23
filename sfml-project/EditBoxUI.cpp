@@ -264,9 +264,15 @@ void EditBoxUI::ResetObstacleTypeButtons()
 				ResetStyleTypeButtons(-400.f);
 				for (int i = 0; i < styleTypeButtons.size(); i++)
 				{
-					if (name != "pit" && i > 1)
+					if(i > 1)
+					{
+						if (name != "pit")
+							styleTypeButtons[i]->SetActive(true);
+					}
+					else
+					{
 						styleTypeButtons[i]->SetActive(true);
-					styleTypeButtons[i]->SetActive(true);
+					}
 				}
 			}
 			else

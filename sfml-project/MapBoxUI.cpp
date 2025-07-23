@@ -52,11 +52,11 @@ void MapBoxUI::Init()
 		grid.push_back(sf::RectangleShape());
 		if (i < gridXcount)
 		{
-			grid[i].setSize({1080.f, 2.f});
+			grid[i].setSize({1080.f, 1.f});
 		}
 		else
 		{
-			grid[i].setSize({ 2.f, 660.f });
+			grid[i].setSize({ 1.f, 660.f });
 		}
 		grid[i].setOrigin(grid[i].getSize() * 0.5f);
 		grid[i].setFillColor(sf::Color::Green);
@@ -115,11 +115,11 @@ void MapBoxUI::SetGridRectValue()
 	sf::Vector2f topLeft(600.f - gridSize.x * 6.5f, 540.f - gridSize.y * 4.5f);
 	for (int i = 0; i < (gridXcount - 1) * (gridYcount - 1); i++)
 	{
-		sf::IntRect rect;
-		rect.top = topLeft.y + (i / (gridYcount - 1)) * 60;
-		rect.left = topLeft.x + (i % (gridYcount - 1)) * 60;
-		rect.width = 60;
-		rect.height = 60;
+		sf::FloatRect rect;
+		rect.top = topLeft.y + (i / (gridYcount - 1)) * 60.f;
+		rect.left = topLeft.x + (i % (gridYcount - 1)) * 60.f;
+		rect.width = 60.f;
+		rect.height = 60.f;
 		gridRect.push_back(rect);
 	}
 }
@@ -129,8 +129,8 @@ sf::Vector2f MapBoxUI::GetRectCenterHavePoint(const sf::Vector2f& point)
 	for (auto rect : gridRect)
 	{
 		sf::RectangleShape shape;
-		shape.setSize((sf::Vector2f)rect.getSize());
-		shape.setPosition((sf::Vector2f)rect.getPosition());
+		shape.setSize(rect.getSize());
+		shape.setPosition(rect.getPosition());
 		if (Utils::PointInTransformBounds(shape, shape.getLocalBounds(), point))
 		{
 			return shape.getPosition() + gridSize * 0.5f;

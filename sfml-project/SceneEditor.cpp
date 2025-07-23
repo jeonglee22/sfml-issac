@@ -14,6 +14,9 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/background/sheol.png");
 	texIds.push_back("graphics/background/caves.png");
 	texIds.push_back("graphics/background/depths.png");
+	texIds.push_back("graphics/obstacles/grid_spikes.png");
+	texIds.push_back("graphics/obstacles/rocks/rocks_basement.png");
+
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 

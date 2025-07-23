@@ -11,7 +11,7 @@ protected:
 	int gridYcount = 16;
 	sf::Vector2f gridSize = { 60.f,60.f };
 
-	std::vector<sf::IntRect> gridRect;
+	std::vector<sf::FloatRect> gridRect;
 
 	bool isCheckingMap = false;
 
