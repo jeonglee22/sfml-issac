@@ -153,6 +153,7 @@
     <ClCompile Include="Framework\Scene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUIs\MapBoxUI.cpp" />
+    <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Scenes\SceneEditor.cpp" />
     <ClCompile Include="Scenes\SceneDev1.cpp" />
     <ClCompile Include="Scenes\SceneDev2.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Framework\SpriteGo.h" />
     <ClInclude Include="Framework\Scene.h" />
     <ClInclude Include="GameUIs\MapBoxUI.h" />
+    <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Scenes\SceneEditor.h" />
     <ClInclude Include="Scenes\SceneDev1.h" />
     <ClInclude Include="Scenes\SceneDev2.h" />

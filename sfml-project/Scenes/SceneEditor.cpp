@@ -101,8 +101,8 @@ void SceneEditor::Update(float dt)
 			SpriteGo* sprite = new SpriteGo(*spriteChoosed);
 			sprite->SetOrigin(Origins::MC);
 			sprite->SetPosition(ScreenToWorld(UiToScreen(boxPos)));
-			sprite->sortingLayer = SortingLayers::Foreground;
-			sprite->sortingOrder = 1;
+			sprite->sortingLayer = spriteChoosed->sortingLayer;
+			sprite->sortingOrder = spriteChoosed->sortingOrder;
 			AddGameObject(sprite);
 			mapSprites.push_back(sprite);
 		}
@@ -167,6 +167,9 @@ rapidcsv::Document SceneEditor::SaveFile()
 	doc.SetColumnName(7,"YPOSITION");
 	doc.SetColumnName(8,"WIDTH");
 	doc.SetColumnName(9,"HEIGHT");
+	doc.SetColumnName(10,"LAYER");
+	doc.SetColumnName(11,"ORDER");
+	doc.SetColumnName(12,"ROTATION");
 
 	std::vector<std::string> infos;
 
@@ -174,8 +177,8 @@ rapidcsv::Document SceneEditor::SaveFile()
 	for (auto sprite : mapSprites)
 	{
 		infos.clear();
-		sf::Vector2f pos = sprite->GetPosition();
-		sf::FloatRect bounds = sprite->GetSprite().getGlobalBounds();
+		sf::Vector2f pos = sprite->GetPosition() - mapBox->GetTopLeft();
+		sf::FloatRect bounds = sprite->GetSprite().getLocalBounds();
 		infos.push_back(sprite->GetTextureId());
 		infos.push_back(std::to_string(sprite->GetSprite().getTextureRect().top));
 		infos.push_back(std::to_string(sprite->GetSprite().getTextureRect().left));
@@ -186,6 +189,9 @@ rapidcsv::Document SceneEditor::SaveFile()
 		infos.push_back(std::to_string(pos.y));
 		infos.push_back(std::to_string(bounds.width));
 		infos.push_back(std::to_string(bounds.height));
+		infos.push_back(std::to_string((int)sprite->sortingLayer));
+		infos.push_back(std::to_string(sprite->sortingOrder));
+		infos.push_back(std::to_string(sprite->GetRotation()));
 		doc.InsertRow(i++, infos);
 	}
 

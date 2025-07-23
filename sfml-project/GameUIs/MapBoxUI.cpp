@@ -112,7 +112,6 @@ void MapBoxUI::Draw(sf::RenderWindow& window)
 
 void MapBoxUI::SetGridRectValue()
 {
-	sf::Vector2f topLeft(600.f - gridSize.x * 6.5f, 540.f - gridSize.y * 4.5f);
 	for (int i = 0; i < (gridXcount - 1) * (gridYcount - 1); i++)
 	{
 		sf::FloatRect rect;

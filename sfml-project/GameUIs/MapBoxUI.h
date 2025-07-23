@@ -10,6 +10,7 @@ protected:
 	int gridXcount = 10;
 	int gridYcount = 16;
 	sf::Vector2f gridSize = { 60.f,60.f };
+	sf::Vector2f topLeft = { 600.f - gridSize.x * 6.5f, 540.f - gridSize.y * 4.5f };
 
 	std::vector<sf::FloatRect> gridRect;
 
@@ -34,6 +35,7 @@ public:
 	void SetGridRectValue();
 	sf::Vector2f GetRectCenterHavePoint(const sf::Vector2f& point);
 	sf::Vector2f GetGridSize() { return gridSize; }
+	sf::Vector2f GetTopLeft() { return topLeft; }
 	bool GetCheckingMap() { return isCheckingMap; }
 };
 
