@@ -39,6 +39,7 @@ public:
 	void LoadField();
 	void LoadFile(const std::string& fileName);
 
+	SpriteGo* CheckAlreadySetGrid(const SpriteGo* sp);
 	SpriteGo* CheckAlreadySetGrid();
 	bool IsNotOnGrid();
 };

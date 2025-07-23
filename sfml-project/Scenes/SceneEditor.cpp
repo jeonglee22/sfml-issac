@@ -108,7 +108,7 @@ void SceneEditor::Update(float dt)
 	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isChoosed && isSetDrop)
 	{
 		sf::Vector2f boxPos = mapBox->GetRectCenterHavePoint(mouseUIPos);
-		if (boxPos != sf::Vector2f(0.f, 0.f) && CheckAlreadySetGrid() == nullptr && IsNotOnGrid())
+		if (boxPos != sf::Vector2f(0.f, 0.f) && CheckAlreadySetGrid(spriteChoosed) == nullptr && IsNotOnGrid())
 		{
 			SpriteGo* sprite = new SpriteGo(*spriteChoosed);
 			sprite->SetOrigin(Origins::MC);
@@ -130,7 +130,7 @@ void SceneEditor::Update(float dt)
 		editBox->SetOffChoosedSprite();
 		spriteChoosed = nullptr;
 	}
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
+	if (InputMgr::GetMouseButton(sf::Mouse::Right))
 	{
 		if (CheckAlreadySetGrid() != nullptr)
 		{
@@ -298,6 +298,43 @@ void SceneEditor::LoadFile(const std::string& fileName)
 		mapSprites.push_back(loadSprite);
 		AddGameObject(loadSprite);
 	}
+}
+
+SpriteGo* SceneEditor::CheckAlreadySetGrid(const SpriteGo* sp)
+{
+	auto mouseWorldPos = Scene::ScreenToWorld(InputMgr::GetMousePosition());
+	auto it = mapSprites.begin();
+	bool CanDrop = true;
+	SpriteGo* result = new SpriteGo("","temp");
+	while (it != mapSprites.end())
+	{
+		if (Utils::PointInTransformBounds((*it)->GetSprite(), (*it)->GetSprite().getLocalBounds(), mouseWorldPos))
+		{
+			if ((*it)->sortingLayer != sp->sortingLayer || (*it)->sortingOrder != sp->sortingOrder)
+			{
+				if (!CanDrop)
+				{
+					it++;
+					continue;
+				}
+				delete result;
+				result = nullptr;
+			}
+			else
+			{
+				CanDrop = false;
+				if (result != nullptr)
+				{
+					delete result;
+				}
+				result = new SpriteGo(**it);
+			}
+		}
+		it++;
+	}
+	if (result == nullptr || result->GetName() == "temp")
+		return nullptr;
+	return result;
 }
 
 SpriteGo* SceneEditor::CheckAlreadySetGrid()
