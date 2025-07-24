@@ -33,6 +33,10 @@ void Spider::Reset()
     SetInitialState();
 }
 
+void Spider::OnUpdate(float dt)
+{
+}
+
 void Spider::UseSkill()
 {
     if (CanUseSkill())

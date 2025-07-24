@@ -77,6 +77,7 @@ public:
 	HitBox& GetHitBox() { return hitBox; }
 	virtual sf::FloatRect GetHitBoxMonster() { return { 0,0,0,0 }; }
 	virtual void SetInitialState() = 0;
+	virtual void OnUpdate(float dt) = 0;
 
 	void UpdateSkillTimer(float dt);
 };

@@ -65,7 +65,7 @@ void Monster::Update(float dt)
 	position += velocity * dt;
 	SetPosition(position);
 
-
+	OnUpdate(dt);
 }
 
 void Monster::Draw(sf::RenderWindow& window)
