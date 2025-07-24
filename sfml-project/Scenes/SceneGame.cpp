@@ -52,6 +52,7 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_hurt.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_dead.csv");
 
 
 	ANI_CLIP_MGR.Load("animations/fly.csv");

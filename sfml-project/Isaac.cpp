@@ -99,7 +99,8 @@ void Isaac::Reset()
 	  {"idle", "animations/isaac_body_idle.csv"},
 	  {"run_weight", "animations/isaac_run_weight.csv"},
 	  {"run_height", "animations/isaac_run_height.csv"},
-	  {"hurt", "animations/isaac_hurt.csv"}
+	  {"hurt", "animations/isaac_hurt.csv"},
+	  {"dead", "animations/isaac_dead.csv" }
 	};
 
 
@@ -114,14 +115,20 @@ void Isaac::Reset()
 	wasKeyPressed = false;
 	shootDirection = {0.f, 0.f};
 
+	isDead = false;
+
 	SetOrigin(Origins::BC);
 	SetScale({2.0f, 2.0f});
 }
 
 void Isaac::Update(float dt)
 {
-	headAnimator.Update(dt);
-	bodyAnimator.Update(dt);
+	if (isDead)
+	{
+		headAnimator.Update(dt);
+		bodyAnimator.Update(dt);
+		return;
+	}
 
 	for (auto *tears : tearsList)
 	{
@@ -312,10 +319,7 @@ void Isaac::Update(float dt)
 			}
 		}
 
-		if (!isHurt && (InputMgr::GetKeyUp(sf::Keyboard::Up) ||
-			InputMgr::GetKeyUp(sf::Keyboard::Down) ||
-			InputMgr::GetKeyUp(sf::Keyboard::Left) ||
-			InputMgr::GetKeyUp(sf::Keyboard::Right)))
+		if (!isHurt && (InputMgr::GetKeyUp(sf::Keyboard::Up) || InputMgr::GetKeyUp(sf::Keyboard::Down) || InputMgr::GetKeyUp(sf::Keyboard::Left) || InputMgr::GetKeyUp(sf::Keyboard::Right)))
 		{
 			float currentH = InputMgr::GetAxis(Axis::Horizontal);
 			float currentW = InputMgr::GetAxis(Axis::Vertical);
@@ -440,7 +444,11 @@ void Isaac::MonsterCollision()
 			if (currentHP <= 0)
 			{
 				currentHP = 0;
-				SetActive(false);
+				isDead = true;
+				PlayHeadAnimation("empty");
+				PlayBodyAnimation("dead");
+				SetOrigin(Origins::BC);
+				velocity = { 0.f, 0.f };
 			}
 			return;
 		}

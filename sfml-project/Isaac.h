@@ -45,6 +45,8 @@ protected:
 	int maxHP = 300;
 	int currentHP = 300;
 
+	bool isDead = false;
+
 	HitBox hitBoxHead;
 	HitBox hitBoxBody;
 
