@@ -65,6 +65,7 @@ void SceneGame::Init()
 
 void SceneGame::Enter()
 {
+	FRAMEWORK.GetWindow().setSize({ 960, 540 });
 	auto size = FRAMEWORK.GetWindowSizeF();
 
 	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
