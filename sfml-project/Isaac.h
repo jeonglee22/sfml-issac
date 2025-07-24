@@ -15,6 +15,13 @@ protected:
 	Animator bodyAnimator;
 	Animator headAnimator;
 
+	std::map<std::string, std::string> headAnimation;
+	std::map<std::string, std::string> headTearsAnimation;
+	std::map<std::string, std::string> bodyAnimation;
+
+	std::string currentHeadAnimation = "front";
+	std::string currentBodyAnimation = "idle";
+
 	std::list<Tears*> tearsList;
 	std::list<Tears*> tearsPool;
 	SceneDev2* sceneDev2 = nullptr;
@@ -62,4 +69,10 @@ public:
 	void MonsterCollision();
 	void HitBoxUpdate();
 	void SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box);
+
+	void PlayHeadAnimation(const std::string& animation);
+	void PlayHeadTearsAnimation(const std::string& animation);
+	void PlayBodyAnimation(const std::string& animation);
+	bool IsCurrentHeadAnimation(const std::string& animation) const;
+	bool IsCurrentBodyAnimation(const std::string& animation) const;
 };

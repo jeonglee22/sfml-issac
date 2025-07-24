@@ -79,6 +79,30 @@ void Isaac::Reset()
 	headAnimator.Play("animations/isaac_head_front.csv");
 	bodyAnimator.Play("animations/isaac_body_idle.csv");
 
+	headAnimation =
+	{
+		{"front", "animations/isaac_head_front.csv"},
+		{"side", "animations/isaac_head_side.csv"},
+		{"rare", "animations/isaac_head_rare.csv"},
+		{"empty", "animations/empty.csv"}
+	};
+
+	headTearsAnimation =
+	{
+	 {"front", "animations/isaac_head_front_tears.csv"},
+	 {"side", "animations/isaac_head_side_tears.csv"},
+	 {"rare", "animations/isaac_head_rare_tears.csv"}
+	};
+
+	bodyAnimation =
+	{
+	  {"idle", "animations/isaac_body_idle.csv"},
+	  {"run_weight", "animations/isaac_run_weight.csv"},
+	  {"run_height", "animations/isaac_run_height.csv"},
+	  {"hurt", "animations/isaac_hurt.csv"}
+	};
+
+
 	for (Tears *tears : tearsList)
 	{
 		tears->SetActive(false);
@@ -121,21 +145,19 @@ void Isaac::Update(float dt)
 		}
 	}
 
-	//�浹 �� hurt �ִϸ��̼� �� �����ð� ������
-
 	if (isHurt)
 	{
 		invincibleTime += dt;
 		currentHurtTime += dt;
 
-		headAnimator.Play("animations/empty.csv");
-		bodyAnimator.Play("animations/isaac_hurt.csv");
+		PlayHeadAnimation("empty");
+		PlayBodyAnimation("hurt");
 		SetOrigin(Origins::BC);
 
 		if (currentHurtTime >= maxHurtTime)
 		{
-			headAnimator.Play("animations/isaac_head_front.csv");
-			bodyAnimator.Play("animations/isaac_body_idle.csv");
+			PlayHeadAnimation("front");
+			PlayBodyAnimation("idle");
 			SetOrigin(Origins::BC);
 		}
 		if (invincibleTime < invincibleMaxTime)
@@ -181,7 +203,6 @@ void Isaac::Update(float dt)
 		SetScale(h > 0.f ? sf::Vector2f(2.0f, 2.0f) : sf::Vector2f(-2.0f, 2.0f));
 	}
 
-	// hitBox.UpdateTransform(head, head.getLocalBounds());
 	HitBoxUpdate();
 
 	if (sceneGame != nullptr)
@@ -202,86 +223,130 @@ void Isaac::Update(float dt)
 		}
 	}
 
-	// Ani
-	if (bodyAnimator.GetCurrentClipId() == "Isaac_body_idle")
-	{
-		if (InputMgr::GetKey(sf::Keyboard::A) || InputMgr::GetKey(sf::Keyboard::D))
-		{
-			bodyAnimator.Play("animations/isaac_run_weight.csv");
-			headAnimator.Play("animations/isaac_head_side.csv");
-		}
-		else if (w != 0.f)
-		{
-			bodyAnimator.Play("animations/isaac_run_height.csv");
-			if (w < 0.f)
-			{
-				headAnimator.Play("animations/isaac_head_rare.csv");
-			}
-		}
-	}
-	else if (bodyAnimator.GetCurrentClipId() == "Isaac_run_height" || bodyAnimator.GetCurrentClipId() == "Isaac_run_weight")
-	{
-		if (w == 0.f && h == 0.f)
-		{
-			bodyAnimator.Play("animations/isaac_body_idle.csv");
-			headAnimator.Play("animations/isaac_head_front.csv");
-		}
-	}
 
-	bool keyPressed = false;
-	if (InputMgr::GetKey(sf::Keyboard::Right))
-	{
-		shootDirection = sf::Vector2f(1.f, 0.f);
-		keyPressed = true;
-	}
-	else if (InputMgr::GetKey(sf::Keyboard::Left))
-	{
-		shootDirection = sf::Vector2f(-1.f, 0.f);
-		keyPressed = true;
-	}
-	else if (InputMgr::GetKey(sf::Keyboard::Up))
-	{
-		shootDirection = sf::Vector2f(0.f, -1.f);
-		keyPressed = true;
-	}
-	else if (InputMgr::GetKey(sf::Keyboard::Down))
-	{
-		shootDirection = sf::Vector2f(0.f, 1.f);
-		keyPressed = true;
-	}
+		bool shootingKeyPressed = false;
+		sf::Vector2f newShootDirection = { 0.f, 0.f };
 
-	if (keyPressed)
-	{
-		if (!wasKeyPressed || shootTimer >= shootInterval)
+		if (InputMgr::GetKey(sf::Keyboard::Right))
 		{
-			shootTimer = 0.f;
-			FireTear(shootDirection);
-			if (shootDirection.x > 0.f)
+			newShootDirection = sf::Vector2f(1.f, 0.f);
+			shootingKeyPressed = true;
+		}
+		else if (InputMgr::GetKey(sf::Keyboard::Left))
+		{
+			newShootDirection = sf::Vector2f(-1.f, 0.f);
+			shootingKeyPressed = true;
+		}
+		else if (InputMgr::GetKey(sf::Keyboard::Up))
+		{
+			newShootDirection = sf::Vector2f(0.f, -1.f);
+			shootingKeyPressed = true;
+		}
+		else if (InputMgr::GetKey(sf::Keyboard::Down))
+		{
+			newShootDirection = sf::Vector2f(0.f, 1.f);
+			shootingKeyPressed = true;
+		}
+
+		if (shootingKeyPressed)
+		{
+			shootDirection = newShootDirection;
+
+			if (!isHurt)
 			{
-				SetScale({2.f, 2.f});
-				headAnimator.Play("animations/isaac_head_side_tears.csv");
+				if (shootDirection.x > 0.f)
+				{
+					SetScale({ 2.f, 2.f });
+					PlayHeadTearsAnimation("side");
+				}
+				else if (shootDirection.x < 0.f)
+				{
+					SetScale({ -2.f, 2.f });
+					PlayHeadTearsAnimation("side");
+				}
+				else if (shootDirection.y < 0.f)
+				{
+					PlayHeadTearsAnimation("rare");
+				}
+				else if (shootDirection.y > 0.f)
+				{
+					PlayHeadTearsAnimation("front");
+				}
 			}
-			if (shootDirection.x < 0.f)
+			if (!wasKeyPressed || shootTimer >= shootInterval)
 			{
-				SetScale({-2.f, 2.f});
-				headAnimator.Play("animations/isaac_head_side_tears.csv");
+				FireTear(shootDirection);
+				shootTimer = 0.f;
 			}
-			if (shootDirection.y < 0.f)
+			shootTimer += dt;
+			wasKeyPressed = true;
+		}
+		else
+		{
+			wasKeyPressed = false;
+			if (!isHurt)
 			{
-				headAnimator.Play("animations/isaac_head_rare_tears.csv");
+
+			if (h == 0.f && w == 0.f)
+			{
+				PlayHeadAnimation("front");
+				PlayBodyAnimation("idle");
 			}
-			if (shootDirection.y > 0.f)
+			else
 			{
-				headAnimator.Play("animations/isaac_head_front_tears.csv");
+				if (w < 0.f)
+				{
+					PlayHeadAnimation("rare");
+					PlayBodyAnimation("run_height");
+				}
+				else if (w > 0.f)
+				{
+					PlayHeadAnimation("front");
+					PlayBodyAnimation("run_height");
+				}
+				else if (h != 0.f)
+				{
+					PlayHeadAnimation("side");
+					PlayBodyAnimation("run_weight");
+				}
 			}
 		}
-		shootTimer += dt;
-		wasKeyPressed = true;
-	}
 
-	if (InputMgr::GetKeyUp(sf::Keyboard::Up) || InputMgr::GetKeyUp(sf::Keyboard::Down) || InputMgr::GetKeyUp(sf::Keyboard::Left) || InputMgr::GetKeyUp(sf::Keyboard::Right))
-	{
-		headAnimator.Play("animations/isaac_head_front.csv");
+		if (!isHurt && (InputMgr::GetKeyUp(sf::Keyboard::Up) ||
+			InputMgr::GetKeyUp(sf::Keyboard::Down) ||
+			InputMgr::GetKeyUp(sf::Keyboard::Left) ||
+			InputMgr::GetKeyUp(sf::Keyboard::Right)))
+		{
+			float currentH = InputMgr::GetAxis(Axis::Horizontal);
+			float currentW = InputMgr::GetAxis(Axis::Vertical);
+
+			if (currentH == 0.f && currentW == 0.f)
+			{
+				PlayHeadAnimation("front");
+				PlayBodyAnimation("idle");
+			}
+			else
+			{
+
+				if (currentW < 0.f)
+				{
+					PlayHeadAnimation("rare");
+					PlayBodyAnimation("run_height");
+				}
+				else if (currentW > 0.f)
+				{
+					PlayHeadAnimation("front");
+					PlayBodyAnimation("run_height");
+				}
+				else if (currentH != 0.f)
+				{
+					PlayHeadAnimation("side");
+					PlayBodyAnimation("run_weight");
+				}
+			}
+		}
+
+
 	}
 
 	MonsterCollision();
@@ -415,4 +480,44 @@ void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* bo
 
 	SetPosition(currentPos);
 	HitBoxUpdate();
+}
+
+void Isaac::PlayHeadAnimation(const std::string& animation)
+{
+	auto it = headAnimation.find(animation);
+	if (it != headAnimation.end() && currentHeadAnimation != animation)
+	{
+		headAnimator.Play(it->second);
+		currentHeadAnimation = animation;
+	}
+}
+
+void Isaac::PlayHeadTearsAnimation(const std::string& animation)
+{
+	auto it = headTearsAnimation.find(animation);
+	if (it != headTearsAnimation.end() && currentHeadAnimation != animation)
+	{
+		headAnimator.Play(it->second);
+		currentHeadAnimation = animation;
+	}
+}
+
+void Isaac::PlayBodyAnimation(const std::string& animation)
+{
+	auto it = bodyAnimation.find(animation);
+	if (it != bodyAnimation.end() && currentBodyAnimation != animation)
+	{
+		bodyAnimator.Play(it->second);
+		currentBodyAnimation = animation;
+	}
+}
+
+bool Isaac::IsCurrentHeadAnimation(const std::string& animation) const
+{
+	return currentHeadAnimation == animation;
+}
+
+bool Isaac::IsCurrentBodyAnimation(const std::string& animation) const
+{
+	return currentBodyAnimation == animation;
 }
