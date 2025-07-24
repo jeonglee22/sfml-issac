@@ -17,8 +17,8 @@ void Spider::Reset()
     sortingOrder = 2;
 
     SetHP(2);
-    SetSpeed(40.0f);
-    SetDetectionRange(200.0f);
+    SetSpeed(100.0f);
+    SetDetectionRange(100.0f);
     SetSkillCooldown(3.0f);
 
     animator.Play("animations/spider_patrol.csv");
@@ -36,7 +36,7 @@ void Spider::UseSkill()
 {
     if (CanUseSkill())
     {
-        ChangeState(&jumpState);
+        ChangeState(&chargeState);
         StartSkillCooldown();
     }
 }

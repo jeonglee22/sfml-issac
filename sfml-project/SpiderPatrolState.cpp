@@ -17,6 +17,8 @@ void SpiderPatrolState::Enter(Monster* monster)
     ChangeDirection();
     directionChangeTimer = 0.0f;
     isPausing = false;
+
+    monster->GetAnimator().Play("animations/spider_patrol.csv");
 }
 
 void SpiderPatrolState::Update(Monster* monster, float dt)
