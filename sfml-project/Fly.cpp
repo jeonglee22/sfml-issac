@@ -15,7 +15,7 @@ void Fly::Reset()
     sortingLayer = SortingLayers::Foreground;
     sortingOrder = 1;
 
-    SetHP(1);
+    SetHP(30);
     SetSpeed(50.0f);
     SetDetectionRange(120.0f);
     SetSkillCooldown(4.0f);
@@ -33,5 +33,11 @@ void Fly::UseSkill()
 
 void Fly::SetInitialState()
 {
-        ChangeState(&wanderState);
+    ChangeState(&wanderState);
+}
+
+sf::FloatRect Fly::GetHitBoxMonster()
+{
+    sf::FloatRect bodyGlobalBounds = body.getGlobalBounds();
+    return { bodyGlobalBounds.left + 20.f, bodyGlobalBounds.top + 20.f, 3.f, 3.f };
 }

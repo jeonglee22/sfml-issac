@@ -7,7 +7,6 @@ class WanderState;
 class Fly : public Monster
 {
 protected:
-	//static IdleState idleState;
 	static WanderState wanderState;
 
 public:
@@ -20,5 +19,6 @@ public:
 	//static IdleState& GetIdleState() { return idleState; }
 	static WanderState& GetWanderState() { return wanderState; }
 	void SetInitialState() override;
+	sf::FloatRect GetHitBoxMonster() override;
 };
 

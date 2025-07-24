@@ -6,7 +6,7 @@
 #include "SpiderPatrolState.h"
 
 SpiderJumpState::SpiderJumpState()
-	:jumpSpeed(200.0f)
+	:jumpSpeed(300.0f)
 {
 }
 

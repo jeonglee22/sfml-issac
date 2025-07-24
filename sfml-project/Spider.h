@@ -12,7 +12,6 @@ public:
     static SpiderChargeState chargeState;
     static SpiderJumpState jumpState;
 
-
     Spider(const std::string& name = "Spider");
     virtual ~Spider() override = default;
 
@@ -23,5 +22,6 @@ public:
     static SpiderChargeState& GetChargeState() { return chargeState; }
     static SpiderJumpState& GetJumpState() { return jumpState; }
     void SetInitialState() override;
+    sf::FloatRect GetHitBoxMonster() override;
 };
 

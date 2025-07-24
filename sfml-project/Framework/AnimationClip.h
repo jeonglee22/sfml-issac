@@ -20,7 +20,7 @@ struct AnimationClip
 {
 	std::string id;
 	AnimationLoopTypes loopType = AnimationLoopTypes::Loop;
-	int fps = 30;
+	int fps = 60;
 
 	std::vector<AnimationFrame> frames;
 

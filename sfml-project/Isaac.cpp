@@ -3,6 +3,8 @@
 #include "HitBox.h"
 #include "Tears.h"
 #include "SceneDev2.h"
+#include "SceneGame.h"
+#include "Monster.h"
 
 Isaac::Isaac(const std::string& name)
 	: GameObject(name)
@@ -59,13 +61,13 @@ void Isaac::Release()
 
 void Isaac::Reset()
 {
-	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Dev2)
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
 	{
-		sceneDev2 = (SceneDev2*)SCENE_MGR.GetCurrentScene();
+		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 	}
 	else
 	{
-		sceneDev2 = nullptr;
+		sceneGame = nullptr;
 	}
 
 	sortingLayer = SortingLayers::Foreground;
@@ -116,6 +118,49 @@ void Isaac::Update(float dt)
 		}
 	}
 
+	//충돌 시 hurt 애니메이션 및 무적시간 깜빡임
+
+	if (isHurt)
+	{
+		invincibleTime += dt;
+		currentHurtTime += dt;
+
+		headAnimator.Play("animations/empty.csv");
+		bodyAnimator.Play("animations/isaac_hurt.csv");
+		SetOrigin(Origins::BC);
+
+		if (currentHurtTime >= maxHurtTime)
+		{
+			headAnimator.Play("animations/isaac_head_front.csv");
+			bodyAnimator.Play("animations/isaac_body_idle.csv");
+			SetOrigin(Origins::BC);
+		}
+		if (invincibleTime < invincibleMaxTime)
+		{
+			float blinkTime = fmod(invincibleTime, 0.1f);
+			if (blinkTime < 0.05f)
+			{
+				body.setColor(sf::Color::White);
+				head.setColor(sf::Color::White);
+			}
+			else
+			{
+				body.setColor(sf::Color::Transparent);
+				head.setColor(sf::Color::Transparent);
+			}
+		}
+		else
+		{
+			body.setColor(sf::Color::White);
+			head.setColor(sf::Color::White);
+			invincibleTime = 0.0f;
+			currentHurtTime = 0.0f;
+			isHurt = false;
+		}
+	}
+
+
+
 	float h = 0.f;
 	float w = 0.f;
 
@@ -129,7 +174,7 @@ void Isaac::Update(float dt)
 
 	SetPosition(position);
 
-	if (h != 0.f)
+	if (h != 0.f && !isHurt)
 	{
 		SetScale(h > 0.f ? sf::Vector2f(2.0f, 2.0f) : sf::Vector2f(-2.0f, 2.0f));
 	}
@@ -218,8 +263,10 @@ void Isaac::Update(float dt)
 		headAnimator.Play("animations/isaac_head_front.csv");
 	}
 
-	//hitBox.UpdateTransform(head, head.getLocalBounds());
-	hitBox.UpdateTransform(body, body.getLocalBounds());
+	MonsterCollision();
+
+	hitBoxHead.UpdateTransform(head, head.getLocalBounds());
+	hitBoxBody.UpdateTransform(body, body.getLocalBounds());
 }
 
 void Isaac::Draw(sf::RenderWindow& window)
@@ -227,12 +274,13 @@ void Isaac::Draw(sf::RenderWindow& window)
 	window.draw(body);
 	window.draw(head);
 
-	hitBox.Draw(window);
+	hitBoxHead.Draw(window);
+	hitBoxBody.Draw(window);
 }
 
 void Isaac::FireTear(const sf::Vector2f& direction)
 {
-	if (!sceneDev2)
+	if (!sceneGame)
 	{
 		return;
 	}
@@ -271,8 +319,45 @@ void Isaac::FireTear(const sf::Vector2f& direction)
 		firePosition = { position.x + Utils::RandomRange(-15.f, 15.f), position.y - 20.f };
 	}
 
-	tears->Fire( firePosition, direction, 300.f, 10);
+	tears->Fire( firePosition, direction, 250.f, 35);
 	tearsList.push_back(tears);
 
-	sceneDev2->AddGameObject(tears);
+	sceneGame->AddGameObject(tears);
+}
+
+void Isaac::MonsterCollision()
+{
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (!scene)
+	{
+		return;
+	}
+
+	auto monsters = scene->GetMonsters();
+
+	sf::FloatRect isaacBounds = head.getGlobalBounds();
+
+	for (auto& monster : monsters)
+	{
+		if (!monster->GetActive() || monster->IsDead())
+		{
+			continue;
+		}
+
+		sf::FloatRect monsterBounds = monster->GetHitBoxMonster();
+
+		if (isaacBounds.intersects(monsterBounds) && invincibleTime == 0)
+		{
+			currentHP -= 50;
+			std::cout << currentHP << std::endl;
+			isHurt = true;
+			if (currentHP <= 0)
+			{
+				currentHP = 0;
+				SetActive(false);
+			}
+			return;
+		}
+		
+	}
 }
