@@ -32,5 +32,5 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	HitBox GetHitBox() const { return hitBox; }
-	sf::Vector2i GetDoorSize() const { return doorOpened.getTextureRect().getSize(); }
+	sf::Vector2i GetDoorSize() const { return doorOpened.getTextureRect().getSize() * 2; }
 };

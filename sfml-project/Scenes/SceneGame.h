@@ -42,6 +42,7 @@ public:
 	std::vector<SpriteGo*> GetMapSprites() { return mapSprites; }
 
 	void MakeBoundary();
+	void MakeDoor();
 	std::vector<HitBox*> GetMapBoundary() { return boundary; }
 };
 
