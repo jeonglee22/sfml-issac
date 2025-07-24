@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "Tears.h"
+#include "SceneGame.h"
+#include "Monster.h"
+#include "Animator.h"
 
 Tears::Tears(const std::string& name)
 	: GameObject(name)
@@ -41,6 +44,8 @@ void Tears::SetOrigin(Origins preset)
 
 void Tears::Init()
 {
+	animator.SetTarget(&sprite);
+
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 1;
 }
@@ -51,7 +56,8 @@ void Tears::Release()
 
 void Tears::Reset()
 {
-	sprite.setTexture(TEXTURE_MGR.Get(texture));
+	animator.Play("animations/tears_idle.csv");
+
 	Utils::SetOrigin(sprite, Origins::MC);
 	SetScale({ 1.5f, 1.5f });
 }
@@ -72,11 +78,39 @@ void Tears::Update(float dt)
 	{
 		SetActive(false);
 	}
+
+	if (position.y > 500.f || position.y < -500.f)
+	{
+		SetActive(false);
+	}
+
+
+	Hit();
+
+	//if (isTearsCrush)
+	//{
+	//	tearsCrushTime += dt;
+
+	//	if (tearsCrushTime < tearsCrushMaxTime)
+	//	{
+	//		speed = 0.0;
+	//		animator.Play("animations/tears_boom.csv");
+	//	}
+	//	else
+	//	{
+	//		SetActive(false);
+	//	}
+
+
+	//}
+
+	hitBox.UpdateTransform(sprite, sprite.getLocalBounds());
 }
 
 void Tears::Draw(sf::RenderWindow& window)
 {
 	window.draw(sprite);
+	hitBox.Draw(window);
 }
 
 void Tears::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d)
@@ -88,6 +122,40 @@ void Tears::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int 
 	speed = s;
 	damage = d;
 	distance = 0.f;
+}
+
+void Tears::Hit()
+{
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (!scene)
+	{
+		return;
+	}
+
+	auto monsters = scene->GetMonsters();
+
+	sf::FloatRect isaacBounds = sprite.getGlobalBounds();
+
+	for (auto& monster : monsters)
+	{
+		if (!monster->GetActive() || monster->IsDead())
+		{
+			continue;
+		}
+
+		sf::FloatRect monsterBounds = monster->GetHitBoxMonster();
+
+		if (isaacBounds.intersects(monsterBounds))
+		{
+			monster->TakeDamage(damage);
+
+			isTearsCrush = true;
+			SetActive(false);
+			return;
+		}
+
+	}
+
 }
 
 

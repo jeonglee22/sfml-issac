@@ -32,11 +32,16 @@ void SceneGame::Init()
 	texIds.push_back("graphics/monster_010_fly.png");
 	texIds.push_back("graphics/temp_background.png");
 	texIds.push_back("graphics/monster_214_level2spider_small.png");
+	texIds.push_back("graphics/effects/effect_015_tearpoofa.png");
+
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/run.csv");
 	ANI_CLIP_MGR.Load("animations/jump.csv");
+
+	ANI_CLIP_MGR.Load("animations/empty.csv");
+
 	ANI_CLIP_MGR.Load("animations/isaac_body_idle.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_front.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_run_height.csv");
@@ -46,10 +51,17 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/isaac_head_front_tears.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_hurt.csv");
+
+
 	ANI_CLIP_MGR.Load("animations/fly.csv");
 	ANI_CLIP_MGR.Load("animations/spider_patrol.csv");
 	ANI_CLIP_MGR.Load("animations/spider_charge.csv");
 	ANI_CLIP_MGR.Load("animations/spider_jump.csv");
+	ANI_CLIP_MGR.Load("animations/spider_jump.csv");
+
+	ANI_CLIP_MGR.Load("animations/tears_idle.csv");
+	ANI_CLIP_MGR.Load("animations/tears_boom.csv");
 
 	isaac = (Isaac*)AddGameObject(new Isaac());
 
@@ -57,9 +69,19 @@ void SceneGame::Init()
 	fly->SetPosition({ 200.f,200.f });
 	AddGameObject(fly);
 
+	auto fly1 = new Fly();
+	fly1->SetPosition({ 250.f,250.f });
+	AddGameObject(fly1);
+
 	auto spider = new Spider();
 	spider->SetPosition({ 300.f, 300.f });
 	AddGameObject(spider);
+
+	auto spider1 = new Spider();
+	spider1->SetPosition({ 350.f, 350.f });
+	AddGameObject(spider1);
+
+
 
 	Scene::Init();
 }
@@ -104,6 +126,27 @@ void SceneGame::Enter()
 
 void SceneGame::Update(float dt)
 {
+	for (auto& gameObject : gameObjects)
+	{
+		if (auto player = dynamic_cast<Isaac*>(gameObject))
+		{
+			isaac = player;
+		}
+		if (auto monster = dynamic_cast<Monster*>(gameObject))
+		{
+			monsters.push_back(monster);
+		}
+	}
+
+	if (isaac)
+	{
+		sf::Vector2f playerPos = isaac->GetPosition();
+		for (auto& monster : monsters)
+		{
+			monster->SetPlayerPosition(playerPos);
+		}
+	}
+
 	Scene::Update(dt);
 }
 
@@ -140,6 +183,32 @@ void SceneGame::LoadStageField(const std::string& filePath)
 		mapSprites[i]->sortingOrder = std::stoi(infos[11]);
 		AddGameObject(mapSprites[i]);
 	}
+}
+
+void SceneGame::EnemyCollosion()
+{
+	for (auto& gameObject : gameObjects)
+	{
+		if (auto player = dynamic_cast<Isaac*>(gameObject))
+		{
+			isaac = player;
+		}
+		if (auto monster = dynamic_cast<Monster*>(gameObject))
+		{
+			monsters.push_back(monster);
+		}
+	}
+
+	if (isaac)
+	{
+		sf::Vector2f playerPos = isaac->GetPosition();
+		for (auto& monster : monsters)
+		{
+			monster->SetPlayerPosition(playerPos);
+		}
+	}
+
+
 }
 
 void SceneGame::CreateMatchedTypeGO(const std::string& filepath, const std::string& name)

@@ -1,20 +1,34 @@
 #pragma once
 #include "GameObject.h"
+#include "HitBox.h"
+#include "Animator.h"
+
+class Monster;
+class SceneGame;
+
 class Tears : public GameObject
 {
 protected:
 	sf::Sprite sprite;
-	std::string texture = "graphics/only_tears.png";
+	Animator animator;
+	
 
 	sf::Vector2f direction;
 	sf::Vector2f velocity;
 	float speed = 0.f;
-	int damage = 0;
+	int damage = 35;
 
 	float distance = 0.f;
 	float maxRange = 300.f;
 	sf::Vector2f startPosition;
 	sf::Vector2f gravity = { 0.f, 800.f };
+
+	float tearsCrushTime = 0.0f;
+	float tearsCrushMaxTime = 1.0f;
+	bool isTearsCrush = false;
+
+	SceneGame* sceneGame;
+	HitBox hitBox;
 
 public:
 	Tears(const std::string& name = "");
@@ -33,6 +47,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d);
+	void Hit();
 
 };
 

@@ -64,6 +64,8 @@ void Monster::Update(float dt)
 
 	position += velocity * dt;
 	SetPosition(position);
+
+
 }
 
 void Monster::Draw(sf::RenderWindow& window)
@@ -92,9 +94,12 @@ std::string Monster::GetCurrentStateName() const
 void Monster::TakeDamage(int damage)
 {
 	currentHP -= damage;
-	if (currentHP < 0)
+
+	if (currentHP <= 0)
 	{
 		currentHP = 0;
+
+		SetActive(false);
 	}
 }
 

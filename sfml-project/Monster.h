@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Animator.h"
+#include "HitBox.h"
 
 class MonsterState;
 
@@ -27,7 +28,7 @@ protected:
 	float skillCooldown;
 
 	MonsterState* currentState;
-
+	HitBox hitBox;
 
 public:
 	Monster(const std::string& name, Monsters type);
@@ -73,6 +74,8 @@ public:
 	void SetSkillCooldown(float cooldown) { skillCooldown = cooldown; }
 
 	Animator& GetAnimator() { return animator; }
+	HitBox& GetHitBox() { return hitBox; }
+	virtual sf::FloatRect GetHitBoxMonster() { return { 0,0,0,0 }; }
 	virtual void SetInitialState() = 0;
 
 	void UpdateSkillTimer(float dt);

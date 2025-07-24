@@ -7,8 +7,8 @@
 SpiderPatrolState::SpiderPatrolState()
     : directionChangeTimer(0.0f), pauseTimer(0.0f), isPausing(false)
 {
-    directionChangeInterval = 3.0f;
-    pauseDuration = 1.0f;
+    directionChangeInterval = 1.0f;
+    pauseDuration = 0.5f;
     ChangeDirection();
 }
 

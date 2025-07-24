@@ -21,14 +21,25 @@ protected:
 	SceneGame* sceneGame = nullptr;
 
 	sf::Vector2f velocity = { 0.f, 0.f };
-	float speed = 350.f;
+	float speed = 250.f;
 
 	float shootTimer = 0.0f;
 	float shootInterval = 0.4f;
 	sf::Vector2f shootDirection = { 0.f, 0.f };
 	bool wasKeyPressed = false;
 
-	HitBox hitBox;
+	float invincibleTime = 0.0f;
+	float invincibleMaxTime = 1.2f;
+
+	bool isHurt = false;
+	float currentHurtTime = 0.0;
+	float maxHurtTime = 0.4f;
+
+	int maxHP = 300;
+	int currentHP = 300;
+
+	HitBox hitBoxHead;
+	HitBox hitBoxBody;
 
 public:
 	Isaac(const std::string& name = "");
@@ -48,6 +59,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void FireTear(const sf::Vector2f& direction);
+	void MonsterCollision();
 	void HitBoxUpdate();
 	void SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box);
 };
