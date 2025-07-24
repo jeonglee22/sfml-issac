@@ -111,8 +111,7 @@ void SceneEditor::Update(float dt)
 		if (box.getSize() != sf::Vector2f(0.f,0.f) && CheckAlreadySetGrid(spriteChoosed) == nullptr && IsNotOnGrid())
 		{
 			SpriteGo* sprite = new SpriteGo(*spriteChoosed);
-			sprite->SetOrigin(Origins::MC);
-			sprite->SetScale({ 2.f, 2.f });
+			sprite->SetScale(sprite->GetScale() * 2.f);
 			sprite->SetPosition(ScreenToWorld(UiToScreen(box.getPosition())));
 			sprite->sortingLayer = spriteChoosed->sortingLayer;
 			sprite->sortingOrder = spriteChoosed->sortingOrder;
@@ -143,19 +142,19 @@ void SceneEditor::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::D) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(-60.f, 0.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(-468.f, 0.f));
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::A) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(60.f, 0.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(468.f, 0.f));
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::W) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, 60.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, 364.f));
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::S) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, -60.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, -364.f));
 	}
 }
 
@@ -202,6 +201,8 @@ rapidcsv::Document SceneEditor::SaveFile()
 		infos.push_back(std::to_string((int)sprite->sortingLayer));
 		infos.push_back(std::to_string(sprite->sortingOrder));
 		infos.push_back(std::to_string(sprite->GetRotation()));
+		infos.push_back(std::to_string(sprite->GetOrigin().x));
+		infos.push_back(std::to_string(sprite->GetOrigin().y));
 		doc.InsertRow(i++, infos);
 	}
 
@@ -288,8 +289,8 @@ void SceneEditor::LoadFile(const std::string& fileName)
 		loadSprite->SetOrigin(Origins::MC);
 		loadSprite->Reset();
 		loadSprite->GetSprite().setTextureRect({ std::stoi(infos[2]),std::stoi(infos[1]), std::stoi(infos[3]), std::stoi(infos[4]) });
-		loadSprite->SetScale({ 60.f / std::stof(infos[3]) , 60.f / std::stof(infos[4]) });
-		loadSprite->SetOrigin(Origins::MC);
+		loadSprite->SetScale({2.f, 2.f});
+		loadSprite->SetOrigin({ std::stof(infos[13]) , std::stof(infos[14]) });
 		loadSprite->SetPosition(sf::Vector2f( std::stof(infos[6]), std::stof(infos[7]) ) + mapBox->GetTopLeft());
 		loadSprite->SetRotation(std::stof(infos[12]));
 		loadSprite->sortingLayer = (SortingLayers)std::stoi(infos[10]);

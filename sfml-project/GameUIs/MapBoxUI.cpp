@@ -218,7 +218,6 @@ sf::RectangleShape MapBoxUI::GetRectHavePoint(const sf::Vector2f& point)
 		shape.setPosition(rect.getPosition());
 		if (Utils::PointInTransformBounds(shape, shape.getLocalBounds(), point))
 		{
-			shape.setPosition(shape.getPosition() + rect.getSize() * 0.5f);
 			return shape;
 		}
 	}
