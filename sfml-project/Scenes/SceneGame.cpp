@@ -15,7 +15,9 @@ void SceneGame::Init()
 	texIds.push_back("graphics/background/caves.png");
 	texIds.push_back("graphics/background/depths.png");
 	texIds.push_back("graphics/obstacles/grid_spikes.png");
+	texIds.push_back("graphics/obstacles/grid_fireplace.png");
 	texIds.push_back("graphics/obstacles/rocks/rocks_basement.png");
+	texIds.push_back("graphics/obstacles/pit/grid_pit_basement.png");
 
 	Scene::Init();
 }
@@ -27,12 +29,14 @@ void SceneGame::Enter()
 	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
 	uiView.setCenter(center);
+
+	size = sf::Vector2f(960.f, 570.f);
 	worldView.setSize(size);
-	worldView.setCenter(center);
+	worldView.setCenter(size * 0.5f);
 
 	Scene::Enter();
 
-	LoadStageField("Mapfolder/testmap.csv");
+	LoadStageField("Mapfolder/testmap3.csv");
 }
 
 void SceneGame::Update(float dt)
@@ -53,9 +57,9 @@ void SceneGame::LoadStageField(const std::string& filePath)
 		mapSprites[i]->SetOrigin(Origins::MC);
 		mapSprites[i]->Reset();
 		mapSprites[i]->GetSprite().setTextureRect({std::stoi(infos[2]),std::stoi(infos[1]), std::stoi(infos[3]), std::stoi(infos[4]) });
-		mapSprites[i]->SetScale({ 60.f / std::stof(infos[3]) , 60.f / std::stof(infos[4]) });
-		mapSprites[i]->SetOrigin(Origins::MC);
-		mapSprites[i]->SetPosition({ std::stof(infos[6]), std::stof(infos[7]) });
+		mapSprites[i]->SetScale({ 2.f,2.f });
+		mapSprites[i]->SetOrigin({ std::stof(infos[13]) ,std::stof(infos[14]) });
+		mapSprites[i]->SetPosition(sf::Vector2f( std::stof(infos[6]), std::stof(infos[7]) ) + sf::Vector2f(140.f, 104.f));
 		mapSprites[i]->SetRotation(std::stof(infos[12]));
 		mapSprites[i]->sortingLayer = (SortingLayers) std::stoi(infos[10]);
 		mapSprites[i]->sortingOrder = std::stoi(infos[11]);
