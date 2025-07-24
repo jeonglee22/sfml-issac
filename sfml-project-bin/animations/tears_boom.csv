@@ -2,9 +2,13 @@ ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
 Tears_boom,10,"1	",,,
 "				",,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/effects/effect_015_tearpoofa.png,25,23,15,15,0
-graphics/effects/effect_015_tearpoofa.png,75,23,15,15,0
-graphics/effects/effect_015_tearpoofa.png,125,23,15,15,0
-graphics/effects/effect_015_tearpoofa.png,175,23,15,15,0
-graphics/effects/effect_015_tearpoofa.png,25,23,15,15,0
-graphics/effects/effect_015_tearpoofa.png,25,23,15,15,0
+graphics/effects/effect_015_tearpoofa.png,64,0,64,64,0
+graphics/effects/effect_015_tearpoofa.png,128,0,64,64,0
+graphics/effects/effect_015_tearpoofa.png,192,0,64,64,0
+graphics/effects/effect_015_tearpoofa.png,0,64,64,64,0
+graphics/effects/effect_015_tearpoofa.png,64,64,64,64,0
+graphics/effects/effect_015_tearpoofa.png,128,64,64,64,0
+graphics/effects/effect_015_tearpoofa.png,192,64,64,64,0
+graphics/effects/effect_015_tearpoofa.png,0,128,64,64,0
+graphics/effects/effect_015_tearpoofa.png,64,128,64,64,0
+graphics/effects/effect_015_tearpoofa.png,128,128,64,64,0

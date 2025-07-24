@@ -48,6 +48,7 @@ public:
 
 	void Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d);
 	void Hit();
+	void StartSplash();
 
 };
 

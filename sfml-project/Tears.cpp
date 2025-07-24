@@ -58,12 +58,30 @@ void Tears::Reset()
 {
 	animator.Play("animations/tears_idle.csv");
 
+	tearsCrushTime = 0.0f;
+	isTearsCrush = false;
+	damage = 35;
+
 	Utils::SetOrigin(sprite, Origins::MC);
 	SetScale({ 1.5f, 1.5f });
 }
 
 void Tears::Update(float dt)
 {
+	if (isTearsCrush)
+	{
+		animator.Update(dt);
+		tearsCrushTime += dt;
+
+		if (tearsCrushTime >= tearsCrushMaxTime)
+		{
+			SetActive(false);
+		}
+		return;
+	}
+
+	animator.Update(dt);
+
 	sf::Vector2f moveVector = velocity * dt;
 	distance += Utils::Magnitude(moveVector);
 
@@ -76,33 +94,16 @@ void Tears::Update(float dt)
 
 	if (direction.y <= 0.f && position.y > startPosition.y + 30.f)
 	{
-		SetActive(false);
+		StartSplash();
+		SetOrigin(Origins::MC);
+		return;
 	}
-
 	if (position.y > 500.f || position.y < -500.f)
 	{
 		SetActive(false);
 	}
 
-
 	Hit();
-
-	//if (isTearsCrush)
-	//{
-	//	tearsCrushTime += dt;
-
-	//	if (tearsCrushTime < tearsCrushMaxTime)
-	//	{
-	//		speed = 0.0;
-	//		animator.Play("animations/tears_boom.csv");
-	//	}
-	//	else
-	//	{
-	//		SetActive(false);
-	//	}
-
-
-	//}
 
 	hitBox.UpdateTransform(sprite, sprite.getLocalBounds());
 }
@@ -148,14 +149,28 @@ void Tears::Hit()
 		if (isaacBounds.intersects(monsterBounds))
 		{
 			monster->TakeDamage(damage);
-
+			
+			StartSplash();
+			SetOrigin(Origins::MC);
 			isTearsCrush = true;
-			SetActive(false);
 			return;
 		}
 
 	}
 
+}
+
+void Tears::StartSplash()
+{
+	if (isTearsCrush) return;
+
+	animator.Play("animations/tears_boom.csv");
+
+	isTearsCrush = true;
+	tearsCrushTime = 0.0f;
+	damage = 0;
+
+	velocity = { 0.f, 0.f };
 }
 
 
