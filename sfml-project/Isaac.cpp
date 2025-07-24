@@ -188,9 +188,18 @@ void Isaac::Update(float dt)
 	{
 		for (auto sprite : sceneGame->GetMapSprites())
 		{
-			if (sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBoxBody.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
+			if ((sprite->GetName() == "rocks_basement" || sprite->GetName() == "grid_pit_basement") 
+				&& Utils::CheckCollision(hitBoxBody.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
 			{
 				SpritesPositionAtCollision(beforePos, ((Obstacles*)sprite)->GetHitBox());
+			}
+			if (sprite->GetName() == "grid_spikes" && Utils::CheckCollision(hitBoxBody.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
+			{
+				if (invincibleTime == 0)
+				{
+					TakeDamage(50);
+					break;
+				}
 			}
 		}
 		for (auto boundary : sceneGame->GetMapBoundary())
@@ -369,14 +378,7 @@ void Isaac::MonsterCollision()
 
 		if (isaacBounds.intersects(monsterBounds) && invincibleTime == 0)
 		{
-			currentHP -= 50;
-			std::cout << currentHP << std::endl;
-			isHurt = true;
-			if (currentHP <= 0)
-			{
-				currentHP = 0;
-				SetActive(false);
-			}
+			TakeDamage(50);
 			return;
 		}
 		
@@ -415,4 +417,15 @@ void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* bo
 
 	SetPosition(currentPos);
 	HitBoxUpdate();
+}
+
+void Isaac::TakeDamage(int damage)
+{
+	currentHP -= damage;
+	isHurt = true;
+	if (currentHP <= 0)
+	{
+		currentHP = 0;
+		SetActive(false);
+	}
 }

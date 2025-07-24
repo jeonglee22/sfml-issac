@@ -11,6 +11,7 @@
 #include "Walls.h"
 #include "Spikes.h"
 #include "HitBox.h"
+#include "Door.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Stage)
@@ -33,6 +34,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/temp_background.png");
 	texIds.push_back("graphics/monster_214_level2spider_small.png");
 	texIds.push_back("graphics/effects/effect_015_tearpoofa.png");
+	texIds.push_back("graphics/additionals/door_01_normaldoor.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
@@ -81,7 +83,10 @@ void SceneGame::Init()
 	spider1->SetPosition({ 350.f, 350.f });
 	AddGameObject(spider1);
 
-
+	for (int i = 0; i < 4; i++)
+	{
+		doors.push_back((Door*)AddGameObject(new Door("graphics/additionals/door_01_normaldoor.png", "Door")));
+	}
 
 	Scene::Init();
 }
@@ -95,33 +100,25 @@ void SceneGame::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(center);
 
-	size = sf::Vector2f(960.f, 570.f);
-	worldView.setSize(size);
-	worldView.setCenter(size * 0.5f);
-
 	Scene::Enter();
 
-	isaac->SetPosition(center);
+	isaac->SetPosition(center - sf::Vector2f(0,100.f));
 
 	LoadStageField("Mapfolder/testmap3.csv");
+	mapOffset = sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f;
 
+	MakeBoundary();
+
+	float width = currentMapSize.width, height = currentMapSize.height;
 	for (int i = 0; i < 4; i++)
-	{
-		boundary.push_back(new HitBox());
-		if(i<2)
-		{
-			boundary[i]->rect.setSize({ currentMapSize.width, 104.f });
-		}
-		else
-		{
-			boundary[i]->rect.setSize({ 104.f, currentMapSize.height });
-		}
-		boundary[i]->rect.setOrigin(boundary[i]->rect.getSize() * 0.5f);
+	{ 
+		// 0 1 2 3
+		sf::Vector2f localPos;
+		localPos.x = (width * 0.5f - boundary[0]->rect.getSize().y) * (i % 2 == 1 ? 2.f - i : 0.f);
+		localPos.y = (height * 0.5f - boundary[0]->rect.getSize().y) * (i % 2 == 0 ? i - 1.f : 0.f);
+		doors[i]->SetPosition(currentMapSize.getSize() * 0.5f + localPos);
+		doors[i]->SetRotation(90.f * i);
 	}
-	boundary[0]->rect.setPosition({ worldView.getSize().x * 0.5f, 52.f });
-	boundary[1]->rect.setPosition({ worldView.getSize().x * 0.5f, worldView.getSize().y - 52.f });
-	boundary[2]->rect.setPosition({ 52.f, worldView.getSize().y * 0.5f });
-	boundary[3]->rect.setPosition({ worldView.getSize().x - 52.f, worldView.getSize().y * 0.5f });
 }
 
 void SceneGame::Update(float dt)
@@ -211,9 +208,38 @@ void SceneGame::EnemyCollosion()
 
 }
 
+void SceneGame::MakeBoundary()
+{
+	std::vector<HitBox*> hitBoxes;
+	float left = currentMapSize.left, top = currentMapSize.top, width = currentMapSize.width, height = currentMapSize.height;
+
+	for (int i = 0; i < 4; i++)
+	{
+		boundary.push_back(new HitBox());
+		//boundary.push_back(new HitBox());
+		if (i < 2)
+		{
+			boundary[i]->rect.setSize({ currentMapSize.width, 104.f });
+			/*boundary[i * 2]->rect.setSize({ currentMapSize.width, 104.f });
+			boundary[i * 2 + 1]->rect.setSize({ currentMapSize.width, 104.f });*/
+		}
+		else
+		{
+			boundary[i]->rect.setSize({ 104.f, currentMapSize.height });
+			/*boundary[i * 2]->rect.setSize({ 104.f, currentMapSize.height });
+			boundary[i * 2 + 1]->rect.setSize({ 104.f, currentMapSize.height });*/
+		}
+		boundary[i]->rect.setOrigin(boundary[i]->rect.getSize() * 0.5f);
+	}
+	boundary[0]->rect.setPosition({ currentMapSize.getSize().x * 0.5f, 52.f });
+	boundary[1]->rect.setPosition({ currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f });
+	boundary[2]->rect.setPosition({ 52.f, currentMapSize.getSize().y * 0.5f });
+	boundary[3]->rect.setPosition({ currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f });
+}
+
 void SceneGame::CreateMatchedTypeGO(const std::string& filepath, const std::string& name)
 {
-	if (name == "rocks_basement")
+	if (name == "rocks_basement" || name == "grid_pit_basement")
 	{
 		mapSprites.push_back(new Obstacles(filepath, name));
 	}

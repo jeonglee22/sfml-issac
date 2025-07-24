@@ -120,7 +120,10 @@
     <ClCompile Include="GameObjects\Walls.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Spikes.cpp">
+    <ClCompile Include="GameObjects\Spikes.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Door.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,7 +242,10 @@
     <ClInclude Include="GameObjects\Walls.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Spikes.h">
+    <ClInclude Include="GameObjects\Spikes.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Door.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

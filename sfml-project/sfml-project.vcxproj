@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObjects\Door.cpp" />
     <ClCompile Include="Framework\Button.cpp" />
     <ClCompile Include="GameUIs\EditBoxUI.cpp" />
     <ClCompile Include="Fly.cpp" />
@@ -168,7 +169,7 @@
     <ClCompile Include="SpiderChargeState.cpp" />
     <ClCompile Include="SpiderJumpState.cpp" />
     <ClCompile Include="SpiderPatrolState.cpp" />
-    <ClCompile Include="Spikes.cpp" />
+    <ClCompile Include="GameObjects\Spikes.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -180,6 +181,7 @@
     <ClCompile Include="WanderState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObjects\Door.h" />
     <ClInclude Include="Fly.h" />
     <ClInclude Include="Framework\AnimationClip.h" />
     <ClInclude Include="Framework\Animator.h" />
@@ -211,7 +213,7 @@
     <ClInclude Include="SpiderChargeState.h" />
     <ClInclude Include="SpiderJumpState.h" />
     <ClInclude Include="SpiderPatrolState.h" />
-    <ClInclude Include="Spikes.h" />
+    <ClInclude Include="GameObjects\Spikes.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Framework\TextGo.h" />
     <ClInclude Include="Framework\Utils.h" />

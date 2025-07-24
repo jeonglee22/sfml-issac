@@ -62,4 +62,6 @@ public:
 	void MonsterCollision();
 	void HitBoxUpdate();
 	void SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box);
+
+	void TakeDamage(int damage);
 };

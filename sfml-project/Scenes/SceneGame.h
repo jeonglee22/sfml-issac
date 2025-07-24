@@ -5,6 +5,7 @@ class SpriteGo;
 class Isaac;
 class Monster;
 class HitBox;
+class Door;
 
 class SceneGame : public Scene
 {
@@ -18,6 +19,9 @@ protected:
 	std::vector<HitBox*> boundary;
 
 	sf::Vector2f offset = sf::Vector2f(140.f, 104.f);
+	sf::Vector2f mapOffset;
+
+	std::vector<Door*> doors;
 
 public:
 	SceneGame();
@@ -36,6 +40,8 @@ public:
 	std::vector<Monster*> GetMonsters() { return monsters; }
 
 	std::vector<SpriteGo*> GetMapSprites() { return mapSprites; }
+
+	void MakeBoundary();
 	std::vector<HitBox*> GetMapBoundary() { return boundary; }
 };
 
