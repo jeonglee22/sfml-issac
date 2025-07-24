@@ -9,6 +9,7 @@
 #include "Spider.h"
 #include "Obstacles.h"
 #include "Walls.h"
+#include "Spikes.h"
 #include "HitBox.h"
 
 SceneGame::SceneGame()
@@ -147,10 +148,10 @@ void SceneGame::CreateMatchedTypeGO(const std::string& filepath, const std::stri
 	{
 		mapSprites.push_back(new Obstacles(filepath, name));
 	}
-	/*else if (name == "basement")
+	else if (name == "grid_spikes")
 	{
-		mapSprites.push_back(new Walls(filepath, name));
-	}*/
+		mapSprites.push_back(new Spikes(filepath, name));
+	}
 	else
 	{
 		mapSprites.push_back(new SpriteGo(filepath, name));

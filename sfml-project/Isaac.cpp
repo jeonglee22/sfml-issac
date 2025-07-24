@@ -148,26 +148,14 @@ void Isaac::Update(float dt)
 		{
 			if (sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
 			{
-				SetPosition({beforePos.x, beforePos.y});
-				HitBoxUpdate();
+				SpritesPositionAtCollision(beforePos, ((Obstacles*)sprite)->GetHitBox());
 			}
-			/*if (w != 0.f && sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
-			{
-				SetPosition({position.x, beforePos.y});
-				HitBoxUpdate();
-			}*/
 		}
 		for (auto boundary : sceneGame->GetMapBoundary())
 		{
-			if (h != 0.f && Utils::CheckCollision(hitBox.rect, boundary->rect))
+			if (Utils::CheckCollision(hitBox.rect, boundary->rect))
 			{
-				SetPosition({beforePos.x, position.y});
-				HitBoxUpdate();
-			}
-			if (w != 0.f && Utils::CheckCollision(hitBox.rect, boundary->rect))
-			{
-				SetPosition({position.x, beforePos.y});
-				HitBoxUpdate();
+				SpritesPositionAtCollision(beforePos, boundary);
 			}
 		}
 	}
@@ -315,4 +303,30 @@ void Isaac::HitBoxUpdate()
 	hitBox.UpdateTransform(body, body.getLocalBounds());
 	hitBox.rect.setSize({ 10.f, 10.f });
 	hitBox.rect.setOrigin({ 5.f, 10.f });
+}
+
+void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box)
+{
+	bool XColl = false, YColl = false;
+
+	auto currentPos = position;
+
+	SetPosition({ beforePos.x, currentPos.y });
+	HitBoxUpdate();
+
+	YColl = Utils::CheckCollision(hitBox.rect, box->rect);
+
+	SetPosition({ currentPos.x, beforePos.y });
+	HitBoxUpdate();
+
+	XColl = Utils::CheckCollision(hitBox.rect, box->rect);
+
+	if (XColl)
+		currentPos.x = beforePos.x;
+
+	if (YColl)
+		currentPos.y = beforePos.y;
+
+	SetPosition(currentPos);
+	HitBoxUpdate();
 }

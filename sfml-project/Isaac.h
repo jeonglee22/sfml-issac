@@ -49,4 +49,5 @@ public:
 
 	void FireTear(const sf::Vector2f& direction);
 	void HitBoxUpdate();
+	void SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box);
 };
