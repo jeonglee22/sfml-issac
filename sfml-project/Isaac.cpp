@@ -146,16 +146,16 @@ void Isaac::Update(float dt)
 	{
 		for (auto sprite : sceneGame->GetMapSprites())
 		{
-			if (h != 0.f && sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
+			if (sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
 			{
-				SetPosition({beforePos.x, position.y});
+				SetPosition({beforePos.x, beforePos.y});
 				HitBoxUpdate();
 			}
-			if (w != 0.f && sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
+			/*if (w != 0.f && sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
 			{
 				SetPosition({position.x, beforePos.y});
 				HitBoxUpdate();
-			}
+			}*/
 		}
 		for (auto boundary : sceneGame->GetMapBoundary())
 		{

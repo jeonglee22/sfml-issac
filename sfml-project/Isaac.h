@@ -48,4 +48,5 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void FireTear(const sf::Vector2f& direction);
+	void HitBoxUpdate();
 };
