@@ -3,13 +3,15 @@
 #include "HitBox.h"
 #include "Tears.h"
 #include "SceneDev2.h"
+#include "SceneGame.h"
+#include "Obstacles.h"
 
-Isaac::Isaac(const std::string& name)
+Isaac::Isaac(const std::string &name)
 	: GameObject(name)
 {
 }
 
-void Isaac::SetPosition(const sf::Vector2f& pos)
+void Isaac::SetPosition(const sf::Vector2f &pos)
 {
 	position = pos;
 	body.setPosition(position);
@@ -23,7 +25,7 @@ void Isaac::SetRotation(float angle)
 	body.setRotation(rotation);
 }
 
-void Isaac::SetScale(const sf::Vector2f& s)
+void Isaac::SetScale(const sf::Vector2f &s)
 {
 	scale = s;
 	head.setScale(scale);
@@ -40,7 +42,7 @@ void Isaac::SetOrigin(Origins preset)
 	}
 }
 
-void Isaac::SetOrigin(const sf::Vector2f& newOrigin)
+void Isaac::SetOrigin(const sf::Vector2f &newOrigin)
 {
 	originPreset = Origins::Custom;
 	origin = Utils::SetOrigin(body, originPreset);
@@ -61,10 +63,12 @@ void Isaac::Reset()
 {
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Dev2)
 	{
-		sceneDev2 = (SceneDev2*)SCENE_MGR.GetCurrentScene();
+		sceneGame = nullptr;
+		sceneDev2 = (SceneDev2 *)SCENE_MGR.GetCurrentScene();
 	}
-	else
+	else if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
 	{
+		sceneGame = (SceneGame *)SCENE_MGR.GetCurrentScene();
 		sceneDev2 = nullptr;
 	}
 
@@ -74,7 +78,7 @@ void Isaac::Reset()
 	headAnimator.Play("animations/isaac_head_front.csv");
 	bodyAnimator.Play("animations/isaac_body_idle.csv");
 
-	for (Tears* tears : tearsList)
+	for (Tears *tears : tearsList)
 	{
 		tears->SetActive(false);
 		tearsPool.push_back(tears);
@@ -83,10 +87,10 @@ void Isaac::Reset()
 
 	shootTimer = 0.0f;
 	wasKeyPressed = false;
-	shootDirection = { 0.f, 0.f };
+	shootDirection = {0.f, 0.f};
 
-	SetScale({ 2.0f, 2.0f });
 	SetOrigin(Origins::BC);
+	SetScale({2.0f, 2.0f});
 }
 
 void Isaac::Update(float dt)
@@ -94,7 +98,7 @@ void Isaac::Update(float dt)
 	headAnimator.Update(dt);
 	bodyAnimator.Update(dt);
 
-	for (auto* tears : tearsList)
+	for (auto *tears : tearsList)
 	{
 		if (tears->GetActive())
 		{
@@ -125,6 +129,7 @@ void Isaac::Update(float dt)
 	velocity.x = h * speed;
 	velocity.y = w * speed;
 
+	sf::Vector2f beforePos = position;
 	position += velocity * dt;
 
 	SetPosition(position);
@@ -134,10 +139,43 @@ void Isaac::Update(float dt)
 		SetScale(h > 0.f ? sf::Vector2f(2.0f, 2.0f) : sf::Vector2f(-2.0f, 2.0f));
 	}
 
+	// hitBox.UpdateTransform(head, head.getLocalBounds());
+	HitBoxUpdate();
+
+	if (sceneGame != nullptr)
+	{
+		for (auto sprite : sceneGame->GetMapSprites())
+		{
+			if (h != 0.f && sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
+			{
+				SetPosition({beforePos.x, position.y});
+				HitBoxUpdate();
+			}
+			if (w != 0.f && sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
+			{
+				SetPosition({position.x, beforePos.y});
+				HitBoxUpdate();
+			}
+		}
+		for (auto boundary : sceneGame->GetMapBoundary())
+		{
+			if (h != 0.f && Utils::CheckCollision(hitBox.rect, boundary->rect))
+			{
+				SetPosition({beforePos.x, position.y});
+				HitBoxUpdate();
+			}
+			if (w != 0.f && Utils::CheckCollision(hitBox.rect, boundary->rect))
+			{
+				SetPosition({position.x, beforePos.y});
+				HitBoxUpdate();
+			}
+		}
+	}
+
 	// Ani
 	if (bodyAnimator.GetCurrentClipId() == "Isaac_body_idle")
 	{
-		if (InputMgr::GetKey(sf::Keyboard::A)||InputMgr::GetKey(sf::Keyboard::D))
+		if (InputMgr::GetKey(sf::Keyboard::A) || InputMgr::GetKey(sf::Keyboard::D))
 		{
 			bodyAnimator.Play("animations/isaac_run_weight.csv");
 			headAnimator.Play("animations/isaac_head_side.csv");
@@ -150,7 +188,6 @@ void Isaac::Update(float dt)
 				headAnimator.Play("animations/isaac_head_rare.csv");
 			}
 		}
-		
 	}
 	else if (bodyAnimator.GetCurrentClipId() == "Isaac_run_height" || bodyAnimator.GetCurrentClipId() == "Isaac_run_weight")
 	{
@@ -191,12 +228,12 @@ void Isaac::Update(float dt)
 			FireTear(shootDirection);
 			if (shootDirection.x > 0.f)
 			{
-				SetScale({ 2.f, 2.f });
+				SetScale({2.f, 2.f});
 				headAnimator.Play("animations/isaac_head_side_tears.csv");
 			}
 			if (shootDirection.x < 0.f)
 			{
-				SetScale({ -2.f, 2.f });
+				SetScale({-2.f, 2.f});
 				headAnimator.Play("animations/isaac_head_side_tears.csv");
 			}
 			if (shootDirection.y < 0.f)
@@ -207,7 +244,6 @@ void Isaac::Update(float dt)
 			{
 				headAnimator.Play("animations/isaac_head_front_tears.csv");
 			}
-
 		}
 		shootTimer += dt;
 		wasKeyPressed = true;
@@ -217,12 +253,9 @@ void Isaac::Update(float dt)
 	{
 		headAnimator.Play("animations/isaac_head_front.csv");
 	}
-
-	//hitBox.UpdateTransform(head, head.getLocalBounds());
-	hitBox.UpdateTransform(body, body.getLocalBounds());
 }
 
-void Isaac::Draw(sf::RenderWindow& window)
+void Isaac::Draw(sf::RenderWindow &window)
 {
 	window.draw(body);
 	window.draw(head);
@@ -230,14 +263,14 @@ void Isaac::Draw(sf::RenderWindow& window)
 	hitBox.Draw(window);
 }
 
-void Isaac::FireTear(const sf::Vector2f& direction)
+void Isaac::FireTear(const sf::Vector2f &direction)
 {
 	if (!sceneDev2)
 	{
 		return;
 	}
 
-	Tears* tears = nullptr;
+	Tears *tears = nullptr;
 
 	if (tearsPool.empty())
 	{
@@ -256,23 +289,30 @@ void Isaac::FireTear(const sf::Vector2f& direction)
 	sf::Vector2f firePosition;
 	if (direction.x > 0.f && direction.y == 0.f)
 	{
-		firePosition = { position.x + 20.f, position.y + Utils::RandomRange(-43.f, -23.f) };
+		firePosition = {position.x + 20.f, position.y + Utils::RandomRange(-43.f, -23.f)};
 	}
 	else if (direction.x < 0.f && direction.y == 0.f)
 	{
-		firePosition = { position.x - 20.f, position.y + Utils::RandomRange(-43.f, -23.f) };
+		firePosition = {position.x - 20.f, position.y + Utils::RandomRange(-43.f, -23.f)};
 	}
 	else if (direction.y < 0.f && direction.x == 0.f)
 	{
-		firePosition = { position.x + Utils::RandomRange(-15.f, 15.f), position.y - 50.f };
+		firePosition = {position.x + Utils::RandomRange(-15.f, 15.f), position.y - 50.f};
 	}
 	else if (direction.y > 0.f && direction.x == 0.f)
 	{
-		firePosition = { position.x + Utils::RandomRange(-15.f, 15.f), position.y - 20.f };
+		firePosition = {position.x + Utils::RandomRange(-15.f, 15.f), position.y - 20.f};
 	}
 
-	tears->Fire( firePosition, direction, 300.f, 10);
+	tears->Fire(firePosition, direction, 300.f, 10);
 	tearsList.push_back(tears);
 
 	sceneDev2->AddGameObject(tears);
+}
+
+void Isaac::HitBoxUpdate()
+{
+	hitBox.UpdateTransform(body, body.getLocalBounds());
+	hitBox.rect.setSize({ 10.f, 10.f });
+	hitBox.rect.setOrigin({ 5.f, 10.f });
 }

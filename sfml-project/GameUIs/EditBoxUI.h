@@ -24,6 +24,7 @@ protected:
 	sf::Vector2f typeButtonPos;
 
 	std::vector<SpriteGo *> textures;
+	std::vector<bool> textureHitBoxes;
 
 	sf::Vector2f gridSize = {60.f, 60.f};
 
@@ -59,6 +60,7 @@ public:
 	void LoadTextureFile(const std::vector<std::string> &filenames);
 
 	std::vector<SpriteGo *> GetActiveSprites() { return textures; }
+	std::vector<bool> GetActiveHitBoxes() { return textureHitBoxes; }
 	std::string GetActiveType() { return filenames[0]; }
 	sf::RectangleShape GetMainUIBody() { return body; }
 

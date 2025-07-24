@@ -359,6 +359,7 @@ void EditBoxUI::LoadTextureFile(const std::vector<std::string> &filenames)
 	filePath += ".csv";
 	rapidcsv::Document doc(filePath);
 	textures.clear();
+	textureHitBoxes.clear();
 
 	int count = doc.GetRowCount();
 
@@ -384,6 +385,7 @@ void EditBoxUI::LoadTextureFile(const std::vector<std::string> &filenames)
 		textures[i]->GetSprite().setTextureRect({std::stoi(row[1]), std::stoi(row[2]), std::stoi(row[3]), std::stoi(row[4])});
 		textures[i]->SetOrigin(sf::Vector2f(std::stoi(row[3]), std::stoi(row[4])) * 0.5f);
 		textures[i]->SetPosition(position + sf::Vector2f((i % 9 - 4) * 60.f * 1.5f, (i / 9 - 4.5f) * 60.f * 1.5f) + sf::Vector2f(0, 100.f));
+		textureHitBoxes.push_back(std::stoi(row[5]));
 	}
 }
 

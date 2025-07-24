@@ -5,6 +5,7 @@
 class HitBox;
 class Tears;
 class SceneDev2;
+class SceneGame;
 
 class Isaac : public GameObject
 {
@@ -17,6 +18,7 @@ protected:
 	std::list<Tears*> tearsList;
 	std::list<Tears*> tearsPool;
 	SceneDev2* sceneDev2 = nullptr;
+	SceneGame* sceneGame = nullptr;
 
 	sf::Vector2f velocity = { 0.f, 0.f };
 	float speed = 350.f;

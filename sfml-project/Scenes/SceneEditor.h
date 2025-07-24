@@ -6,6 +6,7 @@ class EditBoxUI;
 class MapBoxUI;
 class SpriteGo;
 class Button;
+class HitBox;
 
 class SceneEditor :
     public Scene

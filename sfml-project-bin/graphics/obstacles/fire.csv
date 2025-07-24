@@ -1,4 +1,4 @@
 FILENAME,LEFT,TOP,WIDTH,HEIGHT
-graphics/obstacles/grid_fireplace.png,32,0,32,32
-graphics/obstacles/grid_fireplace.png,96,0,32,32
-graphics/obstacles/grid_fireplace.png,32,64,32,32
+graphics/obstacles/grid_fireplace.png,32,0,32,32,0
+graphics/obstacles/grid_fireplace.png,96,0,32,32,0
+graphics/obstacles/grid_fireplace.png,32,64,32,32,0

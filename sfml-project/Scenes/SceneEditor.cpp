@@ -180,9 +180,11 @@ rapidcsv::Document SceneEditor::SaveFile()
 	doc.SetColumnName(11,"ORDER");
 	doc.SetColumnName(12,"ROTATION");
 
+	float left = INT_MAX, top = INT_MAX, right = INT_MIN, bottom = INT_MIN;
+
 	std::vector<std::string> infos;
 
-	int i = 0;
+	int i = 1;
 	for (auto sprite : mapSprites)
 	{
 		infos.clear();
@@ -193,6 +195,16 @@ rapidcsv::Document SceneEditor::SaveFile()
 		infos.push_back(std::to_string(sprite->GetSprite().getTextureRect().left));
 		infos.push_back(std::to_string(sprite->GetSprite().getTextureRect().width));
 		infos.push_back(std::to_string(sprite->GetSprite().getTextureRect().height));
+
+		if (left > pos.x)
+			left = pos.x;
+		if (top > pos.y)
+			top = pos.y;
+		if (right < pos.x + bounds.width * 2.f)
+			right = pos.x + bounds.width * 2.f;
+		if (bottom < pos.y + bounds.height * 2.f)
+			bottom = pos.y + bounds.height * 2.f;
+
 		infos.push_back(sprite->GetName());
 		infos.push_back(std::to_string(pos.x));
 		infos.push_back(std::to_string(pos.y));
@@ -205,6 +217,10 @@ rapidcsv::Document SceneEditor::SaveFile()
 		infos.push_back(std::to_string(sprite->GetOrigin().y));
 		doc.InsertRow(i++, infos);
 	}
+	doc.SetCell(0, 0, left);
+	doc.SetCell(1, 0, top);
+	doc.SetCell(2, 0, right - left);
+	doc.SetCell(3, 0, bottom - top);
 
 	return doc;
 }
@@ -281,9 +297,9 @@ void SceneEditor::LoadFile(const std::string& fileName)
 		RemoveGameObject(sprite);
 	}
 	mapSprites.clear();
-	for (int i = 0; i < doc.GetRowCount(); i++)
+	for (int i = 0; i < doc.GetRowCount()-1; i++)
 	{
-		std::vector<std::string> infos = doc.GetRow<std::string>(i);
+		std::vector<std::string> infos = doc.GetRow<std::string>(i+1);
 		SpriteGo* loadSprite = new SpriteGo(infos[0], infos[5]);
 		loadSprite->Init();
 		loadSprite->SetOrigin(Origins::MC);
