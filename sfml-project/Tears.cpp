@@ -3,6 +3,7 @@
 #include "SceneGame.h"
 #include "Monster.h"
 #include "Animator.h"
+#include "Obstacles.h"
 
 Tears::Tears(const std::string& name)
 	: GameObject(name)
@@ -91,6 +92,31 @@ void Tears::Update(float dt)
 	}
 
 	SetPosition(position + velocity * dt);
+	hitBox.UpdateTransform(sprite, sprite.getLocalBounds());
+
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene)
+	{
+		for (auto sprite : scene->GetMapSprites())
+		{
+			if (sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
+			{
+				StartSplash();
+				SetOrigin(Origins::MC);
+				return;
+			}
+		}
+
+		for (auto boundary : scene->GetMapBoundary())
+		{
+			if (Utils::CheckCollision(hitBox.rect, boundary->rect))
+			{
+				StartSplash();
+				SetOrigin(Origins::MC);
+				return;
+			}
+		}
+	}
 
 	if (direction.y <= 0.f && position.y > startPosition.y + 30.f)
 	{
@@ -98,14 +124,9 @@ void Tears::Update(float dt)
 		SetOrigin(Origins::MC);
 		return;
 	}
-	if (position.y > 500.f || position.y < -500.f)
-	{
-		SetActive(false);
-	}
+	
 
 	Hit();
-
-	hitBox.UpdateTransform(sprite, sprite.getLocalBounds());
 }
 
 void Tears::Draw(sf::RenderWindow& window)
