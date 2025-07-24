@@ -62,7 +62,7 @@ void Isaac::Release()
 
 void Isaac::Reset()
 {
-	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Dev2)
 	{
 		sceneGame = nullptr;
 		sceneDev2 = (SceneDev2 *)SCENE_MGR.GetCurrentScene();
@@ -162,8 +162,6 @@ void Isaac::Update(float dt)
 		}
 	}
 
-
-
 	float h = 0.f;
 	float w = 0.f;
 
@@ -190,14 +188,14 @@ void Isaac::Update(float dt)
 	{
 		for (auto sprite : sceneGame->GetMapSprites())
 		{
-			if (sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
+			if (sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBoxBody.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
 			{
 				SpritesPositionAtCollision(beforePos, ((Obstacles*)sprite)->GetHitBox());
 			}
 		}
 		for (auto boundary : sceneGame->GetMapBoundary())
 		{
-			if (Utils::CheckCollision(hitBox.rect, boundary->rect))
+			if (Utils::CheckCollision(hitBoxBody.rect, boundary->rect))
 			{
 				SpritesPositionAtCollision(beforePos, boundary);
 			}
@@ -387,9 +385,10 @@ void Isaac::MonsterCollision()
 
 void Isaac::HitBoxUpdate()
 {
-	hitBox.UpdateTransform(body, body.getLocalBounds());
-	hitBox.rect.setSize({ 10.f, 10.f });
-	hitBox.rect.setOrigin({ 5.f, 10.f });
+	hitBoxHead.UpdateTransform(head, head.getLocalBounds());
+	hitBoxBody.UpdateTransform(body, body.getLocalBounds());
+	hitBoxBody.rect.setSize({ 10.f, 10.f });
+	hitBoxBody.rect.setOrigin({ 5.f, 10.f });
 }
 
 void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box)
@@ -401,45 +400,12 @@ void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* bo
 	SetPosition({ beforePos.x, currentPos.y });
 	HitBoxUpdate();
 
-	YColl = Utils::CheckCollision(hitBox.rect, box->rect);
+	YColl = Utils::CheckCollision(hitBoxBody.rect, box->rect);
 
 	SetPosition({ currentPos.x, beforePos.y });
 	HitBoxUpdate();
 
-	XColl = Utils::CheckCollision(hitBox.rect, box->rect);
-
-	if (XColl)
-		currentPos.x = beforePos.x;
-
-	if (YColl)
-		currentPos.y = beforePos.y;
-
-	SetPosition(currentPos);
-	HitBoxUpdate();
-}
-
-void Isaac::HitBoxUpdate()
-{
-	hitBox.UpdateTransform(body, body.getLocalBounds());
-	hitBox.rect.setSize({ 10.f, 10.f });
-	hitBox.rect.setOrigin({ 5.f, 10.f });
-}
-
-void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box)
-{
-	bool XColl = false, YColl = false;
-
-	auto currentPos = position;
-
-	SetPosition({ beforePos.x, currentPos.y });
-	HitBoxUpdate();
-
-	YColl = Utils::CheckCollision(hitBox.rect, box->rect);
-
-	SetPosition({ currentPos.x, beforePos.y });
-	HitBoxUpdate();
-
-	XColl = Utils::CheckCollision(hitBox.rect, box->rect);
+	XColl = Utils::CheckCollision(hitBoxBody.rect, box->rect);
 
 	if (XColl)
 		currentPos.x = beforePos.x;

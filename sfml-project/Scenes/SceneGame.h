@@ -3,6 +3,7 @@
 
 class SpriteGo;
 class Isaac;
+class Monster;
 class HitBox;
 
 class SceneGame : public Scene
@@ -10,7 +11,8 @@ class SceneGame : public Scene
 protected:
 	std::vector<SpriteGo*> mapSprites;
 
-	Isaac* isaac;
+	Isaac* isaac = nullptr;
+	std::vector<Monster*> monsters;
 
 	sf::FloatRect currentMapSize;
 	std::vector<HitBox*> boundary;
@@ -29,6 +31,9 @@ public:
 
 	void LoadStageField(const std::string& filePath);
 	void CreateMatchedTypeGO(const std::string& filepath, const std::string& name);
+
+	void EnemyCollosion();
+	std::vector<Monster*> GetMonsters() { return monsters; }
 
 	std::vector<SpriteGo*> GetMapSprites() { return mapSprites; }
 	std::vector<HitBox*> GetMapBoundary() { return boundary; }
