@@ -11,40 +11,43 @@ protected:
 	sf::RectangleShape body;
 
 	sf::RectangleShape pickBox;
-	SpriteGo* pickedSprite;
+	SpriteGo *pickedSprite;
 
-	std::vector<Button*> typeButtons;
-	std::vector<Button*> styleTypeButtons;
-	std::vector<Button*> obstacleTypeButtons;
-	std::vector<Button*> enemyTypeButtons;
+	std::vector<Button *> typeButtons;
+	std::vector<Button *> styleTypeButtons;
+	std::vector<Button *> obstacleTypeButtons;
+	std::vector<Button *> enemyTypeButtons;
 	std::vector<std::string> filenames;
 
-	Scene* scene;
+	Scene *scene;
 
 	sf::Vector2f typeButtonPos;
 
-	std::vector<SpriteGo*> textures;
+	std::vector<SpriteGo *> textures;
 
-	sf::Vector2f gridSize = { 60.f,60.f };
+	sf::Vector2f gridSize = {60.f, 60.f};
 
 	bool isPicked = false;
 	bool isFinishFilename = false;
 
+	Origins originCycle[4] = {Origins::TL, Origins::BL, Origins::BR, Origins::TR};
+	int originCycleCount = 0;
+
 public:
-	EditBoxUI(const std::string& name = "");
+	EditBoxUI(const std::string &name = "");
 	virtual ~EditBoxUI() = default;
 
-	void SetPosition(const sf::Vector2f& pos) override;
+	void SetPosition(const sf::Vector2f &pos) override;
 	void SetRotation(float rot) override;
-	void SetScale(const sf::Vector2f& s) override;
-	void SetOrigin(const sf::Vector2f& o) override;
+	void SetScale(const sf::Vector2f &s) override;
+	void SetOrigin(const sf::Vector2f &o) override;
 	void SetOrigin(Origins preset) override;
 
 	void Init() override;
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
-	void Draw(sf::RenderWindow& window) override;
+	void Draw(sf::RenderWindow &window) override;
 
 	void InitStyleTypeButtons();
 	void InitObstacleTypeButtons();
@@ -53,14 +56,14 @@ public:
 	void ResetObstacleTypeButtons();
 	void ResetEnemyTypeButtons();
 
-	void LoadTextureFile(const std::vector<std::string>& filenames);
+	void LoadTextureFile(const std::vector<std::string> &filenames);
 
-	std::vector<SpriteGo*> GetActiveSprites() { return textures; }
+	std::vector<SpriteGo *> GetActiveSprites() { return textures; }
+	std::string GetActiveType() { return filenames[0]; }
 	sf::RectangleShape GetMainUIBody() { return body; }
 
-	SpriteGo* SetChoosedSprite(SpriteGo* sp);
+	SpriteGo *SetChoosedSprite(SpriteGo *sp);
 	void SetOffChoosedSprite();
 
 	void DisableAllButtons();
 };
-

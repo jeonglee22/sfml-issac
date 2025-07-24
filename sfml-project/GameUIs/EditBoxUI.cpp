@@ -3,12 +3,12 @@
 #include "rapidcsv.h"
 #include "SpriteGo.h"
 
-EditBoxUI::EditBoxUI(const std::string& name)
+EditBoxUI::EditBoxUI(const std::string &name)
 	: GameObject(name)
 {
 }
 
-void EditBoxUI::SetPosition(const sf::Vector2f& pos)
+void EditBoxUI::SetPosition(const sf::Vector2f &pos)
 {
 	GameObject::SetPosition(pos);
 	body.setPosition(pos);
@@ -20,13 +20,13 @@ void EditBoxUI::SetRotation(float rot)
 	body.setRotation(rot);
 }
 
-void EditBoxUI::SetScale(const sf::Vector2f& s)
+void EditBoxUI::SetScale(const sf::Vector2f &s)
 {
 	GameObject::SetScale(s);
 	body.setScale(s);
 }
 
-void EditBoxUI::SetOrigin(const sf::Vector2f& o)
+void EditBoxUI::SetOrigin(const sf::Vector2f &o)
 {
 	GameObject::SetOrigin(o);
 	body.setOrigin(o);
@@ -45,27 +45,27 @@ void EditBoxUI::Init()
 {
 	sortingLayer = SortingLayers::UI;
 	sortingOrder = 2;
-	body.setSize({ 600.f, 1080.f });
+	body.setSize({800.f, 1080.f});
 	SetOrigin(Origins::MC);
 
-	pickBox.setSize({60.f,60.f});
+	pickBox.setSize({60.f, 60.f});
 	pickBox.setOutlineColor(sf::Color::Red);
 	pickBox.setFillColor(sf::Color::Transparent);
 	pickBox.setOutlineThickness(3.f);
-	pickBox.setOrigin({ 30.f,30.f });
+	pickBox.setOrigin({30.f, 30.f});
 
 	for (int i = 0; i < 3; i++)
 	{
 		filenames.push_back("");
 	}
 
-	for(int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		typeButtons.push_back(new Button());
 		typeButtons[i]->Init();
-		typeButtons[i]->SetButtonRectSize({ 120.f, 30.f });
+		typeButtons[i]->SetButtonRectSize({120.f, 30.f});
 		typeButtons[i]->SetButtonRectColor(sf::Color::Black);
-		typeButtons[i]->SetButtonRectOrigin({ 60.f, 15.f });
+		typeButtons[i]->SetButtonRectOrigin({60.f, 15.f});
 		typeButtons[i]->SetButtonRectOutlineColor(sf::Color::Black);
 		typeButtons[i]->SetButtonRectOutlineThickness(3.f);
 		typeButtons[i]->SetTextSize(25);
@@ -78,24 +78,25 @@ void EditBoxUI::Init()
 
 void EditBoxUI::Release()
 {
-	//fileButton->Release();
+	// fileButton->Release();
 }
 
 void EditBoxUI::Reset()
 {
-	SetPosition({ 1920.f - 300.f, 540.f });
+	SetPosition({1920.f - 400.f, 540.f});
 
-	std::string typeNames[3] = { "background", "obstacles", "enemies" };
+	std::string typeNames[3] = {"background", "obstacles", "enemies"};
 	for (int i = 0; i < 3; i++)
 	{
 		typeButtons[i]->Reset();
 		typeButtons[i]->SetPosition(position + sf::Vector2f(-150.f + i * 150.f, -500.f));
-		typeButtons[i]->SetTextPosition({ 0.f, -10.f });
+		typeButtons[i]->SetTextPosition({0.f, -10.f});
 		typeButtons[i]->SetTextString(typeNames[i]);
 		typeButtons[i]->SetTextColor(sf::Color::White);
-		typeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
-		auto buttonFunc = [this, i, typeNames]() {
-			auto buttons = i == 0 ? styleTypeButtons : (i==1 ? obstacleTypeButtons : enemyTypeButtons);
+		typeButtons[i]->SetButtonRectPosition({0.f, 0.f});
+		auto buttonFunc = [this, i, typeNames]()
+		{
+			auto buttons = i == 0 ? styleTypeButtons : (i == 1 ? obstacleTypeButtons : enemyTypeButtons);
 			std::fill(filenames.begin(), filenames.end(), "");
 			filenames[0] = typeNames[i];
 			DisableAllButtons();
@@ -132,24 +133,45 @@ void EditBoxUI::Update(float dt)
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::R) && pickedSprite != nullptr)
 	{
-		pickedSprite->SetRotation(pickedSprite->GetRotation() + 90.f);
+		originCycleCount = (originCycleCount + 1) % 4;
+		pickedSprite->SetOrigin(Origins::MC);
+		if (pickedSprite->GetScale().x <= 0.f && pickedSprite->GetScale().y <= 0.f)
+			pickedSprite->SetRotation(pickedSprite->GetRotation() + 90.f);
+		else if (pickedSprite->GetScale().x <= 0.f || pickedSprite->GetScale().y <= 0.f)
+			pickedSprite->SetRotation(pickedSprite->GetRotation() - 90.f);
+		else
+			pickedSprite->SetRotation(pickedSprite->GetRotation() + 90.f);
+		pickedSprite->SetOrigin(originCycle[originCycleCount]);
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Q) && pickedSprite != nullptr)
 	{
-		pickedSprite->SetScale({pickedSprite->GetScale().x * -1.f,pickedSprite->GetScale().y});
+		originCycleCount = 3 - originCycleCount;
+		pickedSprite->SetOrigin(Origins::MC);
+		pickedSprite->SetScale({pickedSprite->GetScale().x * -1.f, pickedSprite->GetScale().y});
+		pickedSprite->SetOrigin(originCycle[originCycleCount]);
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::E) && pickedSprite != nullptr)
 	{
-		pickedSprite->SetScale({ pickedSprite->GetScale().x,pickedSprite->GetScale().y * -1.f });
+		if (originCycleCount <= 1)
+		{
+			originCycleCount = (originCycleCount + 1) % 2;
+		}
+		else
+		{
+			originCycleCount = ((originCycleCount - 2) + 1) % 2 + 2;
+		}
+		pickedSprite->SetOrigin(Origins::MC);
+		pickedSprite->SetScale({pickedSprite->GetScale().x, pickedSprite->GetScale().y * -1.f});
+		pickedSprite->SetOrigin(originCycle[originCycleCount]);
 	}
 
-	if(isFinishFilename)
+	if (isFinishFilename)
 	{
 		isFinishFilename = false;
 	}
 }
 
-void EditBoxUI::Draw(sf::RenderWindow& window)
+void EditBoxUI::Draw(sf::RenderWindow &window)
 {
 	window.draw(body);
 
@@ -161,9 +183,9 @@ void EditBoxUI::Draw(sf::RenderWindow& window)
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		if(styleTypeButtons[i]->GetActive())
+		if (styleTypeButtons[i]->GetActive())
 			styleTypeButtons[i]->Draw(window);
-		if(obstacleTypeButtons[i]->GetActive())
+		if (obstacleTypeButtons[i]->GetActive())
 			obstacleTypeButtons[i]->Draw(window);
 	}
 	for (int i = 0; i < textures.size(); i++)
@@ -171,7 +193,7 @@ void EditBoxUI::Draw(sf::RenderWindow& window)
 		textures[i]->Draw(window);
 	}
 	window.draw(pickBox);
-	if(isPicked)
+	if (isPicked)
 	{
 		pickedSprite->Draw(window);
 	}
@@ -183,9 +205,9 @@ void EditBoxUI::InitStyleTypeButtons()
 	{
 		styleTypeButtons.push_back(new Button());
 		styleTypeButtons[i]->Init();
-		styleTypeButtons[i]->SetButtonRectSize({ 120.f, 30.f });
+		styleTypeButtons[i]->SetButtonRectSize({120.f, 30.f});
 		styleTypeButtons[i]->SetButtonRectColor(sf::Color::Black);
-		styleTypeButtons[i]->SetButtonRectOrigin({ 60.f, 15.f });
+		styleTypeButtons[i]->SetButtonRectOrigin({60.f, 15.f});
 		styleTypeButtons[i]->SetButtonRectOutlineColor(sf::Color::Black);
 		styleTypeButtons[i]->SetButtonRectOutlineThickness(3.f);
 		styleTypeButtons[i]->SetTextSize(25);
@@ -199,9 +221,9 @@ void EditBoxUI::InitObstacleTypeButtons()
 	{
 		obstacleTypeButtons.push_back(new Button());
 		obstacleTypeButtons[i]->Init();
-		obstacleTypeButtons[i]->SetButtonRectSize({ 120.f, 30.f });
+		obstacleTypeButtons[i]->SetButtonRectSize({120.f, 30.f});
 		obstacleTypeButtons[i]->SetButtonRectColor(sf::Color::Black);
-		obstacleTypeButtons[i]->SetButtonRectOrigin({ 60.f, 15.f });
+		obstacleTypeButtons[i]->SetButtonRectOrigin({60.f, 15.f});
 		obstacleTypeButtons[i]->SetButtonRectOutlineColor(sf::Color::Black);
 		obstacleTypeButtons[i]->SetButtonRectOutlineThickness(3.f);
 		obstacleTypeButtons[i]->SetTextSize(25);
@@ -215,9 +237,9 @@ void EditBoxUI::InitEnemyTypeButtons()
 	{
 		enemyTypeButtons.push_back(new Button());
 		enemyTypeButtons[i]->Init();
-		enemyTypeButtons[i]->SetButtonRectSize({ 120.f, 30.f });
+		enemyTypeButtons[i]->SetButtonRectSize({120.f, 30.f});
 		enemyTypeButtons[i]->SetButtonRectColor(sf::Color::Black);
-		enemyTypeButtons[i]->SetButtonRectOrigin({ 60.f, 15.f });
+		enemyTypeButtons[i]->SetButtonRectOrigin({60.f, 15.f});
 		enemyTypeButtons[i]->SetButtonRectOutlineColor(sf::Color::Black);
 		enemyTypeButtons[i]->SetButtonRectOutlineThickness(3.f);
 		enemyTypeButtons[i]->SetTextSize(25);
@@ -227,17 +249,18 @@ void EditBoxUI::InitEnemyTypeButtons()
 
 void EditBoxUI::ResetStyleTypeButtons(float yPos)
 {
-	std::string names[4] = { "basement", "depth", "sheol", "cave" };
+	std::string names[4] = {"basement", "depth", "sheol", "cave"};
 	for (int i = 0; i < 4; i++)
 	{
 		std::string name = names[i];
 		styleTypeButtons[i]->Reset();
 		styleTypeButtons[i]->SetPosition(position + sf::Vector2f(-225.f + i * 150.f, yPos));
-		styleTypeButtons[i]->SetTextPosition({ 0.f, -10.f });
+		styleTypeButtons[i]->SetTextPosition({0.f, -10.f});
 		styleTypeButtons[i]->SetTextString(name);
 		styleTypeButtons[i]->SetTextColor(sf::Color::White);
-		styleTypeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
-		auto styleFunc = [this, name, yPos]() {
+		styleTypeButtons[i]->SetButtonRectPosition({0.f, 0.f});
+		auto styleFunc = [this, name, yPos]()
+		{
 			if (yPos == -400.f)
 			{
 				filenames[2] = name;
@@ -261,18 +284,19 @@ void EditBoxUI::ResetObstacleTypeButtons()
 		std::string name = names[i];
 		obstacleTypeButtons[i]->Reset();
 		obstacleTypeButtons[i]->SetPosition(position + sf::Vector2f(-225.f + i * 150.f, -450.f));
-		obstacleTypeButtons[i]->SetTextPosition({ 0.f, -10.f });
+		obstacleTypeButtons[i]->SetTextPosition({0.f, -10.f});
 		obstacleTypeButtons[i]->SetTextString(name);
 		obstacleTypeButtons[i]->SetTextColor(sf::Color::White);
-		obstacleTypeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
-		auto buttonFunc = [this, name]() {
+		obstacleTypeButtons[i]->SetButtonRectPosition({0.f, 0.f});
+		auto buttonFunc = [this, name]()
+		{
 			if (name == "rocks" || name == "pit")
 			{
 				filenames[1] = name;
 				ResetStyleTypeButtons(-400.f);
 				for (int i = 0; i < styleTypeButtons.size(); i++)
 				{
-					if(i > 1)
+					if (i > 1)
 					{
 						if (name != "pit")
 							styleTypeButtons[i]->SetActive(true);
@@ -301,17 +325,18 @@ void EditBoxUI::ResetObstacleTypeButtons()
 
 void EditBoxUI::ResetEnemyTypeButtons()
 {
-	std::string names[3] = { "ground", "flight", "boss" };
+	std::string names[3] = {"ground", "flight", "boss"};
 	for (int i = 0; i < 3; i++)
 	{
 		std::string name = names[i];
 		enemyTypeButtons[i]->Reset();
 		enemyTypeButtons[i]->SetPosition(position + sf::Vector2f(-150.f + i * 150.f, -450.f));
-		enemyTypeButtons[i]->SetTextPosition({ 0.f, -10.f });
+		enemyTypeButtons[i]->SetTextPosition({0.f, -10.f});
 		enemyTypeButtons[i]->SetTextString(name);
 		enemyTypeButtons[i]->SetTextColor(sf::Color::White);
-		enemyTypeButtons[i]->SetButtonRectPosition({ 0.f,0.f });
-		auto enemyFunc = [this, name]() {
+		enemyTypeButtons[i]->SetButtonRectPosition({0.f, 0.f});
+		auto enemyFunc = [this, name]()
+		{
 			filenames[1] = name;
 			filenames[2] = "";
 			LoadTextureFile(filenames);
@@ -321,7 +346,7 @@ void EditBoxUI::ResetEnemyTypeButtons()
 	}
 }
 
-void EditBoxUI::LoadTextureFile(const std::vector<std::string>& filenames )
+void EditBoxUI::LoadTextureFile(const std::vector<std::string> &filenames)
 {
 	std::string filePath = "graphics";
 	for (auto name : filenames)
@@ -332,7 +357,6 @@ void EditBoxUI::LoadTextureFile(const std::vector<std::string>& filenames )
 		}
 	}
 	filePath += ".csv";
-
 	rapidcsv::Document doc(filePath);
 	textures.clear();
 
@@ -357,18 +381,19 @@ void EditBoxUI::LoadTextureFile(const std::vector<std::string>& filenames )
 			textures[i]->sortingOrder = -5;
 		}
 		textures[i]->GetSprite().setTexture(TEXTURE_MGR.Get(row[0]));
-		textures[i]->GetSprite().setTextureRect({std::stoi(row[1]), std::stoi(row[2]) ,std::stoi(row[3]) ,std::stoi(row[4]) });
-		textures[i]->SetOrigin(sf::Vector2f(std::stoi(row[3]) ,std::stoi(row[4])) * 0.5f);
-		textures[i]->SetPosition(position + sf::Vector2f((i % 5 - 2) * (std::stof(row[3]) * 2.f),(i / 5 - (count / 5)) * std::stof(row[4]) * 2.f));
-		textures[i]->SetScale({ gridSize.x / std::stof(row[3]), gridSize.y / std::stof(row[4]) });
+		textures[i]->GetSprite().setTextureRect({std::stoi(row[1]), std::stoi(row[2]), std::stoi(row[3]), std::stoi(row[4])});
+		textures[i]->SetOrigin(sf::Vector2f(std::stoi(row[3]), std::stoi(row[4])) * 0.5f);
+		textures[i]->SetPosition(position + sf::Vector2f((i % 9 - 4) * 60.f * 1.5f, (i / 9 - 4.5f) * 60.f * 1.5f) + sf::Vector2f(0, 100.f));
 	}
 }
 
-SpriteGo* EditBoxUI::SetChoosedSprite(SpriteGo* sp)
+SpriteGo *EditBoxUI::SetChoosedSprite(SpriteGo *sp)
 {
 	isPicked = true;
 	pickedSprite = new SpriteGo(*sp);
-	pickedSprite->SetPosition(pickBox.getPosition());
+	pickedSprite->SetOrigin(Origins::TL);
+	originCycleCount = 0;
+	pickedSprite->SetPosition(pickBox.getPosition() - pickBox.getSize() * 0.5f);
 	return pickedSprite;
 }
 

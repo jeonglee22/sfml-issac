@@ -21,6 +21,12 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/background/depths.png");
 	texIds.push_back("graphics/obstacles/grid_spikes.png");
 	texIds.push_back("graphics/obstacles/rocks/rocks_basement.png");
+	texIds.push_back("graphics/obstacles/rocks/rocks_caves.png");
+	texIds.push_back("graphics/obstacles/rocks/rocks_depths.png");
+	texIds.push_back("graphics/obstacles/rocks/rocks_sheol.png");
+	texIds.push_back("graphics/obstacles/pit/grid_pit_basement.png");
+	texIds.push_back("graphics/obstacles/pit/grid_pit_depths.png");
+	texIds.push_back("graphics/obstacles/grid_fireplace.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 
@@ -71,6 +77,8 @@ void SceneEditor::Enter()
 	save->SetTextString("Save");
 	save->SetButtonRectPosition({ 0.f,0.f });
 	save->SetButtonFunc([this]() {SaveField(); });
+
+	isSetDrop = false;
 }
 
 void SceneEditor::Update(float dt)
@@ -95,17 +103,25 @@ void SceneEditor::Update(float dt)
 	}
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && isChoosed)
 	{
-		sf::Vector2f boxPos = mapBox->GetRectCenterHavePoint(mouseUIPos);
-		if (boxPos != sf::Vector2f(0.f,0.f))
+		isSetDrop = true;
+	}
+	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isChoosed && isSetDrop)
+	{
+		sf::RectangleShape box = mapBox->GetRectHavePoint(mouseUIPos);
+		if (box.getSize() != sf::Vector2f(0.f,0.f) && CheckAlreadySetGrid(spriteChoosed) == nullptr && IsNotOnGrid())
 		{
 			SpriteGo* sprite = new SpriteGo(*spriteChoosed);
-			sprite->SetOrigin(Origins::MC);
-			sprite->SetPosition(ScreenToWorld(UiToScreen(boxPos)));
+			sprite->SetScale(sprite->GetScale() * 2.f);
+			sprite->SetPosition(ScreenToWorld(UiToScreen(box.getPosition())));
 			sprite->sortingLayer = spriteChoosed->sortingLayer;
 			sprite->sortingOrder = spriteChoosed->sortingOrder;
 			AddGameObject(sprite);
 			mapSprites.push_back(sprite);
 		}
+	}
+	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left) && isSetDrop)
+	{
+		isSetDrop = false;
 	}
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right) && 
 		Utils::PointInTransformBounds(editBoxBody, editBoxBody.getLocalBounds(), mouseUIPos))
@@ -114,38 +130,31 @@ void SceneEditor::Update(float dt)
 		editBox->SetOffChoosedSprite();
 		spriteChoosed = nullptr;
 	}
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
+	if (InputMgr::GetMouseButton(sf::Mouse::Right))
 	{
-		auto it = mapSprites.begin();
-		while(it != mapSprites.end())
+		if (CheckAlreadySetGrid() != nullptr)
 		{
-			if (Utils::PointInTransformBounds((*it)->GetSprite(), (*it)->GetSprite().getLocalBounds(), mouseWorldPos))
-			{
-				RemoveGameObject(*it);
-				it = mapSprites.erase(it);
-			}
-			else
-			{
-				it++;
-			}
+			SpriteGo* sprite = CheckAlreadySetGrid();
+			mapSprites.remove(sprite);
+			RemoveGameObject(sprite);
 		}
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::D) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(-60.f, 0.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(-468.f, 0.f));
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::A) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(60.f, 0.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(468.f, 0.f));
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::W) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, 60.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, 364.f));
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::S) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, -60.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, -364.f));
 	}
 }
 
@@ -192,6 +201,8 @@ rapidcsv::Document SceneEditor::SaveFile()
 		infos.push_back(std::to_string((int)sprite->sortingLayer));
 		infos.push_back(std::to_string(sprite->sortingOrder));
 		infos.push_back(std::to_string(sprite->GetRotation()));
+		infos.push_back(std::to_string(sprite->GetOrigin().x));
+		infos.push_back(std::to_string(sprite->GetOrigin().y));
 		doc.InsertRow(i++, infos);
 	}
 
@@ -264,4 +275,106 @@ void SceneEditor::LoadField()
 void SceneEditor::LoadFile(const std::string& fileName)
 {
 	rapidcsv::Document doc(fileName);
+
+	for (auto sprite : mapSprites)
+	{
+		RemoveGameObject(sprite);
+	}
+	mapSprites.clear();
+	for (int i = 0; i < doc.GetRowCount(); i++)
+	{
+		std::vector<std::string> infos = doc.GetRow<std::string>(i);
+		SpriteGo* loadSprite = new SpriteGo(infos[0], infos[5]);
+		loadSprite->Init();
+		loadSprite->SetOrigin(Origins::MC);
+		loadSprite->Reset();
+		loadSprite->GetSprite().setTextureRect({ std::stoi(infos[2]),std::stoi(infos[1]), std::stoi(infos[3]), std::stoi(infos[4]) });
+		loadSprite->SetScale({2.f, 2.f});
+		loadSprite->SetOrigin({ std::stof(infos[13]) , std::stof(infos[14]) });
+		loadSprite->SetPosition(sf::Vector2f( std::stof(infos[6]), std::stof(infos[7]) ) + mapBox->GetTopLeft());
+		loadSprite->SetRotation(std::stof(infos[12]));
+		loadSprite->sortingLayer = (SortingLayers)std::stoi(infos[10]);
+		loadSprite->sortingOrder = std::stoi(infos[11]);
+		mapSprites.push_back(loadSprite);
+		AddGameObject(loadSprite);
+	}
+}
+
+SpriteGo* SceneEditor::CheckAlreadySetGrid(const SpriteGo* sp)
+{
+	auto mouseWorldPos = Scene::ScreenToWorld(InputMgr::GetMousePosition());
+	auto it = mapSprites.begin();
+	bool CanDrop = true;
+	SpriteGo* result = new SpriteGo("","temp");
+	while (it != mapSprites.end())
+	{
+		if (Utils::PointInTransformBounds((*it)->GetSprite(), (*it)->GetSprite().getLocalBounds(), mouseWorldPos))
+		{
+			if ((*it)->sortingLayer != sp->sortingLayer || (*it)->sortingOrder != sp->sortingOrder)
+			{
+				if (!CanDrop)
+				{
+					it++;
+					continue;
+				}
+				delete result;
+				result = nullptr;
+			}
+			else
+			{
+				CanDrop = false;
+				if (result != nullptr)
+				{
+					delete result;
+				}
+				result = new SpriteGo(**it);
+			}
+		}
+		it++;
+	}
+	if (result == nullptr || result->GetName() == "temp")
+		return nullptr;
+	return result;
+}
+
+SpriteGo* SceneEditor::CheckAlreadySetGrid()
+{
+	auto mouseWorldPos = Scene::ScreenToWorld(InputMgr::GetMousePosition());
+	auto it = mapSprites.begin();
+	while (it != mapSprites.end())
+	{
+		if (Utils::PointInTransformBounds((*it)->GetSprite(), (*it)->GetSprite().getLocalBounds(), mouseWorldPos))
+		{
+			return *it;
+		}
+		else
+		{
+			it++;
+		}
+	}
+	return nullptr;
+}
+
+bool SceneEditor::IsNotOnGrid()
+{
+	auto mouseUIPos = Scene::ScreenToUi(InputMgr::GetMousePosition());
+	auto grid = mapBox->GetMapGird();
+	auto it = grid.begin();
+	while (it != grid.end())
+	{
+		if (Utils::PointInTransformBounds(*it, (*it).getLocalBounds(), mouseUIPos))
+		{
+			return false;
+		}
+		else
+		{
+			it++;
+		}
+	}
+	return true;
+}
+
+std::string SceneEditor::GetCurrentType() const
+{
+	return editBox->GetActiveType();
 }

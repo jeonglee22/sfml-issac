@@ -155,6 +155,9 @@
     <ClCompile Include="Framework\SpriteGo.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="GameUIs\MapBoxUI.cpp" />
+    <ClCompile Include="Scenes\SceneGame.cpp" />
+    <ClCompile Include="Scenes\SceneEditor.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterState.cpp" />
     <ClCompile Include="SceneGame.cpp" />
@@ -195,6 +198,9 @@
     <ClInclude Include="Framework\Singleton.h" />
     <ClInclude Include="Framework\SpriteGo.h" />
     <ClInclude Include="Framework\Scene.h" />
+    <ClInclude Include="GameUIs\MapBoxUI.h" />
+    <ClInclude Include="Scenes\SceneGame.h" />
+    <ClInclude Include="Scenes\SceneEditor.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterState.h" />
     <ClInclude Include="SceneGame.h" />
