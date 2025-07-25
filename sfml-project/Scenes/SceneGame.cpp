@@ -143,6 +143,7 @@ void SceneGame::Update(float dt)
 	if (beforeIndex != currentMapIndex)
 	{
 		maps[currentMapIndex]->SetActiveAll(true);
+		maps[currentMapIndex]->DeleteEnemyAlreadyDead();
 		sf::Vector2f nextMapCenter = maps[currentMapIndex]->GetPosition() + maps[currentMapIndex]->GetMapSize().getSize() * 0.5f;
 		if (isMapChanging)
 		{

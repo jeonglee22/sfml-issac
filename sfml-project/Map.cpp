@@ -286,3 +286,17 @@ bool Map::CheckAllEnemyDead()
 	}
 	return allDead;
 }
+
+void Map::DeleteEnemyAlreadyDead()
+{
+	for (auto fly : flys)
+	{
+		if (fly->GetCurrentHP() <= 0)
+			fly->SetActive(false);
+	}
+	for (auto spider : spiders)
+	{
+		if (spider->GetCurrentHP() <= 0)
+			spider->SetActive(false);
+	}
+}

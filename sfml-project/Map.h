@@ -92,6 +92,6 @@ public:
 	void SetActiveAll(bool b);
 
 	bool CheckAllEnemyDead();
-
+	void DeleteEnemyAlreadyDead();
 };
 
