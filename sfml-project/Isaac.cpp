@@ -5,6 +5,7 @@
 #include "SceneDev2.h"
 #include "SceneGame.h"
 #include "Monster.h"
+#include "Door.h"
 #include "Obstacles.h"
 
 Isaac::Isaac(const std::string &name)
@@ -217,9 +218,18 @@ void Isaac::Update(float dt)
 	{
 		for (auto sprite : sceneGame->GetMapSprites())
 		{
-			if (sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBoxBody.rect, ((Obstacles *)sprite)->GetHitBox()->rect))
+			if ((sprite->GetName() == "rocks_basement" || sprite->GetName() == "grid_pit_basement") 
+				&& Utils::CheckCollision(hitBoxBody.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
 			{
 				SpritesPositionAtCollision(beforePos, ((Obstacles*)sprite)->GetHitBox());
+			}
+			if (sprite->GetName() == "grid_spikes" && Utils::CheckCollision(hitBoxBody.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
+			{
+				if (invincibleTime == 0)
+				{
+					TakeDamage(50);
+					break;
+				}
 			}
 		}
 		for (auto boundary : sceneGame->GetMapBoundary())
@@ -227,6 +237,13 @@ void Isaac::Update(float dt)
 			if (Utils::CheckCollision(hitBoxBody.rect, boundary->rect))
 			{
 				SpritesPositionAtCollision(beforePos, boundary);
+			}
+		}
+		for (auto door : sceneGame->GetMapDoor())
+		{
+			if (!door->GetMapCleared() && Utils::CheckCollision(hitBoxBody.rect, door->GetHitBox()->rect))
+			{
+				SpritesPositionAtCollision(beforePos, door->GetHitBox());
 			}
 		}
 	}
@@ -494,6 +511,17 @@ void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* bo
 
 	SetPosition(currentPos);
 	HitBoxUpdate();
+}
+
+void Isaac::TakeDamage(int damage)
+{
+	currentHP -= damage;
+	isHurt = true;
+	if (currentHP <= 0)
+	{
+		currentHP = 0;
+		SetActive(false);
+	}
 }
 
 void Isaac::PlayHeadAnimation(const std::string& animation)

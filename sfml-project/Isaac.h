@@ -72,6 +72,8 @@ public:
 	void HitBoxUpdate();
 	void SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box);
 
+	void TakeDamage(int damage);
+
 	void PlayHeadAnimation(const std::string& animation);
 	void PlayHeadTearsAnimation(const std::string& animation);
 	void PlayBodyAnimation(const std::string& animation);
