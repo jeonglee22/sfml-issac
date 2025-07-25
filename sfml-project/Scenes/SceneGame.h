@@ -12,7 +12,7 @@ class Map;
 class SceneGame : public Scene
 {
 protected:
-	int mapIndex[15][15] = {-1};
+	int mapIndex[15][15];
 	int beforeIndex = 0;
 	int stageStartX = 7;
 	int currentXIndex = stageStartX;
@@ -57,6 +57,8 @@ public:
 	std::vector<HitBox*> GetMapBoundary() { return maps[currentMapIndex]->GetBoundary(); }
 	std::vector<SpriteGo*> GetMapSprites() { return maps[currentMapIndex]->GetObjects(); }
 	std::vector<Door*> GetMapDoor() { return maps[currentMapIndex]->GetDoor(); }
+
+	std::vector<int> GetNeighboorMapIndex(int x, int y);
 	
 	sf::View GetWorldView() { return worldView; }
 };

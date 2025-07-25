@@ -15,6 +15,8 @@ protected:
 
 	sf::Vector2f doorOffset = { 0.f,0.f };
 
+	sf::Vector2f doorDirection;
+
 public:
 	Door(const std::string& texId = "", const std::string& name = "");
 	virtual ~Door() = default;
@@ -35,4 +37,6 @@ public:
 	bool GetMapCleared() const { return isCleared; }
 	void SetMapCleared(bool b) { isCleared = b; }
 	sf::Vector2i GetDoorSize() const { return doorOpened.getTextureRect().getSize() * 2; }
+	void SetDoorDirection(int i);
+	sf::Vector2f GetDoorDirection() const { return doorDirection; }
 };

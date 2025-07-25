@@ -77,8 +77,11 @@ void SceneGame::Init()
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
 	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/startMap.csv")));
+	maps[0]->SetStageIndex(7, 7);
 	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/testmap3.csv")));
+	maps[1]->SetStageIndex(8, 7);
 	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/testmap3.csv")));
+	maps[2]->SetStageIndex(9, 7);
 
 	shading = (SpriteGo *)AddGameObject(new SpriteGo("graphics/shading.png"));
 
@@ -90,6 +93,12 @@ void SceneGame::Init()
 
 void SceneGame::Enter()
 {
+	for (int i = 0 ; i< 15; i++)
+	{
+		for (int j = 0; j < 15; j++)
+			mapIndex[i][j] = -1;
+	}
+
 	FRAMEWORK.GetWindow().setSize({960, 540});
 	auto size = FRAMEWORK.GetWindowSizeF();
 
@@ -100,6 +109,8 @@ void SceneGame::Enter()
 	Scene::Enter();
 
 	mapIndex[stageStartY][stageStartX] = 0;
+	mapIndex[stageStartY][stageStartX + 1] = 1;
+	mapIndex[stageStartY][stageStartX + 2] = 2;
 
 	currentMapSize = maps[0]->GetMapSize();
 	worldView.setSize(currentMapSize.getSize());
@@ -124,11 +135,9 @@ void SceneGame::Enter()
 		if (i > 0)
 		{
 			maps[i]->SetPosition(maps[i - 1]->GetPosition() + sf::Vector2f(maps[i - 1]->GetMapSize().getSize().x, 0.f));
-			mapIndex[stageStartY][stageStartX + i] = i;
 		}
 		maps[i]->SetActiveAll(false);
 	}
-	mapIndex[stageStartY][stageStartX + 1] = 1;
 	maps[0]->SetActiveAll(true);
 	maps[0]->SetCleared(true);
 	beforeIndex = 0;
@@ -200,14 +209,13 @@ void SceneGame::Update(float dt)
 			Door *door = doors[i];
 			if (Utils::CheckCollision(isaac->GetHitBoxBody().rect, door->GetHitBox()->rect) && door->GetMapCleared())
 			{
-				int nextMapIndexY = i % 2 == 0 ? i - 1 : 0;
-				currentYIndex += nextMapIndexY;
-				int nextMapIndexX = i % 2 == 1 ? 2 - i : 0;
-				currentXIndex += nextMapIndexX;
+				sf::Vector2f dir = door->GetDoorDirection();
+				currentYIndex += (int)dir.y;
+				currentXIndex += (int)dir.x;
+
 				isMapChanging = true;
 				currentMapIndex = mapIndex[currentYIndex][currentXIndex];
-				nextSpawnPos = isaac->GetPosition() + sf::Vector2f(nextMapIndexX, nextMapIndexY) * 210.f;
-				std::cout << nextSpawnPos.x << ", " << nextSpawnPos.y << ", " << currentMapIndex << std::endl;
+				nextSpawnPos = isaac->GetPosition() + door->GetDoorDirection() * 210.f;
 				break;
 			}
 		}
@@ -244,4 +252,31 @@ void SceneGame::EnemyCollosion()
 			monster->SetPlayerPosition(playerPos);
 		}
 	}
+}
+
+std::vector<int> SceneGame::GetNeighboorMapIndex(int x, int y)
+{
+	int up, right, down, left;
+
+	if (y > 0)
+		up = mapIndex[y - 1][x];
+	else
+		up = -1;
+
+	if (y < 14)
+		down = mapIndex[y + 1][x];
+	else
+		down = -1;
+
+	if (x > 0)
+		left = mapIndex[y][x - 1];
+	else
+		left = -1;
+
+	if (x < 14)
+		right = mapIndex[y][x + 1];
+	else
+		right = -1;
+
+	return std::vector<int>{up, right, down, left};
 }

@@ -128,25 +128,44 @@ void Map::AddFly(const sf::Vector2f &pos)
 
 void Map::SetDoor()
 {
+	std::vector<int> neighboorMapIndex = sceneGame->GetNeighboorMapIndex(StageXPos, StageYPos);
 	float width = currentMapSize.width, height = currentMapSize.height;
+	Door tempdoor = Door("graphics/additionals/door_01_normaldoor.png", "Door");
+	tempdoor.Reset();
 	for (int i = 0; i < 4; i++)
 	{
-		doors.push_back(new Door("graphics/additionals/door_01_normaldoor.png", "Door"));
-		doors[i]->Init();
-		doors[i]->Reset();
-		// 0 1 2 3
 		sf::Vector2f localPos;
 		localPos.x = (width * 0.5f - 104.f) * (i % 2 == 1 ? 2.f - i : 0.f);
 		localPos.y = (height * 0.5f - 104.f) * (i % 2 == 0 ? i - 1.f : 0.f);
-		doors[i]->SetPosition(currentMapSize.getSize() * 0.5f + localPos);
-		doors[i]->SetRotation(90.f * i);
+		if(neighboorMapIndex[i] != -1)
+		{
+			doors.push_back(new Door("graphics/additionals/door_01_normaldoor.png", "Door"));
+			doors[doors.size() - 1]->Init();
+			doors[doors.size() - 1]->Reset();
+			doors[doors.size() - 1]->SetPosition(currentMapSize.getSize() * 0.5f + localPos);
+			doors[doors.size() - 1]->SetRotation(90.f * i);
+			doors[doors.size() - 1]->SetDoorDirection(i);
+		}
+		else
+		{
+			boundary.push_back(new HitBox());
+			boundary[boundary.size() - 1]->rect.setSize((sf::Vector2f)tempdoor.GetSprite().getTextureRect().getSize());
+			boundary[boundary.size() - 1]->rect.setOrigin({ boundary[boundary.size() - 1]->rect.getSize().x * 0.5f,
+				boundary[boundary.size() - 1]->rect.getSize().y});
+			boundary[boundary.size() - 1]->rect.setPosition(currentMapSize.getSize() * 0.5f + localPos);
+			boundary[boundary.size() - 1]->rect.setRotation(90.f * i);
+		}
 	}
+	std::cout << std::endl;
 }
 
 void Map::SetBoundary()
 {
 	float left = currentMapSize.left, top = currentMapSize.top, width = currentMapSize.width, height = currentMapSize.height;
-
+	Door tempdoor = Door("graphics/additionals/door_01_normaldoor.png", "Door");
+	tempdoor.Reset();
+	sf::Vector2f doorSize = (sf::Vector2f)tempdoor.GetSprite().getTextureRect().getSize();
+	int nonDoorCount = boundary.size();
 	for (int i = 0; i < 4; i++)
 	{
 		boundary.push_back(new HitBox());
@@ -154,30 +173,30 @@ void Map::SetBoundary()
 		if (i < 2)
 		{
 			// boundary[i]->rect.setSize({ currentMapSize.width, 104.f });
-			sf::Vector2f rowBound = {(currentMapSize.width - doors[0]->GetDoorSize().x) * 0.5f, 104.f};
-			boundary[i * 2]->rect.setSize(rowBound);
-			boundary[i * 2 + 1]->rect.setSize(rowBound);
-			boundary[i * 2]->rect.setOrigin({rowBound.x + doors[0]->GetDoorSize().x * 0.5f, 52.f});
-			boundary[i * 2 + 1]->rect.setOrigin({-doors[0]->GetDoorSize().x * 0.5f, 52.f});
+			sf::Vector2f rowBound = {(currentMapSize.width - doorSize.x) * 0.5f, 104.f};
+			boundary[i * 2 + nonDoorCount]->rect.setSize(rowBound);
+			boundary[i * 2 + 1 + nonDoorCount]->rect.setSize(rowBound);
+			boundary[i * 2 + nonDoorCount]->rect.setOrigin({rowBound.x + doorSize.x * 0.5f, 52.f});
+			boundary[i * 2 + 1 + nonDoorCount]->rect.setOrigin({-doorSize.x * 0.5f, 52.f});
 		}
 		else
 		{
 			// boundary[i]->rect.setSize({ 104.f, currentMapSize.height });
-			sf::Vector2f colBound = {104.f, (currentMapSize.height - doors[0]->GetDoorSize().x) * 0.5f};
-			boundary[i * 2]->rect.setSize(colBound);
-			boundary[i * 2 + 1]->rect.setSize(colBound);
-			boundary[i * 2]->rect.setOrigin({52.f, colBound.y + doors[0]->GetDoorSize().x * 0.5f});
-			boundary[i * 2 + 1]->rect.setOrigin({52.f, -doors[0]->GetDoorSize().x * 0.5f});
+			sf::Vector2f colBound = {104.f, (currentMapSize.height - doorSize.x) * 0.5f};
+			boundary[i * 2 + nonDoorCount]->rect.setSize(colBound);
+			boundary[i * 2 + 1 + nonDoorCount]->rect.setSize(colBound);
+			boundary[i * 2 + nonDoorCount]->rect.setOrigin({52.f, colBound.y + doorSize.x * 0.5f});
+			boundary[i * 2 + 1 + nonDoorCount]->rect.setOrigin({52.f, -doorSize.x * 0.5f});
 		}
 	}
-	boundary[0]->rect.setPosition({currentMapSize.getSize().x * 0.5f, 52.f});
-	boundary[1]->rect.setPosition({currentMapSize.getSize().x * 0.5f, 52.f});
-	boundary[2]->rect.setPosition({currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f});
-	boundary[3]->rect.setPosition({currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f});
-	boundary[4]->rect.setPosition({52.f, currentMapSize.getSize().y * 0.5f});
-	boundary[5]->rect.setPosition({52.f, currentMapSize.getSize().y * 0.5f});
-	boundary[6]->rect.setPosition({currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f});
-	boundary[7]->rect.setPosition({currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f});
+	boundary[nonDoorCount]->rect.setPosition({currentMapSize.getSize().x * 0.5f, 52.f});
+	boundary[1 + nonDoorCount]->rect.setPosition({currentMapSize.getSize().x * 0.5f, 52.f});
+	boundary[2 + nonDoorCount]->rect.setPosition({currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f});
+	boundary[3 + nonDoorCount]->rect.setPosition({currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f});
+	boundary[4 + nonDoorCount]->rect.setPosition({52.f, currentMapSize.getSize().y * 0.5f});
+	boundary[5 + nonDoorCount]->rect.setPosition({52.f, currentMapSize.getSize().y * 0.5f});
+	boundary[6 + nonDoorCount]->rect.setPosition({currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f});
+	boundary[7 + nonDoorCount]->rect.setPosition({currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f});
 }
 
 void Map::ClearSprites()

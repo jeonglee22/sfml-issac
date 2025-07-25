@@ -42,6 +42,8 @@ protected:
 
 	int spiderCount = 2;
 	int flyCount = 2;
+	int StageXPos;
+	int StageYPos;
 
 	SceneGame* sceneGame;
 
@@ -93,5 +95,7 @@ public:
 
 	bool CheckAllEnemyDead();
 	void DeleteEnemyAlreadyDead();
+
+	void SetStageIndex(int x, int y) { StageXPos = x; StageYPos = y; }
 };
 

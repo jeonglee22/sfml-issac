@@ -104,3 +104,24 @@ void Door::Draw(sf::RenderWindow& window)
 	SpriteGo::Draw(window);
 	hitBox->Draw(window);
 }
+
+void Door::SetDoorDirection(int i)
+{
+	switch (i)
+	{
+	case 0:
+		doorDirection = { 0.f, -1.f };
+		break;
+	case 1:
+		doorDirection = { 1.f, 0.f };
+		break;
+	case 2:
+		doorDirection = { 0.f, 1.f };
+		break;
+	case 3:
+		doorDirection = { -1.f, 0.f };
+		break;
+	default:
+		break;
+	}
+}
