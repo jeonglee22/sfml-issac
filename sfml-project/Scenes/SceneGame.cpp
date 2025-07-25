@@ -181,7 +181,7 @@ void SceneGame::Update(float dt)
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::P))
 		{
-			maps[currentMapIndex]->SetCleared(true);
+			maps[currentMapIndex]->SetCleared(!maps[currentMapIndex]->GetCleared());
 		}
 
 		Map *currentMap = maps[currentMapIndex];
@@ -198,7 +198,7 @@ void SceneGame::Update(float dt)
 				currentXIndex += nextMapIndexX;
 				isMapChanging = true;
 				currentMapIndex = mapIndex[currentYIndex][currentXIndex];
-				nextSpawnPos = isaac->GetPosition() + sf::Vector2f(nextMapIndexX, nextMapIndexY) * 250.f;
+				nextSpawnPos = isaac->GetPosition() + sf::Vector2f(nextMapIndexX, nextMapIndexY) * 210.f;
 				std::cout << nextSpawnPos.x << ", " << nextSpawnPos.y << ", " << currentMapIndex << std::endl;
 				break;
 			}

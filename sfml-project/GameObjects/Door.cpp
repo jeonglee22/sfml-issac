@@ -84,7 +84,12 @@ void Door::Reset()
 
 void Door::Update(float dt)
 {
-	hitBox->UpdateTransform(doorOpened, doorOpened.getLocalBounds());
+	sf::FloatRect bounds = doorOpened.getLocalBounds();
+	if(isCleared)
+	{
+		bounds.height *= 0.3f;
+	}
+	hitBox->UpdateTransform(doorOpened, bounds);
 }
 
 void Door::Draw(sf::RenderWindow& window)
