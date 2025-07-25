@@ -8,6 +8,8 @@ class Monster;
 class HitBox;
 class Door;
 class Map;
+class MapUI;
+class ItmeUI;
 
 class SceneGame : public Scene
 {
@@ -22,20 +24,21 @@ protected:
 
 	std::vector<Map*> maps;
 	std::vector<SpriteGo*> mapSprites;
-
 	Isaac* isaac = nullptr;
 	std::vector<Monster*> monsters;
-
-	sf::FloatRect currentMapSize;
 	std::vector<HitBox*> boundary;
+	std::vector<Door*> doors;
 
 	sf::Vector2f offset = sf::Vector2f(140.f, 104.f);
 	sf::Vector2f mapOffset;
 
-	std::vector<Door*> doors;
+	sf::FloatRect currentMapSize;
 
-	SpriteGo* shading;
+	std::vector<SpriteGo*> shadings;
 	SpriteGo* overlay;
+
+	MapUI* mapUI;
+	ItmeUI* itemUI;
 
 	int currentMapIndex = 0;
 

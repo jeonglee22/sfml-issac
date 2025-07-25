@@ -13,6 +13,8 @@
 #include "HitBox.h"
 #include "Door.h"
 #include "Map.h"
+#include "MapUI.h"
+#include "ItemUI.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Stage)
@@ -41,6 +43,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/overlay_2.png");
 	texIds.push_back("graphics/effect_002_bloodpoof_large1.png");
 	texIds.push_back("graphics/effect_002_bloodpoof.png");
+	texIds.push_back("graphics/minimap.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
@@ -83,10 +86,15 @@ void SceneGame::Init()
 	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/testmap3.csv")));
 	maps[2]->SetStageIndex(9, 7);
 
-	shading = (SpriteGo *)AddGameObject(new SpriteGo("graphics/shading.png"));
+	for(int i =0; i <1;i++)
+	{
+		shadings.push_back((SpriteGo*)AddGameObject(new SpriteGo("graphics/shading.png")));
 
-	shading->sortingLayer = SortingLayers::Background;
-	shading->sortingOrder = 20;
+		shadings[i]->sortingLayer = SortingLayers::Background;
+		shadings[i]->sortingOrder = 20;
+	}
+
+	mapUI = (MapUI*)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
 
 	Scene::Init();
 }
@@ -111,6 +119,10 @@ void SceneGame::Enter()
 	mapIndex[stageStartY][stageStartX] = 0;
 	mapIndex[stageStartY][stageStartX + 1] = 1;
 	mapIndex[stageStartY][stageStartX + 2] = 2;
+
+	mapUI->SetMapIndex(mapIndex);
+	mapUI->SetPosition({uiView.getSize().x - 80.f, 80.f});
+	mapUI->SetScale({ 2.f,2.f });
 
 	currentMapSize = maps[0]->GetMapSize();
 	worldView.setSize(currentMapSize.getSize());
@@ -142,9 +154,12 @@ void SceneGame::Enter()
 	maps[0]->SetCleared(true);
 	beforeIndex = 0;
 
-	shading->SetScale({2.f, 2.f});
-	shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
-	shading->SetPosition(currentMapSize.getSize() * 0.5f);
+	for(auto shading : shadings)
+	{
+		shading->SetScale({ 2.f, 2.f });
+		shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
+		shading->SetPosition(currentMapSize.getSize() * 0.5f);
+	}
 }
 
 void SceneGame::Update(float dt)
@@ -212,7 +227,9 @@ void SceneGame::Update(float dt)
 				sf::Vector2f dir = door->GetDoorDirection();
 				currentYIndex += (int)dir.y;
 				currentXIndex += (int)dir.x;
-
+				mapUI->SetPlayerXIndex(currentXIndex);
+				mapUI->SetPlayerYIndex(currentYIndex);
+				
 				isMapChanging = true;
 				currentMapIndex = mapIndex[currentYIndex][currentXIndex];
 				nextSpawnPos = isaac->GetPosition() + door->GetDoorDirection() * 210.f;
