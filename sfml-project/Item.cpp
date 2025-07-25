@@ -73,13 +73,33 @@ void Item::Reset()
 		break;
 	}
 
-	SetScale({ 1.5f, 1.5f });
+	SetScale({ 2.f, 2.f });
 	SetOrigin(Origins::BC);
 }
 
 void Item::Update(float dt)
 {
 	animator.Update(dt);
+
+	if(itemType == Items::Heart || itemType == Items::Half_Heart)
+	{
+		beatTime += dt;
+
+		if (beatTime > 0.2f)
+		{
+			if (isLarge)
+			{
+				SetScale({ 2.0f, 2.0f });
+				isLarge = false;
+			}
+			else
+			{
+				SetScale({ 1.7f, 1.7f });
+				isLarge = true;
+			}
+			beatTime = 0.0f;
+		}
+	}
 }
 
 void Item::Draw(sf::RenderWindow& window)

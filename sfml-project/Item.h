@@ -11,6 +11,9 @@ protected:
 
 	Items itemType;
 
+	float beatTime = 0.0f;
+	bool isLarge = false;
+
 public:
 	Item(const std::string& name = "");
 	virtual ~Item() = default;
