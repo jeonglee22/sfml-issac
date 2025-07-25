@@ -95,6 +95,7 @@ void SceneGame::Init()
 	}
 
 	mapUI = (MapUI*)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
+	mapUI->SetScale({ 2.f,2.f });
 
 	Scene::Init();
 }
@@ -122,7 +123,6 @@ void SceneGame::Enter()
 
 	mapUI->SetMapIndex(mapIndex);
 	mapUI->SetPosition({uiView.getSize().x - 80.f, 80.f});
-	mapUI->SetScale({ 2.f,2.f });
 
 	currentMapSize = maps[0]->GetMapSize();
 	worldView.setSize(currentMapSize.getSize());

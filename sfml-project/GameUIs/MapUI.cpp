@@ -60,36 +60,50 @@ void MapUI::Reset()
 {
 	body.setTexture(TEXTURE_MGR.Get(texId));
 	body.setTextureRect({0,0,55,49});
+	Utils::SetOrigin(body, originPreset);
 
 	for (int i = 0; i < 225; i++)
 	{
 		plates.push_back(new sf::Sprite(TEXTURE_MGR.Get(texId), mapIconRect["plate"]));
 		plates[i]->setScale({ 2.f,2.f });
-		plates[i]->setOrigin(plates[i]->getLocalBounds().getSize());
-		std::cout << plates[i]->getOrigin().x << ", " << plates[i]->getOrigin().y << std::endl;
+		plates[i]->setOrigin(plates[i]->getLocalBounds().getSize() * 0.5f);
+
 		rooms.push_back(new sf::Sprite(TEXTURE_MGR.Get(texId), mapIconRect["clear5"]));
 		rooms[i]->setScale({ 2.f,2.f });
-		rooms[i]->setOrigin(rooms[i]->getLocalBounds().getSize());
+		rooms[i]->setOrigin(rooms[i]->getLocalBounds().getSize() * 0.5f);
 	}
 
-	oneRoomSize = (sf::Vector2f) rooms[0]->getTextureRect().getSize() * 2.f;
-	Utils::SetOrigin(body, originPreset);
+	oneRoomSize = rooms[0]->getGlobalBounds().getSize();
 }
 
 void MapUI::Update(float dt)
 {
-	for (int i = -3; i < 4; i++)
+	if(playerXIndex != beforePlayerXIndex || playerYIndex != beforePlayerYIndex)
 	{
-		for (int j = -3; j < 4; j++)
+		for (int i = -2; i < 3; i++)
 		{
-			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 14);
-			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 14);
-			if (mapIndex[yIndex][xIndex] != -1)
+			for (int j = -2; j < 3; j++)
 			{
-				plates[yIndex * 15 + xIndex]->setPosition(position + sf::Vector2f(j* oneRoomSize.x, i * oneRoomSize.y));
-				rooms[yIndex * 15 + xIndex]->setPosition(position + sf::Vector2f(j * oneRoomSize.x, i * oneRoomSize.y));
+				int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 14);
+				int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 14);
+				if (mapIndex[yIndex][xIndex] != -1)
+				{
+					plates[yIndex * 15 + xIndex]->setPosition(position + sf::Vector2f(j * oneRoomSize.x, i * oneRoomSize.y));
+					rooms[yIndex * 15 + xIndex]->setPosition(position + sf::Vector2f(j * oneRoomSize.x, i * oneRoomSize.y));
+					//std::cout << rooms[yIndex * 15 + xIndex]->getPosition().x << ", " << rooms[yIndex * 15 + xIndex]->getPosition().y << std::endl;
+					//std::cout << plates[yIndex * 15 + xIndex]->getPosition().x << ", " << plates[yIndex * 15 + xIndex]->getPosition().y << std::endl;
+				}
 			}
 		}
+		rooms[playerYIndex * 15 + playerXIndex]->setTexture(TEXTURE_MGR.Get(texId), true);
+		rooms[playerYIndex * 15 + playerXIndex]->setTextureRect(mapIconRect["current5"]);
+		if(beforePlayerXIndex != -1 && beforePlayerYIndex != -1)
+		{
+			rooms[beforePlayerYIndex * 15 + beforePlayerXIndex]->setTexture(TEXTURE_MGR.Get(texId), true);
+			rooms[beforePlayerYIndex * 15 + beforePlayerXIndex]->setTextureRect(mapIconRect["clear5"]);
+		}
+		beforePlayerXIndex = playerXIndex;
+		beforePlayerYIndex = playerYIndex;
 	}
 }
 
@@ -102,9 +116,9 @@ void MapUI::Draw(sf::RenderWindow& window)
 
 void MapUI::DrawPlates(sf::RenderWindow& window)
 {
-	for (int i = -3; i < 4; i++)
+	for (int i = -2; i < 3; i++)
 	{
-		for (int j = -3; j < 4; j++)
+		for (int j = -2; j < 3; j++)
 		{
 			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 14);
 			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 14);
@@ -118,9 +132,9 @@ void MapUI::DrawPlates(sf::RenderWindow& window)
 
 void MapUI::DrawRooms(sf::RenderWindow& window)
 {
-	for (int i = -3; i < 4; i++)
+	for (int i = -2; i < 3; i++)
 	{
-		for (int j = -3; j < 4; j++)
+		for (int j = -2; j < 3; j++)
 		{
 			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 14);
 			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 14);

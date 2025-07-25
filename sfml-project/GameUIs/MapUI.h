@@ -19,7 +19,9 @@ protected:
 	bool mapCleared[15][15] = {false};
 
 	int playerXIndex = 7;
+	int beforePlayerXIndex = -1;
 	int playerYIndex = 7;
+	int beforePlayerYIndex = -1;
 
 public:
 	MapUI(const std::string& textureId = "", const std::string & name = "");
