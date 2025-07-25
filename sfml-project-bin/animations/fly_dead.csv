@@ -1,0 +1,11 @@
+ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
+Fly_dead,10,"1	",,,
+"				",,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
+graphics/monster_010_fly.png,0,75,64,64,0
+graphics/monster_010_fly.png,64,75,64,64,0
+graphics/monster_010_fly.png,128,75,64,64,0
+graphics/monster_010_fly.png,192,75,64,64,0
+graphics/monster_010_fly.png,0,139,64,64,0
+graphics/monster_010_fly.png,64,139,64,64,0
+graphics/monster_010_fly.png,128,139,64,64,0

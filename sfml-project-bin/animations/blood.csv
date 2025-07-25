@@ -1,0 +1,11 @@
+ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
+Blood,10,"1	",,,
+"				",,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
+graphics/effect_002_bloodpoof_large1.png,0,0,80,80,0
+graphics/effect_002_bloodpoof_large1.png,80,0,80,80,0
+graphics/effect_002_bloodpoof_large1.png,160,0,80,80,0
+graphics/effect_002_bloodpoof_large1.png,240,0,80,80,0
+graphics/effect_002_bloodpoof_large1.png,0,80,80,80,0
+graphics/effect_002_bloodpoof_large1.png,80,80,80,80,0
+graphics/effect_002_bloodpoof_large1.png,80,80,80,80,0

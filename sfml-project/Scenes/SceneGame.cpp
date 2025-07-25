@@ -35,7 +35,10 @@ void SceneGame::Init()
 	texIds.push_back("graphics/monster_214_level2spider_small.png");
 	texIds.push_back("graphics/effects/effect_015_tearpoofa.png");
 	texIds.push_back("graphics/additionals/door_01_normaldoor.png");
+	texIds.push_back("graphics/additionals/door_01_normaldoor.png");
 	texIds.push_back("graphics/shading.png");
+	texIds.push_back("graphics/effect_002_bloodpoof_large1.png");
+	texIds.push_back("graphics/effect_002_bloodpoof.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
@@ -59,10 +62,13 @@ void SceneGame::Init()
 
 
 	ANI_CLIP_MGR.Load("animations/fly.csv");
+	ANI_CLIP_MGR.Load("animations/fly_dead.csv");
 	ANI_CLIP_MGR.Load("animations/spider_patrol.csv");
 	ANI_CLIP_MGR.Load("animations/spider_charge.csv");
 	ANI_CLIP_MGR.Load("animations/spider_jump.csv");
 	ANI_CLIP_MGR.Load("animations/spider_jump.csv");
+	ANI_CLIP_MGR.Load("animations/blood.csv");
+	ANI_CLIP_MGR.Load("animations/blood_small.csv");
 
 	ANI_CLIP_MGR.Load("animations/tears_idle.csv");
 	ANI_CLIP_MGR.Load("animations/tears_boom.csv");

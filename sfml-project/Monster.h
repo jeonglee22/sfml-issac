@@ -14,6 +14,7 @@ protected:
 
 	int currentHP = 0;
 	int maxHP = 0;
+	bool isDead = false;
 
 	sf::Vector2f velocity;
 	float speed = 0.0f;
@@ -26,6 +27,9 @@ protected:
 
 	float skillTimer;
 	float skillCooldown;
+
+	float deadTimer = 0.0f;
+	float deadMaxTimer = 1.0f;
 
 	MonsterState* currentState;
 	HitBox hitBox;
@@ -43,7 +47,7 @@ public:
 	void Init() override;
 	void Release() override;
 	void Reset() override = 0;
-	void Update(float dt) override final;
+	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
 	void ChangeState(MonsterState* newState);
@@ -77,7 +81,6 @@ public:
 	HitBox& GetHitBox() { return hitBox; }
 	virtual sf::FloatRect GetHitBoxMonster() { return { 0,0,0,0 }; }
 	virtual void SetInitialState() = 0;
-	virtual void OnUpdate(float dt) = 0;
 
 	void UpdateSkillTimer(float dt);
 };

@@ -54,23 +54,39 @@ void Monster::Release()
 
 void Monster::Update(float dt)
 {
-	if (currentState)
+	if (isDead)
 	{
-		currentState->Update(this, dt);
+		animator.Update(dt);
+		deadTimer += dt;
+
+		if (deadTimer >= deadMaxTimer)
+		{
+			SetActive(false);
+			deadTimer = 0.0;
+			isDead = false;
+			return;
+		}
 	}
+	else
+	{
+		if (currentState)
+		{
+			currentState->Update(this, dt);
+		}
 
-	UpdateSkillTimer(dt);
-	animator.Update(dt);
+		UpdateSkillTimer(dt);
+		animator.Update(dt);
 
-	position += velocity * dt;
-	SetPosition(position);
-
-	OnUpdate(dt);
+		position += velocity * dt;
+		SetPosition(position);
+	}
+	hitBox.UpdateTransform(body, body.getLocalBounds());
 }
 
 void Monster::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	hitBox.Draw(window);
 }
 
 void Monster::ChangeState(MonsterState* newState)
@@ -98,8 +114,18 @@ void Monster::TakeDamage(int damage)
 	if (currentHP <= 0)
 	{
 		currentHP = 0;
+		isDead = true;
+		velocity = { 0.f,0.f };
 
-		SetActive(false);
+		if(monsterType == Monsters::Fly)
+		{
+			animator.Play("animations/fly_dead.csv");
+		}
+		if (monsterType == Monsters::Spider)
+		{
+			animator.Play("animations/blood_small.csv");
+		}
+		SetOrigin(Origins::MC);
 	}
 }
 

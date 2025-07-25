@@ -17,7 +17,7 @@ public:
 
     void Reset() override;
     void UseSkill() override;
-    void OnUpdate(float dt) override;
+    //void Update(float dt) override;
 
     static SpiderPatrolState& GetPatrolState() { return patrolState; }
     static SpiderChargeState& GetChargeState() { return chargeState; }

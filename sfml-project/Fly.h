@@ -17,9 +17,8 @@ public:
 
 	void Reset() override;
 	void UseSkill() override;
-	void OnUpdate(float dt) override;
+	//void Update(float dt) override;
 
-	//static IdleState& GetIdleState() { return idleState; }
 	static WanderState& GetWanderState() { return wanderState; }
 	void SetInitialState() override;
 	sf::FloatRect GetHitBoxMonster() override;

@@ -31,26 +31,7 @@ void Fly::Reset()
 
 void Fly::UseSkill()
 {
-}
 
-void Fly::OnUpdate(float dt)
-{
-    if (!sceneGame)
-    {
-        return;
-    }
-
-    sf::Vector2f beforePos = position;
-
-    for (auto boundary : sceneGame->GetMapBoundary())
-    {
-        if (GetHitBoxMonster().intersects(boundary->rect.getGlobalBounds()))
-        {
-            position = beforePos;
-            SetPosition(position);
-            break;
-        }
-    }
 
 }
 

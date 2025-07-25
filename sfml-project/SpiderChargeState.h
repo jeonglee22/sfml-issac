@@ -17,8 +17,5 @@ public:
 	void Update(Monster* monster, float dt) override;
 	void Exit(Monster* monster) override;
 	std::string GetStateName() const override { return "SpiderCharge"; }
-
-
-
 };
 
