@@ -9,7 +9,7 @@ protected:
 	sf::Sprite doorClosedRight;
 	sf::Sprite doorOpened;
 
-	HitBox hitBox;
+	HitBox* hitBox;
 
 	bool isCleared = false;
 
@@ -31,6 +31,7 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	HitBox GetHitBox() const { return hitBox; }
+	HitBox* GetHitBox() const { return hitBox; }
+	bool GetMapCleared() const { return isCleared; }
 	sf::Vector2i GetDoorSize() const { return doorOpened.getTextureRect().getSize() * 2; }
 };

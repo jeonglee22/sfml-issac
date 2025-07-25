@@ -5,6 +5,7 @@
 #include "SceneDev2.h"
 #include "SceneGame.h"
 #include "Monster.h"
+#include "Door.h"
 #include "Obstacles.h"
 
 Isaac::Isaac(const std::string &name)
@@ -207,6 +208,13 @@ void Isaac::Update(float dt)
 			if (Utils::CheckCollision(hitBoxBody.rect, boundary->rect))
 			{
 				SpritesPositionAtCollision(beforePos, boundary);
+			}
+		}
+		for (auto door : sceneGame->GetMapDoor())
+		{
+			if (!door->GetMapCleared() && Utils::CheckCollision(hitBoxBody.rect, door->GetHitBox()->rect))
+			{
+				SpritesPositionAtCollision(beforePos, door->GetHitBox());
 			}
 		}
 	}

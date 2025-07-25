@@ -23,6 +23,8 @@ protected:
 
 	std::vector<Door*> doors;
 
+	SpriteGo* shading;
+
 public:
 	SceneGame();
 	~SceneGame() = default;
@@ -38,11 +40,12 @@ public:
 
 	void EnemyCollosion();
 	std::vector<Monster*> GetMonsters() { return monsters; }
-
+	std::vector<HitBox*> GetMapBoundary() { return boundary; }
 	std::vector<SpriteGo*> GetMapSprites() { return mapSprites; }
+	std::vector<Door*> GetMapDoor() { return doors; }
 
 	void MakeBoundary();
 	void MakeDoor();
-	std::vector<HitBox*> GetMapBoundary() { return boundary; }
+	
 };
 

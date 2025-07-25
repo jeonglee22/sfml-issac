@@ -50,11 +50,14 @@ void Door::Init()
 
 	SetOrigin(Origins::BC);
 
+	hitBox = new HitBox();
+
 	SpriteGo::Init();
 }
 
 void Door::Release()
 {
+	delete hitBox;
 }
 
 void Door::Reset()
@@ -85,7 +88,7 @@ void Door::Update(float dt)
 	{
 		isCleared = !isCleared;
 	}
-	hitBox.UpdateTransform(doorOpened, doorOpened.getLocalBounds());
+	hitBox->UpdateTransform(doorOpened, doorOpened.getLocalBounds());
 }
 
 void Door::Draw(sf::RenderWindow& window)
@@ -98,5 +101,5 @@ void Door::Draw(sf::RenderWindow& window)
 		window.draw(doorClosedRight);
 	}
 	SpriteGo::Draw(window);
-	hitBox.Draw(window);
+	hitBox->Draw(window);
 }

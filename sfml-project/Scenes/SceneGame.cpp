@@ -35,6 +35,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/monster_214_level2spider_small.png");
 	texIds.push_back("graphics/effects/effect_015_tearpoofa.png");
 	texIds.push_back("graphics/additionals/door_01_normaldoor.png");
+	texIds.push_back("graphics/shading.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
@@ -88,6 +89,10 @@ void SceneGame::Init()
 		doors.push_back((Door*)AddGameObject(new Door("graphics/additionals/door_01_normaldoor.png", "Door")));
 	}
 
+	shading = (SpriteGo*)AddGameObject(new SpriteGo("graphics/shading.png"));
+	shading->sortingLayer = SortingLayers::Background;
+	shading->sortingOrder = 20;
+
 	Scene::Init();
 }
 
@@ -110,6 +115,10 @@ void SceneGame::Enter()
 	MakeBoundary();
 
 	MakeDoor();
+
+	shading->SetScale({ 2.f,2.f });
+	shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
+	shading->SetPosition(currentMapSize.getSize() * 0.5f);
 }
 
 void SceneGame::Update(float dt)
