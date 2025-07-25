@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Monster.h"
 #include "MonsterState.h"
+#include "Obstacles.h"
+#include "SceneGame.h"
 
 Monster::Monster(const std::string& name, Monsters type)
 	: GameObject(name), monsterType(type)
@@ -77,9 +79,34 @@ void Monster::Update(float dt)
 		UpdateSkillTimer(dt);
 		animator.Update(dt);
 
+		sf::Vector2f beforePos = position;
 		position += velocity * dt;
 		SetPosition(position);
+
+		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+		if (scene)
+		{
+			for (auto sprite : scene->GetMapSprites())
+			{
+				if (sprite->GetName() == "grid_pit_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
+				{
+					
+					SetPosition(beforePos);
+				}
+			}
+
+			for (auto boundary : scene->GetMapBoundary())
+			{
+				if (Utils::CheckCollision(hitBox.rect, boundary->rect))
+				{
+					SetPosition(beforePos);
+				}
+			}
+		}
 	}
+	
+
+
 	hitBox.UpdateTransform(body, body.getLocalBounds());
 }
 

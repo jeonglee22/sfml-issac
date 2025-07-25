@@ -4,6 +4,7 @@
 #include "HitBox.h"
 
 class MonsterState;
+class SceneGame;
 
 class Monster : public GameObject
 {
@@ -33,6 +34,7 @@ protected:
 
 	MonsterState* currentState;
 	HitBox hitBox;
+	SceneGame* sceneGame;
 
 public:
 	Monster(const std::string& name, Monsters type);
@@ -83,5 +85,7 @@ public:
 	virtual void SetInitialState() = 0;
 
 	void UpdateSkillTimer(float dt);
+	void HitBoxUpdate();
+	void SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box);
 };
 

@@ -25,7 +25,7 @@ void SpiderChargeState::Update(Monster* monster, float dt)
     chargeTimer += dt;
 
     if (chargeTimer >= chargeDuration) {
-        MonsterState* jumpState = &Spider::GetJumpState();
+        SpiderJumpState* jumpState = new SpiderJumpState();
         monster->ChangeState(jumpState);
     }
 }

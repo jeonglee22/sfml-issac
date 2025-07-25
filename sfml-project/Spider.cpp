@@ -4,10 +4,6 @@
 #include "SpiderChargeState.h"
 #include "SpiderJumpState.h"
 
-SpiderPatrolState Spider::patrolState;
-SpiderChargeState Spider::chargeState;
-SpiderJumpState Spider::jumpState;
-
 Spider::Spider(const std::string& name) : Monster(name, Monsters::Spider) {
 }
 

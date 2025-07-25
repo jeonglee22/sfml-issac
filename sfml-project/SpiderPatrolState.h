@@ -13,6 +13,9 @@ protected:
     float pauseDuration;
     bool isPausing;
 
+    mutable std::random_device rd;
+    mutable std::mt19937 gen;
+
 public:
     SpiderPatrolState();
 

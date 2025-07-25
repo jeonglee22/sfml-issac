@@ -38,7 +38,8 @@ void SpiderJumpState::Update(Monster* monster, float dt)
     if (remainingDistance < 30.0f)
     {
         monster->SetVelocity(sf::Vector2f(0, 0));
-        monster->ChangeState(&Spider::GetPatrolState());
+        SpiderPatrolState* patrolState = new SpiderPatrolState();
+        monster->ChangeState(patrolState);
     }
 }
 

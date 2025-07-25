@@ -5,7 +5,7 @@
 #include <cmath>
 
 SpiderPatrolState::SpiderPatrolState()
-    : directionChangeTimer(0.0f), pauseTimer(0.0f), isPausing(false)
+    : directionChangeTimer(0.0f), pauseTimer(0.0f), isPausing(false), gen(rd())
 {
     directionChangeInterval = 1.0f;
     pauseDuration = 0.5f;
@@ -63,7 +63,6 @@ void SpiderPatrolState::ChangeDirection()
 {
     float angle = static_cast<float>(rand()) / RAND_MAX * 2.0f * 3.14159f;
     targetDirection = sf::Vector2f(std::cos(angle), std::sin(angle));
-
     directionChangeInterval = 2.0f + static_cast<float>(rand()) / RAND_MAX * 3.0f;
 }
 

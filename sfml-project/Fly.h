@@ -1,14 +1,14 @@
 #pragma once
 #include "Monster.h"
+#include "WanderState.h"
 
 //class IdleState;
-class WanderState;
 class SceneGame;
 
 class Fly : public Monster
 {
 protected:
-	static WanderState wanderState;
+	WanderState wanderState;
 	SceneGame* sceneGame;
 
 public:
@@ -19,7 +19,7 @@ public:
 	void UseSkill() override;
 	//void Update(float dt) override;
 
-	static WanderState& GetWanderState() { return wanderState; }
+	WanderState& GetWanderState() { return wanderState; }
 	void SetInitialState() override;
 	sf::FloatRect GetHitBoxMonster() override;
 };

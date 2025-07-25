@@ -5,8 +5,6 @@
 #include "SceneGame.h"
 #include "Obstacles.h"
 
-WanderState Fly::wanderState;
-
 Fly::Fly(const std::string& name)
 	:Monster(name, Monsters::Fly)
 {

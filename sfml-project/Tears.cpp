@@ -183,7 +183,10 @@ void Tears::Hit()
 
 void Tears::StartSplash()
 {
-	if (isTearsCrush) return;
+	if (isTearsCrush)
+	{
+		return;
+	}
 
 	animator.Play("animations/tears_boom.csv");
 
