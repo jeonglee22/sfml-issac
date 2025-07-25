@@ -123,10 +123,11 @@ void Isaac::Reset()
 
 void Isaac::Update(float dt)
 {
+	headAnimator.Update(dt);
+	bodyAnimator.Update(dt);
+
 	if (isDead)
 	{
-		headAnimator.Update(dt);
-		bodyAnimator.Update(dt);
 		return;
 	}
 
@@ -257,31 +258,30 @@ void Isaac::Update(float dt)
 
 		if (shootingKeyPressed)
 		{
-			shootDirection = newShootDirection;
-
 			if (!isHurt)
 			{
-				if (shootDirection.x > 0.f)
+				if (newShootDirection.x > 0.f)
 				{
 					SetScale({ 2.f, 2.f });
 					PlayHeadTearsAnimation("side");
 				}
-				else if (shootDirection.x < 0.f)
+				else if (newShootDirection.x < 0.f)
 				{
 					SetScale({ -2.f, 2.f });
 					PlayHeadTearsAnimation("side");
 				}
-				else if (shootDirection.y < 0.f)
+				else if (newShootDirection.y < 0.f)
 				{
 					PlayHeadTearsAnimation("rare");
 				}
-				else if (shootDirection.y > 0.f)
+				else if (newShootDirection.y > 0.f)
 				{
 					PlayHeadTearsAnimation("front");
 				}
 			}
 			if (!wasKeyPressed || shootTimer >= shootInterval)
 			{
+				shootDirection = newShootDirection;
 				FireTear(shootDirection);
 				shootTimer = 0.f;
 			}
@@ -290,7 +290,13 @@ void Isaac::Update(float dt)
 		}
 		else
 		{
-			wasKeyPressed = false;
+			if (!InputMgr::GetKey(sf::Keyboard::Right) &&
+				!InputMgr::GetKey(sf::Keyboard::Left) &&
+				!InputMgr::GetKey(sf::Keyboard::Up) &&
+				!InputMgr::GetKey(sf::Keyboard::Down))
+			{
+				wasKeyPressed = false;
+			}
 			if (!isHurt)
 			{
 
