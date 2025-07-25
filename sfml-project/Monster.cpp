@@ -80,18 +80,23 @@ void Monster::Update(float dt)
 		animator.Update(dt);
 
 		sf::Vector2f beforePos = position;
-		position += velocity * dt;
-		SetPosition(position);
 
 		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 		if (scene)
 		{
 			for (auto sprite : scene->GetMapSprites())
 			{
-				if (sprite->GetName() == "grid_pit_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
+				if (monsterType == Monsters::Spider && (sprite->GetName() == "rocks_basement" || sprite->GetName() == "grid_pit_basement") && Utils::CheckCollision(hitBox.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
 				{
-					
 					SetPosition(beforePos);
+
+					float randomAngle = Utils::RandomRange(0.f, 360.f);
+					float currentSpeed = Utils::Magnitude(velocity);
+
+					float radians = randomAngle * 3.14159f / 180.f;
+
+					velocity.x = cos(radians) * currentSpeed;
+					velocity.y = sin(radians) * currentSpeed;
 				}
 			}
 
@@ -100,9 +105,21 @@ void Monster::Update(float dt)
 				if (Utils::CheckCollision(hitBox.rect, boundary->rect))
 				{
 					SetPosition(beforePos);
+
+					float randomAngle = Utils::RandomRange(0.f, 360.f);
+					float currentSpeed = Utils::Magnitude(velocity);
+
+					float radians = randomAngle * 3.14159f / 180.f;
+
+					velocity.x = cos(radians) * currentSpeed;
+					velocity.y = sin(radians) * currentSpeed;
 				}
 			}
 		}
+
+		
+		position += velocity * dt;
+		SetPosition(position);
 	}
 	
 

@@ -84,11 +84,11 @@ void SceneGame::Init()
 	AddGameObject(fly1);
 
 	auto spider = new Spider();
-	spider->SetPosition({ 300.f, 300.f });
+	spider->SetPosition({ 350.f, 350.f });
 	AddGameObject(spider);
 
 	auto spider1 = new Spider();
-	spider1->SetPosition({ 350.f, 350.f });
+	spider1->SetPosition({ 400.f, 400.f });
 	AddGameObject(spider1);
 
 	for (int i = 0; i < 4; i++)

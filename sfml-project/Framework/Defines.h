@@ -40,3 +40,10 @@ enum class Monsters
 	Fly,
 	Spider,
 };
+
+enum class Items
+{
+	Coin,
+	Heart,
+	Bomb
+};

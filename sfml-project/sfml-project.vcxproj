@@ -155,6 +155,7 @@
     <ClCompile Include="Framework\InputMgr.cpp" />
     <ClCompile Include="Framework\SpriteGo.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameObjects\Obstacles.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Framework\SpriteGo.h" />
     <ClInclude Include="Framework\Scene.h" />
     <ClInclude Include="GameObjects\Obstacles.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\SceneEditor.h" />
     <ClInclude Include="Monster.h" />
