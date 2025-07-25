@@ -59,7 +59,6 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/isaac_hurt.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_dead.csv");
 
-
 	ANI_CLIP_MGR.Load("animations/fly.csv");
 	ANI_CLIP_MGR.Load("animations/spider_patrol.csv");
 	ANI_CLIP_MGR.Load("animations/spider_charge.csv");
@@ -69,13 +68,13 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/tears_idle.csv");
 	ANI_CLIP_MGR.Load("animations/tears_boom.csv");
 
-	isaac = (Isaac*)AddGameObject(new Isaac());
+	isaac = (Isaac *)AddGameObject(new Isaac());
 
-	maps.push_back((Map*)AddGameObject(new Map("Mapfolder/startMap.csv")));
-	maps.push_back((Map*)AddGameObject(new Map("Mapfolder/testmap3.csv")));
-	maps.push_back((Map*)AddGameObject(new Map("Mapfolder/testmap3.csv")));
+	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/startMap.csv")));
+	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/testmap3.csv")));
+	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/testmap3.csv")));
 
-	shading = (SpriteGo*)AddGameObject(new SpriteGo("graphics/shading.png"));
+	shading = (SpriteGo *)AddGameObject(new SpriteGo("graphics/shading.png"));
 	shading->sortingLayer = SortingLayers::Background;
 	shading->sortingOrder = 20;
 
@@ -84,10 +83,10 @@ void SceneGame::Init()
 
 void SceneGame::Enter()
 {
-	FRAMEWORK.GetWindow().setSize({ 960, 540 });
+	FRAMEWORK.GetWindow().setSize({960, 540});
 	auto size = FRAMEWORK.GetWindowSizeF();
 
-	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
+	sf::Vector2f center{size.x * 0.5f, size.y * 0.5f};
 	uiView.setSize(size);
 	uiView.setCenter(center);
 
@@ -100,7 +99,7 @@ void SceneGame::Enter()
 	worldView.setCenter(currentMapSize.getSize() * 0.5f);
 	isaac->SetPosition(center);
 
-	//LoadStageField("Mapfolder/testmap3.csv");
+	// LoadStageField("Mapfolder/testmap3.csv");
 	mapOffset = sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f;
 
 	for (int i = 0; i < maps.size(); i++)
@@ -110,14 +109,14 @@ void SceneGame::Enter()
 		maps[i]->AddGameObjectInScene();
 		if (i > 0)
 		{
-			maps[i]->AddFly({ 200.f,200.f });
-			maps[i]->AddFly({ 250.f,250.f });
-			maps[i]->AddSpider({ 300.f, 300.f });
-			maps[i]->AddSpider({ 350.f, 350.f });
+			maps[i]->AddFly({200.f, 200.f});
+			maps[i]->AddFly({250.f, 250.f});
+			maps[i]->AddSpider({300.f, 300.f});
+			maps[i]->AddSpider({350.f, 350.f});
 		}
 		if (i > 0)
 		{
-			maps[i]->SetPosition(maps[i]->GetPosition() + sf::Vector2f(maps[i - 1]->GetMapSize().getSize().x, 0.f));
+			maps[i]->SetPosition(maps[i - 1]->GetPosition() + sf::Vector2f(maps[i - 1]->GetMapSize().getSize().x, 0.f));
 			mapIndex[stageStartY][stageStartX + i] = i;
 		}
 		maps[i]->SetActiveAll(false);
@@ -127,7 +126,7 @@ void SceneGame::Enter()
 	maps[0]->SetCleared(true);
 	beforeIndex = 0;
 
-	shading->SetScale({ 2.f,2.f });
+	shading->SetScale({2.f, 2.f});
 	shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
 	shading->SetPosition(currentMapSize.getSize() * 0.5f);
 }
@@ -141,25 +140,29 @@ void SceneGame::Update(float dt)
 		if (isMapChanging)
 		{
 			worldView.setCenter(Utils::Lerp(worldView.getCenter(), nextMapCenter, dt * 15));
+			isaac->SetPosition(Utils::Lerp(isaac->GetPosition(), nextSpawnPos, dt * 15));
 			if (Utils::Distance(worldView.getCenter(), nextMapCenter) <= 10.f)
+			{
+				worldView.setCenter(nextMapCenter);
+				isaac->SetPosition(nextSpawnPos);
 				isMapChanging = false;
+			}
 		}
 		else
 		{
-			isaac->SetPosition(nextSpawnPos);
 			maps[beforeIndex]->SetActiveAll(false);
 			beforeIndex = currentMapIndex;
 		}
 	}
 	else
 	{
-		for (auto& gameObject : gameObjects)
+		for (auto &gameObject : gameObjects)
 		{
-			if (auto player = dynamic_cast<Isaac*>(gameObject))
+			if (auto player = dynamic_cast<Isaac *>(gameObject))
 			{
 				isaac = player;
 			}
-			if (auto monster = dynamic_cast<Monster*>(gameObject))
+			if (auto monster = dynamic_cast<Monster *>(gameObject))
 			{
 				monsters.push_back(monster);
 			}
@@ -168,7 +171,7 @@ void SceneGame::Update(float dt)
 		if (isaac)
 		{
 			sf::Vector2f playerPos = isaac->GetPosition();
-			for (auto& monster : monsters)
+			for (auto &monster : monsters)
 			{
 				monster->SetPlayerPosition(playerPos);
 			}
@@ -176,12 +179,17 @@ void SceneGame::Update(float dt)
 
 		Scene::Update(dt);
 
-		Map* currentMap = maps[currentMapIndex];
+		if (InputMgr::GetKeyDown(sf::Keyboard::P))
+		{
+			maps[currentMapIndex]->SetCleared(true);
+		}
+
+		Map *currentMap = maps[currentMapIndex];
 		beforeIndex = currentMapIndex;
-		std::vector<Door*> doors = currentMap->GetDoor();
+		std::vector<Door *> doors = currentMap->GetDoor();
 		for (int i = 0; i < doors.size(); i++)
 		{
-			Door* door = doors[i];
+			Door *door = doors[i];
 			if (Utils::CheckCollision(isaac->GetHitBoxBody().rect, door->GetHitBox()->rect) && door->GetMapCleared())
 			{
 				int nextMapIndexY = i % 2 == 0 ? i - 1 : 0;
@@ -198,7 +206,7 @@ void SceneGame::Update(float dt)
 	}
 }
 
-void SceneGame::Draw(sf::RenderWindow& window)
+void SceneGame::Draw(sf::RenderWindow &window)
 {
 	Scene::Draw(window);
 
@@ -208,13 +216,13 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 void SceneGame::EnemyCollosion()
 {
-	for (auto& gameObject : gameObjects)
+	for (auto &gameObject : gameObjects)
 	{
-		if (auto player = dynamic_cast<Isaac*>(gameObject))
+		if (auto player = dynamic_cast<Isaac *>(gameObject))
 		{
 			isaac = player;
 		}
-		if (auto monster = dynamic_cast<Monster*>(gameObject))
+		if (auto monster = dynamic_cast<Monster *>(gameObject))
 		{
 			monsters.push_back(monster);
 		}
@@ -223,10 +231,9 @@ void SceneGame::EnemyCollosion()
 	if (isaac)
 	{
 		sf::Vector2f playerPos = isaac->GetPosition();
-		for (auto& monster : monsters)
+		for (auto &monster : monsters)
 		{
 			monster->SetPlayerPosition(playerPos);
 		}
 	}
 }
-

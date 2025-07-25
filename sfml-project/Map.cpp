@@ -194,7 +194,7 @@ void Map::LoadStageField(const std::string& filePath)
 
 void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 {
-	if (infos[0] == "rocks_basement" || infos[5] == "grid_pit_basement")
+	if (infos[5] == "rocks_basement" || infos[5] == "grid_pit_basement")
 	{
 		obstacles.push_back(new Obstacles(infos[0], infos[5]));
 		SpriteSetting(obstacles[obstacles.size() - 1], infos);
