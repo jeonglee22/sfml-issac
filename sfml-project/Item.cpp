@@ -41,7 +41,7 @@ void Item::SetOrigin(Origins preset)
 
 void Item::Init()
 {
-	
+	animator.SetTarget(&sprite);
 }
 
 void Item::Release()
@@ -50,12 +50,39 @@ void Item::Release()
 
 void Item::Reset()
 {
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 3;
+
+
+	switch (itemType)
+	{
+	case Items::Coin:
+		animator.Play("animations/coin.csv");
+		break;
+	case Items::Heart:
+		animator.Play("animations/heart.csv");
+		break;
+	case Items::Half_Heart:
+		animator.Play("animations/half_heart.csv");
+		break;
+	case Items::Bomb:
+		animator.Play("animations/bomb.csv");
+		break;
+	case Items::Key:
+		animator.Play("animations/key.csv");
+		break;
+	}
+
+	SetScale({ 1.5f, 1.5f });
+	SetOrigin(Origins::BC);
 }
 
 void Item::Update(float dt)
 {
+	animator.Update(dt);
 }
 
 void Item::Draw(sf::RenderWindow& window)
 {
+	window.draw(sprite);
 }

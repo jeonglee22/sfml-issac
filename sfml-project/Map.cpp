@@ -8,6 +8,7 @@
 #include "Obstacles.h"
 #include "SpriteGo.h"
 #include "Spikes.h"
+#include "Item.h"
 #include "HitBox.h"
 
 Map::Map(const std::string &filePath, const std::string &name)
@@ -125,6 +126,62 @@ void Map::AddFly(const sf::Vector2f &pos)
 	fly->SetPosition(pos);
 	sceneGame->AddGameObject(fly);
 }
+
+void Map::AddCoin(const sf::Vector2f& pos)
+{
+	Item* item = new Item();
+	items.push_back(item);
+	item->Init();
+	item->SetItemType(Items::Coin);
+	item->Reset();
+	item->SetPosition(pos);
+	sceneGame->AddGameObject(item);
+}
+
+void Map::AddHeart(const sf::Vector2f& pos)
+{
+	Item* item = new Item();
+	items.push_back(item);
+	item->Init();
+	item->SetItemType(Items::Heart);
+	item->Reset();
+	item->SetPosition(pos);
+	sceneGame->AddGameObject(item);
+}
+
+void Map::AddHalfHeart(const sf::Vector2f& pos)
+{
+	Item* item = new Item();
+	items.push_back(item);
+	item->Init();
+	item->SetItemType(Items::Half_Heart);
+	item->Reset();
+	item->SetPosition(pos);
+	sceneGame->AddGameObject(item);
+}
+
+void Map::AddBomb(const sf::Vector2f& pos)
+{
+	Item* item = new Item();
+	items.push_back(item);
+	item->Init();
+	item->SetItemType(Items::Bomb);
+	item->Reset();
+	item->SetPosition(pos);
+	sceneGame->AddGameObject(item);
+}
+
+void Map::AddKey(const sf::Vector2f& pos)
+{
+	Item* item = new Item();
+	items.push_back(item);
+	item->Init();
+	item->SetItemType(Items::Key);
+	item->Reset();
+	item->SetPosition(pos);
+	sceneGame->AddGameObject(item);
+}
+
 
 void Map::SetDoor()
 {

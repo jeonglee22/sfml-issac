@@ -41,6 +41,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/overlay_2.png");
 	texIds.push_back("graphics/effect_002_bloodpoof_large1.png");
 	texIds.push_back("graphics/effect_002_bloodpoof.png");
+	texIds.push_back("graphics/items/pick ups/pickup_002_coin.png");
+	texIds.push_back("graphics/items/pick ups/pickup_001_heart.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
@@ -71,8 +73,13 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/blood.csv");
 	ANI_CLIP_MGR.Load("animations/blood_small.csv");
 
+
 	ANI_CLIP_MGR.Load("animations/tears_idle.csv");
 	ANI_CLIP_MGR.Load("animations/tears_boom.csv");
+
+	ANI_CLIP_MGR.Load("animations/coin.csv");
+	ANI_CLIP_MGR.Load("animations/heart.csv");
+	ANI_CLIP_MGR.Load("animations/half_heart.csv");
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
@@ -120,6 +127,9 @@ void SceneGame::Enter()
 			maps[i]->AddFly({250.f, 250.f});
 			maps[i]->AddSpider({300.f, 300.f});
 			maps[i]->AddSpider({350.f, 350.f});
+			maps[i]->AddCoin({ 400.f, 400.f });
+			maps[i]->AddHeart({200.f, 200.f});
+			maps[i]->AddHalfHeart({ 220.f, 220.f });
 		}
 		if (i > 0)
 		{

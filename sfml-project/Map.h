@@ -9,6 +9,7 @@ class Door;
 class SpriteGo;
 class HitBox;
 class SceneGame;
+class Item;
 
 class Map : public GameObject
 {
@@ -34,6 +35,7 @@ protected:
 	std::vector<Spikes*> spikes;
 	std::vector<SpriteGo*> backgrounds;
 	std::vector<HitBox*> boundary;
+	std::vector<Item*> items;
 
 	sf::FloatRect currentMapSize;
 
@@ -79,6 +81,11 @@ public:
 
 	void AddSpider(const sf::Vector2f& pos);
 	void AddFly(const sf::Vector2f& pos);
+	void AddCoin(const sf::Vector2f& pos);
+	void AddHeart(const sf::Vector2f& pos);
+	void AddHalfHeart(const sf::Vector2f& pos);
+	void AddBomb(const sf::Vector2f& pos);
+	void AddKey(const sf::Vector2f& pos);
 	void SetDoor();
 	void SetBoundary();
 
