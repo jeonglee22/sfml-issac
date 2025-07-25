@@ -461,18 +461,7 @@ void Isaac::MonsterCollision()
 
 		if (isaacBounds.intersects(monsterBounds) && invincibleTime == 0)
 		{
-			currentHP -= 50;
-			std::cout << currentHP << std::endl;
-			isHurt = true;
-			if (currentHP <= 0)
-			{
-				currentHP = 0;
-				isDead = true;
-				PlayHeadAnimation("empty");
-				PlayBodyAnimation("dead");
-				SetOrigin(Origins::BC);
-				velocity = { 0.f, 0.f };
-			}
+			TakeDamage(50);
 			return;
 		}
 		
@@ -516,11 +505,15 @@ void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* bo
 void Isaac::TakeDamage(int damage)
 {
 	currentHP -= damage;
+	std::cout << currentHP << std::endl;
 	isHurt = true;
 	if (currentHP <= 0)
 	{
 		currentHP = 0;
-		SetActive(false);
+		isDead = true;
+		PlayHeadAnimation("empty");
+		PlayBodyAnimation("dead");
+		SetOrigin(Origins::BC);
 	}
 }
 
