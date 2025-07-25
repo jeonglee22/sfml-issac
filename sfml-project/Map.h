@@ -91,5 +91,7 @@ public:
 	void AddGameObjectInScene();
 	void SetActiveAll(bool b);
 
+	bool CheckAllEnemyDead();
+
 };
 

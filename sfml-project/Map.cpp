@@ -10,12 +10,12 @@
 #include "Spikes.h"
 #include "HitBox.h"
 
-Map::Map(const std::string& filePath, const std::string& name)
+Map::Map(const std::string &filePath, const std::string &name)
 	: filePath(filePath), GameObject(name)
 {
 }
 
-void Map::SetPosition(const sf::Vector2f& pos)
+void Map::SetPosition(const sf::Vector2f &pos)
 {
 	GameObject::SetPosition(pos);
 	center.setPosition(pos);
@@ -41,13 +41,13 @@ void Map::SetRotation(float rot)
 	center.setRotation(rot);
 }
 
-void Map::SetScale(const sf::Vector2f& s)
+void Map::SetScale(const sf::Vector2f &s)
 {
 	GameObject::SetScale(s);
 	center.setScale(s);
 }
 
-void Map::SetOrigin(const sf::Vector2f& o)
+void Map::SetOrigin(const sf::Vector2f &o)
 {
 	GameObject::SetOrigin(o);
 	center.setOrigin(o);
@@ -72,18 +72,26 @@ void Map::Release()
 
 void Map::Reset()
 {
-	if(SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
 	{
-		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+		sceneGame = (SceneGame *)SCENE_MGR.GetCurrentScene();
 		LoadStageField(filePath);
 	}
 }
 
 void Map::Update(float dt)
 {
+	if (CheckAllEnemyDead())
+	{
+		SetCleared(true);
+	}
+	else
+	{
+		SetCleared(false);
+	}
 }
 
-void Map::Draw(sf::RenderWindow& window)
+void Map::Draw(sf::RenderWindow &window)
 {
 	for (int i = 0; i < boundary.size(); i++)
 		boundary[i]->Draw(window);
@@ -98,18 +106,22 @@ void Map::SetCleared(bool b)
 	}
 }
 
-void Map::AddSpider(const sf::Vector2f& pos)
+void Map::AddSpider(const sf::Vector2f &pos)
 {
-	Spider* spider = new Spider();
+	Spider *spider = new Spider();
 	spiders.push_back(spider);
+	spider->Init();
+	spider->Reset();
 	spider->SetPosition(pos);
 	sceneGame->AddGameObject(spider);
 }
 
-void Map::AddFly(const sf::Vector2f& pos)
+void Map::AddFly(const sf::Vector2f &pos)
 {
-	Fly* fly = new Fly();
+	Fly *fly = new Fly();
 	flys.push_back(fly);
+	fly->Init();
+	fly->Reset();
 	fly->SetPosition(pos);
 	sceneGame->AddGameObject(fly);
 }
@@ -141,31 +153,31 @@ void Map::SetBoundary()
 		boundary.push_back(new HitBox());
 		if (i < 2)
 		{
-			//boundary[i]->rect.setSize({ currentMapSize.width, 104.f });
-			sf::Vector2f rowBound = { (currentMapSize.width - doors[0]->GetDoorSize().x) * 0.5f, 104.f };
+			// boundary[i]->rect.setSize({ currentMapSize.width, 104.f });
+			sf::Vector2f rowBound = {(currentMapSize.width - doors[0]->GetDoorSize().x) * 0.5f, 104.f};
 			boundary[i * 2]->rect.setSize(rowBound);
 			boundary[i * 2 + 1]->rect.setSize(rowBound);
-			boundary[i * 2]->rect.setOrigin({ rowBound.x + doors[0]->GetDoorSize().x * 0.5f, 52.f });
-			boundary[i * 2 + 1]->rect.setOrigin({ -doors[0]->GetDoorSize().x * 0.5f, 52.f });
+			boundary[i * 2]->rect.setOrigin({rowBound.x + doors[0]->GetDoorSize().x * 0.5f, 52.f});
+			boundary[i * 2 + 1]->rect.setOrigin({-doors[0]->GetDoorSize().x * 0.5f, 52.f});
 		}
 		else
 		{
-			//boundary[i]->rect.setSize({ 104.f, currentMapSize.height });
-			sf::Vector2f colBound = { 104.f, (currentMapSize.height - doors[0]->GetDoorSize().x) * 0.5f };
+			// boundary[i]->rect.setSize({ 104.f, currentMapSize.height });
+			sf::Vector2f colBound = {104.f, (currentMapSize.height - doors[0]->GetDoorSize().x) * 0.5f};
 			boundary[i * 2]->rect.setSize(colBound);
 			boundary[i * 2 + 1]->rect.setSize(colBound);
-			boundary[i * 2]->rect.setOrigin({ 52.f, colBound.y + doors[0]->GetDoorSize().x * 0.5f });
-			boundary[i * 2 + 1]->rect.setOrigin({ 52.f, -doors[0]->GetDoorSize().x * 0.5f });
+			boundary[i * 2]->rect.setOrigin({52.f, colBound.y + doors[0]->GetDoorSize().x * 0.5f});
+			boundary[i * 2 + 1]->rect.setOrigin({52.f, -doors[0]->GetDoorSize().x * 0.5f});
 		}
 	}
-	boundary[0]->rect.setPosition({ currentMapSize.getSize().x * 0.5f, 52.f });
-	boundary[1]->rect.setPosition({ currentMapSize.getSize().x * 0.5f, 52.f });
-	boundary[2]->rect.setPosition({ currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f });
-	boundary[3]->rect.setPosition({ currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f });
-	boundary[4]->rect.setPosition({ 52.f, currentMapSize.getSize().y * 0.5f });
-	boundary[5]->rect.setPosition({ 52.f, currentMapSize.getSize().y * 0.5f });
-	boundary[6]->rect.setPosition({ currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f });
-	boundary[7]->rect.setPosition({ currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f });
+	boundary[0]->rect.setPosition({currentMapSize.getSize().x * 0.5f, 52.f});
+	boundary[1]->rect.setPosition({currentMapSize.getSize().x * 0.5f, 52.f});
+	boundary[2]->rect.setPosition({currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f});
+	boundary[3]->rect.setPosition({currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f});
+	boundary[4]->rect.setPosition({52.f, currentMapSize.getSize().y * 0.5f});
+	boundary[5]->rect.setPosition({52.f, currentMapSize.getSize().y * 0.5f});
+	boundary[6]->rect.setPosition({currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f});
+	boundary[7]->rect.setPosition({currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f});
 }
 
 void Map::ClearSprites()
@@ -178,7 +190,7 @@ void Map::ClearSprites()
 	backgrounds.clear();
 }
 
-void Map::LoadStageField(const std::string& filePath)
+void Map::LoadStageField(const std::string &filePath)
 {
 	rapidcsv::Document doc(filePath);
 
@@ -213,14 +225,14 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 	}
 }
 
-void Map::SpriteSetting(SpriteGo* sp , const std::vector<std::string> infos)
+void Map::SpriteSetting(SpriteGo *sp, const std::vector<std::string> infos)
 {
 	sp->Init();
 	sp->SetOrigin(Origins::MC);
 	sp->Reset();
-	sp->GetSprite().setTextureRect({ std::stoi(infos[2]),std::stoi(infos[1]), std::stoi(infos[3]), std::stoi(infos[4]) });
-	sp->SetScale({ 2.f,2.f });
-	sp->SetOrigin({ std::stof(infos[13]) ,std::stof(infos[14]) });
+	sp->GetSprite().setTextureRect({std::stoi(infos[2]), std::stoi(infos[1]), std::stoi(infos[3]), std::stoi(infos[4])});
+	sp->SetScale({2.f, 2.f});
+	sp->SetOrigin({std::stof(infos[13]), std::stof(infos[14])});
 	sp->SetPosition(sf::Vector2f(std::stof(infos[6]), std::stof(infos[7])) + sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f);
 	sp->SetRotation(std::stof(infos[12]));
 	sp->sortingLayer = (SortingLayers)std::stoi(infos[10]);
@@ -257,4 +269,20 @@ void Map::SetActiveAll(bool b)
 		obstacle->SetActive(b);
 	for (auto ground : backgrounds)
 		ground->SetActive(b);
+}
+
+bool Map::CheckAllEnemyDead()
+{
+	bool allDead = true;
+	for (auto fly : flys)
+	{
+		if (fly->GetActive())
+			allDead = false;
+	}
+	for (auto spider : spiders)
+	{
+		if (spider->GetActive())
+			allDead = false;
+	}
+	return allDead;
 }
