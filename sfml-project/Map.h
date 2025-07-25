@@ -12,10 +12,21 @@ class SceneGame;
 
 class Map : public GameObject
 {
+public:
+	enum class mapType
+	{
+		None = 0,
+		Normal,
+		Gold,
+		Boss,
+		Store,
+	};
+
 protected:
 	std::string filePath;
 	sf::RectangleShape center;
 
+	std::vector<SpriteGo*> allObjects;
 	std::vector<Spider*> spiders;
 	std::vector<Fly*> flys;
 	std::vector<Obstacles*> obstacles;
@@ -34,7 +45,7 @@ protected:
 
 	SceneGame* sceneGame;
 
-	int isMapPlaying = 0;
+	bool isCleared = false;
 
 public:
 	Map(const std::string& filePath = "", const std::string & name = "");
@@ -58,12 +69,13 @@ public:
 	int GetFlyCount() const { return flyCount; }
 	void SetFilePath(int c) { flyCount = c; }
 	int GetFilePath() const { return flyCount; }
+	void SetCleared(bool b);
+	bool GetCleared() const { return isCleared; }
 
 	sf::FloatRect GetMapSize() const { return currentMapSize; }
 	std::vector<HitBox*> GetBoundary() const { return boundary; }
 	std::vector<Door*> GetDoor() const { return doors; }
-
-	void SetMapPlaying(int i) { isMapPlaying = 1; }
+	std::vector<SpriteGo*> GetObjects() const { return allObjects; }
 
 	void AddSpider(const sf::Vector2f& pos);
 	void AddFly(const sf::Vector2f& pos);
@@ -77,5 +89,7 @@ public:
 	void SpriteSetting(SpriteGo* sp, const std::vector<std::string> infos);
 
 	void AddGameObjectInScene();
+	void SetActiveAll(bool b);
+
 };
 

@@ -89,6 +89,15 @@ void Map::Draw(sf::RenderWindow& window)
 		boundary[i]->Draw(window);
 }
 
+void Map::SetCleared(bool b)
+{
+	isCleared = b;
+	for (auto door : doors)
+	{
+		door->SetMapCleared(b);
+	}
+}
+
 void Map::AddSpider(const sf::Vector2f& pos)
 {
 	Spider* spider = new Spider();
@@ -189,11 +198,13 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 	{
 		obstacles.push_back(new Obstacles(infos[0], infos[5]));
 		SpriteSetting(obstacles[obstacles.size() - 1], infos);
+		allObjects.push_back(obstacles[obstacles.size() - 1]);
 	}
 	else if (infos[5] == "grid_spikes")
 	{
 		spikes.push_back(new Spikes(infos[0], infos[5]));
 		SpriteSetting(spikes[spikes.size() - 1], infos);
+		allObjects.push_back(spikes[spikes.size() - 1]);
 	}
 	else
 	{
@@ -230,4 +241,20 @@ void Map::AddGameObjectInScene()
 		sceneGame->AddGameObject(obstacle);
 	for (auto ground : backgrounds)
 		sceneGame->AddGameObject(ground);
+}
+
+void Map::SetActiveAll(bool b)
+{
+	for (auto spider : spiders)
+		spider->SetActive(b);
+	for (auto fly : flys)
+		fly->SetActive(b);
+	for (auto door : doors)
+		door->SetActive(b);
+	for (auto spike : spikes)
+		spike->SetActive(b);
+	for (auto obstacle : obstacles)
+		obstacle->SetActive(b);
+	for (auto ground : backgrounds)
+		ground->SetActive(b);
 }

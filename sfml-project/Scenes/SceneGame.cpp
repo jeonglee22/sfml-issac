@@ -73,6 +73,7 @@ void SceneGame::Init()
 
 	maps.push_back((Map*)AddGameObject(new Map("Mapfolder/startMap.csv")));
 	maps.push_back((Map*)AddGameObject(new Map("Mapfolder/testmap3.csv")));
+	maps.push_back((Map*)AddGameObject(new Map("Mapfolder/testmap3.csv")));
 
 	shading = (SpriteGo*)AddGameObject(new SpriteGo("graphics/shading.png"));
 	shading->sortingLayer = SortingLayers::Background;
@@ -92,6 +93,8 @@ void SceneGame::Enter()
 
 	Scene::Enter();
 
+	mapIndex[stageStartY][stageStartX] = 0;
+
 	currentMapSize = maps[0]->GetMapSize();
 	worldView.setSize(currentMapSize.getSize());
 	worldView.setCenter(currentMapSize.getSize() * 0.5f);
@@ -105,18 +108,24 @@ void SceneGame::Enter()
 		maps[i]->SetDoor();
 		maps[i]->SetBoundary();
 		maps[i]->AddGameObjectInScene();
-		if (i == 1)
+		if (i > 0)
 		{
-			maps[1]->AddFly({ 200.f,200.f });
-			maps[1]->AddFly({ 250.f,250.f });
-			maps[1]->AddSpider({ 300.f, 300.f });
-			maps[1]->AddSpider({ 350.f, 350.f });
+			maps[i]->AddFly({ 200.f,200.f });
+			maps[i]->AddFly({ 250.f,250.f });
+			maps[i]->AddSpider({ 300.f, 300.f });
+			maps[i]->AddSpider({ 350.f, 350.f });
 		}
 		if (i > 0)
+		{
 			maps[i]->SetPosition(maps[i]->GetPosition() + sf::Vector2f(maps[i - 1]->GetMapSize().getSize().x, 0.f));
+			mapIndex[stageStartY][stageStartX + i] = i;
+		}
+		maps[i]->SetActiveAll(false);
 	}
-
-	maps[0]->SetMapPlaying(1);
+	mapIndex[stageStartY][stageStartX + 1] = 1;
+	maps[0]->SetActiveAll(true);
+	maps[0]->SetCleared(true);
+	beforeIndex = 0;
 
 	shading->SetScale({ 2.f,2.f });
 	shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
@@ -125,28 +134,68 @@ void SceneGame::Enter()
 
 void SceneGame::Update(float dt)
 {
-	for (auto& gameObject : gameObjects)
+	if (beforeIndex != currentMapIndex)
 	{
-		if (auto player = dynamic_cast<Isaac*>(gameObject))
+		maps[currentMapIndex]->SetActiveAll(true);
+		sf::Vector2f nextMapCenter = maps[currentMapIndex]->GetPosition() + maps[currentMapIndex]->GetMapSize().getSize() * 0.5f;
+		if (isMapChanging)
 		{
-			isaac = player;
+			worldView.setCenter(Utils::Lerp(worldView.getCenter(), nextMapCenter, dt * 15));
+			if (Utils::Distance(worldView.getCenter(), nextMapCenter) <= 10.f)
+				isMapChanging = false;
 		}
-		if (auto monster = dynamic_cast<Monster*>(gameObject))
+		else
 		{
-			monsters.push_back(monster);
+			isaac->SetPosition(nextSpawnPos);
+			maps[beforeIndex]->SetActiveAll(false);
+			beforeIndex = currentMapIndex;
 		}
 	}
-
-	if (isaac)
+	else
 	{
-		sf::Vector2f playerPos = isaac->GetPosition();
-		for (auto& monster : monsters)
+		for (auto& gameObject : gameObjects)
 		{
-			monster->SetPlayerPosition(playerPos);
+			if (auto player = dynamic_cast<Isaac*>(gameObject))
+			{
+				isaac = player;
+			}
+			if (auto monster = dynamic_cast<Monster*>(gameObject))
+			{
+				monsters.push_back(monster);
+			}
+		}
+
+		if (isaac)
+		{
+			sf::Vector2f playerPos = isaac->GetPosition();
+			for (auto& monster : monsters)
+			{
+				monster->SetPlayerPosition(playerPos);
+			}
+		}
+
+		Scene::Update(dt);
+
+		Map* currentMap = maps[currentMapIndex];
+		beforeIndex = currentMapIndex;
+		std::vector<Door*> doors = currentMap->GetDoor();
+		for (int i = 0; i < doors.size(); i++)
+		{
+			Door* door = doors[i];
+			if (Utils::CheckCollision(isaac->GetHitBoxBody().rect, door->GetHitBox()->rect) && door->GetMapCleared())
+			{
+				int nextMapIndexY = i % 2 == 0 ? i - 1 : 0;
+				currentYIndex += nextMapIndexY;
+				int nextMapIndexX = i % 2 == 1 ? 2 - i : 0;
+				currentXIndex += nextMapIndexX;
+				isMapChanging = true;
+				currentMapIndex = mapIndex[currentYIndex][currentXIndex];
+				nextSpawnPos = isaac->GetPosition() + sf::Vector2f(nextMapIndexX, nextMapIndexY) * 250.f;
+				std::cout << nextSpawnPos.x << ", " << nextSpawnPos.y << ", " << currentMapIndex << std::endl;
+				break;
+			}
 		}
 	}
-
-	Scene::Update(dt);
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
@@ -178,15 +227,6 @@ void SceneGame::EnemyCollosion()
 		{
 			monster->SetPlayerPosition(playerPos);
 		}
-	}
-}
-
-void SceneGame::GoNextMap()
-{
-	Map* currentMap = maps[currentMapIndex];
-	for (auto door : currentMap->GetDoor())
-	{
-		//if(Utils::CheckCollision(hitBoxBody.rect, currentMap->GetDoor()->GetHitBox()->rect))
 	}
 }
 

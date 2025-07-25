@@ -84,11 +84,15 @@ void Door::Reset()
 
 void Door::Update(float dt)
 {
+	hitBox->UpdateTransform(doorOpened, doorOpened.getLocalBounds());
 	if (InputMgr::GetKeyDown(sf::Keyboard::P))
 	{
 		isCleared = !isCleared;
+		if (isCleared)
+			hitBox->rect.setSize({ hitBox->rect.getSize().x ,hitBox->rect.getSize().y * 0.5f });
+		else
+			hitBox->rect.setSize({ hitBox->rect.getSize().x ,hitBox->rect.getSize().y * 2.f });
 	}
-	hitBox->UpdateTransform(doorOpened, doorOpened.getLocalBounds());
 }
 
 void Door::Draw(sf::RenderWindow& window)

@@ -12,6 +12,14 @@ class Map;
 class SceneGame : public Scene
 {
 protected:
+	int mapIndex[15][15] = {-1};
+	int beforeIndex = 0;
+	int stageStartX = 7;
+	int currentXIndex = stageStartX;
+	int stageStartY = 7;
+	int currentYIndex = stageStartY;
+	sf::Vector2f nextSpawnPos;
+
 	std::vector<Map*> maps;
 	std::vector<SpriteGo*> mapSprites;
 
@@ -31,6 +39,9 @@ protected:
 
 	int currentMapIndex = 0;
 
+	bool isMapChanging = false;
+	float mapChangeSpeed = 500.f;
+
 public:
 	SceneGame();
 	~SceneGame() = default;
@@ -44,11 +55,9 @@ public:
 	void EnemyCollosion();
 	std::vector<Monster*> GetMonsters() { return monsters; }
 	std::vector<HitBox*> GetMapBoundary() { return maps[currentMapIndex]->GetBoundary(); }
-	std::vector<SpriteGo*> GetMapSprites() { return mapSprites; }
+	std::vector<SpriteGo*> GetMapSprites() { return maps[currentMapIndex]->GetObjects(); }
 	std::vector<Door*> GetMapDoor() { return maps[currentMapIndex]->GetDoor(); }
 	
 	sf::View GetWorldView() { return worldView; }
-
-	void GoNextMap();
 };
 
