@@ -81,28 +81,7 @@ void SceneGame::Init()
 	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/testmap3.csv")));
 
 	shading = (SpriteGo *)AddGameObject(new SpriteGo("graphics/shading.png"));
-	auto fly = new Fly();
-	fly->SetPosition({ 200.f,200.f });
-	AddGameObject(fly);
 
-	auto fly1 = new Fly();
-	fly1->SetPosition({ 250.f,250.f });
-	AddGameObject(fly1);
-
-	auto spider = new Spider();
-	spider->SetPosition({ 350.f, 350.f });
-	AddGameObject(spider);
-
-	auto spider1 = new Spider();
-	spider1->SetPosition({ 400.f, 400.f });
-	AddGameObject(spider1);
-
-	for (int i = 0; i < 4; i++)
-	{
-		doors.push_back((Door*)AddGameObject(new Door("graphics/additionals/door_01_normaldoor.png", "Door")));
-	}
-
-	shading = (SpriteGo*)AddGameObject(new SpriteGo("graphics/shading.png"));
 	shading->sortingLayer = SortingLayers::Background;
 	shading->sortingOrder = 20;
 
