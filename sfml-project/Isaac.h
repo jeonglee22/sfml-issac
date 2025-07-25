@@ -79,4 +79,7 @@ public:
 	void PlayBodyAnimation(const std::string& animation);
 	bool IsCurrentHeadAnimation(const std::string& animation) const;
 	bool IsCurrentBodyAnimation(const std::string& animation) const;
+
+	HitBox GetHitBoxBody() const { return hitBoxBody; }
+	HitBox GetHitBoxHead() const { return hitBoxHead; }
 };

@@ -1,15 +1,26 @@
 #pragma once
 #include "Scene.h"
+#include "Map.h"
 
 class SpriteGo;
 class Isaac;
 class Monster;
 class HitBox;
 class Door;
+class Map;
 
 class SceneGame : public Scene
 {
 protected:
+	int mapIndex[15][15] = {-1};
+	int beforeIndex = 0;
+	int stageStartX = 7;
+	int currentXIndex = stageStartX;
+	int stageStartY = 7;
+	int currentYIndex = stageStartY;
+	sf::Vector2f nextSpawnPos;
+
+	std::vector<Map*> maps;
 	std::vector<SpriteGo*> mapSprites;
 
 	Isaac* isaac = nullptr;
@@ -24,6 +35,12 @@ protected:
 	std::vector<Door*> doors;
 
 	SpriteGo* shading;
+	SpriteGo* overlay;
+
+	int currentMapIndex = 0;
+
+	bool isMapChanging = false;
+	float mapChangeSpeed = 500.f;
 
 public:
 	SceneGame();
@@ -35,17 +52,12 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	void LoadStageField(const std::string& filePath);
-	void CreateMatchedTypeGO(const std::string& filepath, const std::string& name);
-
 	void EnemyCollosion();
 	std::vector<Monster*> GetMonsters() { return monsters; }
-	std::vector<HitBox*> GetMapBoundary() { return boundary; }
-	std::vector<SpriteGo*> GetMapSprites() { return mapSprites; }
-	std::vector<Door*> GetMapDoor() { return doors; }
-
-	void MakeBoundary();
-	void MakeDoor();
+	std::vector<HitBox*> GetMapBoundary() { return maps[currentMapIndex]->GetBoundary(); }
+	std::vector<SpriteGo*> GetMapSprites() { return maps[currentMapIndex]->GetObjects(); }
+	std::vector<Door*> GetMapDoor() { return maps[currentMapIndex]->GetDoor(); }
 	
+	sf::View GetWorldView() { return worldView; }
 };
 

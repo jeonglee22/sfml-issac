@@ -33,5 +33,6 @@ public:
 
 	HitBox* GetHitBox() const { return hitBox; }
 	bool GetMapCleared() const { return isCleared; }
+	void SetMapCleared(bool b) { isCleared = b; }
 	sf::Vector2i GetDoorSize() const { return doorOpened.getTextureRect().getSize() * 2; }
 };
