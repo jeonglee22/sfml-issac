@@ -1,14 +1,13 @@
 #pragma once
 #include "GameObject.h"
 
-class Spider;
-class Fly;
 class Obstacles;
 class Spikes;
 class Door;
 class SpriteGo;
 class HitBox;
 class SceneGame;
+class Monster;
 
 class Map : public GameObject
 {
@@ -27,8 +26,7 @@ protected:
 	sf::RectangleShape center;
 
 	std::vector<SpriteGo*> allObjects;
-	std::vector<Spider*> spiders;
-	std::vector<Fly*> flys;
+	std::vector<Monster*> monsters;
 	std::vector<Obstacles*> obstacles;
 	std::vector<Door*> doors;
 	std::vector<Spikes*> spikes;
@@ -79,8 +77,7 @@ public:
 	std::vector<Door*> GetDoor() const { return doors; }
 	std::vector<SpriteGo*> GetObjects() const { return allObjects; }
 
-	void AddSpider(const sf::Vector2f& pos);
-	void AddFly(const sf::Vector2f& pos);
+	void AddMonster(const sf::Vector2f& pos, const std::string& name);
 	void SetDoor();
 	void SetBoundary();
 

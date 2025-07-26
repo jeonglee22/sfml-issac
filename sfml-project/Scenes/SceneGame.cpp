@@ -149,13 +149,6 @@ void SceneGame::Enter()
 		maps[i]->AddGameObjectInScene();
 		if (i > 0)
 		{
-			maps[i]->AddFly({200.f, 200.f});
-			maps[i]->AddFly({250.f, 250.f});
-			maps[i]->AddSpider({300.f, 300.f});
-			maps[i]->AddSpider({350.f, 350.f});
-		}
-		if (i > 0)
-		{
 			maps[i]->SetPosition(maps[i - 1]->GetPosition() + sf::Vector2f(maps[i - 1]->GetMapSize().getSize().x, 0.f));
 		}
 		maps[i]->SetActiveAll(false);

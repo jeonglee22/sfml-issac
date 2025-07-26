@@ -1,0 +1,10 @@
+TEXTURE_ID,TEXTURERECT_TOP,TEXTURERECT_LEFT,TEXTURERECT_WIDTH,TEXTURERECT_HEIGHT,NAME,XPOSITION,YPOSITION,WIDTH,HEIGHT,LAYER,ORDER,ROTATION
+260.000031,0,117.999969,188,,,,,,,,,
+graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,260.000031,0.000000,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,260.000031,51.000000,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,260.000031,104.000000,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,260.000031,156.000000,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,312.000000,156.000000,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,312.000000,104.000000,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,312.000000,51.000000,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,312.000000,0.000000,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000

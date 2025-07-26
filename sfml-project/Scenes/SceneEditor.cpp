@@ -27,6 +27,11 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/obstacles/pit/grid_pit_basement.png");
 	texIds.push_back("graphics/obstacles/pit/grid_pit_depths.png");
 	texIds.push_back("graphics/obstacles/grid_fireplace.png");
+	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
+	texIds.push_back("graphics/enemies/boss_004_monstro.png");
+	texIds.push_back("graphics/enemies/monster_010_fly.png");
+	texIds.push_back("graphics/enemies/monster_044_hopperleaper.png");
+	texIds.push_back("graphics/enemies/monster_214_level2spider_small.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 
@@ -103,12 +108,8 @@ void SceneEditor::Update(float dt)
 	}
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && isChoosed)
 	{
-		isSetDrop = true;
-	}
-	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isChoosed && isSetDrop)
-	{
 		sf::RectangleShape box = mapBox->GetRectHavePoint(mouseUIPos);
-		if (box.getSize() != sf::Vector2f(0.f,0.f) && CheckAlreadySetGrid(spriteChoosed) == nullptr && IsNotOnGrid())
+		if (box.getSize() != sf::Vector2f(0.f, 0.f) && CheckAlreadySetGrid(spriteChoosed) == nullptr && IsNotOnGrid())
 		{
 			SpriteGo* sprite = new SpriteGo(*spriteChoosed);
 			sprite->SetScale(sprite->GetScale() * 2.f);
@@ -118,10 +119,6 @@ void SceneEditor::Update(float dt)
 			AddGameObject(sprite);
 			mapSprites.push_back(sprite);
 		}
-	}
-	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left) && isSetDrop)
-	{
-		isSetDrop = false;
 	}
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right) && 
 		Utils::PointInTransformBounds(editBoxBody, editBoxBody.getLocalBounds(), mouseUIPos))

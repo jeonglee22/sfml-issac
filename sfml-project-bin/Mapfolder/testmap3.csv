@@ -71,3 +71,7 @@ graphics/obstacles/pit/grid_pit_basement.png,26,26,26,26,grid_pit_basement,520.0
 graphics/obstacles/pit/grid_pit_basement.png,26,26,26,26,grid_pit_basement,520.000000,259.962830,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,0,78,26,26,grid_pit_basement,520.000000,311.619141,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/background/basement.png,52,104,52,52,basement,468.000000,259.962830,52.000000,52.000000,0,0,180.000000,52.000000,52.000000
+graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,364.000000,51.950439,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,207.999939,259.601624,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_010_fly.png,10,7,19,10,monster_010_fly,468.000000,207.153625,19.000000,10.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_010_fly.png,10,7,19,10,monster_010_fly,260.000031,51.950439,19.000000,10.000000,1,-5,0.000000,0.000000,0.000000

@@ -232,10 +232,8 @@ std::vector<sf::RectangleShape> MapBoxUI::GetMapGird()
 		return backgroundGrid;
 		break;
 	case MapBoxUI::Mode::obstacles:
-		return obstacleGrid;
-		break;
 	case MapBoxUI::Mode::enemies:
-		return enemyGrid;
+		return obstacleGrid;
 		break;
 	default:
 		return std::vector<sf::RectangleShape>();
@@ -251,10 +249,8 @@ std::vector<sf::FloatRect> MapBoxUI::GetMapRect()
 		return backgroundGridRect;
 		break;
 	case MapBoxUI::Mode::obstacles:
-		return obstacleGridRect;
-		break;
 	case MapBoxUI::Mode::enemies:
-		return enemyGridRect;
+		return obstacleGridRect;
 		break;
 	default:
 		return std::vector<sf::FloatRect>();
