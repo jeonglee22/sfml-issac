@@ -147,6 +147,7 @@
     <ClCompile Include="Framework\AnimationClip.cpp" />
     <ClCompile Include="Framework\Animator.cpp" />
     <ClCompile Include="GameUIs\MapBoxUI.cpp" />
+    <ClCompile Include="GameUIs\HeartUI.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="Isaac.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Framework\Button.h" />
     <ClInclude Include="GameUIs\EditBoxUI.h" />
     <ClInclude Include="GameUIs\MapBoxUI.h" />
+    <ClInclude Include="GameUIs\HeartUI.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="Isaac.h" />
     <ClInclude Include="Framework\Framework.h" />

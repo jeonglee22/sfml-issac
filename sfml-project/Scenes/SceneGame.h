@@ -9,7 +9,7 @@ class HitBox;
 class Door;
 class Map;
 class MapUI;
-class ItmeUI;
+class ItemUI;
 
 class SceneGame : public Scene
 {
@@ -38,7 +38,7 @@ protected:
 	SpriteGo* overlay;
 
 	MapUI* mapUI;
-	ItmeUI* itemUI;
+	ItemUI* itemUI;
 
 	int currentMapIndex = 0;
 

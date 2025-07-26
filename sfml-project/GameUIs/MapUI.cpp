@@ -90,8 +90,6 @@ void MapUI::Update(float dt)
 				{
 					plates[yIndex * 15 + xIndex]->setPosition(position + sf::Vector2f(j * oneRoomSize.x, i * oneRoomSize.y));
 					rooms[yIndex * 15 + xIndex]->setPosition(position + sf::Vector2f(j * oneRoomSize.x, i * oneRoomSize.y));
-					//std::cout << rooms[yIndex * 15 + xIndex]->getPosition().x << ", " << rooms[yIndex * 15 + xIndex]->getPosition().y << std::endl;
-					//std::cout << plates[yIndex * 15 + xIndex]->getPosition().x << ", " << plates[yIndex * 15 + xIndex]->getPosition().y << std::endl;
 				}
 			}
 		}

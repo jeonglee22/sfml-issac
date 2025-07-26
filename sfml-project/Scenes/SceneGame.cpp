@@ -44,6 +44,9 @@ void SceneGame::Init()
 	texIds.push_back("graphics/effect_002_bloodpoof_large1.png");
 	texIds.push_back("graphics/effect_002_bloodpoof.png");
 	texIds.push_back("graphics/minimap.png");
+	texIds.push_back("graphics/hudpickups.png");
+	for (int i = 0; i < 10; i++)
+		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
@@ -95,7 +98,7 @@ void SceneGame::Init()
 	}
 
 	mapUI = (MapUI*)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
-	mapUI->SetScale({ 2.f,2.f });
+	itemUI = (ItemUI*)AddGameObject(new ItemUI("ItemUI"));
 
 	Scene::Init();
 }
@@ -116,6 +119,9 @@ void SceneGame::Enter()
 	uiView.setCenter(center);
 
 	Scene::Enter();
+
+	mapUI->SetScale({ 2.f,2.f });
+	itemUI->SetScale({ 2.f,2.f });
 
 	mapIndex[stageStartY][stageStartX] = 0;
 	mapIndex[stageStartY][stageStartX + 1] = 1;
