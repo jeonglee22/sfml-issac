@@ -2,6 +2,15 @@
 #include "Animator.h"
 #include "HitBox.h"
 
+struct ItemInventory
+{
+	int heartCount = 300;
+	int coinCount = 0;
+	int bombCount = 0;
+	int keyCount = 0;
+};
+
+
 class HitBox;
 class Tears;
 class SceneDev2;
@@ -14,6 +23,7 @@ protected:
 	sf::Sprite head;
 	Animator bodyAnimator;
 	Animator headAnimator;
+	ItemInventory inventory;
 
 	std::map<std::string, std::string> headAnimation;
 	std::map<std::string, std::string> headTearsAnimation;
@@ -43,7 +53,7 @@ protected:
 	float maxHurtTime = 0.4f;
 
 	int maxHP = 300;
-	int currentHP = 300;
+	int currentHP = 0;
 
 	bool isDead = false;
 
@@ -69,6 +79,7 @@ public:
 
 	void FireTear(const sf::Vector2f& direction);
 	void MonsterCollision();
+	void ItemCollision();
 	void HitBoxUpdate();
 	void SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box);
 
@@ -79,6 +90,8 @@ public:
 	void PlayBodyAnimation(const std::string& animation);
 	bool IsCurrentHeadAnimation(const std::string& animation) const;
 	bool IsCurrentBodyAnimation(const std::string& animation) const;
+
+	void AddItem(Items itemType);
 
 	HitBox GetHitBoxBody() const { return hitBoxBody; }
 	HitBox GetHitBoxHead() const { return hitBoxHead; }

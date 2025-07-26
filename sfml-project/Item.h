@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Animator.h"
-
+#include "HitBox.h"
 
 class Item : public GameObject
 {
@@ -10,6 +10,7 @@ protected:
 	Animator animator;
 
 	Items itemType;
+	HitBox hitBox;
 
 	float beatTime = 0.0f;
 	bool isLarge = false;
@@ -30,6 +31,9 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	Items GetItemType()const { return itemType; }
+	HitBox& GetHitBox() { return hitBox; }
 
 
 };

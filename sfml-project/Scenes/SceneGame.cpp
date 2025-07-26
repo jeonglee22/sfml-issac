@@ -13,6 +13,7 @@
 #include "HitBox.h"
 #include "Door.h"
 #include "Map.h"
+#include "item.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Stage)
@@ -196,6 +197,36 @@ void SceneGame::Update(float dt)
 		}
 
 		Scene::Update(dt);
+
+		if (isaac && !isMapChanging)
+		{
+			Map* currentMap = maps[currentMapIndex];
+			auto items = currentMap->GetItems();
+
+			std::cout << "아이템 개수: " << items.size() << std::endl;
+			std::cout << "현재 맵 크기: " << currentMap->GetMapSize().width << "x" << currentMap->GetMapSize().height << std::endl;
+
+
+			for (auto item : items)
+			{
+				if (item->GetActive() && Utils::CheckCollision(isaac->GetHitBoxBody().rect, item->GetHitBox().rect))
+				{
+					std::cout << "아이템 충돌 감지!" << std::endl;
+					isaac->AddItem(item->GetItemType());
+					item->SetActive(false);
+				}
+			}
+			for (int i = 0; i < items.size(); i++)
+			{
+				auto item = items[i];
+				if (item->GetActive())
+				{
+					sf::Vector2f itemPos = item->GetPosition();
+					std::cout << "아이템 " << i << " 위치: " << itemPos.x << ", " << itemPos.y << std::endl;
+				}
+			}
+
+		}
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::P))
 		{

@@ -7,6 +7,7 @@
 #include "Monster.h"
 #include "Door.h"
 #include "Obstacles.h"
+#include "Map.h"
 
 Isaac::Isaac(const std::string &name)
 	: GameObject(name)
@@ -75,7 +76,7 @@ void Isaac::Reset()
 	}
 
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 0;
+	sortingOrder = 1;
 
 	headAnimator.Play("animations/isaac_head_front.csv");
 	bodyAnimator.Play("animations/isaac_body_idle.csv");
@@ -115,6 +116,7 @@ void Isaac::Reset()
 	shootTimer = 0.0f;
 	wasKeyPressed = false;
 	shootDirection = {0.f, 0.f};
+	currentHP = inventory.heartCount;
 
 	isDead = false;
 
@@ -468,6 +470,10 @@ void Isaac::MonsterCollision()
 	}
 }
 
+void Isaac::ItemCollision()
+{
+}
+
 void Isaac::HitBoxUpdate()
 {
 	hitBoxHead.UpdateTransform(head, head.getLocalBounds());
@@ -555,4 +561,26 @@ bool Isaac::IsCurrentHeadAnimation(const std::string& animation) const
 bool Isaac::IsCurrentBodyAnimation(const std::string& animation) const
 {
 	return currentBodyAnimation == animation;
+}
+
+void Isaac::AddItem(Items itemType)
+{
+	switch (itemType)
+	{
+	case Items::Heart:
+		inventory.heartCount += 100;
+		break;
+	case Items::Half_Heart:
+		inventory.heartCount += 50;
+		break;
+	case Items::Coin:
+		inventory.coinCount++;
+		break;
+	case Items::Bomb:
+		inventory.bombCount++;
+		break;
+	case Items::Key:
+		inventory.keyCount++;
+		break;
+	}
 }

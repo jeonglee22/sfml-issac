@@ -51,7 +51,7 @@ void Item::Release()
 void Item::Reset()
 {
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 3;
+	sortingOrder = 0;
 
 
 	switch (itemType)
@@ -94,15 +94,19 @@ void Item::Update(float dt)
 			}
 			else
 			{
-				SetScale({ 1.7f, 1.7f });
+				SetScale({ 2.0f, 1.6f });
 				isLarge = true;
 			}
 			beatTime = 0.0f;
 		}
 	}
+
+	hitBox.UpdateTransform(sprite, sprite.getLocalBounds());
 }
 
 void Item::Draw(sf::RenderWindow& window)
 {
+	std::cout << "아이템 드로우" << std::endl;
 	window.draw(sprite);
+	hitBox.Draw(window);
 }

@@ -34,6 +34,9 @@ void Map::SetPosition(const sf::Vector2f &pos)
 		obstacle->SetPosition(obstacle->GetPosition() + pos);
 	for (auto ground : backgrounds)
 		ground->SetPosition(ground->GetPosition() + pos);
+	for (auto item : items)
+		item->SetPosition(item->GetPosition() + pos);
+
 }
 
 void Map::SetRotation(float rot)
@@ -326,6 +329,8 @@ void Map::SetActiveAll(bool b)
 		obstacle->SetActive(b);
 	for (auto ground : backgrounds)
 		ground->SetActive(b);
+	for (auto item : items)
+		item->SetActive(b);
 }
 
 bool Map::CheckAllEnemyDead()

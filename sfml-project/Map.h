@@ -78,6 +78,7 @@ public:
 	std::vector<HitBox*> GetBoundary() const { return boundary; }
 	std::vector<Door*> GetDoor() const { return doors; }
 	std::vector<SpriteGo*> GetObjects() const { return allObjects; }
+	std::vector<Item*> GetItems() const { return items; }
 
 	void AddSpider(const sf::Vector2f& pos);
 	void AddFly(const sf::Vector2f& pos);
