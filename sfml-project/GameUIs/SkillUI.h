@@ -25,7 +25,10 @@ protected:
 	std::vector<sf::IntRect> skillCooltimeImageRect;
 	std::vector<sf::Sprite*> skillCooltimeImages;
 
+	int imageCoolTime;
 	bool haveSkill = false;
+	float cooltimeBarLength = 24.f;
+	float posOffset = 4.f;
 
 public:
 	SkillUI(const std::string& textureId = "", const std::string& name = "");
@@ -49,5 +52,6 @@ public:
 		haveSkill = true; 
 	}
 	void SetSkillCoolTimeImage();
+	void ChangeCoolTimeTexture();
 };
 

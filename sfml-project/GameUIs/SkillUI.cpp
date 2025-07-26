@@ -13,8 +13,9 @@ void SkillUI::SetPosition(const sf::Vector2f& pos)
 	if(skill != nullptr)
 	{
 		skill->SetPosition(pos);
-		for (auto coolTimeImage : skillCooltimeImages)
-			coolTimeImage->setPosition(pos + sf::Vector2f(50.f, 0.f));
+		skillCooltimeImages[0]->setPosition(pos + sf::Vector2f(50.f, 0.f));
+		skillCooltimeImages[1]->setPosition(pos + sf::Vector2f(50.f, (1-(float)imageCoolTime / skill->GetTotalSkillCooltime()) * 60.f - posOffset));
+		skillCooltimeImages[2]->setPosition(pos + sf::Vector2f(50.f, 0.f));
 	}
 }
 
@@ -60,8 +61,8 @@ void SkillUI::Init()
 	{
 		skillCooltimeImages.push_back(new sf::Sprite());
 	}
-	skillCooltimeImageRect.push_back(sf::IntRect(4,1,8,30));
-	skillCooltimeImageRect.push_back(sf::IntRect(20,1,8,30));
+	skillCooltimeImageRect.push_back(sf::IntRect(4, 1, 8, 30));
+	skillCooltimeImageRect.push_back(sf::IntRect(20,2,8,24));
 	skillCooltimeImageRect.push_back(sf::IntRect(36,1,8,30));
 	skillCooltimeImageRect.push_back(sf::IntRect(52,1,8,30));
 	skillCooltimeImageRect.push_back(sf::IntRect(4,33,8,30));
@@ -76,6 +77,8 @@ void SkillUI::Release()
 
 void SkillUI::Reset()
 {
+	imageCoolTime = 0;
+
 	for (int i = 0; i < 2; i++)
 	{
 		skillCooltimeImages[i]->setTexture(TEXTURE_MGR.Get(cooltimeImageId), true);
@@ -86,11 +89,21 @@ void SkillUI::Reset()
 
 void SkillUI::Update(float dt)
 {
+	if (skill->GetCurrentCooltime() != imageCoolTime)
+	{
+		imageCoolTime = skill->GetCurrentCooltime();
+		ChangeCoolTimeTexture();
+		SetPosition(position);
+	}
+
 	if (haveSkill)
 	{
 		skill->Reset();
 		SetScale({ 2.5f,2.5f });
 		SetSkillCoolTimeImage();
+
+		ChangeCoolTimeTexture();
+		SetPosition(position);
 
 		haveSkill = false;
 	}
@@ -138,4 +151,12 @@ void SkillUI::SetSkillCoolTimeImage()
 	skillCooltimeImages[2]->setTexture(TEXTURE_MGR.Get(cooltimeImageId), true);
 	skillCooltimeImages[2]->setTextureRect(skillCooltimeImageRect[rectPos]);
 	skillCooltimeImages[2]->setOrigin((sf::Vector2f)skillCooltimeImageRect[rectPos].getSize() * 0.5f);
+}
+
+void SkillUI::ChangeCoolTimeTexture()
+{
+	sf::IntRect coolTimeRect = skillCooltimeImageRect[1];
+	coolTimeRect.top = Utils::Lerp(cooltimeBarLength + coolTimeRect.top, coolTimeRect.top, (float)imageCoolTime / skill->GetTotalSkillCooltime());
+	coolTimeRect.height = cooltimeBarLength + skillCooltimeImageRect[1].top - coolTimeRect.top;
+	skillCooltimeImages[1]->setTextureRect(coolTimeRect);
 }
