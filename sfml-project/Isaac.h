@@ -1,7 +1,6 @@
 #pragma once
 #include "Animator.h"
 #include "HitBox.h"
-#include "Bomb.h"
 
 struct ItemInventory
 {
@@ -15,6 +14,7 @@ class HitBox;
 class Tears;
 class SceneDev2;
 class SceneGame;
+class Bomb;
 
 class Isaac : public GameObject
 {
@@ -24,7 +24,6 @@ protected:
 	Animator bodyAnimator;
 	Animator headAnimator;
 	ItemInventory inventory;
-	Bomb* bomb = nullptr;
 
 	std::map<std::string, std::string> headAnimation;
 	std::map<std::string, std::string> headTearsAnimation;
@@ -35,6 +34,9 @@ protected:
 
 	std::list<Tears*> tearsList;
 	std::list<Tears*> tearsPool;
+	std::list<Bomb*> bombsList;
+	std::list<Bomb*> bombsPool;
+
 	SceneDev2* sceneDev2 = nullptr;
 	SceneGame* sceneGame = nullptr;
 

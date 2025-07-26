@@ -8,6 +8,7 @@
 #include "Door.h"
 #include "Obstacles.h"
 #include "Map.h"
+#include "Bomb.h"
 
 Isaac::Isaac(const std::string &name)
 	: GameObject(name)
@@ -113,6 +114,13 @@ void Isaac::Reset()
 	}
 	tearsList.clear();
 
+	for (Bomb* bomb : bombsList)
+	{
+		bomb->SetActive(false);
+		bombsPool.push_back(bomb);
+	}
+	bombsList.clear();
+
 	shootTimer = 0.0f;
 	wasKeyPressed = false;
 	shootDirection = {0.f, 0.f};
@@ -153,6 +161,28 @@ void Isaac::Update(float dt)
 		else
 		{
 			++it;
+		}
+	}
+
+	for (auto* bomb : bombsList)
+	{
+		if (bomb->GetActive())
+		{
+			bomb->Update(dt);
+		}
+	}
+
+	auto bombIt = bombsList.begin();
+	while (bombIt != bombsList.end())
+	{
+		if (!(*bombIt)->GetActive())
+		{
+			bombsPool.push_back(*bombIt);
+			bombIt = bombsList.erase(bombIt);
+		}
+		else
+		{
+			++bombIt;
 		}
 	}
 
@@ -386,21 +416,10 @@ void Isaac::Update(float dt)
 		std::cout << "¿­¼è: " << inventory.keyCount << std::endl;
 	}
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::E) && inventory.bombCount > 0 && bomb == nullptr)
+	if (InputMgr::GetKeyDown(sf::Keyboard::E) && inventory.bombCount > 0)
 	{
 		std::cout << "ÆøÅº ³õ±â" << std::endl;
 		InstallBomb();
-	}
-
-	if (bomb && bomb->GetActive())
-	{
-		bomb->Update(dt);
-	}
-
-	if (bomb && !bomb->GetActive())
-	{
-		std::cout << "ÆøÅº ÅÍÁü" << std::endl;
-		bomb = nullptr;
 	}
 
 	MonsterCollision();
@@ -614,16 +633,29 @@ void Isaac::AddItem(Items itemType)
 
 void Isaac::InstallBomb()
 {
-	if (inventory.bombCount <= 0 || bomb != nullptr)
+	if (inventory.bombCount <= 0)
 	{
 		return;
 	}
 
-	bomb = new Bomb();
-	bomb->Init();
+	Bomb* bomb = nullptr;
+
+	if (bombsPool.empty())
+	{
+		bomb = new Bomb();
+		bomb->Init();
+	}
+	else
+	{
+		bomb = bombsPool.front();
+		bombsPool.pop_front();
+		bomb->SetActive(true);
+	}
+
 	bomb->Reset();
 	bomb->SetPosition(position);
-	
+	bombsList.push_back(bomb);
+
 	inventory.bombCount--;
 	sceneGame->AddGameObject(bomb);
 }

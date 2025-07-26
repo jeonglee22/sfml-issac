@@ -55,6 +55,7 @@ void Bomb::Reset()
     sortingOrder = 2;
 
     explosionTime = 0.0f;
+    explosionAnimationTime = 0.0f;
     wasExplosion = false;
     animator.Play("animations/bomb.csv");
     SetScale({ 2.0f, 2.0f });
@@ -84,7 +85,21 @@ void Bomb::Update(float dt)
         if (explosionTime >= explosionMaxTime)
         {
             wasExplosion = true;
-            SetActive(false);
+
+            animator.Play("animations/explosion.csv");
+            SetOrigin(Origins::BC);
+            bomb.setColor(sf::Color::White);
+        }
+    }
+    else
+    {
+        explosionAnimationTime += dt;
+        animator.Update(dt);
+
+        if (explosionAnimationTime >= explosionAnimationMaxTime)
+        {
+            animator.Play("animations/bombradius.csv");
+            SetOrigin(Origins::BC);
         }
     }
 

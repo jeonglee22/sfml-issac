@@ -46,7 +46,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/items/pick ups/pickup_001_heart.png");
 	texIds.push_back("graphics/items/pick ups/pickup_016_bomb.png");
 	texIds.push_back("graphics/items/pick ups/pickup_003_key.png");
-	texIds.push_back("graphics/effects/effect_029_explosion_key.png");
+	texIds.push_back("graphics/effects/effect_029_explosion.png");
+	texIds.push_back("graphics/effects/effect_017_bombradius.png");
 
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
@@ -87,6 +88,9 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/half_heart.csv");
 	ANI_CLIP_MGR.Load("animations/bomb.csv");
 	ANI_CLIP_MGR.Load("animations/key.csv");
+
+	ANI_CLIP_MGR.Load("animations/explosion.csv");
+	ANI_CLIP_MGR.Load("animations/bombradius.csv");
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 

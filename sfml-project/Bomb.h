@@ -12,7 +12,11 @@ protected:
 
 	float explosionTime = 0.0f;
 	float explosionMaxTime = 5.0f;
-	bool wasExplosion = false;
+
+    float explosionAnimationTime = 0.0f;
+    float explosionAnimationMaxTime = 0.5f;
+
+    bool wasExplosion = false;
 
 public:
     Bomb(const std::string& name = "");
