@@ -6,6 +6,7 @@ class HitBox;
 class Tears;
 class SceneDev2;
 class SceneGame;
+class Skill;
 
 class Isaac : public GameObject
 {
@@ -50,6 +51,8 @@ protected:
 	HitBox hitBoxHead;
 	HitBox hitBoxBody;
 
+	Skill* skill = nullptr;
+
 public:
 	Isaac(const std::string& name = "");
 	~Isaac() = default;
@@ -84,4 +87,7 @@ public:
 	HitBox GetHitBoxHead() const { return hitBoxHead; }
 	int GetCurrentHP() const { return currentHP; }
 	int GetMaxHP() const { return maxHP; }
+
+	void SetSkill(Skill* skill) { this->skill = skill; }
+	Skill* GetSkill() { return skill; }
 };

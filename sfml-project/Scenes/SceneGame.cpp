@@ -16,6 +16,8 @@
 #include "MapUI.h"
 #include "ItemUI.h"
 #include "HeartUI.h"
+#include "SkillUI.h"
+#include "Skill.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Stage)
@@ -48,6 +50,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/hudpickups.png");
 	texIds.push_back("graphics/ui_hearts.png");
 	texIds.push_back("graphics/controls.png");
+	texIds.push_back("graphics/ui_chargebar.png");
+	texIds.push_back("graphics/items/collectibles/collectibles_035_thenecronomicon.png");
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
@@ -106,6 +110,10 @@ void SceneGame::Init()
 	mapUI = (MapUI*)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
 	itemUI = (ItemUI*)AddGameObject(new ItemUI("ItemUI"));
 	heartUI = (HeartUI*)AddGameObject(new HeartUI("graphics/ui_hearts.png", "HeartUI"));
+	skillUI = (SkillUI*)AddGameObject(new SkillUI("graphics/ui_chargebar.png", "SkillUI"));
+	skill = new Skill("graphics/items/collectibles/collectibles_035_thenecronomicon.png", "necronomicon");
+	skill->SetSkillFunc([]() {std::cout << "Skill!!!!!!" << std::endl; });
+	skill->SetTotalSkillCooltime(4);
 
 	Scene::Init();
 }
@@ -170,6 +178,10 @@ void SceneGame::Enter()
 	controls->SetScale({ 2.f,2.f });
 	controls->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/controls.png").getSize()) * 0.5f);
 	controls->SetPosition(currentMapSize.getSize() * 0.5f);
+
+	isaac->SetSkill(skill);
+	skillUI->SetSkill(isaac->GetSkill());
+	skillUI->SetPosition({ 60.f,60.f });
 }
 
 void SceneGame::Update(float dt)

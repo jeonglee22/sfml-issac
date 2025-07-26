@@ -11,6 +11,8 @@ class Map;
 class MapUI;
 class ItemUI;
 class HeartUI;
+class SkillUI;
+class Skill;
 
 class SceneGame : public Scene
 {
@@ -42,6 +44,8 @@ protected:
 	MapUI* mapUI;
 	ItemUI* itemUI;
 	HeartUI* heartUI;
+	SkillUI* skillUI;
+	Skill* skill;
 
 	int currentMapIndex = 0;
 

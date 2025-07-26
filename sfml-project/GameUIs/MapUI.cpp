@@ -68,7 +68,7 @@ void MapUI::Reset()
 		plates[i]->setScale({ 2.f,2.f });
 		plates[i]->setOrigin(plates[i]->getLocalBounds().getSize() * 0.5f);
 
-		rooms.push_back(new sf::Sprite(TEXTURE_MGR.Get(texId), mapIconRect["clear5"]));
+		rooms.push_back(new sf::Sprite(TEXTURE_MGR.Get(texId), mapIconRect["dark5"]));
 		rooms[i]->setScale({ 2.f,2.f });
 		rooms[i]->setOrigin(rooms[i]->getLocalBounds().getSize() * 0.5f);
 	}

@@ -7,6 +7,7 @@
 #include "Monster.h"
 #include "Door.h"
 #include "Obstacles.h"
+#include "Skill.h"
 
 Isaac::Isaac(const std::string &name)
 	: GameObject(name)
@@ -124,6 +125,11 @@ void Isaac::Reset()
 
 void Isaac::Update(float dt)
 {
+	if(skill != nullptr)
+	{
+		skill->Update(dt);
+	}
+
 	headAnimator.Update(dt);
 	bodyAnimator.Update(dt);
 
