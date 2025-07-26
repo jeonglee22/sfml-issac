@@ -45,7 +45,7 @@ protected:
 
 	SceneGame* sceneGame;
 
-	bool isCleared = false;
+	bool isCleared = true;
 
 public:
 	Map(const std::string& filePath = "", const std::string & name = "");
@@ -94,5 +94,7 @@ public:
 	void DeleteEnemyAlreadyDead();
 
 	void SetStageIndex(int x, int y) { StageXPos = x; StageYPos = y; }
+	int GetStageXIndex() { return StageXPos; }
+	int GetStageYIndex() { return StageYPos; }
 };
 

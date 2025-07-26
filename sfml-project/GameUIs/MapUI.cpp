@@ -178,6 +178,4 @@ void MapUI::LoadMapUITextures()
 		sf::IntRect rect = {std::stoi(row[1]),std::stoi(row[2]),std::stoi(row[3]) ,std::stoi(row[4]) };
 		mapIconRect.insert({ row[0], rect });
 	}
-
-	std::cout << mapIconRect.size() << std::endl;
 }

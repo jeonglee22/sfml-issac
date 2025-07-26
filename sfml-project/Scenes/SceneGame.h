@@ -71,5 +71,7 @@ public:
 	std::vector<int> GetNeighboorMapIndex(int x, int y);
 	
 	sf::View GetWorldView() { return worldView; }
+
+	void AddSkillCooltimeAtClear();
 };
 

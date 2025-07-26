@@ -25,7 +25,7 @@ protected:
 	std::vector<sf::IntRect> skillCooltimeImageRect;
 	std::vector<sf::Sprite*> skillCooltimeImages;
 
-	int imageCoolTime;
+	int imageCoolTime = 0;
 	bool haveSkill = false;
 	float cooltimeBarLength = 24.f;
 	float posOffset = 4.f;

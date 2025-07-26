@@ -98,6 +98,9 @@ void Map::Draw(sf::RenderWindow &window)
 
 void Map::SetCleared(bool b)
 {
+	if (b && !isCleared)
+		sceneGame->AddSkillCooltimeAtClear();
+
 	isCleared = b;
 	for (auto door : doors)
 	{
