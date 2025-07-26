@@ -32,6 +32,8 @@ protected:
 	std::string currentHeadAnimation = "front";
 	std::string currentBodyAnimation = "idle";
 
+	bool isShooting = false;
+
 	std::list<Tears*> tearsList;
 	std::list<Tears*> tearsPool;
 	std::list<Bomb*> bombsList;

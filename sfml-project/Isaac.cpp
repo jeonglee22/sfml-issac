@@ -348,6 +348,26 @@ void Isaac::Update(float dt)
 				{
 					head.setScale(body.getScale());
 					PlayHeadTearsAnimation("front");
+
+				}
+				if (abs(h) > 0.1f || abs(w) > 0.1f)
+				{
+					if (w < 0.f)
+					{
+						PlayBodyAnimation("run_height");
+					}
+					else if (w > 0.f)
+					{
+						PlayBodyAnimation("run_height");
+					}
+					else if (h != 0.f)
+					{
+						PlayBodyAnimation("run_weight");
+					}
+				}
+				else
+				{
+					PlayBodyAnimation("idle");
 				}
 			}
 			if (shootTimer >= shootInterval)
@@ -443,6 +463,7 @@ void Isaac::Update(float dt)
 		std::cout << "ÆøÅº ³õ±â" << std::endl;
 		InstallBomb();
 	}
+
 
 	MonsterCollision();
 
@@ -608,10 +629,10 @@ void Isaac::PlayHeadAnimation(const std::string& animation)
 void Isaac::PlayHeadTearsAnimation(const std::string& animation)
 {
 	auto it = headTearsAnimation.find(animation);
-	if (it != headTearsAnimation.end() && currentHeadAnimation != animation)
+	if (it != headTearsAnimation.end() && currentHeadAnimation != ("tears_" + animation))
 	{
 		headAnimator.Play(it->second);
-		currentHeadAnimation = animation;
+		currentHeadAnimation = "tears_" + animation;
 	}
 }
 
