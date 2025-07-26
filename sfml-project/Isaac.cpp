@@ -378,6 +378,14 @@ void Isaac::Update(float dt)
 
 	}
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num5))
+	{
+		std::cout << "ÇöÀç HP: " << currentHP << std::endl;
+		std::cout << "ÄÚÀÎ: " << inventory.coinCount << std::endl;
+		std::cout << "ÆøÅº: " << inventory.bombCount << std::endl;
+		std::cout << "¿­¼è: " << inventory.keyCount << std::endl;
+	}
+
 	MonsterCollision();
 
 	hitBoxHead.UpdateTransform(head, head.getLocalBounds());
@@ -568,10 +576,12 @@ void Isaac::AddItem(Items itemType)
 	switch (itemType)
 	{
 	case Items::Heart:
-		inventory.heartCount += 100;
+		currentHP = std::min(currentHP + 100, maxHP);
+		inventory.heartCount = currentHP;
 		break;
 	case Items::Half_Heart:
-		inventory.heartCount += 50;
+		currentHP = std::min(currentHP + 50, maxHP);
+		inventory.heartCount = currentHP;
 		break;
 	case Items::Coin:
 		inventory.coinCount++;

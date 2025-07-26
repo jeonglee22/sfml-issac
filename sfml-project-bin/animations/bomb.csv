@@ -1,5 +1,5 @@
 ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
-Heart,10,"1	",,,
+Bomb,10,"1	",,,
 "				",,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/items/pick ups/pickup_001_heart.png,5,5,20,20,0
+graphics/items/pick ups/pickup_016_bomb.png,4,3,22,21,0

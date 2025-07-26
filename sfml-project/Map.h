@@ -101,5 +101,6 @@ public:
 
 	bool CheckAllEnemyDead();
 	void DeleteEnemyAlreadyDead();
+	void DeleteItemAlreadyGet();
 };
 

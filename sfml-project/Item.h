@@ -15,6 +15,8 @@ protected:
 	float beatTime = 0.0f;
 	bool isLarge = false;
 
+	bool wasGet;
+
 public:
 	Item(const std::string& name = "");
 	virtual ~Item() = default;
@@ -31,6 +33,9 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SetItemGet(bool get) { wasGet = get; }
+	bool WasItemGet() const { return wasGet; }
 
 	Items GetItemType()const { return itemType; }
 	HitBox& GetHitBox() { return hitBox; }

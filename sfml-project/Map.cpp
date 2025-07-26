@@ -313,6 +313,9 @@ void Map::AddGameObjectInScene()
 		sceneGame->AddGameObject(obstacle);
 	for (auto ground : backgrounds)
 		sceneGame->AddGameObject(ground);
+	for (auto item : items)
+		sceneGame->AddGameObject(item);
+
 }
 
 void Map::SetActiveAll(bool b)
@@ -360,5 +363,16 @@ void Map::DeleteEnemyAlreadyDead()
 	{
 		if (spider->GetCurrentHP() <= 0)
 			spider->SetActive(false);
+	}
+}
+
+void Map::DeleteItemAlreadyGet()
+{
+	for (auto item : items)
+	{
+		if (item->WasItemGet())
+		{
+			item->SetActive(false);
+		}
 	}
 }

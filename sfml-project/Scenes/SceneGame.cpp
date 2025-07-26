@@ -44,6 +44,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/effect_002_bloodpoof.png");
 	texIds.push_back("graphics/items/pick ups/pickup_002_coin.png");
 	texIds.push_back("graphics/items/pick ups/pickup_001_heart.png");
+	texIds.push_back("graphics/items/pick ups/pickup_016_bomb.png");
+	texIds.push_back("graphics/items/pick ups/pickup_003_key.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
@@ -81,6 +83,8 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/coin.csv");
 	ANI_CLIP_MGR.Load("animations/heart.csv");
 	ANI_CLIP_MGR.Load("animations/half_heart.csv");
+	ANI_CLIP_MGR.Load("animations/bomb.csv");
+	ANI_CLIP_MGR.Load("animations/key.csv");
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
@@ -126,11 +130,13 @@ void SceneGame::Enter()
 		{
 			maps[i]->AddFly({200.f, 200.f});
 			maps[i]->AddFly({250.f, 250.f});
-			maps[i]->AddSpider({300.f, 300.f});
+			maps[i]->AddSpider({500.f, 300.f});
 			maps[i]->AddSpider({350.f, 350.f});
 			maps[i]->AddCoin({ 400.f, 400.f });
-			maps[i]->AddHeart({200.f, 200.f});
-			maps[i]->AddHalfHeart({ 220.f, 220.f });
+			maps[i]->AddHeart({600.f, 200.f});
+			maps[i]->AddHalfHeart({ 500.f, 220.f });
+			maps[i]->AddBomb({ 700.f, 300.f });
+			maps[i]->AddKey({ 700.f, 200.f });
 		}
 		if (i > 0)
 		{
@@ -155,6 +161,7 @@ void SceneGame::Update(float dt)
 	{
 		maps[currentMapIndex]->SetActiveAll(true);
 		maps[currentMapIndex]->DeleteEnemyAlreadyDead();
+		maps[currentMapIndex]->DeleteItemAlreadyGet();
 		sf::Vector2f nextMapCenter = maps[currentMapIndex]->GetPosition() + maps[currentMapIndex]->GetMapSize().getSize() * 0.5f;
 		if (isMapChanging)
 		{
@@ -203,29 +210,15 @@ void SceneGame::Update(float dt)
 			Map* currentMap = maps[currentMapIndex];
 			auto items = currentMap->GetItems();
 
-			std::cout << "아이템 개수: " << items.size() << std::endl;
-			std::cout << "현재 맵 크기: " << currentMap->GetMapSize().width << "x" << currentMap->GetMapSize().height << std::endl;
-
-
 			for (auto item : items)
 			{
 				if (item->GetActive() && Utils::CheckCollision(isaac->GetHitBoxBody().rect, item->GetHitBox().rect))
 				{
-					std::cout << "아이템 충돌 감지!" << std::endl;
 					isaac->AddItem(item->GetItemType());
 					item->SetActive(false);
+					item->SetItemGet(true);
 				}
 			}
-			for (int i = 0; i < items.size(); i++)
-			{
-				auto item = items[i];
-				if (item->GetActive())
-				{
-					sf::Vector2f itemPos = item->GetPosition();
-					std::cout << "아이템 " << i << " 위치: " << itemPos.x << ", " << itemPos.y << std::endl;
-				}
-			}
-
 		}
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::P))

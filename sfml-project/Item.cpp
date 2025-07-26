@@ -106,7 +106,6 @@ void Item::Update(float dt)
 
 void Item::Draw(sf::RenderWindow& window)
 {
-	std::cout << "아이템 드로우" << std::endl;
 	window.draw(sprite);
 	hitBox.Draw(window);
 }
