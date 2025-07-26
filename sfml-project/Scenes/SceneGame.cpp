@@ -46,6 +46,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/items/pick ups/pickup_001_heart.png");
 	texIds.push_back("graphics/items/pick ups/pickup_016_bomb.png");
 	texIds.push_back("graphics/items/pick ups/pickup_003_key.png");
+	texIds.push_back("graphics/effects/effect_029_explosion_key.png");
+
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 

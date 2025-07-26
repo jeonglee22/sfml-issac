@@ -1,15 +1,15 @@
 #pragma once
 #include "Animator.h"
 #include "HitBox.h"
+#include "Bomb.h"
 
 struct ItemInventory
 {
 	int heartCount = 300;
 	int coinCount = 0;
-	int bombCount = 0;
+	int bombCount = 1;
 	int keyCount = 0;
 };
-
 
 class HitBox;
 class Tears;
@@ -24,6 +24,7 @@ protected:
 	Animator bodyAnimator;
 	Animator headAnimator;
 	ItemInventory inventory;
+	Bomb* bomb = nullptr;
 
 	std::map<std::string, std::string> headAnimation;
 	std::map<std::string, std::string> headTearsAnimation;
@@ -92,6 +93,8 @@ public:
 	bool IsCurrentBodyAnimation(const std::string& animation) const;
 
 	void AddItem(Items itemType);
+
+	void InstallBomb();
 
 	HitBox GetHitBoxBody() const { return hitBoxBody; }
 	HitBox GetHitBoxHead() const { return hitBoxHead; }

@@ -76,7 +76,7 @@ void Isaac::Reset()
 	}
 
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 1;
+	sortingOrder = 3;
 
 	headAnimator.Play("animations/isaac_head_front.csv");
 	bodyAnimator.Play("animations/isaac_body_idle.csv");
@@ -386,6 +386,23 @@ void Isaac::Update(float dt)
 		std::cout << "¿­¼è: " << inventory.keyCount << std::endl;
 	}
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::E) && inventory.bombCount > 0 && bomb == nullptr)
+	{
+		std::cout << "ÆøÅº ³õ±â" << std::endl;
+		InstallBomb();
+	}
+
+	if (bomb && bomb->GetActive())
+	{
+		bomb->Update(dt);
+	}
+
+	if (bomb && !bomb->GetActive())
+	{
+		std::cout << "ÆøÅº ÅÍÁü" << std::endl;
+		bomb = nullptr;
+	}
+
 	MonsterCollision();
 
 	hitBoxHead.UpdateTransform(head, head.getLocalBounds());
@@ -593,4 +610,20 @@ void Isaac::AddItem(Items itemType)
 		inventory.keyCount++;
 		break;
 	}
+}
+
+void Isaac::InstallBomb()
+{
+	if (inventory.bombCount <= 0 || bomb != nullptr)
+	{
+		return;
+	}
+
+	bomb = new Bomb();
+	bomb->Init();
+	bomb->Reset();
+	bomb->SetPosition(position);
+	
+	inventory.bombCount--;
+	sceneGame->AddGameObject(bomb);
 }
