@@ -37,6 +37,7 @@ protected:
 
 	std::vector<SpriteGo*> shadings;
 	SpriteGo* overlay;
+	SpriteGo* controls;
 
 	MapUI* mapUI;
 	ItemUI* itemUI;

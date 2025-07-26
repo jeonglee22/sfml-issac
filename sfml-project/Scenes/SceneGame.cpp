@@ -47,6 +47,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/minimap.png");
 	texIds.push_back("graphics/hudpickups.png");
 	texIds.push_back("graphics/ui_hearts.png");
+	texIds.push_back("graphics/controls.png");
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
@@ -98,6 +99,9 @@ void SceneGame::Init()
 		shadings[i]->sortingLayer = SortingLayers::Background;
 		shadings[i]->sortingOrder = 20;
 	}
+	controls = (SpriteGo*)AddGameObject(new SpriteGo("graphics/controls.png"));
+	controls->sortingLayer = SortingLayers::Background;
+	controls->sortingOrder = 5;
 
 	mapUI = (MapUI*)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
 	itemUI = (ItemUI*)AddGameObject(new ItemUI("ItemUI"));
@@ -163,6 +167,9 @@ void SceneGame::Enter()
 		shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
 		shading->SetPosition(currentMapSize.getSize() * 0.5f);
 	}
+	controls->SetScale({ 2.f,2.f });
+	controls->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/controls.png").getSize()) * 0.5f);
+	controls->SetPosition(currentMapSize.getSize() * 0.5f);
 }
 
 void SceneGame::Update(float dt)
