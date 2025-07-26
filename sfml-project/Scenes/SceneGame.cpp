@@ -15,6 +15,7 @@
 #include "Map.h"
 #include "MapUI.h"
 #include "ItemUI.h"
+#include "HeartUI.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Stage)
@@ -45,6 +46,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/effect_002_bloodpoof.png");
 	texIds.push_back("graphics/minimap.png");
 	texIds.push_back("graphics/hudpickups.png");
+	texIds.push_back("graphics/ui_hearts.png");
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
@@ -99,6 +101,7 @@ void SceneGame::Init()
 
 	mapUI = (MapUI*)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
 	itemUI = (ItemUI*)AddGameObject(new ItemUI("ItemUI"));
+	heartUI = (HeartUI*)AddGameObject(new HeartUI("graphics/ui_hearts.png", "HeartUI"));
 
 	Scene::Init();
 }
@@ -122,16 +125,17 @@ void SceneGame::Enter()
 
 	mapUI->SetScale({ 2.f,2.f });
 	itemUI->SetScale({ 2.f,2.f });
+	heartUI->SetScale({ 2.f,2.f });
 
 	mapIndex[stageStartY][stageStartX] = 0;
 	mapIndex[stageStartY][stageStartX + 1] = 1;
 	mapIndex[stageStartY][stageStartX + 2] = 2;
 
 	mapUI->SetMapIndex(mapIndex);
-	mapUI->SetPosition({uiView.getSize().x - 80.f, 80.f});
+	mapUI->SetPosition({uiView.getSize().x - 110.f, 100.f});
 
 	currentMapSize = maps[0]->GetMapSize();
-	worldView.setSize(currentMapSize.getSize());
+	worldView.setSize({ currentMapSize.getSize().x * 1.1f, currentMapSize.getSize().y });
 	worldView.setCenter(currentMapSize.getSize() * 0.5f);
 	isaac->SetPosition(center);
 
@@ -216,6 +220,9 @@ void SceneGame::Update(float dt)
 		}
 
 		Scene::Update(dt);
+
+		heartUI->SetHeartCount(isaac->GetCurrentHP());
+		heartUI->SetMaxHeartCount(isaac->GetMaxHP());
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::P))
 		{

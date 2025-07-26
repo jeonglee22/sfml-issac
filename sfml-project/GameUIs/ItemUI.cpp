@@ -101,12 +101,12 @@ void ItemUI::Reset()
 
 	for (int i = 0; i < 3; i++)
 	{
-		coinImagesPos.push_back({ (i == 0 ? 0.f : countImageSize.x * 1.5f) + i * countImageSize.x * 2.f, 0.f});
-		bombImagesPos.push_back({ (i == 0 ? 0.f : countImageSize.x * 1.5f) + i * countImageSize.x * 2.f, countImageSize.y * 2.5f });
-		keyImagesPos.push_back({ (i == 0 ? 0.f : countImageSize.x * 1.5f) + i * countImageSize.x * 2.f, countImageSize.y * 5.f });
+		coinImagesPos.push_back({ (i == 0 ? 0.f : countImageSize.x * 1.5f) + i * fontImageSize.x * 2.f, 0.f});
+		bombImagesPos.push_back({ (i == 0 ? 0.f : countImageSize.x * 1.5f) + i * fontImageSize.x * 2.f, countImageSize.y * 2.5f });
+		keyImagesPos.push_back({ (i == 0 ? 0.f : countImageSize.x * 1.5f) + i * fontImageSize.x * 2.f, countImageSize.y * 5.f });
 	}
 
-	SetPosition({ 50.f,100.f });
+	SetPosition({ 60.f,120.f });
 }
 
 void ItemUI::Update(float dt)

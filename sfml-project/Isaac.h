@@ -42,8 +42,8 @@ protected:
 	float currentHurtTime = 0.0;
 	float maxHurtTime = 0.4f;
 
-	int maxHP = 300;
-	int currentHP = 300;
+	int maxHP = 6;
+	int currentHP = 6;
 
 	bool isDead = false;
 
@@ -82,4 +82,6 @@ public:
 
 	HitBox GetHitBoxBody() const { return hitBoxBody; }
 	HitBox GetHitBoxHead() const { return hitBoxHead; }
+	int GetCurrentHP() const { return currentHP; }
+	int GetMaxHP() const { return maxHP; }
 };

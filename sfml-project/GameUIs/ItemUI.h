@@ -6,7 +6,7 @@ protected:
 	sf::RectangleShape body;
 
 	std::vector<std::string> fontImage;
-	sf::Vector2f fontImageSize = { 9.f,11.f };
+	sf::Vector2f fontImageSize = { 7.f,11.f };
 
 	sf::Sprite coinImage;
 	sf::IntRect coinRect = {4,3,9,11};

@@ -227,7 +227,7 @@ void Isaac::Update(float dt)
 			{
 				if (invincibleTime == 0)
 				{
-					TakeDamage(50);
+					TakeDamage(1);
 					break;
 				}
 			}
@@ -461,7 +461,7 @@ void Isaac::MonsterCollision()
 
 		if (isaacBounds.intersects(monsterBounds) && invincibleTime == 0)
 		{
-			TakeDamage(50);
+			TakeDamage(1);
 			return;
 		}
 		

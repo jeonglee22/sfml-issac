@@ -10,6 +10,17 @@ protected:
 	
 	std::vector<sf::Sprite*> hearts;
 
+	sf::Vector2f seperatePos = { 13.f, 0.f };
+
+	sf::IntRect fullHeart = { 1,1,15,14 };
+	sf::IntRect halfHeart = { 17,1,15,14 };
+	sf::IntRect emptyHeart = { 33,1,15,14 };
+
+	int maxHPCount = 6;
+	int beforeMaxHPCount = 6;
+	int currentHPCount = 6;
+	int beforeHPCount = 6;
+
 public:
 	HeartUI(const std::string& textureId = "", const std::string & name = "");
 	virtual ~HeartUI() = default;
@@ -25,5 +36,10 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SetHeartCount(int hp) { currentHPCount = hp; }
+	int GetHeartCount() const { return currentHPCount; }
+	void SetMaxHeartCount(int hp) { maxHPCount = hp; }
+	int GetMaxHeartCount() const { return maxHPCount; }
 };
 

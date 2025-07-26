@@ -10,6 +10,7 @@ class Door;
 class Map;
 class MapUI;
 class ItemUI;
+class HeartUI;
 
 class SceneGame : public Scene
 {
@@ -39,6 +40,7 @@ protected:
 
 	MapUI* mapUI;
 	ItemUI* itemUI;
+	HeartUI* heartUI;
 
 	int currentMapIndex = 0;
 
