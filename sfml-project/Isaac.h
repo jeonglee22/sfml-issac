@@ -44,8 +44,7 @@ protected:
 	float speed = 250.f;
 
 	float shootTimer = 0.0f;
-	float shootInterval = 0.4f;
-	sf::Vector2f shootDirection = { 0.f, 0.f };
+	float shootInterval = 0.6f;
 	bool wasKeyPressed = false;
 
 	float invincibleTime = 0.0f;

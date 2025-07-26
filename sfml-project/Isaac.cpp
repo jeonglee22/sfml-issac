@@ -123,7 +123,6 @@ void Isaac::Reset()
 
 	shootTimer = 0.0f;
 	wasKeyPressed = false;
-	shootDirection = {0.f, 0.f};
 	currentHP = inventory.heartCount;
 
 	isDead = false;
@@ -280,58 +279,80 @@ void Isaac::Update(float dt)
 		}
 	}
 
-
+		shootTimer += dt;
 		bool shootingKeyPressed = false;
-		sf::Vector2f newShootDirection = { 0.f, 0.f };
+		sf::Vector2f shootInput = { 0.f, 0.f };
+		sf::Vector2f finalShootDirection = { 0.f, 0.f };
 
 		if (InputMgr::GetKey(sf::Keyboard::Right))
 		{
-			newShootDirection = sf::Vector2f(1.f, 0.f);
+			shootInput = sf::Vector2f(1.f, 0.f);
 			shootingKeyPressed = true;
 		}
 		else if (InputMgr::GetKey(sf::Keyboard::Left))
 		{
-			newShootDirection = sf::Vector2f(-1.f, 0.f);
+			shootInput = sf::Vector2f(-1.f, 0.f);
 			shootingKeyPressed = true;
 		}
 		else if (InputMgr::GetKey(sf::Keyboard::Up))
 		{
-			newShootDirection = sf::Vector2f(0.f, -1.f);
+			shootInput = sf::Vector2f(0.f, -1.f);
 			shootingKeyPressed = true;
 		}
 		else if (InputMgr::GetKey(sf::Keyboard::Down))
 		{
-			newShootDirection = sf::Vector2f(0.f, 1.f);
+			shootInput = sf::Vector2f(0.f, 1.f);
 			shootingKeyPressed = true;
 		}
 
 		if (shootingKeyPressed)
 		{
+			finalShootDirection = shootInput;
+
+			if (abs(h) > 0.1f || abs(w) > 0.1f)
+			{
+				sf::Vector2f moveDirection = { h, w };
+
+				float influence = 0.3f;
+				finalShootDirection.x += moveDirection.x * influence;
+				finalShootDirection.y += moveDirection.y * influence;
+
+				float length = sqrt(finalShootDirection.x * finalShootDirection.x +
+					finalShootDirection.y * finalShootDirection.y);
+				if (length > 0)
+				{
+					finalShootDirection.x /= length;
+					finalShootDirection.y /= length;
+				}
+			}
+
+
 			if (!isHurt)
 			{
-				if (newShootDirection.x > 0.f)
+				if (shootInput.x > 0.f)
 				{
-					SetScale({ 2.f, 2.f });
+					head.setScale({ 2.f, 2.f });
 					PlayHeadTearsAnimation("side");
 				}
-				else if (newShootDirection.x < 0.f)
+				else if (shootInput.x < 0.f)
 				{
-					SetScale({ -2.f, 2.f });
+					head.setScale({ -2.f, 2.f });
 					PlayHeadTearsAnimation("side");
 				}
-				else if (newShootDirection.y < 0.f)
+				else if (shootInput.y < 0.f)
 				{
+					head.setScale(body.getScale());
 					PlayHeadTearsAnimation("rare");
 				}
-				else if (newShootDirection.y > 0.f)
+				else if (shootInput.y > 0.f)
 				{
+					head.setScale(body.getScale());
 					PlayHeadTearsAnimation("front");
 				}
 			}
-			if (!wasKeyPressed || shootTimer >= shootInterval)
+			if (shootTimer >= shootInterval)
 			{
-				shootDirection = newShootDirection;
-				FireTear(shootDirection);
+				FireTear(finalShootDirection);
 				shootTimer = 0.f;
 			}
 			shootTimer += dt;
@@ -348,30 +369,31 @@ void Isaac::Update(float dt)
 			}
 			if (!isHurt)
 			{
+				head.setScale(body.getScale());
 
-			if (h == 0.f && w == 0.f)
-			{
-				PlayHeadAnimation("front");
-				PlayBodyAnimation("idle");
-			}
-			else
-			{
-				if (w < 0.f)
-				{
-					PlayHeadAnimation("rare");
-					PlayBodyAnimation("run_height");
-				}
-				else if (w > 0.f)
+				if (h == 0.f && w == 0.f)
 				{
 					PlayHeadAnimation("front");
-					PlayBodyAnimation("run_height");
+					PlayBodyAnimation("idle");
 				}
-				else if (h != 0.f)
+				else
 				{
-					PlayHeadAnimation("side");
-					PlayBodyAnimation("run_weight");
+					if (w < 0.f)
+					{
+						PlayHeadAnimation("rare");
+						PlayBodyAnimation("run_height");
+					}
+					else if (w > 0.f)
+					{
+						PlayHeadAnimation("front");
+						PlayBodyAnimation("run_height");
+					}
+					else if (h != 0.f)
+					{
+						PlayHeadAnimation("side");
+						PlayBodyAnimation("run_weight");
+					}
 				}
-			}
 		}
 
 		if (!isHurt && (InputMgr::GetKeyUp(sf::Keyboard::Up) || InputMgr::GetKeyUp(sf::Keyboard::Down) || InputMgr::GetKeyUp(sf::Keyboard::Left) || InputMgr::GetKeyUp(sf::Keyboard::Right)))
@@ -460,22 +482,28 @@ void Isaac::FireTear(const sf::Vector2f &direction)
 
 	tears->Reset();
 
-	sf::Vector2f firePosition;
-	if (direction.x > 0.f && direction.y == 0.f)
+	sf::Vector2f firePosition = position;
+
+	if (direction.x > 0.1f)
 	{
-		firePosition = {position.x + 20.f, position.y + Utils::RandomRange(-43.f, -23.f)};
+		firePosition.x += 20.f;
 	}
-	else if (direction.x < 0.f && direction.y == 0.f)
+	else if (direction.x < -0.1f)
 	{
-		firePosition = {position.x - 20.f, position.y + Utils::RandomRange(-43.f, -23.f)};
+		firePosition.x -= 20.f;
 	}
-	else if (direction.y < 0.f && direction.x == 0.f)
+
+	if (direction.y > 0.1f)
 	{
-		firePosition = {position.x + Utils::RandomRange(-15.f, 15.f), position.y - 50.f};
+		firePosition.y += Utils::RandomRange(-20.f, 0.f);
 	}
-	else if (direction.y > 0.f && direction.x == 0.f)
+	else if (direction.y < -0.1f)
 	{
-		firePosition = {position.x + Utils::RandomRange(-15.f, 15.f), position.y - 20.f};
+		firePosition.y += Utils::RandomRange(-50.f, -30.f);
+	}
+	else
+	{
+		firePosition.y += Utils::RandomRange(-43.f, -23.f);
 	}
 
 	tears->Fire( firePosition, direction, 250.f, 35);

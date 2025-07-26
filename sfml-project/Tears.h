@@ -27,6 +27,9 @@ protected:
 	float tearsCrushMaxTime = 1.0f;
 	bool isTearsCrush = false;
 
+	sf::Vector2f maxRangePosition;
+	bool hasReachedMaxRange = false;
+
 	SceneGame* sceneGame;
 	HitBox hitBox;
 
