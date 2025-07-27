@@ -160,12 +160,16 @@ void MapBoxUI::Update(float dt)
 	{
 		currentType = Mode::enemies;
 	}
+	else if (type == "additionals")
+	{
+		currentType = Mode::additionals;
+	}
 }
 
 void MapBoxUI::Draw(sf::RenderWindow& window)
 {
 	//window.draw(body);
-	if (currentType == Mode::obstacles || currentType == Mode::enemies)
+	if (currentType == Mode::obstacles || currentType == Mode::enemies || currentType == Mode::additionals)
 	{
 		for (int i = 0; i < obstacleGridXcount + obstacleGridYcount; i++)
 		{
@@ -233,6 +237,7 @@ std::vector<sf::RectangleShape> MapBoxUI::GetMapGird()
 		break;
 	case MapBoxUI::Mode::obstacles:
 	case MapBoxUI::Mode::enemies:
+	case MapBoxUI::Mode::additionals:
 		return obstacleGrid;
 		break;
 	default:
@@ -249,6 +254,7 @@ std::vector<sf::FloatRect> MapBoxUI::GetMapRect()
 		return backgroundGridRect;
 		break;
 	case MapBoxUI::Mode::obstacles:
+	case MapBoxUI::Mode::additionals:
 	case MapBoxUI::Mode::enemies:
 		return obstacleGridRect;
 		break;

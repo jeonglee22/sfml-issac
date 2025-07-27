@@ -12,6 +12,7 @@ public:
 		Background,
 		obstacles,
 		enemies,
+		additionals,
 	};
 
 protected:

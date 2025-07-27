@@ -32,6 +32,13 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/enemies/monster_010_fly.png");
 	texIds.push_back("graphics/enemies/monster_044_hopperleaper.png");
 	texIds.push_back("graphics/enemies/monster_214_level2spider_small.png");
+	texIds.push_back("graphics/additionals/grid_poop.png");
+	texIds.push_back("graphics/additionals/levelitem_001_itemaltar.png");
+	texIds.push_back("graphics/additionals/pickups/pickup_001_heart.png");
+	texIds.push_back("graphics/additionals/pickups/pickup_002_coin.png");
+	texIds.push_back("graphics/additionals/pickups/pickup_005_chests.png");
+	texIds.push_back("graphics/additionals/pickups/pickup_003_key.png");
+	texIds.push_back("graphics/additionals/pickups/pickup_016_bomb.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 
