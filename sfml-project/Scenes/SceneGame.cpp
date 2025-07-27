@@ -173,31 +173,7 @@ void SceneGame::Enter()
 	mapOffset = sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f;
 
 	MapMaking::SetMapConnection(maps);
-	for (int i = 0; i < maps.size(); i++)
-	{
-		maps[i]->SetDoor();
-		maps[i]->SetBoundary();
-		maps[i]->AddGameObjectInScene();
-		if (i > 0)
-		{
-			//maps[i]->AddFly({200.f, 200.f});
-			//maps[i]->AddFly({250.f, 250.f});
-			//maps[i]->AddSpider({500.f, 300.f});
-			//maps[i]->AddSpider({350.f, 350.f});
-			maps[i]->AddCoin({ 400.f, 400.f });
-			maps[i]->AddHeart({600.f, 200.f});
-			maps[i]->AddHalfHeart({ 500.f, 220.f });
-			maps[i]->AddBomb({ 700.f, 300.f });
-			maps[i]->AddKey({ 700.f, 200.f });
-		}
-		if (i > 0)
-		{
-			maps[i]->SetPosition(maps[i - 1]->GetPosition() + sf::Vector2f(maps[i - 1]->GetMapSize().getSize().x, 0.f));
-		}
-		maps[i]->SetActiveAll(false);
-	}
-	maps[0]->SetActiveAll(true);
-	maps[0]->SetCleared(true);
+
 	beforeIndex = 0;
 
 	for(auto shading : shadings)
