@@ -667,11 +667,11 @@ void Isaac::AddItem(Items itemType)
 	switch (itemType)
 	{
 	case Items::Heart:
-		currentHP = std::min(currentHP + 100, maxHP);
+		currentHP = std::min(currentHP + 2, maxHP);
 		inventory.heartCount = currentHP;
 		break;
 	case Items::Half_Heart:
-		currentHP = std::min(currentHP + 50, maxHP);
+		currentHP = std::min(currentHP + 1, maxHP);
 		inventory.heartCount = currentHP;
 		break;
 	case Items::Coin:
