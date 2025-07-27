@@ -180,10 +180,10 @@ void SceneGame::Enter()
 		maps[i]->AddGameObjectInScene();
 		if (i > 0)
 		{
-			maps[i]->AddFly({200.f, 200.f});
-			maps[i]->AddFly({250.f, 250.f});
-			maps[i]->AddSpider({500.f, 300.f});
-			maps[i]->AddSpider({350.f, 350.f});
+			//maps[i]->AddFly({200.f, 200.f});
+			//maps[i]->AddFly({250.f, 250.f});
+			//maps[i]->AddSpider({500.f, 300.f});
+			//maps[i]->AddSpider({350.f, 350.f});
 			maps[i]->AddCoin({ 400.f, 400.f });
 			maps[i]->AddHeart({600.f, 200.f});
 			maps[i]->AddHalfHeart({ 500.f, 220.f });

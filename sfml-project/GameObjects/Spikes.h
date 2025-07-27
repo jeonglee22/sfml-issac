@@ -8,7 +8,7 @@ class Spikes : public Obstacles
 protected:
 	Isaac* isaac;
 
-	int damage = 50;
+	int damage = 1;
 
 public:
 	Spikes(const std::string& texId = "", const std::string& name = "");

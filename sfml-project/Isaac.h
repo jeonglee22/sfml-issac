@@ -4,7 +4,7 @@
 
 struct ItemInventory
 {
-	int heartCount = 300;
+	int heartCount = 6;
 	int coinCount = 0;
 	int bombCount = 1;
 	int keyCount = 0;
