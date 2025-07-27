@@ -3,7 +3,7 @@
 #include "MapMaking.h"
 
 int MapMaking::normalMapCount = 10;
-int MapMaking::startMapCount = 2;
+int MapMaking::startMapCount = 3;
 
 void MapMaking::MapRandomMaking(int mapCount)
 {
@@ -32,7 +32,7 @@ std::vector<Map*> MapMaking::SetMapInfo(std::vector<int> mapPos, int mapCount, s
 					delete maps[mapIndex];
 				//maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), "map" + std::to_string(mapIndex));
 				if (mapIndex == 0)
-					maps[mapIndex] = new Map("Mapfolder/startMap.csv");
+					maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), "start" + std::to_string(mapIndex));
 				else
 					maps[mapIndex] = new Map("Mapfolder/testmap3.csv");
 				maps[mapIndex]->SetStageIndex(j, i);
@@ -108,7 +108,7 @@ std::string MapMaking::PickRandomMapInPool(MapType mapType)
 		fileName += "Normal/" + std::to_string(Utils::RandomRange(0, normalMapCount)) + ".csv";
 		break;
 	case MapMaking::MapType::Start:
-		fileName += "Start/" + std::to_string(Utils::RandomRange(0, startMapCount)) + ".csv";
+		fileName += "Start/" + std::to_string(Utils::RandomRange(1, startMapCount+1)) + ".csv";
 		break;
 	case MapMaking::MapType::Boss:
 		break;
