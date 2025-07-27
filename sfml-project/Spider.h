@@ -7,11 +7,13 @@
 
 class Spider : public Monster
 {
-public:
+protected:
     SpiderPatrolState patrolState;
     SpiderChargeState chargeState;
     SpiderJumpState jumpState;
 
+
+public:
     Spider(const std::string& name = "Spider");
     virtual ~Spider() override = default;
 
@@ -24,5 +26,9 @@ public:
     SpiderJumpState& GetJumpState() { return jumpState; }
     void SetInitialState() override;
     sf::FloatRect GetHitBoxMonster() override;
+
+    void ChangeToPatrolState() { ChangeState(&patrolState); }
+    void ChangeToChargeState() { ChangeState(&chargeState); }
+    void ChangeToJumpState() { ChangeState(&jumpState); }
 };
 

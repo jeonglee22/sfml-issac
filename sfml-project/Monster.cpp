@@ -3,6 +3,8 @@
 #include "MonsterState.h"
 #include "Obstacles.h"
 #include "SceneGame.h"
+#include "spider.h"
+#include "Fly.h"
 
 Monster::Monster(const std::string& name, Monsters type)
 	: GameObject(name), monsterType(type)
@@ -79,52 +81,64 @@ void Monster::Update(float dt)
 		UpdateSkillTimer(dt);
 		animator.Update(dt);
 
-		sf::Vector2f beforePos = position;
-
-		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-		if (scene)
-		{
-			for (auto sprite : scene->GetMapSprites())
-			{
-				if (monsterType == Monsters::Spider && (sprite->GetName() == "rocks_basement" || sprite->GetName() == "grid_pit_basement") && Utils::CheckCollision(hitBox.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
-				{
-					SetPosition(beforePos);
-
-					float randomAngle = Utils::RandomRange(0.f, 360.f);
-					float currentSpeed = Utils::Magnitude(velocity);
-
-					float radians = randomAngle * 3.14159f / 180.f;
-
-					velocity.x = cos(radians) * currentSpeed;
-					velocity.y = sin(radians) * currentSpeed;
-				}
-			}
-
-			for (auto boundary : scene->GetMapBoundary())
-			{
-				if (Utils::CheckCollision(hitBox.rect, boundary->rect))
-				{
-					SetPosition(beforePos);
-
-					float randomAngle = Utils::RandomRange(0.f, 360.f);
-					float currentSpeed = Utils::Magnitude(velocity);
-
-					float radians = randomAngle * 3.14159f / 180.f;
-
-					velocity.x = cos(radians) * currentSpeed;
-					velocity.y = sin(radians) * currentSpeed;
-				}
-			}
+		if (collisionCooldown > 0) {
+			collisionCooldown -= dt;
 		}
 
-		
+
+		sf::Vector2f beforePos = position;
 		position += velocity * dt;
 		SetPosition(position);
+		hitBox.UpdateTransform(body, body.getLocalBounds());
+
+		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+		if (scene && collisionCooldown <= 0)
+		{
+			bool hasCollision = false;
+
+			for (auto sprite : scene->GetMapSprites())
+			{
+				if (monsterType == Monsters::Spider &&(sprite->GetName() == "rocks_basement" || sprite->GetName() == "grid_pit_basement") && Utils::CheckCollision(hitBox.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
+				{
+					hasCollision = true;
+					break;
+				}
+			}
+
+			if (!hasCollision)
+			{
+				for (auto boundary : scene->GetMapBoundary())
+				{
+					if (Utils::CheckCollision(hitBox.rect, boundary->rect))
+					{
+						hasCollision = true;
+						break;
+					}
+				}
+			}
+
+			if (hasCollision)
+			{
+				SetPosition(beforePos);
+				hitBox.UpdateTransform(body, body.getLocalBounds());
+
+				if (monsterType == Monsters::Spider)
+				{
+					Spider* spider = static_cast<Spider*>(this);
+					velocity = sf::Vector2f(0, 0);
+					spider->ChangeToPatrolState();
+				}
+				else
+				{
+					Fly* fly = static_cast<Fly*>(this);
+					velocity = sf::Vector2f(0, 0);
+					fly->SetInitialState();
+				}
+				collisionCooldown = 0.1f;
+			}
+
+		}
 	}
-	
-
-
-	hitBox.UpdateTransform(body, body.getLocalBounds());
 }
 
 void Monster::Draw(sf::RenderWindow& window)

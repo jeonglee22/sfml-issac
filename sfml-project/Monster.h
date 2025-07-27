@@ -32,6 +32,8 @@ protected:
 	float deadTimer = 0.0f;
 	float deadMaxTimer = 1.0f;
 
+	float collisionCooldown = 0.0f;
+
 	MonsterState* currentState;
 	HitBox hitBox;
 	SceneGame* sceneGame;

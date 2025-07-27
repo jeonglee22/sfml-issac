@@ -18,10 +18,12 @@ void SpiderJumpState::Enter(Monster* monster)
     sf::Vector2f direction = targetPosition - startPosition;
     float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-    if (distance > 0) {
+    if (distance > 0)
+    {
         jumpVelocity = (direction / distance) * jumpSpeed;
     }
-    else {
+    else
+    {
         jumpVelocity = sf::Vector2f(jumpSpeed, 0);
     }
 
@@ -33,13 +35,15 @@ void SpiderJumpState::Update(Monster* monster, float dt)
 {
     sf::Vector2f currentPos = monster->GetPosition();
     sf::Vector2f diff = currentPos - targetPosition;
-    float remainingDistance = std::sqrt(diff.x * diff.x + diff.y * diff.y);
 
-    if (remainingDistance < 30.0f)
+    float squaredDistance = diff.x * diff.x + diff.y * diff.y;
+    const float targetSquaredDistance = 30.0f * 30.0f;
+
+    if (squaredDistance < targetSquaredDistance)
     {
         monster->SetVelocity(sf::Vector2f(0, 0));
-        SpiderPatrolState* patrolState = new SpiderPatrolState();
-        monster->ChangeState(patrolState);
+        Spider* spider = static_cast<Spider*>(monster);
+        spider->ChangeToPatrolState();
     }
 }
 

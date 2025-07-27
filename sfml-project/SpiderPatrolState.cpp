@@ -4,8 +4,10 @@
 #include "Spider.h"
 #include <cmath>
 
+std::random_device SpiderPatrolState::rd;
+
 SpiderPatrolState::SpiderPatrolState()
-    : directionChangeTimer(0.0f), pauseTimer(0.0f), isPausing(false), gen(rd())
+    : directionChangeTimer(0.0f), pauseTimer(0.0f), isPausing(false), gen(rd()), angleDist(0.0f, 2.0f * 3.14159f), intervalDist(2.0f, 5.0f)
 {
     directionChangeInterval = 1.0f;
     pauseDuration = 0.5f;
@@ -40,7 +42,7 @@ void SpiderPatrolState::Update(Monster* monster, float dt)
     }
     else
     {
-        float patrolSpeed = 20.0f;
+        float patrolSpeed = 30.0f;
         monster->SetVelocity(targetDirection * patrolSpeed);
 
         if (directionChangeTimer >= directionChangeInterval)
@@ -49,7 +51,13 @@ void SpiderPatrolState::Update(Monster* monster, float dt)
         }
     }
 
-    if (monster->GetDistanceToPlayer() < monster->GetDetectionRange() && monster->CanUseSkill())
+    float detectionRange = monster->GetDetectionRange();
+    float squaredDetectionRange = detectionRange * detectionRange;
+
+    sf::Vector2f diff = monster->GetPosition() - monster->GetPlayerPosition();
+    float squaredDistance = diff.x * diff.y + diff.y * diff.y;
+
+    if (squaredDistance < squaredDetectionRange && monster->CanUseSkill())
     {
         monster->UseSkill();
     }
@@ -61,8 +69,8 @@ void SpiderPatrolState::Exit(Monster* monster)
 
 void SpiderPatrolState::ChangeDirection()
 {
-    float angle = static_cast<float>(rand()) / RAND_MAX * 2.0f * 3.14159f;
+    float angle = angleDist(gen);
     targetDirection = sf::Vector2f(std::cos(angle), std::sin(angle));
-    directionChangeInterval = 2.0f + static_cast<float>(rand()) / RAND_MAX * 3.0f;
+    directionChangeInterval = intervalDist(gen);
 }
 
