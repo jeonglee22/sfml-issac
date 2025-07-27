@@ -16,7 +16,7 @@ void Hopper::Reset()
     SetSkillCooldown(5.0f);
     animator.Play("animations/hopper_idle.csv");
     SetScale({ 2.0f, 2.0f });
-    SetOrigin(Origins::MC);
+    SetOrigin(Origins::BC);
     canUseSkill = true;
     skillTimer = 0.0f;
     SetInitialState();
@@ -36,8 +36,8 @@ void Hopper::SetInitialState()
     ChangeToIdleState();
 }
 
-sf::FloatRect Hopper::GetHitBoxMonster()
-{
-    sf::FloatRect bodyGlobalBounds = body.getGlobalBounds();
-    return { bodyGlobalBounds.left + 30.f, bodyGlobalBounds.top + 30.f, 15.f, 15.f };
-}
+//sf::FloatRect Hopper::GetHitBoxMonster()
+//{
+//    sf::FloatRect bodyGlobalBounds = body.getGlobalBounds();
+//    return { bodyGlobalBounds.left + 30.f, bodyGlobalBounds.top + 30.f, 15.f, 15.f };
+//}

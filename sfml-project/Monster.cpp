@@ -5,6 +5,8 @@
 #include "SceneGame.h"
 #include "spider.h"
 #include "Fly.h"
+#include "Hopper.h"
+#include "Body.h"
 
 Monster::Monster(const std::string& name, Monsters type)
 	: GameObject(name), monsterType(type)
@@ -62,7 +64,6 @@ void Monster::Update(float dt)
 	{
 		animator.Update(dt);
 		deadTimer += dt;
-
 		if (deadTimer >= deadMaxTimer)
 		{
 			SetActive(false);
@@ -77,68 +78,32 @@ void Monster::Update(float dt)
 		{
 			currentState->Update(this, dt);
 		}
-
 		UpdateSkillTimer(dt);
 		animator.Update(dt);
 
-		if (collisionCooldown > 0) {
-			collisionCooldown -= dt;
-		}
+		sf::Vector2f currentPos = position;
+		sf::Vector2f newPos = position + velocity * dt;
 
+		bool isHopperJumping = (monsterType == Monsters::Hopper && currentState && currentState->GetStateName() == "HopperJump");
 
-		sf::Vector2f beforePos = position;
-		position += velocity * dt;
-		SetPosition(position);
-		hitBox.UpdateTransform(body, body.getLocalBounds());
-
-		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-		if (scene && collisionCooldown <= 0)
+		if (!isHopperJumping && WillCollideAt(newPos))
 		{
-			bool hasCollision = false;
+			sf::Vector2f safeVelocity = GetSafeDirection(currentPos, velocity);
+			velocity = safeVelocity;
+			newPos = position + velocity * dt;
 
-			for (auto sprite : scene->GetMapSprites())
-			{
-				if (monsterType == Monsters::Spider &&(sprite->GetName() == "rocks_basement" || sprite->GetName() == "grid_pit_basement") && Utils::CheckCollision(hitBox.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
-				{
-					hasCollision = true;
-					break;
-				}
-			}
-
-			if (!hasCollision)
-			{
-				for (auto boundary : scene->GetMapBoundary())
-				{
-					if (Utils::CheckCollision(hitBox.rect, boundary->rect))
-					{
-						hasCollision = true;
-						break;
-					}
-				}
-			}
-
-			if (hasCollision)
-			{
-				SetPosition(beforePos);
-				hitBox.UpdateTransform(body, body.getLocalBounds());
-
-				if (monsterType == Monsters::Spider)
-				{
-					Spider* spider = static_cast<Spider*>(this);
-					velocity = sf::Vector2f(0, 0);
-					spider->ChangeToPatrolState();
-				}
-				else
-				{
-					Fly* fly = static_cast<Fly*>(this);
-					velocity = sf::Vector2f(0, 0);
-					fly->SetInitialState();
-				}
-				collisionCooldown = 0.1f;
-			}
-
+			HandleCollisionByType();
 		}
+		else if (isHopperJumping && WillCollideAt(newPos))
+		{
+			HandleHopperJumpCollision();
+		}
+
+		position = newPos;
+		SetPosition(position);
 	}
+
+	hitBox.UpdateTransform(body, body.getLocalBounds());
 }
 
 void Monster::Draw(sf::RenderWindow& window)
@@ -183,6 +148,10 @@ void Monster::TakeDamage(int damage)
 		{
 			animator.Play("animations/blood_small.csv");
 		}
+		if (monsterType == Monsters::Body)
+		{
+			animator.Play("animations/blood_small.csv");
+		}
 		SetOrigin(Origins::MC);
 	}
 }
@@ -202,5 +171,138 @@ void Monster::UpdateSkillTimer(float dt)
 		{
 			canUseSkill = true;
 		}
+	}
+}
+
+bool Monster::WillCollideAt(const sf::Vector2f& testPos)
+{
+	sf::Vector2f originalPos = position;
+	SetPosition(testPos);
+	if (monsterType == Monsters::Hopper)
+	{
+		sf::FloatRect newHitBox = GetHitBoxMonster();
+		hitBox.rect.setPosition(newHitBox.left, newHitBox.top);
+		hitBox.rect.setSize(sf::Vector2f(newHitBox.width, newHitBox.height));
+	}
+	else
+	{
+		hitBox.UpdateTransform(body, body.getLocalBounds());
+	}
+
+	bool willCollide = false;
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene)
+	{
+		for (auto boundary : scene->GetMapBoundary())
+		{
+			if (Utils::CheckCollision(hitBox.rect, boundary->rect))
+			{
+				willCollide = true;
+				break;
+			}
+		}
+
+		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body))
+		{
+			for (auto sprite : scene->GetMapSprites())
+			{
+				if ((sprite->GetName() == "rocks_basement" || sprite->GetName() == "grid_pit_basement") &&
+					Utils::CheckCollision(hitBox.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
+				{
+					willCollide = true;
+					break;
+				}
+			}
+		}
+	}
+
+	SetPosition(originalPos);
+	if (monsterType == Monsters::Hopper)
+	{
+		sf::FloatRect newHitBox = GetHitBoxMonster();
+		hitBox.rect.setPosition(newHitBox.left, newHitBox.top);
+		hitBox.rect.setSize(sf::Vector2f(newHitBox.width, newHitBox.height));
+	}
+	else
+	{
+		hitBox.UpdateTransform(body, body.getLocalBounds());
+	}
+
+	return willCollide;
+}
+
+sf::Vector2f Monster::GetSafeDirection(const sf::Vector2f& currentPos, const sf::Vector2f& currentVel)
+{
+	static const sf::Vector2f directions[8] = {
+		{1.0f, 0.0f},
+		{0.707f, 0.707f},
+		{0.0f, 1.0f},
+		{-0.707f, 0.707f},
+		{-1.0f, 0.0f},
+		{-0.707f, -0.707f},
+		{0.0f, -1.0f},
+		{0.707f, -0.707f}
+	};
+
+	float currentSpeed = Utils::Magnitude(currentVel);
+	if (currentSpeed < 10.0f) currentSpeed = 30.0f;
+
+	for (int i = 0; i < 8; i++)
+	{
+		sf::Vector2f testVelocity = directions[i] * currentSpeed;
+		sf::Vector2f testPos = currentPos + testVelocity * 0.016f;
+
+		if (!WillCollideAt(testPos))
+		{
+			return testVelocity;
+		}
+	}
+
+	return sf::Vector2f(0, 0);
+}
+
+void Monster::HandleCollisionByType()
+{
+	if (monsterType == Monsters::Spider)
+	{
+		Spider* spider = static_cast<Spider*>(this);
+		spider->ChangeToPatrolState();
+	}
+	else if (monsterType == Monsters::Body)
+	{
+		Body* body = static_cast<Body*>(this);
+		body->SetInitialState();
+	}
+	//else if (monsterType == Monsters::Hopper)
+	//{
+	//	Hopper* hopper = static_cast<Hopper*>(this);
+	//	hopper->ChangeToIdleState();
+	//}
+	else
+	{
+		Fly* fly = static_cast<Fly*>(this);
+		fly->SetInitialState();
+	}
+}
+
+void Monster::HandleHopperJumpCollision()
+{
+	if (monsterType == Monsters::Hopper)
+	{
+		Hopper* hopper = static_cast<Hopper*>(this);
+
+		sf::Vector2f currentDirection = velocity;
+		float speed = Utils::Magnitude(currentDirection);
+		if (speed > 0) {
+			currentDirection = currentDirection / speed;
+		}
+		else {
+			currentDirection = sf::Vector2f(-1.0f, 0.0f);
+		}
+
+		sf::Vector2f bounceVelocity = -currentDirection * (speed * 0.6f);
+		velocity = bounceVelocity;
+
+		hopper->ChangeToIdleState();
 	}
 }

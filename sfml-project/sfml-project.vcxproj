@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Body.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="GameObjects\Door.cpp" />
     <ClCompile Include="Framework\Button.cpp" />
@@ -193,6 +194,7 @@
     <ClCompile Include="WanderState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Body.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="GameObjects\Door.h" />
     <ClInclude Include="Fly.h" />

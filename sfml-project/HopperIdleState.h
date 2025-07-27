@@ -8,7 +8,6 @@ protected:
 
     static std::random_device rd;
     std::mt19937 gen;
-    std::uniform_real_distribution<float> idleDist;
 
 public:
     HopperIdleState();

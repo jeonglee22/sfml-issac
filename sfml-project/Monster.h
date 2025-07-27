@@ -89,5 +89,10 @@ public:
 	void UpdateSkillTimer(float dt);
 	void HitBoxUpdate();
 	void SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box);
+
+	bool WillCollideAt(const sf::Vector2f& testPos);
+	sf::Vector2f GetSafeDirection(const sf::Vector2f& currentPos, const sf::Vector2f& currentVel);
+	void HandleCollisionByType();
+	void HandleHopperJumpCollision();
 };
 

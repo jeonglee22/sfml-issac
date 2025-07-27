@@ -24,9 +24,37 @@ void WanderState::Update(Monster* monster, float dt)
     if (directionChangeTimer >= directionChangeInterval) {
         ChangeDirection();
         directionChangeTimer = 0.0f;
+
+        if (monster->GetMonsterType() == Monsters::Body)
+        {
+            float x = targetDirection.x;
+            float y = targetDirection.y;
+
+            if (y == 0.0f)
+            {
+                if (x > 0)
+                {
+                    monster->GetAnimator().Play("animations/body_side.csv");
+                    monster->SetScale({ 2.0f, 2.0f });
+                }
+                else
+                {
+                    monster->GetAnimator().Play("animations/body_side.csv");
+                    monster->SetScale({ -2.0f, 2.0f });
+                }
+            }
+            else
+            {
+                monster->GetAnimator().Play("animations/body_front.csv");
+            }
+        }
     }
 
     float wanderSpeed = 30.0f;
+    if (monster->GetMonsterType() == Monsters::Body)
+    {
+        wanderSpeed = 100.0f;
+    }
     monster->SetVelocity(targetDirection * wanderSpeed);
 
 }

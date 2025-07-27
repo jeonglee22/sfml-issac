@@ -24,6 +24,7 @@ void HopperJumpState::Enter(Monster* monster)
     targetPosition = startPosition + jumpDirection * jumpDistance;
 
     monster->GetAnimator().Play("animations/hopper_jump.csv");
+    monster->SetOrigin(Origins::BC);
     monster->SetVelocity(jumpDirection * jumpSpeed);
 }
 
@@ -33,6 +34,7 @@ void HopperJumpState::Update(Monster* monster, float dt)
     sf::Vector2f diff = currentPos - targetPosition;
     float squaredDistance = diff.x * diff.x + diff.y * diff.y;
 
+    // 목표 지점 근처에 도달하면 idle 상태로 전환
     if (squaredDistance < 30.0f * 30.0f) {
         monster->SetVelocity(sf::Vector2f(0, 0));
         Hopper* hopper = static_cast<Hopper*>(monster);

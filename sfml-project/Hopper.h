@@ -19,9 +19,20 @@ public:
     void Reset() override;
     void UseSkill() override;
     void SetInitialState() override;
-    sf::FloatRect GetHitBoxMonster() override;
+    //sf::FloatRect GetHitBoxMonster() override;
 
     void ChangeToIdleState() { ChangeState(&idleState); }
     void ChangeToJumpState() { ChangeState(&jumpState); }
+
+    sf::FloatRect GetHitBoxMonster()
+    {
+        return
+        {
+            position.x - 10.f,
+            position.y - 10.f,
+            20.f,
+            20.f 
+        };
+    }
 };
 

@@ -97,7 +97,7 @@ void MapMaking::SetMapConnection(std::vector<Map*> maps)
 			maps[i]->AddHalfHeart(maps[i]->GetPosition() + sf::Vector2f(500.f, 220.f ));
 			maps[i]->AddBomb(maps[i]->GetPosition() + sf::Vector2f( 700.f, 300.f ));
 			maps[i]->AddKey(maps[i]->GetPosition() + sf::Vector2f(700.f, 200.f ));
-			maps[i]->AddMonster(maps[i]->GetPosition() + sf::Vector2f(600.f, 200.f), "monster_044_hopperleaper");
+			maps[i]->AddMonster(maps[i]->GetPosition() + sf::Vector2f(400.f, 200.f),"monster_000_bodies02");
 		}
 		maps[i]->SetActiveAll(false);
 	}

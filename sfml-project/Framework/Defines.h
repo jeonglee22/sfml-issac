@@ -39,6 +39,7 @@ enum class Monsters
 {
 	Fly,
 	Spider,
+	Body,
 	Hopper,
 };
 
