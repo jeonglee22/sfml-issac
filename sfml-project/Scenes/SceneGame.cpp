@@ -13,6 +13,7 @@
 #include "HitBox.h"
 #include "Door.h"
 #include "Map.h"
+#include "item.h"
 #include "MapUI.h"
 #include "ItemUI.h"
 
@@ -43,6 +44,13 @@ void SceneGame::Init()
 	texIds.push_back("graphics/overlay_2.png");
 	texIds.push_back("graphics/effect_002_bloodpoof_large1.png");
 	texIds.push_back("graphics/effect_002_bloodpoof.png");
+	texIds.push_back("graphics/items/pick ups/pickup_002_coin.png");
+	texIds.push_back("graphics/items/pick ups/pickup_001_heart.png");
+	texIds.push_back("graphics/items/pick ups/pickup_016_bomb.png");
+	texIds.push_back("graphics/items/pick ups/pickup_003_key.png");
+	texIds.push_back("graphics/effects/effect_029_explosion.png");
+	texIds.push_back("graphics/effects/effect_017_bombradius.png");
+
 	texIds.push_back("graphics/minimap.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
@@ -74,8 +82,18 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/blood.csv");
 	ANI_CLIP_MGR.Load("animations/blood_small.csv");
 
+
 	ANI_CLIP_MGR.Load("animations/tears_idle.csv");
 	ANI_CLIP_MGR.Load("animations/tears_boom.csv");
+
+	ANI_CLIP_MGR.Load("animations/coin.csv");
+	ANI_CLIP_MGR.Load("animations/heart.csv");
+	ANI_CLIP_MGR.Load("animations/half_heart.csv");
+	ANI_CLIP_MGR.Load("animations/bomb.csv");
+	ANI_CLIP_MGR.Load("animations/key.csv");
+
+	ANI_CLIP_MGR.Load("animations/explosion.csv");
+	ANI_CLIP_MGR.Load("animations/bombradius.csv");
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
@@ -141,8 +159,13 @@ void SceneGame::Enter()
 		{
 			maps[i]->AddFly({200.f, 200.f});
 			maps[i]->AddFly({250.f, 250.f});
-			maps[i]->AddSpider({300.f, 300.f});
+			maps[i]->AddSpider({500.f, 300.f});
 			maps[i]->AddSpider({350.f, 350.f});
+			maps[i]->AddCoin({ 400.f, 400.f });
+			maps[i]->AddHeart({600.f, 200.f});
+			maps[i]->AddHalfHeart({ 500.f, 220.f });
+			maps[i]->AddBomb({ 700.f, 300.f });
+			maps[i]->AddKey({ 700.f, 200.f });
 		}
 		if (i > 0)
 		{
@@ -168,6 +191,7 @@ void SceneGame::Update(float dt)
 	{
 		maps[currentMapIndex]->SetActiveAll(true);
 		maps[currentMapIndex]->DeleteEnemyAlreadyDead();
+		maps[currentMapIndex]->DeleteItemAlreadyGet();
 		sf::Vector2f nextMapCenter = maps[currentMapIndex]->GetPosition() + maps[currentMapIndex]->GetMapSize().getSize() * 0.5f;
 		if (isMapChanging)
 		{
@@ -210,6 +234,22 @@ void SceneGame::Update(float dt)
 		}
 
 		Scene::Update(dt);
+
+		if (isaac && !isMapChanging)
+		{
+			Map* currentMap = maps[currentMapIndex];
+			auto items = currentMap->GetItems();
+
+			for (auto item : items)
+			{
+				if (item->GetActive() && Utils::CheckCollision(isaac->GetHitBoxBody().rect, item->GetHitBox().rect))
+				{
+					isaac->AddItem(item->GetItemType());
+					item->SetActive(false);
+					item->SetItemGet(true);
+				}
+			}
+		}
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::P))
 		{

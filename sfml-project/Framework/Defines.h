@@ -44,6 +44,8 @@ enum class Monsters
 enum class Items
 {
 	Coin,
+	Half_Heart,
 	Heart,
-	Bomb
+	Bomb,
+	Key,
 };

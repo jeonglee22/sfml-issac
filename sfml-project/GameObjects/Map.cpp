@@ -8,6 +8,7 @@
 #include "Obstacles.h"
 #include "SpriteGo.h"
 #include "Spikes.h"
+#include "Item.h"
 #include "HitBox.h"
 
 Map::Map(const std::string &filePath, const std::string &name)
@@ -33,6 +34,9 @@ void Map::SetPosition(const sf::Vector2f &pos)
 		obstacle->SetPosition(obstacle->GetPosition() + pos);
 	for (auto ground : backgrounds)
 		ground->SetPosition(ground->GetPosition() + pos);
+	for (auto item : items)
+		item->SetPosition(item->GetPosition() + pos);
+
 }
 
 void Map::SetRotation(float rot)
@@ -125,6 +129,62 @@ void Map::AddFly(const sf::Vector2f &pos)
 	fly->SetPosition(pos);
 	sceneGame->AddGameObject(fly);
 }
+
+void Map::AddCoin(const sf::Vector2f& pos)
+{
+	Item* item = new Item();
+	items.push_back(item);
+	item->Init();
+	item->SetItemType(Items::Coin);
+	item->Reset();
+	item->SetPosition(pos);
+	sceneGame->AddGameObject(item);
+}
+
+void Map::AddHeart(const sf::Vector2f& pos)
+{
+	Item* item = new Item();
+	items.push_back(item);
+	item->Init();
+	item->SetItemType(Items::Heart);
+	item->Reset();
+	item->SetPosition(pos);
+	sceneGame->AddGameObject(item);
+}
+
+void Map::AddHalfHeart(const sf::Vector2f& pos)
+{
+	Item* item = new Item();
+	items.push_back(item);
+	item->Init();
+	item->SetItemType(Items::Half_Heart);
+	item->Reset();
+	item->SetPosition(pos);
+	sceneGame->AddGameObject(item);
+}
+
+void Map::AddBomb(const sf::Vector2f& pos)
+{
+	Item* item = new Item();
+	items.push_back(item);
+	item->Init();
+	item->SetItemType(Items::Bomb);
+	item->Reset();
+	item->SetPosition(pos);
+	sceneGame->AddGameObject(item);
+}
+
+void Map::AddKey(const sf::Vector2f& pos)
+{
+	Item* item = new Item();
+	items.push_back(item);
+	item->Init();
+	item->SetItemType(Items::Key);
+	item->Reset();
+	item->SetPosition(pos);
+	sceneGame->AddGameObject(item);
+}
+
 
 void Map::SetDoor()
 {
@@ -272,6 +332,9 @@ void Map::AddGameObjectInScene()
 		sceneGame->AddGameObject(obstacle);
 	for (auto ground : backgrounds)
 		sceneGame->AddGameObject(ground);
+	for (auto item : items)
+		sceneGame->AddGameObject(item);
+
 }
 
 void Map::SetActiveAll(bool b)
@@ -288,6 +351,8 @@ void Map::SetActiveAll(bool b)
 		obstacle->SetActive(b);
 	for (auto ground : backgrounds)
 		ground->SetActive(b);
+	for (auto item : items)
+		item->SetActive(b);
 }
 
 bool Map::CheckAllEnemyDead()
@@ -317,5 +382,16 @@ void Map::DeleteEnemyAlreadyDead()
 	{
 		if (spider->GetCurrentHP() <= 0)
 			spider->SetActive(false);
+	}
+}
+
+void Map::DeleteItemAlreadyGet()
+{
+	for (auto item : items)
+	{
+		if (item->WasItemGet())
+		{
+			item->SetActive(false);
+		}
 	}
 }

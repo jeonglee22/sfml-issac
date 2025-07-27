@@ -7,6 +7,8 @@
 #include "Monster.h"
 #include "Door.h"
 #include "Obstacles.h"
+#include "Map.h"
+#include "Bomb.h"
 
 Isaac::Isaac(const std::string &name)
 	: GameObject(name)
@@ -75,7 +77,7 @@ void Isaac::Reset()
 	}
 
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 0;
+	sortingOrder = 3;
 
 	headAnimator.Play("animations/isaac_head_front.csv");
 	bodyAnimator.Play("animations/isaac_body_idle.csv");
@@ -112,9 +114,16 @@ void Isaac::Reset()
 	}
 	tearsList.clear();
 
+	for (Bomb* bomb : bombsList)
+	{
+		bomb->SetActive(false);
+		bombsPool.push_back(bomb);
+	}
+	bombsList.clear();
+
 	shootTimer = 0.0f;
 	wasKeyPressed = false;
-	shootDirection = {0.f, 0.f};
+	currentHP = inventory.heartCount;
 
 	isDead = false;
 
@@ -151,6 +160,28 @@ void Isaac::Update(float dt)
 		else
 		{
 			++it;
+		}
+	}
+
+	for (auto* bomb : bombsList)
+	{
+		if (bomb->GetActive())
+		{
+			bomb->Update(dt);
+		}
+	}
+
+	auto bombIt = bombsList.begin();
+	while (bombIt != bombsList.end())
+	{
+		if (!(*bombIt)->GetActive())
+		{
+			bombsPool.push_back(*bombIt);
+			bombIt = bombsList.erase(bombIt);
+		}
+		else
+		{
+			++bombIt;
 		}
 	}
 
@@ -248,58 +279,100 @@ void Isaac::Update(float dt)
 		}
 	}
 
-
+		shootTimer += dt;
 		bool shootingKeyPressed = false;
-		sf::Vector2f newShootDirection = { 0.f, 0.f };
+		sf::Vector2f shootInput = { 0.f, 0.f };
+		sf::Vector2f finalShootDirection = { 0.f, 0.f };
 
 		if (InputMgr::GetKey(sf::Keyboard::Right))
 		{
-			newShootDirection = sf::Vector2f(1.f, 0.f);
+			shootInput = sf::Vector2f(1.f, 0.f);
 			shootingKeyPressed = true;
 		}
 		else if (InputMgr::GetKey(sf::Keyboard::Left))
 		{
-			newShootDirection = sf::Vector2f(-1.f, 0.f);
+			shootInput = sf::Vector2f(-1.f, 0.f);
 			shootingKeyPressed = true;
 		}
 		else if (InputMgr::GetKey(sf::Keyboard::Up))
 		{
-			newShootDirection = sf::Vector2f(0.f, -1.f);
+			shootInput = sf::Vector2f(0.f, -1.f);
 			shootingKeyPressed = true;
 		}
 		else if (InputMgr::GetKey(sf::Keyboard::Down))
 		{
-			newShootDirection = sf::Vector2f(0.f, 1.f);
+			shootInput = sf::Vector2f(0.f, 1.f);
 			shootingKeyPressed = true;
 		}
 
 		if (shootingKeyPressed)
 		{
-			if (!isHurt)
+			finalShootDirection = shootInput;
+
+			if (abs(h) > 0.1f || abs(w) > 0.1f)
 			{
-				if (newShootDirection.x > 0.f)
+				sf::Vector2f moveDirection = { h, w };
+
+				float influence = 0.3f;
+				finalShootDirection.x += moveDirection.x * influence;
+				finalShootDirection.y += moveDirection.y * influence;
+
+				float length = sqrt(finalShootDirection.x * finalShootDirection.x +
+					finalShootDirection.y * finalShootDirection.y);
+				if (length > 0)
 				{
-					SetScale({ 2.f, 2.f });
-					PlayHeadTearsAnimation("side");
-				}
-				else if (newShootDirection.x < 0.f)
-				{
-					SetScale({ -2.f, 2.f });
-					PlayHeadTearsAnimation("side");
-				}
-				else if (newShootDirection.y < 0.f)
-				{
-					PlayHeadTearsAnimation("rare");
-				}
-				else if (newShootDirection.y > 0.f)
-				{
-					PlayHeadTearsAnimation("front");
+					finalShootDirection.x /= length;
+					finalShootDirection.y /= length;
 				}
 			}
-			if (!wasKeyPressed || shootTimer >= shootInterval)
+
+
+			if (!isHurt)
 			{
-				shootDirection = newShootDirection;
-				FireTear(shootDirection);
+				if (shootInput.x > 0.f)
+				{
+					head.setScale({ 2.f, 2.f });
+					PlayHeadTearsAnimation("side");
+				}
+				else if (shootInput.x < 0.f)
+				{
+					head.setScale({ -2.f, 2.f });
+					PlayHeadTearsAnimation("side");
+				}
+				else if (shootInput.y < 0.f)
+				{
+					head.setScale(body.getScale());
+					PlayHeadTearsAnimation("rare");
+				}
+				else if (shootInput.y > 0.f)
+				{
+					head.setScale(body.getScale());
+					PlayHeadTearsAnimation("front");
+
+				}
+				if (abs(h) > 0.1f || abs(w) > 0.1f)
+				{
+					if (w < 0.f)
+					{
+						PlayBodyAnimation("run_height");
+					}
+					else if (w > 0.f)
+					{
+						PlayBodyAnimation("run_height");
+					}
+					else if (h != 0.f)
+					{
+						PlayBodyAnimation("run_weight");
+					}
+				}
+				else
+				{
+					PlayBodyAnimation("idle");
+				}
+			}
+			if (shootTimer >= shootInterval)
+			{
+				FireTear(finalShootDirection);
 				shootTimer = 0.f;
 			}
 			shootTimer += dt;
@@ -316,30 +389,31 @@ void Isaac::Update(float dt)
 			}
 			if (!isHurt)
 			{
+				head.setScale(body.getScale());
 
-			if (h == 0.f && w == 0.f)
-			{
-				PlayHeadAnimation("front");
-				PlayBodyAnimation("idle");
-			}
-			else
-			{
-				if (w < 0.f)
-				{
-					PlayHeadAnimation("rare");
-					PlayBodyAnimation("run_height");
-				}
-				else if (w > 0.f)
+				if (h == 0.f && w == 0.f)
 				{
 					PlayHeadAnimation("front");
-					PlayBodyAnimation("run_height");
+					PlayBodyAnimation("idle");
 				}
-				else if (h != 0.f)
+				else
 				{
-					PlayHeadAnimation("side");
-					PlayBodyAnimation("run_weight");
+					if (w < 0.f)
+					{
+						PlayHeadAnimation("rare");
+						PlayBodyAnimation("run_height");
+					}
+					else if (w > 0.f)
+					{
+						PlayHeadAnimation("front");
+						PlayBodyAnimation("run_height");
+					}
+					else if (h != 0.f)
+					{
+						PlayHeadAnimation("side");
+						PlayBodyAnimation("run_weight");
+					}
 				}
-			}
 		}
 
 		if (!isHurt && (InputMgr::GetKeyUp(sf::Keyboard::Up) || InputMgr::GetKeyUp(sf::Keyboard::Down) || InputMgr::GetKeyUp(sf::Keyboard::Left) || InputMgr::GetKeyUp(sf::Keyboard::Right)))
@@ -375,6 +449,21 @@ void Isaac::Update(float dt)
 
 
 	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num5))
+	{
+		std::cout << "ÇöÀç HP: " << currentHP << std::endl;
+		std::cout << "ÄÚÀÎ: " << inventory.coinCount << std::endl;
+		std::cout << "ÆøÅº: " << inventory.bombCount << std::endl;
+		std::cout << "¿­¼è: " << inventory.keyCount << std::endl;
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::E) && inventory.bombCount > 0)
+	{
+		std::cout << "ÆøÅº ³õ±â" << std::endl;
+		InstallBomb();
+	}
+
 
 	MonsterCollision();
 
@@ -414,22 +503,28 @@ void Isaac::FireTear(const sf::Vector2f &direction)
 
 	tears->Reset();
 
-	sf::Vector2f firePosition;
-	if (direction.x > 0.f && direction.y == 0.f)
+	sf::Vector2f firePosition = position;
+
+	if (direction.x > 0.1f)
 	{
-		firePosition = {position.x + 20.f, position.y + Utils::RandomRange(-43.f, -23.f)};
+		firePosition.x += 20.f;
 	}
-	else if (direction.x < 0.f && direction.y == 0.f)
+	else if (direction.x < -0.1f)
 	{
-		firePosition = {position.x - 20.f, position.y + Utils::RandomRange(-43.f, -23.f)};
+		firePosition.x -= 20.f;
 	}
-	else if (direction.y < 0.f && direction.x == 0.f)
+
+	if (direction.y > 0.1f)
 	{
-		firePosition = {position.x + Utils::RandomRange(-15.f, 15.f), position.y - 50.f};
+		firePosition.y += Utils::RandomRange(-20.f, 0.f);
 	}
-	else if (direction.y > 0.f && direction.x == 0.f)
+	else if (direction.y < -0.1f)
 	{
-		firePosition = {position.x + Utils::RandomRange(-15.f, 15.f), position.y - 20.f};
+		firePosition.y += Utils::RandomRange(-50.f, -30.f);
+	}
+	else
+	{
+		firePosition.y += Utils::RandomRange(-43.f, -23.f);
 	}
 
 	tears->Fire( firePosition, direction, 250.f, 35);
@@ -466,6 +561,10 @@ void Isaac::MonsterCollision()
 		}
 		
 	}
+}
+
+void Isaac::ItemCollision()
+{
 }
 
 void Isaac::HitBoxUpdate()
@@ -530,10 +629,10 @@ void Isaac::PlayHeadAnimation(const std::string& animation)
 void Isaac::PlayHeadTearsAnimation(const std::string& animation)
 {
 	auto it = headTearsAnimation.find(animation);
-	if (it != headTearsAnimation.end() && currentHeadAnimation != animation)
+	if (it != headTearsAnimation.end() && currentHeadAnimation != ("tears_" + animation))
 	{
 		headAnimator.Play(it->second);
-		currentHeadAnimation = animation;
+		currentHeadAnimation = "tears_" + animation;
 	}
 }
 
@@ -555,4 +654,57 @@ bool Isaac::IsCurrentHeadAnimation(const std::string& animation) const
 bool Isaac::IsCurrentBodyAnimation(const std::string& animation) const
 {
 	return currentBodyAnimation == animation;
+}
+
+void Isaac::AddItem(Items itemType)
+{
+	switch (itemType)
+	{
+	case Items::Heart:
+		currentHP = std::min(currentHP + 100, maxHP);
+		inventory.heartCount = currentHP;
+		break;
+	case Items::Half_Heart:
+		currentHP = std::min(currentHP + 50, maxHP);
+		inventory.heartCount = currentHP;
+		break;
+	case Items::Coin:
+		inventory.coinCount++;
+		break;
+	case Items::Bomb:
+		inventory.bombCount++;
+		break;
+	case Items::Key:
+		inventory.keyCount++;
+		break;
+	}
+}
+
+void Isaac::InstallBomb()
+{
+	if (inventory.bombCount <= 0)
+	{
+		return;
+	}
+
+	Bomb* bomb = nullptr;
+
+	if (bombsPool.empty())
+	{
+		bomb = new Bomb();
+		bomb->Init();
+	}
+	else
+	{
+		bomb = bombsPool.front();
+		bombsPool.pop_front();
+		bomb->SetActive(true);
+	}
+
+	bomb->Reset();
+	bomb->SetPosition(position);
+	bombsList.push_back(bomb);
+
+	inventory.bombCount--;
+	sceneGame->AddGameObject(bomb);
 }

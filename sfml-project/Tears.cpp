@@ -62,6 +62,7 @@ void Tears::Reset()
 	tearsCrushTime = 0.0f;
 	isTearsCrush = false;
 	damage = 35;
+	hasReachedMaxRange = false;
 
 	Utils::SetOrigin(sprite, Origins::MC);
 	SetScale({ 1.5f, 1.5f });
@@ -91,6 +92,12 @@ void Tears::Update(float dt)
 		velocity += gravity * dt;
 	}
 
+	if (!hasReachedMaxRange && distance > maxRange)
+	{
+		maxRangePosition = position;
+		hasReachedMaxRange = true;
+	}
+
 	SetPosition(position + velocity * dt);
 	hitBox.UpdateTransform(sprite, sprite.getLocalBounds());
 
@@ -118,13 +125,20 @@ void Tears::Update(float dt)
 		}
 	}
 
-	if (direction.y <= 0.f && position.y > startPosition.y + 30.f)
+
+
+	float allowedDrop = 30.f;
+
+
+	if (hasReachedMaxRange)
 	{
-		StartSplash();
-		SetOrigin(Origins::MC);
-		return;
+		if (abs(direction.x) > 0.1f && position.y > maxRangePosition.y + allowedDrop)
+		{
+			StartSplash();
+			SetOrigin(Origins::MC);
+			return;
+		}
 	}
-	
 
 	Hit();
 }
