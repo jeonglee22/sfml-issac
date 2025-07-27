@@ -92,11 +92,6 @@ void MapMaking::SetMapConnection(std::vector<Map*> maps)
 			int xPos = maps[i]->GetStageXIndex();
 			int yPos = maps[i]->GetStageYIndex();
 			maps[i]->SetPosition({ maps[i]->GetMapSize().getSize().x * (xPos - 7) , maps[i]->GetMapSize().getSize().y * (yPos - 7) });
-			maps[i]->AddCoin(maps[i]->GetPosition() + sf::Vector2f( 400.f, 400.f ));
-			maps[i]->AddHeart(maps[i]->GetPosition() + sf::Vector2f(600.f, 200.f ));
-			maps[i]->AddHalfHeart(maps[i]->GetPosition() + sf::Vector2f(500.f, 220.f ));
-			maps[i]->AddBomb(maps[i]->GetPosition() + sf::Vector2f( 700.f, 300.f ));
-			maps[i]->AddKey(maps[i]->GetPosition() + sf::Vector2f(700.f, 200.f ));
 		}
 		maps[i]->SetActiveAll(false);
 	}

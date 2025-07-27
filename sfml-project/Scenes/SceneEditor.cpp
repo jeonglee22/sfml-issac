@@ -35,6 +35,8 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/additionals/grid_poop.png");
 	texIds.push_back("graphics/additionals/levelitem_001_itemaltar.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_001_heart.png");
+	texIds.push_back("graphics/additionals/pickups/heart.png");
+	texIds.push_back("graphics/additionals/pickups/halfheart.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_002_coin.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_005_chests.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_003_key.png");

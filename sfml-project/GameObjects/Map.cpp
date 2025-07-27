@@ -126,61 +126,25 @@ void Map::AddMonster(const sf::Vector2f &pos, const std::string& name)
 	sceneGame->AddGameObject(monster);
 }
 
-void Map::AddCoin(const sf::Vector2f& pos)
+void Map::AddItem(const sf::Vector2f& pos, const std::string& name)
 {
 	Item* item = new Item();
 	items.push_back(item);
 	item->Init();
-	item->SetItemType(Items::Coin);
+	if (name == "heart")
+		item->SetItemType(Items::Heart);
+	else if (name == "halfheart")
+		item->SetItemType(Items::Half_Heart);
+	else if (name == "pickup_002_coin")
+		item->SetItemType(Items::Coin);
+	else if (name == "pickup_016_bomb")
+		item->SetItemType(Items::Bomb);
+	else if (name == "pickup_003_key")
+		item->SetItemType(Items::Key);
 	item->Reset();
-	item->SetPosition(pos);
+	item->SetPosition(pos + sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f);
 	sceneGame->AddGameObject(item);
 }
-
-void Map::AddHeart(const sf::Vector2f& pos)
-{
-	Item* item = new Item();
-	items.push_back(item);
-	item->Init();
-	item->SetItemType(Items::Heart);
-	item->Reset();
-	item->SetPosition(pos);
-	sceneGame->AddGameObject(item);
-}
-
-void Map::AddHalfHeart(const sf::Vector2f& pos)
-{
-	Item* item = new Item();
-	items.push_back(item);
-	item->Init();
-	item->SetItemType(Items::Half_Heart);
-	item->Reset();
-	item->SetPosition(pos);
-	sceneGame->AddGameObject(item);
-}
-
-void Map::AddBomb(const sf::Vector2f& pos)
-{
-	Item* item = new Item();
-	items.push_back(item);
-	item->Init();
-	item->SetItemType(Items::Bomb);
-	item->Reset();
-	item->SetPosition(pos);
-	sceneGame->AddGameObject(item);
-}
-
-void Map::AddKey(const sf::Vector2f& pos)
-{
-	Item* item = new Item();
-	items.push_back(item);
-	item->Init();
-	item->SetItemType(Items::Key);
-	item->Reset();
-	item->SetPosition(pos);
-	sceneGame->AddGameObject(item);
-}
-
 
 void Map::SetDoor()
 {
@@ -295,6 +259,10 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 	else if (infos[5].substr(0, 4) == "mons")
 	{
 		AddMonster({ std::stof(infos[6]),std::stof(infos[7]) }, infos[5]);
+	}
+	else if (infos[5].substr(0, 4) == "pick" || infos[5] == "heart" || infos[5] == "halfheart")
+	{
+		AddItem({ std::stof(infos[6]),std::stof(infos[7]) }, infos[5]);
 	}
 	else
 	{
