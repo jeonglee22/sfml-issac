@@ -60,7 +60,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/ui_hearts.png");
 	texIds.push_back("graphics/controls.png");
 	texIds.push_back("graphics/ui_chargebar.png");
-	texIds.push_back("graphics/items/collectibles/collectibles_035_thenecronomicon.png");
+	texIds.push_back("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png");
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
@@ -128,7 +128,7 @@ void SceneGame::Init()
 	itemUI = (ItemUI*)AddGameObject(new ItemUI("ItemUI"));
 	heartUI = (HeartUI*)AddGameObject(new HeartUI("graphics/ui_hearts.png", "HeartUI"));
 	skillUI = (SkillUI*)AddGameObject(new SkillUI("graphics/ui_chargebar.png", "SkillUI"));
-	skill = new Skill("graphics/items/collectibles/collectibles_035_thenecronomicon.png", "necronomicon");
+	skill = new Skill("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png", "necronomicon");
 	skill->SetSkillFunc([this]() {
 		for (auto monster : monsters)
 		{
