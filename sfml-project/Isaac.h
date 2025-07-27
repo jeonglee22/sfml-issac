@@ -109,4 +109,8 @@ public:
 
 	void SetSkill(Skill* skill) { this->skill = skill; }
 	Skill* GetSkill() { return skill; }
+
+	int GetCoinCount() const { return inventory.coinCount; }
+	int GetBombCount() const { return inventory.bombCount; }
+	int GetKeyCount() const { return inventory.keyCount; }
 };

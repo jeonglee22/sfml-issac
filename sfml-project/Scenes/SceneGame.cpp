@@ -244,6 +244,9 @@ void SceneGame::Update(float dt)
 		heartUI->SetHeartCount(isaac->GetCurrentHP());
 		heartUI->SetMaxHeartCount(isaac->GetMaxHP());
 
+		if(isaac->GetBombCount() != itemUI->GetBombCount())
+			itemUI->SetItemUICount(Items::Bomb, isaac->GetBombCount());
+
 		if (isaac && !isMapChanging)
 		{
 			Map* currentMap = maps[currentMapIndex];
@@ -254,6 +257,7 @@ void SceneGame::Update(float dt)
 				if (item->GetActive() && Utils::CheckCollision(isaac->GetHitBoxBody().rect, item->GetHitBox().rect))
 				{
 					isaac->AddItem(item->GetItemType());
+					itemUI->SetItemUICount(item->GetItemType(), itemUI->GetItemUICount(item->GetItemType()) + 1);
 					item->SetActive(false);
 					item->SetItemGet(true);
 				}

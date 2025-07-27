@@ -23,7 +23,7 @@ protected:
 	std::vector<sf::Sprite*> keyCountSprites;
 	std::vector<sf::Vector2f> keyImagesPos;
 
-	int coinCount = 5;
+	int coinCount = 0;
 	int bombCount = 0;
 	int keyCount = 0;
 
@@ -44,10 +44,13 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetCoinCount(int count);
-	int GetCoinCount() { return coinCount; }
+	int GetCoinCount() const { return coinCount; }
 	void SetBombCount(int count);
-	int GetBombCount() { return bombCount; }
+	int GetBombCount() const { return bombCount; }
 	void SetKeyCount(int count);
-	int GetKeyCount() { return keyCount; }
+	int GetKeyCount() const { return keyCount; }
+
+	void SetItemUICount(Items id, int count);
+	int GetItemUICount(Items id) const;
 };
 
