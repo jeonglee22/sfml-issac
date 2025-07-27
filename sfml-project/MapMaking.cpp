@@ -2,7 +2,7 @@
 #include "rapidcsv.h"
 #include "MapMaking.h"
 
-int MapMaking::normalMapCount = 10;
+int MapMaking::normalMapCount = 15;
 int MapMaking::startMapCount = 3;
 
 void MapMaking::MapRandomMaking(int mapCount)
@@ -34,7 +34,7 @@ std::vector<Map*> MapMaking::SetMapInfo(std::vector<int> mapPos, int mapCount, s
 				if (mapIndex == 0)
 					maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), "start" + std::to_string(mapIndex));
 				else
-					maps[mapIndex] = new Map("Mapfolder/testmap3.csv");
+					maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), "map" + std::to_string(mapIndex));
 				maps[mapIndex]->SetStageIndex(j, i);
 			}
 		}
@@ -105,12 +105,13 @@ std::string MapMaking::PickRandomMapInPool(MapType mapType)
 	switch (mapType)
 	{
 	case MapMaking::MapType::Normal:
-		fileName += "Normal/" + std::to_string(Utils::RandomRange(0, normalMapCount)) + ".csv";
+		fileName += "Normal/" + std::to_string(Utils::RandomRange(1, normalMapCount + 1)) + ".csv";
 		break;
 	case MapMaking::MapType::Start:
 		fileName += "Start/" + std::to_string(Utils::RandomRange(1, startMapCount+1)) + ".csv";
 		break;
 	case MapMaking::MapType::Boss:
+		fileName += "Boss/1.csv";
 		break;
 	case MapMaking::MapType::Hidden:
 		break;

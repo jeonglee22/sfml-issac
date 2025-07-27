@@ -54,6 +54,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/items/pick ups/pickup_003_key.png");
 	texIds.push_back("graphics/effects/effect_029_explosion.png");
 	texIds.push_back("graphics/effects/effect_017_bombradius.png");
+	texIds.push_back("graphics/additionals/grid_poop.png");
 
 	texIds.push_back("graphics/minimap.png");
 	texIds.push_back("graphics/hudpickups.png");
