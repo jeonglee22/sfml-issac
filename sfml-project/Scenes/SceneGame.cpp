@@ -67,6 +67,16 @@ void SceneGame::Init()
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
+	soundIds.push_back("sounds/splatter 2.wav");
+	soundIds.push_back("sounds/tear fire 4.wav");
+	soundIds.push_back("sounds/tear block.wav");
+	soundIds.push_back("sounds/hurt grunt 2.wav");
+	soundIds.push_back("sounds/hurt grunt 1.wav");
+	soundIds.push_back("sounds/hurt grunt .wav");
+	soundIds.push_back("sounds/death burst small.wav");
+	soundIds.push_back("sounds/door heavy open.wav");
+	soundIds.push_back("sounds/door heavy close.wav");
+
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/run.csv");
 	ANI_CLIP_MGR.Load("animations/jump.csv");
@@ -194,6 +204,8 @@ void SceneGame::Enter()
 
 void SceneGame::Update(float dt)
 {
+	SOUND_MGR.SetSfxVolume(20);
+
 	if (beforeIndex != currentMapIndex)
 	{
 		maps[currentMapIndex]->SetActiveAll(true);

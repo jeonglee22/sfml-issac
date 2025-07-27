@@ -103,8 +103,14 @@ void Map::Draw(sf::RenderWindow &window)
 void Map::SetCleared(bool b)
 {
 	if (b && !isCleared)
+	{
 		sceneGame->AddSkillCooltimeAtClear();
-
+		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/door heavy open.wav"));
+	}
+	if (!b && isCleared)
+	{
+		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/door heavy close.wav"));
+	}
 	isCleared = b;
 	for (auto door : doors)
 	{
