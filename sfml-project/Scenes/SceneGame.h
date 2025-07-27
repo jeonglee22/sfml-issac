@@ -9,7 +9,10 @@ class HitBox;
 class Door;
 class Map;
 class MapUI;
-class ItmeUI;
+class ItemUI;
+class HeartUI;
+class SkillUI;
+class Skill;
 
 class SceneGame : public Scene
 {
@@ -36,9 +39,13 @@ protected:
 
 	std::vector<SpriteGo*> shadings;
 	SpriteGo* overlay;
+	SpriteGo* controls;
 
 	MapUI* mapUI;
-	ItmeUI* itemUI;
+	ItemUI* itemUI;
+	HeartUI* heartUI;
+	SkillUI* skillUI;
+	Skill* skill;
 
 	int currentMapIndex = 0;
 
@@ -64,5 +71,7 @@ public:
 	std::vector<int> GetNeighboorMapIndex(int x, int y);
 	
 	sf::View GetWorldView() { return worldView; }
+
+	void AddSkillCooltimeAtClear();
 };
 

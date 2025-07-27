@@ -14,6 +14,7 @@ class HitBox;
 class Tears;
 class SceneDev2;
 class SceneGame;
+class Skill;
 class Bomb;
 
 class Isaac : public GameObject
@@ -56,13 +57,15 @@ protected:
 	float currentHurtTime = 0.0;
 	float maxHurtTime = 0.4f;
 
-	int maxHP = 300;
-	int currentHP = 0;
+	int maxHP = 6;
+	int currentHP = 6;
 
 	bool isDead = false;
 
 	HitBox hitBoxHead;
 	HitBox hitBoxBody;
+
+	Skill* skill = nullptr;
 
 public:
 	Isaac(const std::string& name = "");
@@ -101,4 +104,9 @@ public:
 
 	HitBox GetHitBoxBody() const { return hitBoxBody; }
 	HitBox GetHitBoxHead() const { return hitBoxHead; }
+	int GetCurrentHP() const { return currentHP; }
+	int GetMaxHP() const { return maxHP; }
+
+	void SetSkill(Skill* skill) { this->skill = skill; }
+	Skill* GetSkill() { return skill; }
 };

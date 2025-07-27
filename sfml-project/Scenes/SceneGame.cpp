@@ -16,6 +16,10 @@
 #include "item.h"
 #include "MapUI.h"
 #include "ItemUI.h"
+#include "HeartUI.h"
+#include "SkillUI.h"
+#include "Skill.h"
+#include "MapMaking.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Stage)
@@ -52,6 +56,13 @@ void SceneGame::Init()
 	texIds.push_back("graphics/effects/effect_017_bombradius.png");
 
 	texIds.push_back("graphics/minimap.png");
+	texIds.push_back("graphics/hudpickups.png");
+	texIds.push_back("graphics/ui_hearts.png");
+	texIds.push_back("graphics/controls.png");
+	texIds.push_back("graphics/ui_chargebar.png");
+	texIds.push_back("graphics/items/collectibles/collectibles_035_thenecronomicon.png");
+	for (int i = 0; i < 10; i++)
+		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
@@ -97,12 +108,10 @@ void SceneGame::Init()
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
-	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/startMap.csv")));
-	maps[0]->SetStageIndex(7, 7);
-	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/testmap3.csv")));
-	maps[1]->SetStageIndex(8, 7);
-	maps.push_back((Map *)AddGameObject(new Map("Mapfolder/testmap3.csv")));
-	maps[2]->SetStageIndex(9, 7);
+	MapMaking::MapRandomMaking(10);
+	maps = MapMaking::SetMapInfo("Mapfolder/mapPos.csv", 10, "Mapfolder/mapType.csv");
+	for (auto& map : maps)
+		AddGameObject(map);
 
 	for(int i =0; i <1;i++)
 	{
@@ -111,20 +120,31 @@ void SceneGame::Init()
 		shadings[i]->sortingLayer = SortingLayers::Background;
 		shadings[i]->sortingOrder = 20;
 	}
+	controls = (SpriteGo*)AddGameObject(new SpriteGo("graphics/controls.png"));
+	controls->sortingLayer = SortingLayers::Background;
+	controls->sortingOrder = 5;
 
 	mapUI = (MapUI*)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
+	itemUI = (ItemUI*)AddGameObject(new ItemUI("ItemUI"));
+	heartUI = (HeartUI*)AddGameObject(new HeartUI("graphics/ui_hearts.png", "HeartUI"));
+	skillUI = (SkillUI*)AddGameObject(new SkillUI("graphics/ui_chargebar.png", "SkillUI"));
+	skill = new Skill("graphics/items/collectibles/collectibles_035_thenecronomicon.png", "necronomicon");
+	skill->SetSkillFunc([this]() {
+		for (auto monster : monsters)
+		{
+			if(monster->GetActive())
+			{
+				monster->TakeDamage(40);
+			}
+		}
+	});
+	skill->SetTotalSkillCooltime(4);
 
 	Scene::Init();
 }
 
 void SceneGame::Enter()
 {
-	for (int i = 0 ; i< 15; i++)
-	{
-		for (int j = 0; j < 15; j++)
-			mapIndex[i][j] = -1;
-	}
-
 	FRAMEWORK.GetWindow().setSize({960, 540});
 	auto size = FRAMEWORK.GetWindowSizeF();
 
@@ -134,22 +154,25 @@ void SceneGame::Enter()
 
 	Scene::Enter();
 
-	mapIndex[stageStartY][stageStartX] = 0;
-	mapIndex[stageStartY][stageStartX + 1] = 1;
-	mapIndex[stageStartY][stageStartX + 2] = 2;
+	MapMaking::GetMapInfo("Mapfolder/mapPos.csv", mapIndex);
+
+	mapUI->SetScale({ 2.f,2.f });
+	itemUI->SetScale({ 2.f,2.f });
+	heartUI->SetScale({ 2.f,2.f });
 
 	mapUI->SetMapIndex(mapIndex);
-	mapUI->SetPosition({uiView.getSize().x - 80.f, 80.f});
-	mapUI->SetScale({ 2.f,2.f });
+	mapUI->SetPosition({uiView.getSize().x - 110.f, 100.f});
 
 	currentMapSize = maps[0]->GetMapSize();
-	worldView.setSize(currentMapSize.getSize());
+
+	worldView.setSize({ currentMapSize.getSize().x * 1.1f, currentMapSize.getSize().y });
 	worldView.setCenter(currentMapSize.getSize() * 0.5f);
 	isaac->SetPosition(center);
 
 	// LoadStageField("Mapfolder/testmap3.csv");
 	mapOffset = sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f;
 
+	MapMaking::SetMapConnection(maps);
 	for (int i = 0; i < maps.size(); i++)
 	{
 		maps[i]->SetDoor();
@@ -183,6 +206,13 @@ void SceneGame::Enter()
 		shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
 		shading->SetPosition(currentMapSize.getSize() * 0.5f);
 	}
+	controls->SetScale({ 2.f,2.f });
+	controls->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/controls.png").getSize()) * 0.5f);
+	controls->SetPosition(currentMapSize.getSize() * 0.5f);
+
+	isaac->SetSkill(skill);
+	skillUI->SetSkill(isaac->GetSkill());
+	skillUI->SetPosition({ 60.f,60.f });
 }
 
 void SceneGame::Update(float dt)
@@ -234,6 +264,9 @@ void SceneGame::Update(float dt)
 		}
 
 		Scene::Update(dt);
+
+		heartUI->SetHeartCount(isaac->GetCurrentHP());
+		heartUI->SetMaxHeartCount(isaac->GetMaxHP());
 
 		if (isaac && !isMapChanging)
 		{
@@ -336,4 +369,10 @@ std::vector<int> SceneGame::GetNeighboorMapIndex(int x, int y)
 		right = -1;
 
 	return std::vector<int>{up, right, down, left};
+}
+
+void SceneGame::AddSkillCooltimeAtClear()
+{
+	Skill* skill = isaac->GetSkill();
+	skill->AddSkillCooltime();
 }

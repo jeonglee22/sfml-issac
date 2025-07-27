@@ -148,6 +148,7 @@
     <ClCompile Include="Framework\AnimationClip.cpp" />
     <ClCompile Include="Framework\Animator.cpp" />
     <ClCompile Include="GameUIs\MapBoxUI.cpp" />
+    <ClCompile Include="GameUIs\HeartUI.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="Isaac.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="GameObjects\Obstacles.cpp" />
     <ClCompile Include="GameObjects\Map.cpp" />
     <ClCompile Include="GameUIs\MapUI.cpp" />
+    <ClCompile Include="MapMaking.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
     <ClCompile Include="Scenes\SceneEditor.cpp" />
     <ClCompile Include="Monster.cpp" />
@@ -170,6 +172,8 @@
     <ClCompile Include="Scenes\SceneDev2.cpp" />
     <ClCompile Include="Framework\SceneMgr.cpp" />
     <ClCompile Include="Framework\SoundMgr.cpp" />
+    <ClCompile Include="GameUIs\SkillUI.cpp" />
+    <ClCompile Include="Skill.cpp" />
     <ClCompile Include="Spider.cpp" />
     <ClCompile Include="SpiderChargeState.cpp" />
     <ClCompile Include="SpiderJumpState.cpp" />
@@ -194,6 +198,7 @@
     <ClInclude Include="Framework\Button.h" />
     <ClInclude Include="GameUIs\EditBoxUI.h" />
     <ClInclude Include="GameUIs\MapBoxUI.h" />
+    <ClInclude Include="GameUIs\HeartUI.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="Isaac.h" />
     <ClInclude Include="Framework\Framework.h" />
@@ -211,6 +216,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="GameUIs\ItemUI.h" />
     <ClInclude Include="GameUIs\MapUI.h" />
+    <ClInclude Include="MapMaking.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\SceneEditor.h" />
     <ClInclude Include="Monster.h" />
@@ -219,6 +225,8 @@
     <ClInclude Include="Scenes\SceneDev2.h" />
     <ClInclude Include="Framework\SceneMgr.h" />
     <ClInclude Include="Framework\SoundMgr.h" />
+    <ClInclude Include="GameUIs\SkillUI.h" />
+    <ClInclude Include="Skill.h" />
     <ClInclude Include="Spider.h" />
     <ClInclude Include="SpiderChargeState.h" />
     <ClInclude Include="SpiderJumpState.h" />

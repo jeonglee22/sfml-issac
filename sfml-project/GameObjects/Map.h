@@ -1,14 +1,13 @@
 #pragma once
 #include "GameObject.h"
 
-class Spider;
-class Fly;
 class Obstacles;
 class Spikes;
 class Door;
 class SpriteGo;
 class HitBox;
 class SceneGame;
+class Monster;
 class Item;
 
 class Map : public GameObject
@@ -28,8 +27,7 @@ protected:
 	sf::RectangleShape center;
 
 	std::vector<SpriteGo*> allObjects;
-	std::vector<Spider*> spiders;
-	std::vector<Fly*> flys;
+	std::vector<Monster*> monsters;
 	std::vector<Obstacles*> obstacles;
 	std::vector<Door*> doors;
 	std::vector<Spikes*> spikes;
@@ -49,7 +47,7 @@ protected:
 
 	SceneGame* sceneGame;
 
-	bool isCleared = false;
+	bool isCleared = true;
 
 public:
 	Map(const std::string& filePath = "", const std::string & name = "");
@@ -82,8 +80,7 @@ public:
 	std::vector<SpriteGo*> GetObjects() const { return allObjects; }
 	std::vector<Item*> GetItems() const { return items; }
 
-	void AddSpider(const sf::Vector2f& pos);
-	void AddFly(const sf::Vector2f& pos);
+	void AddMonster(const sf::Vector2f& pos, const std::string& name);
 	void AddCoin(const sf::Vector2f& pos);
 	void AddHeart(const sf::Vector2f& pos);
 	void AddHalfHeart(const sf::Vector2f& pos);
@@ -106,5 +103,7 @@ public:
 	void DeleteItemAlreadyGet();
 
 	void SetStageIndex(int x, int y) { StageXPos = x; StageYPos = y; }
+	int GetStageXIndex() { return StageXPos; }
+	int GetStageYIndex() { return StageYPos; }
 };
 

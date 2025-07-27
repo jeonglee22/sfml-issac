@@ -7,6 +7,7 @@
 #include "Monster.h"
 #include "Door.h"
 #include "Obstacles.h"
+#include "Skill.h"
 #include "Map.h"
 #include "Bomb.h"
 
@@ -133,6 +134,11 @@ void Isaac::Reset()
 
 void Isaac::Update(float dt)
 {
+	if(skill != nullptr)
+	{
+		skill->Update(dt);
+	}
+
 	headAnimator.Update(dt);
 	bodyAnimator.Update(dt);
 
@@ -258,7 +264,7 @@ void Isaac::Update(float dt)
 			{
 				if (invincibleTime == 0)
 				{
-					TakeDamage(50);
+					TakeDamage(1);
 					break;
 				}
 			}
@@ -452,15 +458,15 @@ void Isaac::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num5))
 	{
-		std::cout << "ÇöÀç HP: " << currentHP << std::endl;
-		std::cout << "ÄÚÀÎ: " << inventory.coinCount << std::endl;
-		std::cout << "ÆøÅº: " << inventory.bombCount << std::endl;
-		std::cout << "¿­¼è: " << inventory.keyCount << std::endl;
+		std::cout << "ï¿½ï¿½ï¿½ï¿½ HP: " << currentHP << std::endl;
+		std::cout << "ï¿½ï¿½ï¿½ï¿½: " << inventory.coinCount << std::endl;
+		std::cout << "ï¿½ï¿½Åº: " << inventory.bombCount << std::endl;
+		std::cout << "ï¿½ï¿½ï¿½ï¿½: " << inventory.keyCount << std::endl;
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::E) && inventory.bombCount > 0)
 	{
-		std::cout << "ÆøÅº ³õ±â" << std::endl;
+		std::cout << "ï¿½ï¿½Åº ï¿½ï¿½ï¿½ï¿½" << std::endl;
 		InstallBomb();
 	}
 
@@ -556,7 +562,7 @@ void Isaac::MonsterCollision()
 
 		if (isaacBounds.intersects(monsterBounds) && invincibleTime == 0)
 		{
-			TakeDamage(50);
+			TakeDamage(1);
 			return;
 		}
 		

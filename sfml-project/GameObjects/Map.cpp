@@ -8,6 +8,7 @@
 #include "Obstacles.h"
 #include "SpriteGo.h"
 #include "Spikes.h"
+#include "Monster.h"
 #include "Item.h"
 #include "HitBox.h"
 
@@ -20,10 +21,8 @@ void Map::SetPosition(const sf::Vector2f &pos)
 {
 	GameObject::SetPosition(pos);
 	center.setPosition(pos);
-	for (auto spider : spiders)
-		spider->SetPosition(spider->GetPosition() + pos);
-	for (auto fly : flys)
-		fly->SetPosition(fly->GetPosition() + pos);
+	for (auto monster : monsters)
+		monster->SetPosition(monster->GetPosition() + pos);
 	for (auto door : doors)
 		door->SetPosition(door->GetPosition() + pos);
 	for (auto boundary : boundary)
@@ -103,6 +102,9 @@ void Map::Draw(sf::RenderWindow &window)
 
 void Map::SetCleared(bool b)
 {
+	if (b && !isCleared)
+		sceneGame->AddSkillCooltimeAtClear();
+
 	isCleared = b;
 	for (auto door : doors)
 	{
@@ -110,24 +112,18 @@ void Map::SetCleared(bool b)
 	}
 }
 
-void Map::AddSpider(const sf::Vector2f &pos)
+void Map::AddMonster(const sf::Vector2f &pos, const std::string& name)
 {
-	Spider *spider = new Spider();
-	spiders.push_back(spider);
-	spider->Init();
-	spider->Reset();
-	spider->SetPosition(pos);
-	sceneGame->AddGameObject(spider);
-}
-
-void Map::AddFly(const sf::Vector2f &pos)
-{
-	Fly *fly = new Fly();
-	flys.push_back(fly);
-	fly->Init();
-	fly->Reset();
-	fly->SetPosition(pos);
-	sceneGame->AddGameObject(fly);
+	Monster* monster;
+	if (name == "monster_214_level2spider_small")
+		monster = new Spider();
+	else if (name == "monster_010_fly")
+		monster = new Fly();
+	monsters.push_back(monster);
+	monster->Init();
+	monster->Reset();
+	monster->SetPosition(pos + sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f);
+	sceneGame->AddGameObject(monster);
 }
 
 void Map::AddCoin(const sf::Vector2f& pos)
@@ -261,8 +257,7 @@ void Map::SetBoundary()
 
 void Map::ClearSprites()
 {
-	spiders.clear();
-	flys.clear();
+	monsters.clear();
 	obstacles.clear();
 	doors.clear();
 	spikes.clear();
@@ -297,6 +292,10 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 		SpriteSetting(spikes[spikes.size() - 1], infos);
 		allObjects.push_back(spikes[spikes.size() - 1]);
 	}
+	else if (infos[5].substr(0, 4) == "mons")
+	{
+		AddMonster({ std::stof(infos[6]),std::stof(infos[7]) }, infos[5]);
+	}
 	else
 	{
 		backgrounds.push_back(new SpriteGo(infos[0], infos[5]));
@@ -320,10 +319,8 @@ void Map::SpriteSetting(SpriteGo *sp, const std::vector<std::string> infos)
 
 void Map::AddGameObjectInScene()
 {
-	for (auto spider : spiders)
-		sceneGame->AddGameObject(spider);
-	for (auto fly : flys)
-		sceneGame->AddGameObject(fly);
+	for (auto monster : monsters)
+		sceneGame->AddGameObject(monster);
 	for (auto door : doors)
 		sceneGame->AddGameObject(door);
 	for (auto spike : spikes)
@@ -339,10 +336,8 @@ void Map::AddGameObjectInScene()
 
 void Map::SetActiveAll(bool b)
 {
-	for (auto spider : spiders)
-		spider->SetActive(b);
-	for (auto fly : flys)
-		fly->SetActive(b);
+	for (auto monster : monsters)
+		monster->SetActive(b);
 	for (auto door : doors)
 		door->SetActive(b);
 	for (auto spike : spikes)
@@ -358,14 +353,9 @@ void Map::SetActiveAll(bool b)
 bool Map::CheckAllEnemyDead()
 {
 	bool allDead = true;
-	for (auto fly : flys)
+	for (auto monster : monsters)
 	{
-		if (fly->GetActive())
-			allDead = false;
-	}
-	for (auto spider : spiders)
-	{
-		if (spider->GetActive())
+		if (monster->GetActive())
 			allDead = false;
 	}
 	return allDead;
@@ -373,15 +363,10 @@ bool Map::CheckAllEnemyDead()
 
 void Map::DeleteEnemyAlreadyDead()
 {
-	for (auto fly : flys)
+	for (auto monster : monsters)
 	{
-		if (fly->GetCurrentHP() <= 0)
-			fly->SetActive(false);
-	}
-	for (auto spider : spiders)
-	{
-		if (spider->GetCurrentHP() <= 0)
-			spider->SetActive(false);
+		if (monster->GetCurrentHP() <= 0)
+			monster->SetActive(false);
 	}
 }
 
