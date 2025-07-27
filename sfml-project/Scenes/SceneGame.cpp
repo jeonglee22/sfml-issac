@@ -54,6 +54,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/items/pick ups/pickup_003_key.png");
 	texIds.push_back("graphics/effects/effect_029_explosion.png");
 	texIds.push_back("graphics/effects/effect_017_bombradius.png");
+	texIds.push_back("graphics/monster_044_hopperleaper.png");
 
 	texIds.push_back("graphics/minimap.png");
 	texIds.push_back("graphics/hudpickups.png");
@@ -92,7 +93,8 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/spider_jump.csv");
 	ANI_CLIP_MGR.Load("animations/blood.csv");
 	ANI_CLIP_MGR.Load("animations/blood_small.csv");
-
+	ANI_CLIP_MGR.Load("animations/hopper_idle.csv");
+	ANI_CLIP_MGR.Load("animations/hopper_jump.csv");
 
 	ANI_CLIP_MGR.Load("animations/tears_idle.csv");
 	ANI_CLIP_MGR.Load("animations/tears_boom.csv");

@@ -39,6 +39,7 @@ enum class Monsters
 {
 	Fly,
 	Spider,
+	Hopper,
 };
 
 enum class Items

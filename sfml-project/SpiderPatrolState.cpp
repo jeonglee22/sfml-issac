@@ -42,7 +42,7 @@ void SpiderPatrolState::Update(Monster* monster, float dt)
     }
     else
     {
-        float patrolSpeed = 30.0f;
+        float patrolSpeed = 20.0f;
         monster->SetVelocity(targetDirection * patrolSpeed);
 
         if (directionChangeTimer >= directionChangeInterval)

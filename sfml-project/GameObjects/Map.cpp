@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "Fly.h"
 #include "Spider.h"
+#include "Hopper.h"
 #include "Door.h"
 #include "SceneGame.h"
 #include "Obstacles.h"
@@ -119,6 +120,8 @@ void Map::AddMonster(const sf::Vector2f &pos, const std::string& name)
 		monster = new Spider();
 	else if (name == "monster_010_fly")
 		monster = new Fly();
+	else if (name == "monster_044_hopperleaper")
+		monster = new Hopper();
 	monsters.push_back(monster);
 	monster->Init();
 	monster->Reset();

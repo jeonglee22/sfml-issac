@@ -1,0 +1,10 @@
+ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
+Hopper_jump,10,"1	",,,
+"				",,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
+graphics/monster_044_hopperleaper.png,5,10,22,15,0
+graphics/monster_044_hopperleaper.png,5,10,22,15,0
+graphics/monster_044_hopperleaper.png,5,10,22,15,0
+graphics/monster_044_hopperleaper.png,5,10,22,15,0
+graphics/monster_044_hopperleaper.png,5,10,22,15,0
+graphics/monster_044_hopperleaper.png,5,10,22,15,0

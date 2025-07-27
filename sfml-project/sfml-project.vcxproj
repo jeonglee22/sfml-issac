@@ -149,6 +149,9 @@
     <ClCompile Include="Framework\Animator.cpp" />
     <ClCompile Include="GameUIs\MapBoxUI.cpp" />
     <ClCompile Include="GameUIs\HeartUI.cpp" />
+    <ClCompile Include="Hopper.cpp" />
+    <ClCompile Include="HopperIdleState.cpp" />
+    <ClCompile Include="HopperJumpState.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="Isaac.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
@@ -199,6 +202,9 @@
     <ClInclude Include="GameUIs\EditBoxUI.h" />
     <ClInclude Include="GameUIs\MapBoxUI.h" />
     <ClInclude Include="GameUIs\HeartUI.h" />
+    <ClInclude Include="Hopper.h" />
+    <ClInclude Include="HopperIdleState.h" />
+    <ClInclude Include="HopperJumpState.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="Isaac.h" />
     <ClInclude Include="Framework\Framework.h" />
