@@ -7,22 +7,25 @@
 
 class AnimationClip;
 class Animator;
+class SpriteGo;
 
 class SceneAnimator : public Scene
 {
 protected:
 	HWND hwnd;
 
+	std::string currentCSVFile;
+
 	Button* saveAnimation = nullptr;
 	Button* loadAnimation = nullptr;
 	Button* loadFile = nullptr;
 
-	AnimationClip* animation = nullptr;
+	AnimationClip* animation;
 
 	std::vector<sf::Sprite*> animationSprites;
 
 	Animator* animator = nullptr;
-	sf::Sprite* animationBody = nullptr;
+	SpriteGo* animationBody = nullptr;
 
 public:
 	SceneAnimator();

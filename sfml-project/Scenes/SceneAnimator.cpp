@@ -16,6 +16,8 @@ void SceneAnimator::Init()
 	loadFile = (Button *)AddGameObject(new Button());
 	saveAnimation = (Button *)AddGameObject(new Button());
 
+	animator = new Animator();
+
 	Scene::Init();
 
 	loadAnimation->SetButtonRectSize({180.f, 30.f});
@@ -84,12 +86,22 @@ void SceneAnimator::Update(float dt)
 	{
 		if (animation != nullptr)
 		{
-			animationBody = new sf::Sprite();
+			if (animationBody != nullptr)
+			{
+				RemoveGameObject(animationBody);
+			}
+			animationBody = new SpriteGo();
+			AddGameObject(animationBody);
+			animationBody->sortingLayer = SortingLayers::Foreground;
+			animationBody->sortingOrder = 0;
+			animator = new Animator();
 			texIds.push_back((*animation->frames.begin()).texId);
 			TEXTURE_MGR.Load(texIds);
-			animationBody->setTexture(TEXTURE_MGR.Get((*animation->frames.begin()).texId));
-			animationBody->setTextureRect((*animation->frames.begin()).texCoord);
-			animator->SetTarget(animationBody);
+			animationBody->GetSprite().setTexture(TEXTURE_MGR.Get((*animation->frames.begin()).texId));
+			animationBody->GetSprite().setTextureRect((*animation->frames.begin()).texCoord);
+			animationBody->SetPosition(worldView.getCenter() * 0.5f);
+			animationBody->SetScale({2.f,2.f});
+			animator->SetTarget(&animationBody->GetSprite());
 			animator->Play(animation);
 		}
 	}
@@ -180,7 +192,7 @@ void SceneAnimator::LoadField()
 	ZeroMemory(&ofn, sizeof(ofn));
 	ofn.lStructSize = sizeof(ofn);
 	ofn.hwndOwner = NULL;
-	ofn.lpstrFilter = "��� ����\0*.*\0�ؽ�Ʈ ����\0";
+	ofn.lpstrFilter = "all files\0*.*\0txt files\0";
 	ofn.lpstrFile = filename;
 	ofn.nMaxFile = MAX_PATH;
 	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
@@ -199,6 +211,11 @@ void SceneAnimator::LoadField()
 
 void SceneAnimator::LoadFile(const std::string &fileName)
 {
-	animation->loadFromFile(fileName);
-	ANI_CLIP_MGR.Load(animation->id);
+	ANI_CLIP_MGR.Load(fileName);
+	animation = &ANI_CLIP_MGR.Get(fileName);
+	if (animator)
+	{
+		delete animator;
+		animator = nullptr;
+	}
 }
