@@ -17,6 +17,7 @@ protected:
 	std::vector<Button *> styleTypeButtons;
 	std::vector<Button *> obstacleTypeButtons;
 	std::vector<Button *> enemyTypeButtons;
+	std::vector<Button *> additionalTypeButtons;
 	std::vector<std::string> filenames;
 
 	Scene *scene;
@@ -53,9 +54,11 @@ public:
 	void InitStyleTypeButtons();
 	void InitObstacleTypeButtons();
 	void InitEnemyTypeButtons();
+	void InitAdditionalTypeButtons();
 	void ResetStyleTypeButtons(float yPos = -450.f);
 	void ResetObstacleTypeButtons();
 	void ResetEnemyTypeButtons();
+	void ResetAdditionalTypeButtons();
 
 	void LoadTextureFile(const std::vector<std::string> &filenames);
 

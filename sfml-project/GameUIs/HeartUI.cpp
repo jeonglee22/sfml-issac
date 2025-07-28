@@ -88,24 +88,49 @@ void HeartUI::Update(float dt)
 	}
 	if(beforeHPCount != currentHPCount)
 	{
-		int changePosStart = currentHPCount / 2;
-		int changePosEnd = (beforeHPCount + 1) / 2;
-
-		for (int i = changePosStart; i < changePosEnd; i++)
+		if (currentHPCount > beforeHPCount)
 		{
-			if (i == changePosStart && currentHPCount % 2 == 1)
+			int changePosStart = beforeHPCount / 2;
+			int changePosEnd = (currentHPCount + 1) / 2;
+
+			for (int i = changePosStart; i < changePosEnd; i++)
 			{
-				hearts[i]->setTexture(TEXTURE_MGR.Get(texId), true);
-				hearts[i]->setTextureRect(halfHeart);
-				hearts[i]->setOrigin((sf::Vector2f)halfHeart.getSize() * 0.5f);
-			}
-			else
-			{
-				hearts[i]->setTexture(TEXTURE_MGR.Get(texId), true);
-				hearts[i]->setTextureRect(emptyHeart);
-				hearts[i]->setOrigin((sf::Vector2f)emptyHeart.getSize() * 0.5f);
+				if (i == changePosEnd - 1 && currentHPCount % 2 == 1)
+				{
+					hearts[i]->setTexture(TEXTURE_MGR.Get(texId), true);
+					hearts[i]->setTextureRect(halfHeart);
+					hearts[i]->setOrigin((sf::Vector2f)halfHeart.getSize() * 0.5f);
+				}
+				else
+				{
+					hearts[i]->setTexture(TEXTURE_MGR.Get(texId), true);
+					hearts[i]->setTextureRect(fullHeart);
+					hearts[i]->setOrigin((sf::Vector2f)fullHeart.getSize() * 0.5f);
+				}
 			}
 		}
+		else
+		{
+			int changePosStart = currentHPCount / 2;
+			int changePosEnd = (beforeHPCount + 1) / 2;
+
+			for (int i = changePosStart; i < changePosEnd; i++)
+			{
+				if (i == changePosStart && currentHPCount % 2 == 1)
+				{
+					hearts[i]->setTexture(TEXTURE_MGR.Get(texId), true);
+					hearts[i]->setTextureRect(halfHeart);
+					hearts[i]->setOrigin((sf::Vector2f)halfHeart.getSize() * 0.5f);
+				}
+				else
+				{
+					hearts[i]->setTexture(TEXTURE_MGR.Get(texId), true);
+					hearts[i]->setTextureRect(emptyHeart);
+					hearts[i]->setOrigin((sf::Vector2f)emptyHeart.getSize() * 0.5f);
+				}
+			}
+		}
+		beforeHPCount = currentHPCount;
 	}
 }
 

@@ -74,7 +74,7 @@ void Item::Reset()
 	}
 
 	SetScale({ 2.f, 2.f });
-	SetOrigin(Origins::BC);
+	SetOrigin(Origins::TL);
 }
 
 void Item::Update(float dt)

@@ -109,6 +109,7 @@ void Tears::Update(float dt)
 			if (sprite->GetName() == "rocks_basement" && Utils::CheckCollision(hitBox.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
 			{
 				StartSplash();
+				SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/tear block.wav"));
 				SetOrigin(Origins::MC);
 				return;
 			}
@@ -119,6 +120,7 @@ void Tears::Update(float dt)
 			if (Utils::CheckCollision(hitBox.rect, boundary->rect))
 			{
 				StartSplash();
+				SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/tear block.wav"));
 				SetOrigin(Origins::MC);
 				return;
 			}
@@ -135,6 +137,7 @@ void Tears::Update(float dt)
 		if (abs(direction.x) > 0.1f && position.y > maxRangePosition.y + allowedDrop)
 		{
 			StartSplash();
+			SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/splatter 2.wav"));
 			SetOrigin(Origins::MC);
 			return;
 		}
@@ -186,6 +189,7 @@ void Tears::Hit()
 			monster->TakeDamage(damage);
 			
 			StartSplash();
+			SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/tear block.wav"));
 			SetOrigin(Origins::MC);
 			isTearsCrush = true;
 			return;

@@ -379,6 +379,7 @@ void Isaac::Update(float dt)
 			if (shootTimer >= shootInterval)
 			{
 				FireTear(finalShootDirection);
+				SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/tear fire 4.wav"));
 				shootTimer = 0.f;
 			}
 			shootTimer += dt;
@@ -610,7 +611,7 @@ void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* bo
 void Isaac::TakeDamage(int damage)
 {
 	currentHP -= damage;
-	std::cout << currentHP << std::endl;
+	SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/hurt grunt " + std::to_string(Utils::RandomRange(1, 3)) + ".wav"));
 	isHurt = true;
 	if (currentHP <= 0)
 	{

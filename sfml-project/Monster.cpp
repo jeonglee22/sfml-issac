@@ -152,6 +152,8 @@ void Monster::TakeDamage(int damage)
 		{
 			animator.Play("animations/blood_small.csv");
 		}
+		SOUND_MGR.StopAllSfx();
+		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/death burst small.wav"));
 		SetOrigin(Origins::MC);
 	}
 }

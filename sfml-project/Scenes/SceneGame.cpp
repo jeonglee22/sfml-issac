@@ -54,6 +54,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/items/pick ups/pickup_003_key.png");
 	texIds.push_back("graphics/effects/effect_029_explosion.png");
 	texIds.push_back("graphics/effects/effect_017_bombradius.png");
+	texIds.push_back("graphics/additionals/grid_poop.png");
 	texIds.push_back("graphics/monster_044_hopperleaper.png");
 	texIds.push_back("graphics/monster_000_bodies02.png");
 
@@ -62,11 +63,21 @@ void SceneGame::Init()
 	texIds.push_back("graphics/ui_hearts.png");
 	texIds.push_back("graphics/controls.png");
 	texIds.push_back("graphics/ui_chargebar.png");
-	texIds.push_back("graphics/items/collectibles/collectibles_035_thenecronomicon.png");
+	texIds.push_back("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png");
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
+
+	soundIds.push_back("sounds/splatter 2.wav");
+	soundIds.push_back("sounds/tear fire 4.wav");
+	soundIds.push_back("sounds/tear block.wav");
+	soundIds.push_back("sounds/hurt grunt 2.wav");
+	soundIds.push_back("sounds/hurt grunt 1.wav");
+	soundIds.push_back("sounds/hurt grunt .wav");
+	soundIds.push_back("sounds/death burst small.wav");
+	soundIds.push_back("sounds/door heavy open.wav");
+	soundIds.push_back("sounds/door heavy close.wav");
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/run.csv");
@@ -133,7 +144,7 @@ void SceneGame::Init()
 	itemUI = (ItemUI*)AddGameObject(new ItemUI("ItemUI"));
 	heartUI = (HeartUI*)AddGameObject(new HeartUI("graphics/ui_hearts.png", "HeartUI"));
 	skillUI = (SkillUI*)AddGameObject(new SkillUI("graphics/ui_chargebar.png", "SkillUI"));
-	skill = new Skill("graphics/items/collectibles/collectibles_035_thenecronomicon.png", "necronomicon");
+	skill = new Skill("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png", "necronomicon");
 	skill->SetSkillFunc([this]() {
 		for (auto monster : monsters)
 		{
@@ -198,6 +209,8 @@ void SceneGame::Enter()
 
 void SceneGame::Update(float dt)
 {
+	SOUND_MGR.SetSfxVolume(20);
+
 	if (beforeIndex != currentMapIndex)
 	{
 		maps[currentMapIndex]->SetActiveAll(true);
@@ -249,6 +262,9 @@ void SceneGame::Update(float dt)
 		heartUI->SetHeartCount(isaac->GetCurrentHP());
 		heartUI->SetMaxHeartCount(isaac->GetMaxHP());
 
+		if(isaac->GetBombCount() != itemUI->GetBombCount())
+			itemUI->SetItemUICount(Items::Bomb, isaac->GetBombCount());
+
 		if (isaac && !isMapChanging)
 		{
 			Map* currentMap = maps[currentMapIndex];
@@ -259,6 +275,7 @@ void SceneGame::Update(float dt)
 				if (item->GetActive() && Utils::CheckCollision(isaac->GetHitBoxBody().rect, item->GetHitBox().rect))
 				{
 					isaac->AddItem(item->GetItemType());
+					itemUI->SetItemUICount(item->GetItemType(), itemUI->GetItemUICount(item->GetItemType()) + 1);
 					item->SetActive(false);
 					item->SetItemGet(true);
 				}

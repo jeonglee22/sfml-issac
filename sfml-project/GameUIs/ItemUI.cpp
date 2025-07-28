@@ -93,7 +93,7 @@ void ItemUI::Reset()
 	keyImage.setTextureRect(keyRect);
 	keyImage.setOrigin((sf::Vector2f)keyRect.getSize() * 0.5f);
 
-	SetCoinCount(5);
+	SetCoinCount(0);
 	SetBombCount(0);
 	SetKeyCount(0);
 
@@ -172,4 +172,38 @@ void ItemUI::SetKeyCount(int count)
 		keyCountSprites[i]->setTexture(TEXTURE_MGR.Get("fonts/fontimage/" + std::to_string(eachKeyCount) + ".png"), true);
 		keyCountSprites[i]->setOrigin((sf::Vector2f)coinRect.getSize() * 0.5f);
 	}
+}
+
+void ItemUI::SetItemUICount(Items id, int c)
+{
+	switch (id)
+	{
+	case Items::Coin:
+		SetCoinCount(c);
+		break;
+	case Items::Bomb:
+		SetBombCount(c);
+		break;
+	case Items::Key:
+		SetKeyCount(c);
+		break;
+	default:
+		break;
+	}
+}
+
+int ItemUI::GetItemUICount(Items id) const
+{
+	switch (id)
+	{
+	case Items::Coin:
+		return GetCoinCount();
+	case Items::Bomb:
+		return GetBombCount();
+	case Items::Key:
+		return GetKeyCount();
+	default:
+		break;
+	}
+	return 0;
 }

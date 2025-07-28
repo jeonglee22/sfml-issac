@@ -75,3 +75,8 @@ graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_leve
 graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,207.999939,259.601624,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
 graphics/enemies/monster_010_fly.png,10,7,19,10,monster_010_fly,468.000000,207.153625,19.000000,10.000000,1,-5,0.000000,0.000000,0.000000
 graphics/enemies/monster_010_fly.png,10,7,19,10,monster_010_fly,260.000031,51.950439,19.000000,10.000000,1,-5,0.000000,0.000000,0.000000
+graphics/additionals/pickups/heart.png,0,0,16,13,heart,520.000000,51.000000,16.000000,13.000000,1,-5,0.000000,0.000000,0.000000
+graphics/additionals/pickups/halfheart.png,0,0,16,14,halfheart,364.000000,104.000000,16.000000,14.000000,1,-5,0.000000,0.000000,0.000000
+graphics/additionals/pickups/pickup_016_bomb.png,4,5,20,21,pickup_016_bomb,572.000000,208.000000,20.000000,21.000000,1,-5,0.000000,0.000000,0.000000
+graphics/additionals/pickups/pickup_003_key.png,5,1,14,20,pickup_003_key,104.000000,260.000000,14.000000,20.000000,1,-5,0.000000,0.000000,0.000000
+graphics/additionals/pickups/pickup_002_coin.png,26,23,18,13,pickup_002_coin,572.000000,104.000000,18.000000,13.000000,1,-5,0.000000,0.000000,0.000000

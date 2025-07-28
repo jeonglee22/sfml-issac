@@ -81,11 +81,7 @@ public:
 	std::vector<Item*> GetItems() const { return items; }
 
 	void AddMonster(const sf::Vector2f& pos, const std::string& name);
-	void AddCoin(const sf::Vector2f& pos);
-	void AddHeart(const sf::Vector2f& pos);
-	void AddHalfHeart(const sf::Vector2f& pos);
-	void AddBomb(const sf::Vector2f& pos);
-	void AddKey(const sf::Vector2f& pos);
+	void AddItem(const sf::Vector2f& pos, const std::string& name);
 	void SetDoor();
 	void SetBoundary();
 
