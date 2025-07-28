@@ -60,6 +60,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/monster_044_hopperleaper.png");
 	texIds.push_back("graphics/monster_000_bodies02.png");
 
+	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
+
 	texIds.push_back("graphics/minimap.png");
 	texIds.push_back("graphics/hudpickups.png");
 	texIds.push_back("graphics/ui_hearts.png");
@@ -124,6 +126,14 @@ void SceneGame::Init()
 
 	ANI_CLIP_MGR.Load("animations/explosion.csv");
 	ANI_CLIP_MGR.Load("animations/bombradius.csv");
+
+	ANI_CLIP_MGR.Load("animations/boss_larry_jr_head_front.csv");
+	ANI_CLIP_MGR.Load("animations/boss_larry_jr_head_rare.csv");
+	ANI_CLIP_MGR.Load("animations/boss_larry_jr_head_side.csv");
+	/*ANI_CLIP_MGR.Load("animations/boss_larry_jr_body1.csv");
+	ANI_CLIP_MGR.Load("animations/boss_larry_jr_body2.csv");
+	ANI_CLIP_MGR.Load("animations/boss_larry_jr_body3.csv");
+	ANI_CLIP_MGR.Load("animations/boss_larry_jr_tail.csv");*/
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 

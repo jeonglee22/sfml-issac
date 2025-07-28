@@ -1,0 +1,6 @@
+ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
+Larry_jr_head_side,30,"1	",,,
+"				",,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
+graphics/enemies/boss_001_larryjr.png,0,0,48,48,0
+graphics/enemies/boss_001_larryjr.png,48,0,48,48,0
