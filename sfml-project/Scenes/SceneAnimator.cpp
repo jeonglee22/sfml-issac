@@ -16,6 +16,7 @@ void SceneAnimator::Init()
 	loadAnimation = (Button *)AddGameObject(new Button());
 	loadFile = (Button *)AddGameObject(new Button());
 	saveAnimation = (Button *)AddGameObject(new Button());
+	clearAnimation = (Button *)AddGameObject(new Button());
 
 	animator = new Animator();
 
@@ -29,9 +30,9 @@ void SceneAnimator::Init()
 	loadAnimation->SetTextOrigin(Origins::MC);
 
 	loadFile->SetButtonRectSize({180.f, 30.f});
-	loadFile->SetButtonRectColor(sf::Color::Black);
 	loadFile->SetButtonRectOrigin({90.f, 15.f});
 	loadFile->SetButtonRectOutlineThickness(3.f);
+	loadFile->SetButtonRectOutlineColor(sf::Color::Black);
 	loadFile->SetTextSize(25);
 	loadFile->SetTextOrigin(Origins::MC);
 
@@ -41,6 +42,13 @@ void SceneAnimator::Init()
 	saveAnimation->SetButtonRectOutlineThickness(3.f);
 	saveAnimation->SetTextSize(25);
 	saveAnimation->SetTextOrigin(Origins::MC);
+
+	clearAnimation->SetButtonRectSize({180.f, 30.f});
+	clearAnimation->SetButtonRectColor(sf::Color::Black);
+	clearAnimation->SetButtonRectOrigin({90.f, 15.f});
+	clearAnimation->SetButtonRectOutlineThickness(3.f);
+	clearAnimation->SetTextSize(25);
+	clearAnimation->SetTextOrigin(Origins::MC);
 }
 
 void SceneAnimator::Enter()
@@ -48,8 +56,8 @@ void SceneAnimator::Enter()
 	FRAMEWORK.GetWindow().setSize({1366, 768});
 	auto size = FRAMEWORK.GetWindowSizeF();
 
-	body.setSize({500.f, size.y });
-	body.setOrigin({250.f, size.y * 0.5f});
+	body.setSize({700.f, size.y });
+	body.setOrigin({350.f, size.y * 0.5f});
 	body.setPosition({size.x - body.getSize().x * 0.5f, size.y * 0.5f });
 
 	line.setSize({ size.x, 2.f });
@@ -64,119 +72,72 @@ void SceneAnimator::Enter()
 
 	Scene::Enter();
 
-	loadAnimation->SetPosition({300.f, 50.f});
+	loadAnimation->SetPosition({100.f, 50.f});
 	loadAnimation->SetTextPosition({0.f, -10.f});
 	loadAnimation->SetTextString("LoadAnimation");
 	loadAnimation->SetButtonRectPosition({0.f, 0.f});
-	loadAnimation->SetButtonFunc([this]()
-								 { LoadField(); });
+	loadAnimation->SetButtonFunc([this]() { LoadFile(true); });
 
-	loadFile->SetPosition({100.f, 50.f});
-	loadFile->SetTextPosition({0.f, -10.f});
-	loadFile->SetTextString("LoadFile");
-	loadFile->SetButtonRectPosition({0.f, 0.f});
-	loadFile->SetButtonFunc([this]()
-							{ LoadField(); });
-
-	saveAnimation->SetPosition({500.f, 50.f});
+	saveAnimation->SetPosition({300.f, 50.f});
 	saveAnimation->SetTextPosition({0.f, -10.f});
 	saveAnimation->SetTextString("SaveAnimation");
 	saveAnimation->SetButtonRectPosition({0.f, 0.f});
-	saveAnimation->SetButtonFunc([this]()
-								 { SaveFile(); });
+	saveAnimation->SetButtonFunc([this]() { SaveFile(); });
+
+	loadFile->SetPosition({ 1000.f, 50.f });
+	loadFile->SetTextPosition({ 0.f, -10.f });
+	loadFile->SetTextString("LoadFile");
+	loadFile->SetTextColor(sf::Color::Black);
+	loadFile->SetButtonRectPosition({ 0.f, 0.f });
+	loadFile->SetButtonFunc([this]() { LoadFile(false); });
+
+	clearAnimation->SetPosition({ 500.f, 50.f });
+	clearAnimation->SetTextPosition({ 0.f, -10.f });
+	clearAnimation->SetTextString("Clear");
+	clearAnimation->SetButtonRectPosition({ 0.f, 0.f });
+	clearAnimation->SetButtonFunc([this]() { ClearAnimationBox(); });
 }
 
 void SceneAnimator::Update(float dt)
 {
 	Scene::Update(dt);
 	
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && (InputMgr::GetMousePosition().y >= 632.f) && !isClipDrag)
+	MoveAnimationClip();
+
+	PickSpriteRect();
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::V))
 	{
-		isClipDrag = true;
-		beforeMousePosX = InputMgr::GetMousePosition().x;
-	}
-	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isClipDrag)
-	{
-		afterMousePosX = InputMgr::GetMousePosition().x;
-		for (int i = 0; i < animationFrameBoxes.size(); i++)
-		{
-			animationFrameBoxes[i].setPosition(animationFrameBoxesInitPos[i] + sf::Vector2f(afterMousePosX - beforeMousePosX, 0.f));
-			animationSprites[i]->SetPosition(animationFrameBoxes[i].getPosition() + sf::Vector2f(50.f, 50.f));
-		}
-	}
-	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left) && isClipDrag)
-	{
-		isClipDrag = false;
-		for (int i = 0; i < animationFrameBoxes.size(); i++)
-		{
-			animationFrameBoxesInitPos[i] = animationFrameBoxes[i].getPosition();
-		}
+		ConvertToSpriteSheetPos();
 	}
 
 	if (animator)
 		animator->Update(dt);
-	else
+	if (animation != nullptr && isLoading)
 	{
-		if (animation != nullptr)
-		{
-			if (animationBody != nullptr)
-			{
-				RemoveGameObject(animationBody);
-			}
-			animator = new Animator();
+		PlaySpritesFromLoad();
+		isLoading = false;
+	}
+	else if (!isLoading)
+	{
 
-			animationBody = new SpriteGo();
-			AddGameObject(animationBody);
-			animationBody->sortingLayer = SortingLayers::Foreground;
-			animationBody->sortingOrder = 0;
-
-			texIds.push_back((*animation->frames.begin()).texId);
-			TEXTURE_MGR.Load(texIds);
-			animationBody->GetSprite().setTexture(TEXTURE_MGR.Get((*animation->frames.begin()).texId));
-			animationBody->GetSprite().setTextureRect((*animation->frames.begin()).texCoord);
-			animationBody->SetOrigin(Origins::MC);
-			animationBody->SetPosition(worldView.getCenter() - sf::Vector2f(250.f ,100.f));
-			animationBody->SetScale({2.f,2.f});
-
-			for (auto frame : animation->frames)
-			{
-				animationSprites.push_back(new SpriteGo());
-				animationSprites[animationSprites.size() - 1]->SetTextureId(frame.texId);
-				animationSprites[animationSprites.size() - 1]->Init();
-				animationSprites[animationSprites.size() - 1]->sortingLayer = SortingLayers::Foreground;
-				animationSprites[animationSprites.size() - 1]->sortingOrder = 0;
-				animationSprites[animationSprites.size() - 1]->Reset();
-				animationSprites[animationSprites.size() - 1]->GetSprite().setTextureRect(frame.texCoord);
-				animationSprites[animationSprites.size() - 1]->SetOrigin((sf::Vector2f)frame.texCoord.getSize() * 0.5f);
-				sf::RectangleShape rect;
-				rect.setOutlineThickness(3.f);
-				rect.setFillColor(sf::Color::Transparent);
-				rect.setSize({ 100.f,100.f });
-				sf::Vector2f pos = { 18.f + animationFrameBoxes.size() * 120.f, 650.f };
-				animationFrameBoxesInitPos.push_back(pos);
-				rect.setPosition(pos);
-				animationSprites[animationSprites.size() - 1]->SetPosition(pos + sf::Vector2f(50.f,50.f));
-				animationSprites[animationSprites.size() - 1]->SetScale({100.f / frame.texCoord.width, 100.f / frame.texCoord.height});
-				animationFrameBoxes.push_back(rect);
-			}
-
-			animator->SetTarget(&animationBody->GetSprite());
-			animator->Play(animation);
-		}
 	}
 }
 
 void SceneAnimator::Draw(sf::RenderWindow& window)
 {
-	Scene::Draw(window);
-
 	for (auto box : animationFrameBoxes)
 		window.draw(box);
 	for (auto sprite : animationSprites)
 		sprite->Draw(window);
 
-	window.draw(line);
 	window.draw(body);
+	window.draw(line);
+
+	Scene::Draw(window);
+
+	window.draw(spritePickRect);
+	window.draw(spriteSheetOutline);
 }
 
 rapidcsv::Document SceneAnimator::SaveAnimation()
@@ -254,7 +215,7 @@ void SceneAnimator::SaveFile()
 	}*/
 }
 
-void SceneAnimator::LoadField()
+void SceneAnimator::LoadFile(bool isAnimation)
 {
 	CHAR filename[MAX_PATH] = "";
 	CHAR currentFilePos[MAX_PATH] = "";
@@ -275,23 +236,171 @@ void SceneAnimator::LoadField()
 		sprintf_s(filename, "%s", ofn.lpstrFile);
 		MessageBoxA(hwnd, filename, "Load Choose", MB_OK);
 
-		LoadFile(filename);
+		if (isAnimation)
+			LoadAnimationFile(filename);
+		else
+			LoadSpriteFile(filename);
 
 		SetCurrentDirectoryA(currentFilePos);
 	}
 }
 
-void SceneAnimator::LoadFile(const std::string &fileName)
+void SceneAnimator::LoadAnimationFile(const std::string &fileName)
 {
+	isLoading = true;
 	ANI_CLIP_MGR.Load(fileName);
 	animation = &ANI_CLIP_MGR.Get(fileName);
 	animationFrames.clear();
-	for (auto sprite : animationSprites)
-		RemoveGameObject(sprite);
 	animationSprites.clear();
+	animationFrameBoxes.clear();
 	if (animator)
 	{
 		delete animator;
 		animator = nullptr;
 	}
+}
+
+void SceneAnimator::LoadSpriteFile(const std::string& fileName)
+{
+	if (spriteField != nullptr)
+		RemoveGameObject(spriteField);
+	TEXTURE_MGR.Load(fileName);
+	spriteField = new SpriteGo(fileName);
+	spriteField->Reset();
+	AddGameObject(spriteField);
+	spriteField->SetPosition(body.getPosition() - spriteField->GetSprite().getLocalBounds().getSize() * 0.5f);
+	spriteSheetOutline = sf::RectangleShape();
+	spriteSheetOutline.setFillColor(sf::Color::Transparent);
+	spriteSheetOutline.setOutlineColor(sf::Color::Blue);
+	spriteSheetOutline.setOutlineThickness(1.f);
+	spriteSheetOutline.setPosition(body.getPosition() - spriteField->GetSprite().getLocalBounds().getSize() * 0.5f);
+	spriteSheetOutline.setSize(spriteField->GetSprite().getLocalBounds().getSize());
+}
+
+void SceneAnimator::PlaySpritesFromLoad()
+{
+	if (animationBody != nullptr)
+	{
+		RemoveGameObject(animationBody);
+	}
+	animator = new Animator();
+
+	animationBody = new SpriteGo();
+	AddGameObject(animationBody);
+	animationBody->sortingLayer = SortingLayers::Foreground;
+	animationBody->sortingOrder = 0;
+
+	texIds.push_back((*animation->frames.begin()).texId);
+	TEXTURE_MGR.Load(texIds);
+	animationBody->GetSprite().setTexture(TEXTURE_MGR.Get((*animation->frames.begin()).texId));
+	animationBody->GetSprite().setTextureRect((*animation->frames.begin()).texCoord);
+	animationBody->SetOrigin(Origins::MC);
+	animationBody->SetPosition(worldView.getCenter() - sf::Vector2f(350.f, 100.f));
+	animationBody->SetScale({ 2.f,2.f });
+
+	for (auto frame : animation->frames)
+	{
+		animationSprites.push_back(new SpriteGo());
+		animationSprites[animationSprites.size() - 1]->SetTextureId(frame.texId);
+		animationSprites[animationSprites.size() - 1]->Init();
+		animationSprites[animationSprites.size() - 1]->sortingLayer = SortingLayers::Foreground;
+		animationSprites[animationSprites.size() - 1]->sortingOrder = 0;
+		animationSprites[animationSprites.size() - 1]->Reset();
+		animationSprites[animationSprites.size() - 1]->GetSprite().setTextureRect(frame.texCoord);
+		animationSprites[animationSprites.size() - 1]->SetOrigin((sf::Vector2f)frame.texCoord.getSize() * 0.5f);
+		sf::RectangleShape rect;
+		rect.setOutlineThickness(3.f);
+		rect.setFillColor(sf::Color::Transparent);
+		rect.setSize({ 100.f,100.f });
+		sf::Vector2f pos = { 18.f + animationFrameBoxes.size() * 120.f, 650.f };
+		animationFrameBoxesInitPos.push_back(pos);
+		rect.setPosition(pos);
+		animationSprites[animationSprites.size() - 1]->SetPosition(pos + sf::Vector2f(50.f, 50.f));
+		animationSprites[animationSprites.size() - 1]->SetScale({ 100.f / frame.texCoord.width, 100.f / frame.texCoord.height });
+		animationFrameBoxes.push_back(rect);
+	}
+
+	animator->SetTarget(&animationBody->GetSprite());
+	animator->Play(animation);
+}
+
+void SceneAnimator::MoveAnimationClip()
+{
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && 
+		(InputMgr::GetMousePosition().y >= 632.f && InputMgr::GetMousePosition().x <= 666.f) && !isClipDrag)
+	{
+		isClipDrag = true;
+		beforeMousePosX = InputMgr::GetMousePosition().x;
+	}
+	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isClipDrag)
+	{
+		afterMousePosX = InputMgr::GetMousePosition().x;
+		for (int i = 0; i < animationFrameBoxes.size(); i++)
+		{
+			animationFrameBoxes[i].setPosition(animationFrameBoxesInitPos[i] + sf::Vector2f(afterMousePosX - beforeMousePosX, 0.f));
+			animationSprites[i]->SetPosition(animationFrameBoxes[i].getPosition() + sf::Vector2f(50.f, 50.f));
+		}
+	}
+	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left) && isClipDrag)
+	{
+		isClipDrag = false;
+		for (int i = 0; i < animationFrameBoxes.size(); i++)
+		{
+			animationFrameBoxesInitPos[i] = animationFrameBoxes[i].getPosition();
+		}
+	}
+}
+
+void SceneAnimator::PickSpriteRect()
+{
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) &&
+		(InputMgr::GetMousePosition().x >= 666.f) && !isSpritePick)
+	{
+		sf::Vector2f mousePos = ScreenToWorld( InputMgr::GetMousePosition());
+		if (Utils::PointInTransformBounds(spriteField->GetSprite(), spriteField->GetSprite().getLocalBounds(), mousePos))
+		{
+			spritePickRect = sf::RectangleShape();
+			spritePickRect.setFillColor(sf::Color::Transparent);
+			spritePickRect.setOutlineColor(sf::Color::Red);
+			spritePickRect.setOutlineThickness(2.f);
+			spritePickRect.setPosition(mousePos);
+			isSpritePick = true;
+		}
+	}
+	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isSpritePick)
+	{
+		sf::Vector2f mousePos = ScreenToWorld(InputMgr::GetMousePosition());
+		spritePickRect.setSize(mousePos - spritePickRect.getPosition());
+	}
+	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left) && isSpritePick)
+	{
+		isSpritePick = false;
+	}
+}
+
+sf::IntRect SceneAnimator::ConvertToSpriteSheetPos()
+{
+	sf::Vector2f pos = spriteField->GetPosition();
+
+	sf::IntRect rect;
+	rect.left = std::roundf(spritePickRect.getPosition().x - pos.x);
+	rect.top = std::roundf(spritePickRect.getPosition().y - pos.y);
+	rect.width = std::roundf(spritePickRect.getSize().x);
+	rect.height = std::roundf(spritePickRect.getSize().y);
+	std::cout << rect.left << ", " << rect.top << ", " << rect.width << ", " << rect.height << std::endl;
+	return rect;
+}
+
+void SceneAnimator::ClearAnimationBox()
+{
+	animationFrames.clear();
+	animationSprites.clear();
+	animationFrameBoxes.clear();
+	if (animator)
+	{
+		delete animator;
+		animator = nullptr;
+	}
+	animation = nullptr;
+	RemoveGameObject(animationBody);
 }

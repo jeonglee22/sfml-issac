@@ -16,7 +16,11 @@ protected:
 	HWND hwnd;
 
 	sf::RectangleShape body;
+	sf::RectangleShape blackBody;
 	sf::RectangleShape line;
+	sf::RectangleShape spritePickRect;
+	sf::RectangleShape spriteSheetOutline;
+
 	std::vector<AnimationFrame> animationFrames;
 	std::vector<sf::RectangleShape> animationFrameBoxes;
 	std::vector<sf::Vector2f> animationFrameBoxesInitPos;
@@ -24,6 +28,7 @@ protected:
 	Button* saveAnimation = nullptr;
 	Button* loadAnimation = nullptr;
 	Button* loadFile = nullptr;
+	Button* clearAnimation = nullptr;
 
 	AnimationClip* animation;
 
@@ -31,8 +36,11 @@ protected:
 
 	Animator* animator = nullptr;
 	SpriteGo* animationBody = nullptr;
+	SpriteGo* spriteField = nullptr;
 
 	bool isClipDrag = false;
+	bool isSpritePick = false;
+	bool isLoading = false;
 
 	float beforeMousePosX;
 	float afterMousePosX;
@@ -49,7 +57,16 @@ public:
 
 	rapidcsv::Document SaveAnimation();
 	void SaveFile();
-	void LoadField();
-	void LoadFile(const std::string& fileName);
+	void LoadFile(bool isAnimation);
+	void LoadAnimationFile(const std::string& fileName);
+	void LoadSpriteFile(const std::string& fileName);
+
+	void PlaySpritesFromLoad();
+
+	void MoveAnimationClip();
+	void PickSpriteRect();
+	sf::IntRect ConvertToSpriteSheetPos();
+
+	void ClearAnimationBox();
 };
 
