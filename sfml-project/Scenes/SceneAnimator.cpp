@@ -2,6 +2,7 @@
 #include "SceneAnimator.h"
 #include "AnimationClip.h"
 #include "Animator.h"
+#include "SpriteGo.h"
 
 SceneAnimator::SceneAnimator()
 	: Scene(SceneIds::Animator)
@@ -47,6 +48,14 @@ void SceneAnimator::Enter()
 	FRAMEWORK.GetWindow().setSize({1366, 768});
 	auto size = FRAMEWORK.GetWindowSizeF();
 
+	body.setSize({500.f, size.y });
+	body.setOrigin({250.f, size.y * 0.5f});
+	body.setPosition({size.x - body.getSize().x * 0.5f, size.y * 0.5f });
+
+	line.setSize({ size.x, 2.f });
+	line.setOrigin({ size.x * 0.5f, 1.f });
+	line.setPosition({ size.x * 0.5f, 632.f});
+
 	sf::Vector2f center{size.x * 0.5f, size.y * 0.5f};
 	uiView.setSize(size);
 	uiView.setCenter(center);
@@ -80,6 +89,30 @@ void SceneAnimator::Enter()
 void SceneAnimator::Update(float dt)
 {
 	Scene::Update(dt);
+	
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && (InputMgr::GetMousePosition().y >= 632.f) && !isClipDrag)
+	{
+		isClipDrag = true;
+		beforeMousePosX = InputMgr::GetMousePosition().x;
+	}
+	if (InputMgr::GetMouseButton(sf::Mouse::Left) && isClipDrag)
+	{
+		afterMousePosX = InputMgr::GetMousePosition().x;
+		for (int i = 0; i < animationFrameBoxes.size(); i++)
+		{
+			animationFrameBoxes[i].setPosition(animationFrameBoxesInitPos[i] + sf::Vector2f(afterMousePosX - beforeMousePosX, 0.f));
+			animationSprites[i]->SetPosition(animationFrameBoxes[i].getPosition() + sf::Vector2f(50.f, 50.f));
+		}
+	}
+	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left) && isClipDrag)
+	{
+		isClipDrag = false;
+		for (int i = 0; i < animationFrameBoxes.size(); i++)
+		{
+			animationFrameBoxesInitPos[i] = animationFrameBoxes[i].getPosition();
+		}
+	}
+
 	if (animator)
 		animator->Update(dt);
 	else
@@ -90,21 +123,60 @@ void SceneAnimator::Update(float dt)
 			{
 				RemoveGameObject(animationBody);
 			}
+			animator = new Animator();
+
 			animationBody = new SpriteGo();
 			AddGameObject(animationBody);
 			animationBody->sortingLayer = SortingLayers::Foreground;
 			animationBody->sortingOrder = 0;
-			animator = new Animator();
+
 			texIds.push_back((*animation->frames.begin()).texId);
 			TEXTURE_MGR.Load(texIds);
 			animationBody->GetSprite().setTexture(TEXTURE_MGR.Get((*animation->frames.begin()).texId));
 			animationBody->GetSprite().setTextureRect((*animation->frames.begin()).texCoord);
-			animationBody->SetPosition(worldView.getCenter() * 0.5f);
+			animationBody->SetOrigin(Origins::MC);
+			animationBody->SetPosition(worldView.getCenter() - sf::Vector2f(250.f ,100.f));
 			animationBody->SetScale({2.f,2.f});
+
+			for (auto frame : animation->frames)
+			{
+				animationSprites.push_back(new SpriteGo());
+				animationSprites[animationSprites.size() - 1]->SetTextureId(frame.texId);
+				animationSprites[animationSprites.size() - 1]->Init();
+				animationSprites[animationSprites.size() - 1]->sortingLayer = SortingLayers::Foreground;
+				animationSprites[animationSprites.size() - 1]->sortingOrder = 0;
+				animationSprites[animationSprites.size() - 1]->Reset();
+				animationSprites[animationSprites.size() - 1]->GetSprite().setTextureRect(frame.texCoord);
+				animationSprites[animationSprites.size() - 1]->SetOrigin((sf::Vector2f)frame.texCoord.getSize() * 0.5f);
+				sf::RectangleShape rect;
+				rect.setOutlineThickness(3.f);
+				rect.setFillColor(sf::Color::Transparent);
+				rect.setSize({ 100.f,100.f });
+				sf::Vector2f pos = { 18.f + animationFrameBoxes.size() * 120.f, 650.f };
+				animationFrameBoxesInitPos.push_back(pos);
+				rect.setPosition(pos);
+				animationSprites[animationSprites.size() - 1]->SetPosition(pos + sf::Vector2f(50.f,50.f));
+				animationSprites[animationSprites.size() - 1]->SetScale({100.f / frame.texCoord.width, 100.f / frame.texCoord.height});
+				animationFrameBoxes.push_back(rect);
+			}
+
 			animator->SetTarget(&animationBody->GetSprite());
 			animator->Play(animation);
 		}
 	}
+}
+
+void SceneAnimator::Draw(sf::RenderWindow& window)
+{
+	Scene::Draw(window);
+
+	for (auto box : animationFrameBoxes)
+		window.draw(box);
+	for (auto sprite : animationSprites)
+		sprite->Draw(window);
+
+	window.draw(line);
+	window.draw(body);
 }
 
 rapidcsv::Document SceneAnimator::SaveAnimation()
@@ -213,6 +285,10 @@ void SceneAnimator::LoadFile(const std::string &fileName)
 {
 	ANI_CLIP_MGR.Load(fileName);
 	animation = &ANI_CLIP_MGR.Get(fileName);
+	animationFrames.clear();
+	for (auto sprite : animationSprites)
+		RemoveGameObject(sprite);
+	animationSprites.clear();
 	if (animator)
 	{
 		delete animator;

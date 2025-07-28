@@ -7,6 +7,7 @@
 
 class AnimationClip;
 class Animator;
+class AnimationFrame;
 class SpriteGo;
 
 class SceneAnimator : public Scene
@@ -14,7 +15,11 @@ class SceneAnimator : public Scene
 protected:
 	HWND hwnd;
 
-	std::string currentCSVFile;
+	sf::RectangleShape body;
+	sf::RectangleShape line;
+	std::vector<AnimationFrame> animationFrames;
+	std::vector<sf::RectangleShape> animationFrameBoxes;
+	std::vector<sf::Vector2f> animationFrameBoxesInitPos;
 
 	Button* saveAnimation = nullptr;
 	Button* loadAnimation = nullptr;
@@ -22,10 +27,15 @@ protected:
 
 	AnimationClip* animation;
 
-	std::vector<sf::Sprite*> animationSprites;
+	std::vector<SpriteGo*> animationSprites;
 
 	Animator* animator = nullptr;
 	SpriteGo* animationBody = nullptr;
+
+	bool isClipDrag = false;
+
+	float beforeMousePosX;
+	float afterMousePosX;
 
 public:
 	SceneAnimator();
@@ -35,6 +45,7 @@ public:
 	void Enter() override;
 
 	void Update(float dt) override;
+	void Draw(sf::RenderWindow& window);
 
 	rapidcsv::Document SaveAnimation();
 	void SaveFile();
