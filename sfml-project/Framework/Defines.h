@@ -43,6 +43,7 @@ enum class Monsters
 	Spider,
 	Body,
 	Hopper,
+	LarryJr,
 };
 
 enum class Items

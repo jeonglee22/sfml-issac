@@ -14,6 +14,7 @@
 #include "HitBox.h"
 #include "Body.h"
 #include "AttackFly.h"
+#include "LarryJr.h"
 
 Map::Map(const std::string &filePath, const std::string &name)
 	: filePath(filePath), GameObject(name)
@@ -132,6 +133,8 @@ void Map::AddMonster(const sf::Vector2f &pos, const std::string& name)
 		monster = new AttackFly();
 	else if (name == "monster_000_bodies02")
 		monster = new Body();
+	else if (name == "boss_001_larryjr")
+		monster = new LarryJr();
 	else if (name == "monster_044_hopperleaper")
 		monster = new Hopper();
 	monsters.push_back(monster);
@@ -271,7 +274,7 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 		SpriteSetting(spikes[spikes.size() - 1], infos);
 		allObjects.push_back(spikes[spikes.size() - 1]);
 	}
-	else if (infos[5].substr(0, 4) == "mons")
+	else if (infos[5].substr(0, 4) == "mons" || infos[5].substr(0, 4) == "boss")
 	{
 		AddMonster({ std::stof(infos[6]),std::stof(infos[7]) }, infos[5]);
 	}

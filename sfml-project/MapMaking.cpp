@@ -2,7 +2,7 @@
 #include "rapidcsv.h"
 #include "MapMaking.h"
 
-int MapMaking::normalMapCount = 19;
+int MapMaking::normalMapCount = 20;
 int MapMaking::startMapCount = 3;
 
 void MapMaking::MapRandomMaking(int mapCount)

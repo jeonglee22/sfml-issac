@@ -7,6 +7,7 @@
 #include "Fly.h"
 #include "Hopper.h"
 #include "Body.h"
+#include "LarryJr.h"
 
 Monster::Monster(const std::string& name, Monsters type)
 	: GameObject(name), monsterType(type)
@@ -134,6 +135,26 @@ void Monster::TakeDamage(int damage)
 {
 	currentHP -= damage;
 
+	if (monsterType == Monsters::LarryJr)
+	{
+		LarryJr* larry = static_cast<LarryJr*>(this);
+
+		float hpPercentage = (float)currentHP / (float)maxHP;
+
+		if (hpPercentage <= 0.75f && larry->GetSegmentCount() == 4)
+		{
+			larry->RemoveLastSegment(); // 4개 → 3개
+		}
+		else if (hpPercentage <= 0.5f && larry->GetSegmentCount() == 3)
+		{
+			larry->RemoveLastSegment(); // 3개 → 2개
+		}
+		else if (hpPercentage <= 0.25f && larry->GetSegmentCount() == 2)
+		{
+			larry->RemoveLastSegment(); // 2개 → 1개
+		}
+	}
+
 	if (currentHP <= 0)
 	{
 		currentHP = 0;
@@ -149,6 +170,10 @@ void Monster::TakeDamage(int damage)
 			animator.Play("animations/blood_small.csv");
 		}
 		if (monsterType == Monsters::Body)
+		{
+			animator.Play("animations/blood_small.csv");
+		}
+		if (monsterType == Monsters::LarryJr)
 		{
 			animator.Play("animations/blood_small.csv");
 		}
@@ -203,7 +228,7 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 			}
 		}
 
-		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body))
+		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::LarryJr))
 		{
 			for (auto sprite : scene->GetMapSprites())
 			{
@@ -279,6 +304,11 @@ void Monster::HandleCollisionByType()
 	//	Hopper* hopper = static_cast<Hopper*>(this);
 	//	hopper->ChangeToIdleState();
 	//}
+	else if (monsterType == Monsters::LarryJr)
+	{
+		LarryJr* larry = static_cast<LarryJr*>(this);
+		larry->TurnAtWall();
+	}
 	else
 	{
 		Fly* fly = static_cast<Fly*>(this);

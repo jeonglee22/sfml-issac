@@ -130,10 +130,10 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_head_front.csv");
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_head_rare.csv");
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_head_side.csv");
-	/*ANI_CLIP_MGR.Load("animations/boss_larry_jr_body1.csv");
+	ANI_CLIP_MGR.Load("animations/boss_larry_jr_body1.csv");
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_body2.csv");
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_body3.csv");
-	ANI_CLIP_MGR.Load("animations/boss_larry_jr_tail.csv");*/
+	ANI_CLIP_MGR.Load("animations/boss_larry_jr_tail.csv");
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
