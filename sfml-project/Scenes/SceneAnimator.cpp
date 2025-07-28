@@ -18,8 +18,6 @@ void SceneAnimator::Init()
 	saveAnimation = (Button *)AddGameObject(new Button());
 	clearAnimation = (Button *)AddGameObject(new Button());
 
-	animator = new Animator();
-
 	Scene::Init();
 
 	loadAnimation->SetButtonRectSize({180.f, 30.f});
@@ -111,16 +109,19 @@ void SceneAnimator::Update(float dt)
 		ConvertToSpriteSheetPos();
 	}
 
-	if (animator)
-		animator->Update(dt);
-	if (animation != nullptr && isLoading)
+	animator.Update(dt);
+
+	if (isLoading)
 	{
 		PlaySpritesFromLoad();
 		isLoading = false;
 	}
-	else if (!isLoading)
+	else
 	{
-
+		if (InputMgr::GetKeyDown(sf::Keyboard::Q))
+			AddPickSprite();
+		if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
+			RemoveSpriteInFrames();
 	}
 }
 
@@ -248,16 +249,9 @@ void SceneAnimator::LoadFile(bool isAnimation)
 void SceneAnimator::LoadAnimationFile(const std::string &fileName)
 {
 	isLoading = true;
+	ClearAnimationBox();
 	ANI_CLIP_MGR.Load(fileName);
-	animation = &ANI_CLIP_MGR.Get(fileName);
-	animationFrames.clear();
-	animationSprites.clear();
-	animationFrameBoxes.clear();
-	if (animator)
-	{
-		delete animator;
-		animator = nullptr;
-	}
+	animation = ANI_CLIP_MGR.Get(fileName);
 }
 
 void SceneAnimator::LoadSpriteFile(const std::string& fileName)
@@ -265,6 +259,8 @@ void SceneAnimator::LoadSpriteFile(const std::string& fileName)
 	if (spriteField != nullptr)
 		RemoveGameObject(spriteField);
 	TEXTURE_MGR.Load(fileName);
+	spriteSheetName = fileName;
+
 	spriteField = new SpriteGo(fileName);
 	spriteField->Reset();
 	AddGameObject(spriteField);
@@ -283,45 +279,28 @@ void SceneAnimator::PlaySpritesFromLoad()
 	{
 		RemoveGameObject(animationBody);
 	}
-	animator = new Animator();
+	animator = Animator();
 
 	animationBody = new SpriteGo();
 	AddGameObject(animationBody);
 	animationBody->sortingLayer = SortingLayers::Foreground;
 	animationBody->sortingOrder = 0;
 
-	texIds.push_back((*animation->frames.begin()).texId);
+	texIds.push_back((*animation.frames.begin()).texId);
 	TEXTURE_MGR.Load(texIds);
-	animationBody->GetSprite().setTexture(TEXTURE_MGR.Get((*animation->frames.begin()).texId));
-	animationBody->GetSprite().setTextureRect((*animation->frames.begin()).texCoord);
+	animationBody->GetSprite().setTexture(TEXTURE_MGR.Get((*animation.frames.begin()).texId));
+	animationBody->GetSprite().setTextureRect((*animation.frames.begin()).texCoord);
 	animationBody->SetOrigin(Origins::MC);
 	animationBody->SetPosition(worldView.getCenter() - sf::Vector2f(350.f, 100.f));
 	animationBody->SetScale({ 2.f,2.f });
 
-	for (auto frame : animation->frames)
+	for (auto frame : animation.frames)
 	{
-		animationSprites.push_back(new SpriteGo());
-		animationSprites[animationSprites.size() - 1]->SetTextureId(frame.texId);
-		animationSprites[animationSprites.size() - 1]->Init();
-		animationSprites[animationSprites.size() - 1]->sortingLayer = SortingLayers::Foreground;
-		animationSprites[animationSprites.size() - 1]->sortingOrder = 0;
-		animationSprites[animationSprites.size() - 1]->Reset();
-		animationSprites[animationSprites.size() - 1]->GetSprite().setTextureRect(frame.texCoord);
-		animationSprites[animationSprites.size() - 1]->SetOrigin((sf::Vector2f)frame.texCoord.getSize() * 0.5f);
-		sf::RectangleShape rect;
-		rect.setOutlineThickness(3.f);
-		rect.setFillColor(sf::Color::Transparent);
-		rect.setSize({ 100.f,100.f });
-		sf::Vector2f pos = { 18.f + animationFrameBoxes.size() * 120.f, 650.f };
-		animationFrameBoxesInitPos.push_back(pos);
-		rect.setPosition(pos);
-		animationSprites[animationSprites.size() - 1]->SetPosition(pos + sf::Vector2f(50.f, 50.f));
-		animationSprites[animationSprites.size() - 1]->SetScale({ 100.f / frame.texCoord.width, 100.f / frame.texCoord.height });
-		animationFrameBoxes.push_back(rect);
+		AddEachAnimationSpriteFrame(frame);
 	}
 
-	animator->SetTarget(&animationBody->GetSprite());
-	animator->Play(animation);
+	animator.SetTarget(&animationBody->GetSprite());
+	animator.Play(&animation);
 }
 
 void SceneAnimator::MoveAnimationClip()
@@ -387,7 +366,6 @@ sf::IntRect SceneAnimator::ConvertToSpriteSheetPos()
 	rect.top = std::roundf(spritePickRect.getPosition().y - pos.y);
 	rect.width = std::roundf(spritePickRect.getSize().x);
 	rect.height = std::roundf(spritePickRect.getSize().y);
-	std::cout << rect.left << ", " << rect.top << ", " << rect.width << ", " << rect.height << std::endl;
 	return rect;
 }
 
@@ -396,11 +374,67 @@ void SceneAnimator::ClearAnimationBox()
 	animationFrames.clear();
 	animationSprites.clear();
 	animationFrameBoxes.clear();
-	if (animator)
+	animationFrameBoxesInitPos.clear();
+
+	animator = Animator();
+	animation = AnimationClip();
+
+	if(animationBody)
 	{
-		delete animator;
-		animator = nullptr;
+		RemoveGameObject(animationBody);
 	}
-	animation = nullptr;
-	RemoveGameObject(animationBody);
+	animationBody = nullptr;
+}
+
+void SceneAnimator::AddPickSprite()
+{
+	if (animationBody == nullptr)
+	{
+		animationBody = new SpriteGo(spriteSheetName);
+		AddGameObject(animationBody);
+		animationBody->sortingLayer = SortingLayers::Foreground;
+		animationBody->sortingOrder = 0;
+
+		texIds.push_back(spriteSheetName);
+		TEXTURE_MGR.Load(texIds);
+
+		animationBody->GetSprite().setTexture(TEXTURE_MGR.Get(spriteSheetName), true);
+		animationBody->GetSprite().setTextureRect(ConvertToSpriteSheetPos());
+		animationBody->SetOrigin(Origins::MC);
+		animationBody->SetPosition(worldView.getCenter() - sf::Vector2f(350.f, 100.f));
+		std::cout << animationBody->GetPosition().x << ", " << animationBody->GetPosition().y << std::endl;
+		animationBody->SetScale({ 2.f,2.f });
+	}
+
+	animation.frames.push_back({ spriteSheetName , ConvertToSpriteSheetPos() });
+	AddEachAnimationSpriteFrame(animation.frames.back());
+
+	animator.SetTarget(&animationBody->GetSprite());
+	animator.Play(&animation);
+}
+
+void SceneAnimator::RemoveSpriteInFrames()
+{
+}
+
+void SceneAnimator::AddEachAnimationSpriteFrame(AnimationFrame frame)
+{
+	animationSprites.push_back(new SpriteGo());
+	animationSprites[animationSprites.size() - 1]->SetTextureId(frame.texId);
+	animationSprites[animationSprites.size() - 1]->Init();
+	animationSprites[animationSprites.size() - 1]->sortingLayer = SortingLayers::Foreground;
+	animationSprites[animationSprites.size() - 1]->sortingOrder = 0;
+	animationSprites[animationSprites.size() - 1]->Reset();
+	animationSprites[animationSprites.size() - 1]->GetSprite().setTextureRect(frame.texCoord);
+	animationSprites[animationSprites.size() - 1]->SetOrigin((sf::Vector2f)frame.texCoord.getSize() * 0.5f);
+	sf::RectangleShape rect;
+	rect.setOutlineThickness(3.f);
+	rect.setFillColor(sf::Color::Transparent);
+	rect.setSize({ 100.f,100.f });
+	sf::Vector2f pos = { 18.f + animationFrameBoxes.size() * 120.f, 650.f };
+	animationFrameBoxesInitPos.push_back(pos);
+	rect.setPosition(pos);
+	animationSprites[animationSprites.size() - 1]->SetPosition(pos + sf::Vector2f(50.f, 50.f));
+	animationSprites[animationSprites.size() - 1]->SetScale({ 100.f / frame.texCoord.width, 100.f / frame.texCoord.height });
+	animationFrameBoxes.push_back(rect);
 }

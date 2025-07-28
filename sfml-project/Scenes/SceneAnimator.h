@@ -4,6 +4,8 @@
 #include "commdlg.h"
 #include "rapidcsv.h"
 #include "Button.h"
+#include "AnimationClip.h"
+#include "Animator.h"
 
 class AnimationClip;
 class Animator;
@@ -21,6 +23,8 @@ protected:
 	sf::RectangleShape spritePickRect;
 	sf::RectangleShape spriteSheetOutline;
 
+	std::string spriteSheetName;
+
 	std::vector<AnimationFrame> animationFrames;
 	std::vector<sf::RectangleShape> animationFrameBoxes;
 	std::vector<sf::Vector2f> animationFrameBoxesInitPos;
@@ -30,11 +34,11 @@ protected:
 	Button* loadFile = nullptr;
 	Button* clearAnimation = nullptr;
 
-	AnimationClip* animation;
+	AnimationClip animation;
 
 	std::vector<SpriteGo*> animationSprites;
 
-	Animator* animator = nullptr;
+	Animator animator;
 	SpriteGo* animationBody = nullptr;
 	SpriteGo* spriteField = nullptr;
 
@@ -68,5 +72,13 @@ public:
 	sf::IntRect ConvertToSpriteSheetPos();
 
 	void ClearAnimationBox();
+
+	void AddPickSprite();
+	void RemoveSpriteInFrames();
+	void AddEachAnimationSpriteFrame(AnimationFrame frame);
+
+	void SetAnimationLoopType(AnimationLoopTypes ty) { animation.loopType = ty; }
+	void SetAnimationFPS(int fps) { animation.fps = fps; }
+	void SetAnimationId(const std::string& str) { animation.id = str; }
 };
 
