@@ -164,6 +164,7 @@
     <ClCompile Include="GameObjects\Map.cpp" />
     <ClCompile Include="GameUIs\MapUI.cpp" />
     <ClCompile Include="MapMaking.cpp" />
+    <ClCompile Include="SceneAnimator.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
     <ClCompile Include="Scenes\SceneEditor.cpp" />
     <ClCompile Include="Monster.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="GameUIs\ItemUI.h" />
     <ClInclude Include="GameUIs\MapUI.h" />
     <ClInclude Include="MapMaking.h" />
+    <ClInclude Include="SceneAnimator.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\SceneEditor.h" />
     <ClInclude Include="Monster.h" />

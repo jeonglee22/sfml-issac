@@ -4,6 +4,7 @@
 #include "SceneDev2.h"
 #include "SceneEditor.h"
 #include "SceneGame.h"
+#include "SceneAnimator.h"
 
 void SceneMgr::Init()
 {
@@ -11,6 +12,7 @@ void SceneMgr::Init()
 	scenes.insert({ SceneIds::Dev2, new SceneDev2() });
 	scenes.insert({ SceneIds::Editor, new SceneEditor() });
 	scenes.insert({ SceneIds::Stage, new SceneGame() });
+	scenes.insert({ SceneIds::Animator, new SceneAnimator() });
 
 	for (auto& pair : scenes)
 	{
