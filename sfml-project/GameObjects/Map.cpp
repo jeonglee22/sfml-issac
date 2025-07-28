@@ -13,6 +13,7 @@
 #include "Item.h"
 #include "HitBox.h"
 #include "Body.h"
+#include "AttackFly.h"
 
 Map::Map(const std::string &filePath, const std::string &name)
 	: filePath(filePath), GameObject(name)
@@ -127,6 +128,8 @@ void Map::AddMonster(const sf::Vector2f &pos, const std::string& name)
 		monster = new Spider();
 	else if (name == "monster_010_fly")
 		monster = new Fly();
+	else if (name == "monster_010_attackfly")
+		monster = new AttackFly();
 	else if (name == "monster_000_bodies02")
 		monster = new Body();
 	else if (name == "monster_044_hopperleaper")

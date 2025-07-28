@@ -39,6 +39,7 @@ enum class Sides
 enum class Monsters
 {
 	Fly,
+	AttackFly,
 	Spider,
 	Body,
 	Hopper,

@@ -4,7 +4,8 @@
 #include "SpiderChargeState.h"
 #include "SpiderJumpState.h"
 
-Spider::Spider(const std::string& name) : Monster(name, Monsters::Spider)
+Spider::Spider(const std::string& name)
+    : Monster(name, Monsters::Spider)
 {
 }
 

@@ -1,42 +1,38 @@
 #include "stdafx.h"
-#include "Fly.h"
-#include "IdleState.h"
-#include "WanderState.h"
-#include "SceneGame.h"
-#include "Obstacles.h"
+#include "AttackFly.h"
 
-Fly::Fly(const std::string& name)
-	:Monster(name, Monsters::Fly)
+AttackFly::AttackFly(const std::string& name)
+    :Monster(name, Monsters::AttackFly)
 {
 }
 
-void Fly::Reset()
+void AttackFly::Reset()
 {
     sortingLayer = SortingLayers::Foreground;
     sortingOrder = 1;
 
-    SetHP(30);
+    SetHP(50);
     SetSpeed(50.0f);
     SetDetectionRange(120.0f);
     SetSkillCooldown(4.0f);
 
-    animator.Play("animations/fly.csv");
+    animator.Play("animations/attack_fly.csv");
     SetScale({ 2.0f, 2.0f });
     SetOrigin(Origins::MC);
 
     SetInitialState();
 }
 
-void Fly::UseSkill()
+void AttackFly::UseSkill()
 {
 }
 
-void Fly::SetInitialState()
+void AttackFly::SetInitialState()
 {
-    ChangeState(&wanderState);
+    ChangeState(&chaseState);
 }
 
-sf::FloatRect Fly::GetHitBoxMonster()
+sf::FloatRect AttackFly::GetHitBoxMonster()
 {
     sf::FloatRect bodyGlobalBounds = body.getGlobalBounds();
     return { bodyGlobalBounds.left + 20.f, bodyGlobalBounds.top + 20.f, 3.f, 3.f };

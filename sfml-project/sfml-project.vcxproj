@@ -140,8 +140,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AttackFly.cpp" />
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="ChaseState.cpp" />
     <ClCompile Include="GameObjects\Door.cpp" />
     <ClCompile Include="Framework\Button.cpp" />
     <ClCompile Include="GameUIs\EditBoxUI.cpp" />
@@ -195,8 +197,10 @@
     <ClCompile Include="WanderState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AttackFly.h" />
     <ClInclude Include="Body.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="ChaseState.h" />
     <ClInclude Include="GameObjects\Door.h" />
     <ClInclude Include="Fly.h" />
     <ClInclude Include="Framework\AnimationClip.h" />

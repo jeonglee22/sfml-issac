@@ -40,6 +40,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/character_001_isaac.png");
 	texIds.push_back("graphics/only_tears.png");
 	texIds.push_back("graphics/monster_010_fly.png");
+	texIds.push_back("graphics/enemies/monster_010_attackfly.png");
 	texIds.push_back("graphics/temp_background.png");
 	texIds.push_back("graphics/monster_214_level2spider_small.png");
 	texIds.push_back("graphics/effects/effect_015_tearpoofa.png");
@@ -99,6 +100,7 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/isaac_dead.csv");
 
 	ANI_CLIP_MGR.Load("animations/fly.csv");
+	ANI_CLIP_MGR.Load("animations/attack_fly.csv");
 	ANI_CLIP_MGR.Load("animations/fly_dead.csv");
 	ANI_CLIP_MGR.Load("animations/spider_patrol.csv");
 	ANI_CLIP_MGR.Load("animations/spider_charge.csv");
@@ -149,10 +151,12 @@ void SceneGame::Init()
 	skill->SetSkillFunc([this]() {
 		for (auto monster : monsters)
 		{
-			if(monster->GetActive())
+			if (!monster->GetActive() || monster->IsDead())
 			{
-				monster->TakeDamage(40);
+				continue;
 			}
+				monster->TakeDamage(40);
+
 		}
 	});
 	skill->SetTotalSkillCooltime(4);

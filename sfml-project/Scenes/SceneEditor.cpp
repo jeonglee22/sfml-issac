@@ -30,6 +30,7 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
 	texIds.push_back("graphics/enemies/boss_004_monstro.png");
 	texIds.push_back("graphics/enemies/monster_010_fly.png");
+	texIds.push_back("graphics/enemies/monster_010_attackfly.png");
 	texIds.push_back("graphics/enemies/monster_044_hopperleaper.png");
 	texIds.push_back("graphics/enemies/monster_214_level2spider_small.png");
 	texIds.push_back("graphics/enemies/monster_000_bodies02.png");

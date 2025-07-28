@@ -1,2 +1,3 @@
 FILENAME,LEFT,TOP,WIDTH,HEIGHT
 graphics/enemies/monster_010_fly.png,7,10,19,10,1
+graphics/enemies/monster_010_attackfly.png,70,12,22,13,1
