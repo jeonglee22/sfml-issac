@@ -13,6 +13,8 @@ protected:
 
 	sf::Sound bgm;
 
+	std::list<sf::SoundBuffer*> buffers;
+
 	std::list<sf::Sound*> playing;
 	std::list<sf::Sound*> waiting;
 

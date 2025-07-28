@@ -13,6 +13,7 @@ class ItemUI;
 class HeartUI;
 class SkillUI;
 class Skill;
+class TextGo;
 
 class SceneGame : public Scene
 {
@@ -52,6 +53,9 @@ protected:
 	bool isMapChanging = false;
 	float mapChangeSpeed = 500.f;
 
+	TextGo* FPS = nullptr;
+	float FPSTime = 0.f;
+
 public:
 	SceneGame();
 	~SceneGame() = default;
@@ -63,7 +67,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void EnemyCollosion();
-	std::vector<Monster*> GetMonsters() { return monsters; }
+	std::vector<Monster*> GetMonsters() { return maps[currentMapIndex]->GetMonsters();}
 	std::vector<HitBox*> GetMapBoundary() { return maps[currentMapIndex]->GetBoundary(); }
 	std::vector<SpriteGo*> GetMapSprites() { return maps[currentMapIndex]->GetObjects(); }
 	std::vector<Door*> GetMapDoor() { return maps[currentMapIndex]->GetDoor(); }

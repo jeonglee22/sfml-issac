@@ -63,7 +63,6 @@ void Skill::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Z))
 	{
 		AddSkillCooltime();
-		std::cout << currentCoolTime << std::endl;
 	}
 }
 

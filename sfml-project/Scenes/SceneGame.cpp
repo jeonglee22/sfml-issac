@@ -20,6 +20,7 @@
 #include "SkillUI.h"
 #include "Skill.h"
 #include "MapMaking.h"
+#include "TextGo.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Stage)
@@ -156,15 +157,21 @@ void SceneGame::Init()
 	});
 	skill->SetTotalSkillCooltime(4);
 
+	FPS = (TextGo*)AddGameObject(new TextGo("fonts/DS-DIGIT.ttf", "frame"));
+	FPS->SetCharacterSize(30);
+	FPS->SetOrigin(Origins::MC);
+	FPS->sortingLayer = SortingLayers::UI;
+	FPS->sortingOrder = 50;
+
 	Scene::Init();
 }
 
 void SceneGame::Enter()
 {
-	FRAMEWORK.GetWindow().setSize({960, 540});
+	FRAMEWORK.GetWindow().setSize({ 960, 540 });
 	auto size = FRAMEWORK.GetWindowSizeF();
 
-	sf::Vector2f center{size.x * 0.5f, size.y * 0.5f};
+	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
 	uiView.setCenter(center);
 
@@ -177,7 +184,7 @@ void SceneGame::Enter()
 	heartUI->SetScale({ 2.f,2.f });
 
 	mapUI->SetMapIndex(mapIndex);
-	mapUI->SetPosition({uiView.getSize().x - 110.f, 100.f});
+	mapUI->SetPosition({ uiView.getSize().x - 110.f, 100.f });
 
 	currentMapSize = maps[0]->GetMapSize();
 
@@ -192,7 +199,7 @@ void SceneGame::Enter()
 
 	beforeIndex = 0;
 
-	for(auto shading : shadings)
+	for (auto shading : shadings)
 	{
 		shading->SetScale({ 2.f, 2.f });
 		shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
@@ -205,11 +212,20 @@ void SceneGame::Enter()
 	isaac->SetSkill(skill);
 	skillUI->SetSkill(isaac->GetSkill());
 	skillUI->SetPosition({ 60.f,60.f });
+
+	FPS->SetPosition({150.f, 50.f});
 }
 
 void SceneGame::Update(float dt)
 {
 	SOUND_MGR.SetSfxVolume(20);
+
+	FPSTime += dt;
+	if (FPSTime >= 1.f)
+	{
+		FPS->SetString("FPS : " + std::to_string(1 / dt));
+		FPSTime = 0.f;
+	}
 
 	if (beforeIndex != currentMapIndex)
 	{
