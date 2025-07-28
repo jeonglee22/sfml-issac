@@ -169,7 +169,7 @@ void Map::SetDoor()
 		sf::Vector2f localPos;
 		localPos.x = (width * 0.5f - 104.f) * (i % 2 == 1 ? 2.f - i : 0.f);
 		localPos.y = (height * 0.5f - 104.f) * (i % 2 == 0 ? i - 1.f : 0.f);
-		if(neighboorMapIndex[i] != -1)
+		if(neighboorMapIndex[i] != -1 && neighboorMapIndex[i] != 99)
 		{
 			doors.push_back(new Door("graphics/additionals/door_01_normaldoor.png", "Door"));
 			doors[doors.size() - 1]->Init();

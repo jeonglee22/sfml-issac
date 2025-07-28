@@ -18,7 +18,8 @@ class TextGo;
 class SceneGame : public Scene
 {
 protected:
-	int mapIndex[15][15];
+	int mapIndex[11][11];
+
 	int beforeIndex = 0;
 	int stageStartX = 7;
 	int currentXIndex = stageStartX;
