@@ -165,7 +165,7 @@ void Monster::TakeDamage(int damage)
 		isDead = true;
 		velocity = { 0.f,0.f };
 
-		if(monsterType == Monsters::Fly || monsterType == Monsters::AttackFly)
+		if(monsterType == Monsters::Fly || monsterType == Monsters::AttackFly || monsterType == Monsters::Pooter)
 		{
 			animator.Play("animations/fly_dead.csv");
 		}

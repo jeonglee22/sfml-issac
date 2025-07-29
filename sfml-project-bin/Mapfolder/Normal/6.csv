@@ -81,3 +81,5 @@ graphics/obstacles/rocks/rocks_basement.png,3,34,27,28,rocks_basement,520.000000
 graphics/obstacles/rocks/rocks_basement.png,3,34,27,28,rocks_basement,520.000000,310.979187,27.000000,28.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/rocks/rocks_basement.png,35,35,25,27,rocks_basement,104.000000,259.601624,25.000000,27.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/rocks/rocks_basement.png,35,35,25,27,rocks_basement,520.000000,51.950439,25.000000,27.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_001_pooter.png,0,0,25,30,monster_001_pooter,416.000000,155.903320,25.000000,30.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_001_pooter.png,0,0,25,30,monster_001_pooter,207.999939,155.903320,25.000000,30.000000,1,-5,0.000000,0.000000,0.000000

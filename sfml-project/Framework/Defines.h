@@ -45,6 +45,7 @@ enum class Monsters
 	Hopper,
 	LarryJr,
 	Horf,
+	Pooter,
 };
 
 enum class Items

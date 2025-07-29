@@ -175,6 +175,9 @@
     <ClCompile Include="GameObjects\Map.cpp" />
     <ClCompile Include="GameUIs\MapUI.cpp" />
     <ClCompile Include="MapMaking.cpp" />
+    <ClCompile Include="Pooter.cpp" />
+    <ClCompile Include="PooterFireState.cpp" />
+    <ClCompile Include="PooterWanderState.cpp" />
     <ClCompile Include="Scenes\SceneAnimator.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
     <ClCompile Include="Scenes\SceneEditor.cpp" />
@@ -240,6 +243,9 @@
     <ClInclude Include="LarryJr.h" />
     <ClInclude Include="LarryMoveState.h" />
     <ClInclude Include="MapMaking.h" />
+    <ClInclude Include="Pooter.h" />
+    <ClInclude Include="PooterFireState.h" />
+    <ClInclude Include="PooterWanderState.h" />
     <ClInclude Include="Scenes\SceneAnimator.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\SceneEditor.h" />
