@@ -1,13 +1,13 @@
 TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
 Spider_jump,10,1,,,,
 ,,,,,,
-TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
-graphics/monster_214_level2spider_small.png,3,68,40,25,0.000000,0.000000
-graphics/monster_214_level2spider_small.png,3,68,40,25,0.000000,0.000000
-graphics/monster_214_level2spider_small.png,3,68,40,25,0.000000,0.000000
-graphics/monster_214_level2spider_small.png,3,68,40,25,0.000000,0.000000
-graphics/monster_214_level2spider_small.png,3,68,40,25,0.000000,0.000000
-graphics/monster_214_level2spider_small.png,50,68,40,25,0.000000,0.000000
-graphics/monster_214_level2spider_small.png,50,68,40,25,0.000000,0.000000
-graphics/monster_214_level2spider_small.png,50,68,40,25,0.000000,0.000000
-graphics/monster_214_level2spider_small.png,50,68,40,25,0.000000,0.000000
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+graphics/monster_214_level2spider_small.png,3,68,40,25,20.000000,12.500000
+graphics/monster_214_level2spider_small.png,3,68,40,25,20.000000,12.500000
+graphics/monster_214_level2spider_small.png,3,68,40,25,20.000000,12.500000
+graphics/monster_214_level2spider_small.png,3,68,40,25,20.000000,12.500000
+graphics/monster_214_level2spider_small.png,3,68,40,25,20.000000,12.500000
+graphics/monster_214_level2spider_small.png,50,68,40,25,20.000000,12.500000
+graphics/monster_214_level2spider_small.png,50,68,40,25,20.000000,12.500000
+graphics/monster_214_level2spider_small.png,50,68,40,25,20.000000,12.500000
+graphics/monster_214_level2spider_small.png,50,68,40,25,20.000000,12.500000

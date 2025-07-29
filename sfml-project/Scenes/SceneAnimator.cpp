@@ -200,8 +200,8 @@ rapidcsv::Document SceneAnimator::SaveAnimation()
 	doc.SetCell(0, 2, std::string("TEXTUREID"));
 	doc.SetCell(1, 2, std::string("LEFT"));
 	doc.SetCell(2, 2, std::string("TOP"));
-	doc.SetCell(3, 2, std::string("HEIGHT"));
-	doc.SetCell(4, 2, std::string("WIDTH"));
+	doc.SetCell(3, 2, std::string("WIDHT"));
+	doc.SetCell(4, 2, std::string("HEIGHT"));
 	doc.SetCell(5, 2, std::string("ORIGIN_X"));
 	doc.SetCell(6, 2, std::string("ORIGIN_Y"));
 
@@ -215,8 +215,8 @@ rapidcsv::Document SceneAnimator::SaveAnimation()
 		infos.push_back(std::to_string(frame.texCoord.top));
 		infos.push_back(std::to_string(frame.texCoord.width));
 		infos.push_back(std::to_string(frame.texCoord.height));
-		infos.push_back(std::to_string(frame.texOrigin.x));
-		infos.push_back(std::to_string(frame.texOrigin.y));
+		infos.push_back(std::to_string(animationBody->GetOrigin().x));
+		infos.push_back(std::to_string(animationBody->GetOrigin().y));
 
 		doc.InsertRow(i++, infos);
 	}

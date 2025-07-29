@@ -1,5 +1,5 @@
 TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
 Isaac_body_idle,10,1,,,,
 ,,,,,,
-TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
-graphics/character_001_isaac.png,7,45,18,12,0.000000,0.000000
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+graphics/character_001_isaac.png,7,45,18,12,9.000000,6.000000

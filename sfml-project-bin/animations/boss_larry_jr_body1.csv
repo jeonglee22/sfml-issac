@@ -1,14 +1,14 @@
 TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
 Larry_jr_body1,10,1,,,,
 ,,,,,,
-TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
-graphics/enemies/boss_001_larryjr.png,0,0,48,48,0.000000,0.000000
-graphics/enemies/boss_001_larryjr.png,0,0,48,48,0.000000,0.000000
-graphics/enemies/boss_001_larryjr.png,0,0,48,48,0.000000,0.000000
-graphics/enemies/boss_001_larryjr.png,0,0,48,48,0.000000,0.000000
-graphics/enemies/boss_001_larryjr.png,0,0,48,48,0.000000,0.000000
-graphics/enemies/boss_001_larryjr.png,48,0,48,48,0.000000,0.000000
-graphics/enemies/boss_001_larryjr.png,48,0,48,48,0.000000,0.000000
-graphics/enemies/boss_001_larryjr.png,48,0,48,48,0.000000,0.000000
-graphics/enemies/boss_001_larryjr.png,48,0,48,48,0.000000,0.000000
-graphics/enemies/boss_001_larryjr.png,48,0,48,48,0.000000,0.000000
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+graphics/enemies/boss_001_larryjr.png,0,0,48,48,24.000000,24.000000
+graphics/enemies/boss_001_larryjr.png,0,0,48,48,24.000000,24.000000
+graphics/enemies/boss_001_larryjr.png,0,0,48,48,24.000000,24.000000
+graphics/enemies/boss_001_larryjr.png,0,0,48,48,24.000000,24.000000
+graphics/enemies/boss_001_larryjr.png,0,0,48,48,24.000000,24.000000
+graphics/enemies/boss_001_larryjr.png,48,0,48,48,24.000000,24.000000
+graphics/enemies/boss_001_larryjr.png,48,0,48,48,24.000000,24.000000
+graphics/enemies/boss_001_larryjr.png,48,0,48,48,24.000000,24.000000
+graphics/enemies/boss_001_larryjr.png,48,0,48,48,24.000000,24.000000
+graphics/enemies/boss_001_larryjr.png,48,0,48,48,24.000000,24.000000

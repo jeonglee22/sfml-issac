@@ -1,15 +1,15 @@
 TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
 Coin,15,1,,,,
 ,,,,,,
-TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
-"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,0.000000,0.000000
-"graphics/items/pick ups/pickup_002_coin.png",84,23,23,20,0.000000,0.000000
-"graphics/items/pick ups/pickup_002_coin.png",148,23,23,20,0.000000,0.000000
-"graphics/items/pick ups/pickup_002_coin.png",212,23,23,20,0.000000,0.000000
-"graphics/items/pick ups/pickup_002_coin.png",276,23,23,20,0.000000,0.000000
-"graphics/items/pick ups/pickup_002_coin.png",340,23,23,20,0.000000,0.000000
-"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,0.000000,0.000000
-"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,0.000000,0.000000
-"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,0.000000,0.000000
-"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,0.000000,0.000000
-"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,0.000000,0.000000
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,11.500000,10.000000
+"graphics/items/pick ups/pickup_002_coin.png",84,23,23,20,11.500000,10.000000
+"graphics/items/pick ups/pickup_002_coin.png",148,23,23,20,11.500000,10.000000
+"graphics/items/pick ups/pickup_002_coin.png",212,23,23,20,11.500000,10.000000
+"graphics/items/pick ups/pickup_002_coin.png",276,23,23,20,11.500000,10.000000
+"graphics/items/pick ups/pickup_002_coin.png",340,23,23,20,11.500000,10.000000
+"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,11.500000,10.000000
+"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,11.500000,10.000000
+"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,11.500000,10.000000
+"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,11.500000,10.000000
+"graphics/items/pick ups/pickup_002_coin.png",20,23,23,20,11.500000,10.000000

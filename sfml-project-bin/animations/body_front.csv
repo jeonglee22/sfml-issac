@@ -1,14 +1,14 @@
 TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
 Body_front,10,1,,,,
 ,,,,,,
-TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
-graphics/monster_000_bodies02.png,0,0,32,32,0.000000,0.000000
-graphics/monster_000_bodies02.png,32,0,32,32,0.000000,0.000000
-graphics/monster_000_bodies02.png,64,0,32,32,0.000000,0.000000
-graphics/monster_000_bodies02.png,96,0,32,32,0.000000,0.000000
-graphics/monster_000_bodies02.png,0,32,32,32,0.000000,0.000000
-graphics/monster_000_bodies02.png,32,32,32,32,0.000000,0.000000
-graphics/monster_000_bodies02.png,64,32,32,32,0.000000,0.000000
-graphics/monster_000_bodies02.png,96,32,32,32,0.000000,0.000000
-graphics/monster_000_bodies02.png,0,64,32,32,0.000000,0.000000
-graphics/monster_000_bodies02.png,32,64,32,32,0.000000,0.000000
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+graphics/monster_000_bodies02.png,0,0,32,32,16.000000,16.000000
+graphics/monster_000_bodies02.png,32,0,32,32,16.000000,16.000000
+graphics/monster_000_bodies02.png,64,0,32,32,16.000000,16.000000
+graphics/monster_000_bodies02.png,96,0,32,32,16.000000,16.000000
+graphics/monster_000_bodies02.png,0,32,32,32,16.000000,16.000000
+graphics/monster_000_bodies02.png,32,32,32,32,16.000000,16.000000
+graphics/monster_000_bodies02.png,64,32,32,32,16.000000,16.000000
+graphics/monster_000_bodies02.png,96,32,32,32,16.000000,16.000000
+graphics/monster_000_bodies02.png,0,64,32,32,16.000000,16.000000
+graphics/monster_000_bodies02.png,32,64,32,32,16.000000,16.000000

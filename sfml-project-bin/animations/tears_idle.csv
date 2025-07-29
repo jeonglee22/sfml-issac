@@ -1,5 +1,5 @@
 TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
 Tears_idle,10,1,,,,
 ,,,,,,
-TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
-graphics/effects/effect_015_tearpoofa.png,25,23,15,15,0.000000,0.000000
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+graphics/effects/effect_015_tearpoofa.png,25,23,15,15,7.500000,7.500000
