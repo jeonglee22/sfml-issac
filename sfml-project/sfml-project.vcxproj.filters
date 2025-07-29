@@ -192,6 +192,15 @@
     <ClCompile Include="LarryMoveState.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Horf.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="HorfFireState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTears.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\InputMgr.h">
@@ -378,6 +387,15 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="LarryMoveState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Horf.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="HorfFireState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTears.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

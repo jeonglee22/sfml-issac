@@ -11,21 +11,9 @@ protected:
 public:
     IdleState() {}
 
-    void Enter(Monster* monster) override
-    {
-        monster->SetVelocity(sf::Vector2f(0, 0));
-    }
-
-    void Update(Monster* monster, float dt) override
-    {
-
-    }
-
-    void Exit(Monster* monster) override
-    {
-        monster->SetVelocity(sf::Vector2f(0, 0));
-    }
-
+    void Enter(Monster* monster) override;
+    void Update(Monster* monster, float dt) override;
+    void Exit(Monster* monster) override;
     std::string GetStateName() const override { return "Idle"; }
 };
 

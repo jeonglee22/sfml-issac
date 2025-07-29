@@ -68,3 +68,5 @@ graphics/obstacles/grid_fireplace.png,0,32,32,32,grid_fireplace,468.000000,103.3
 graphics/obstacles/grid_fireplace.png,0,32,32,32,grid_fireplace,156.000000,207.153625,32.000000,32.000000,1,-5,0.000000,0.000000,0.000000
 graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,312.000000,51.950439,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
 graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,312.000000,259.601624,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_029_horf.png,1,1,32,30,monster_029_horf,572.000000,155.000000,32.000000,30.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_029_horf.png,1,1,32,30,monster_029_horf,52.000000,155.000000,32.000000,30.000000,1,-5,0.000000,0.000000,0.000000

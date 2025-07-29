@@ -15,6 +15,7 @@
 #include "Body.h"
 #include "AttackFly.h"
 #include "LarryJr.h"
+#include "Horf.h"
 
 Map::Map(const std::string &filePath, const std::string &name)
 	: filePath(filePath), GameObject(name)
@@ -133,6 +134,8 @@ void Map::AddMonster(const sf::Vector2f &pos, const std::string& name)
 		monster = new AttackFly();
 	else if (name == "monster_000_bodies02")
 		monster = new Body();
+	else if (name == "monster_029_horf")
+		monster = new Horf();
 	else if (name == "boss_001_larryjr")
 		monster = new LarryJr();
 	else if (name == "monster_044_hopperleaper")

@@ -169,11 +169,7 @@ void Monster::TakeDamage(int damage)
 		{
 			animator.Play("animations/fly_dead.csv");
 		}
-		if (monsterType == Monsters::Spider)
-		{
-			animator.Play("animations/blood_small.csv");
-		}
-		if (monsterType == Monsters::Body)
+		if (monsterType == Monsters::Spider || monsterType == Monsters::Body || monsterType == Monsters::Horf)
 		{
 			animator.Play("animations/blood_small.csv");
 		}

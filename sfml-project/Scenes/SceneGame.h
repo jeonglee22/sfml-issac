@@ -72,6 +72,7 @@ public:
 	std::vector<HitBox*> GetMapBoundary() { return maps[currentMapIndex]->GetBoundary(); }
 	std::vector<SpriteGo*> GetMapSprites() { return maps[currentMapIndex]->GetObjects(); }
 	std::vector<Door*> GetMapDoor() { return maps[currentMapIndex]->GetDoor(); }
+	Isaac* GetIsaac() const { return isaac; }
 
 	std::vector<int> GetNeighboorMapIndex(int x, int y);
 	

@@ -56,14 +56,10 @@ graphics/obstacles/pit/grid_pit_basement.png,104,0,26,26,grid_pit_basement,260.0
 graphics/obstacles/pit/grid_pit_basement.png,104,0,26,26,grid_pit_basement,364.000000,259.601624,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,104,0,26,26,grid_pit_basement,312.000000,259.601624,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,26,52,26,26,grid_pit_basement,207.999939,207.153625,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
-graphics/background/basement.png,104,156,52,52,basement,207.999939,103.328064,52.000000,52.000000,0,0,0.000000,0.000000,0.000000
-graphics/background/basement.png,104,156,52,52,basement,364.000000,103.328064,52.000000,52.000000,0,0,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,26,78,26,26,grid_pit_basement,416.000000,207.153625,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,52,52,26,26,grid_pit_basement,364.000000,207.153625,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,52,52,26,26,grid_pit_basement,260.000031,207.153625,26.000000,26.000000,1,-5,0.000000,26.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,52,52,26,26,grid_pit_basement,312.000000,207.153625,26.000000,26.000000,1,-5,0.000000,26.000000,0.000000
-graphics/background/basement.png,104,104,52,52,basement,364.000000,155.776001,52.000000,52.000000,0,0,0.000000,0.000000,0.000000
-graphics/background/basement.png,104,104,52,52,basement,207.999939,155.776001,52.000000,52.000000,0,0,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,52,0,26,26,grid_pit_basement,416.000000,103.328064,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,52,26,26,26,grid_pit_basement,207.999939,103.328064,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,26,52,26,26,grid_pit_basement,207.999939,51.950439,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
@@ -82,8 +78,10 @@ graphics/obstacles/pit/grid_pit_basement.png,0,78,26,26,grid_pit_basement,104.00
 graphics/obstacles/pit/grid_pit_basement.png,26,26,26,26,grid_pit_basement,104.000000,103.328064,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,26,26,26,26,grid_pit_basement,104.000000,207.153625,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,26,26,26,26,grid_pit_basement,104.000000,155.776001,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
-graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,416.000000,155.776001,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
-graphics/enemies/monster_214_level2spider_small.png,45,56,33,16,monster_214_level2spider_small,207.999939,155.776001,33.000000,16.000000,1,-5,0.000000,0.000000,0.000000
 graphics/obstacles/pit/grid_pit_basement.png,52,52,26,26,grid_pit_basement,312.000000,207.349854,26.000000,26.000000,1,-5,0.000000,0.000000,0.000000
 graphics/background/basement.png,104,208,26,52,basement,312.000000,103.080627,26.000000,52.000000,0,0,0.000000,0.000000,0.000000
 graphics/background/basement.png,104,208,26,52,basement,312.000000,155.693542,26.000000,52.000000,0,0,0.000000,0.000000,0.000000
+graphics/background/basement.png,52,52,52,52,basement,207.999939,103.076904,52.000000,52.000000,0,0,0.000000,0.000000,0.000000
+graphics/background/basement.png,52,52,52,52,basement,364.000000,103.076904,52.000000,52.000000,0,0,0.000000,0.000000,0.000000
+graphics/enemies/monster_029_horf.png,1,1,32,30,monster_029_horf,207.999939,155.000000,32.000000,30.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_029_horf.png,1,1,32,30,monster_029_horf,416.000000,155.000000,32.000000,30.000000,1,-5,0.000000,0.000000,0.000000
