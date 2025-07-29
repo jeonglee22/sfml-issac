@@ -425,6 +425,7 @@ void SceneAnimator::ClearAnimationBox()
 
 	animator = Animator();
 	animation = AnimationClip();
+	currentPickedFrame = 0;
 
 	if(animationBody)
 	{
@@ -458,7 +459,7 @@ void SceneAnimator::AddPickSprite()
 	if (currentPickedFrame == animation.frames.size() - 1 || animation.frames.size() == 0)
 		animation.frames.push_back({ spriteSheetName , ConvertToSpriteSheetPos() , frameOrigin });
 	else
-		animation.frames.insert(animation.frames.begin() + currentPickedFrame, {spriteSheetName , ConvertToSpriteSheetPos() , frameOrigin});
+		animation.frames.insert(animation.frames.begin() + currentPickedFrame + 1, {spriteSheetName , ConvertToSpriteSheetPos() , frameOrigin});
 	AddEachAnimationSpriteFrame(*(animation.frames.begin() + currentPickedFrame));
 
 	animator.SetTarget(&animationBody->GetSprite());
@@ -500,7 +501,7 @@ void SceneAnimator::AddEachAnimationSpriteFrame(AnimationFrame frame)
 	if (animationSprites.size() == 0)
 		animationSprites.push_back(sprite);
 	else
-		animationSprites.insert(animationSprites.begin() + currentPickedFrame, sprite);
+		animationSprites.insert(animationSprites.begin() + ++currentPickedFrame, sprite);
 	sf::RectangleShape* rect = new sf::RectangleShape();
 	rect->setOutlineThickness(3.f);
 	rect->setFillColor(sf::Color::Transparent);
