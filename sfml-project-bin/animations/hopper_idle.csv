@@ -1,12 +1,12 @@
-ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
-Hopper_idle,10,"1	",,,
-"				",,,,,
-TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/monster_044_hopperleaper.png,5,15,22,15,0
-graphics/monster_044_hopperleaper.png,5,15,22,15,0
-graphics/monster_044_hopperleaper.png,5,15,22,15,0
-graphics/monster_044_hopperleaper.png,5,15,22,15,0
-graphics/monster_044_hopperleaper.png,5,15,22,15,0
-graphics/monster_044_hopperleaper.png,37,15,22,15,0
-graphics/monster_044_hopperleaper.png,66,15,25,15,0
-graphics/monster_044_hopperleaper.png,100,15,25,15,0
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+Hopper_idle,10,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
+graphics/monster_044_hopperleaper.png,5,15,22,15,0.000000,0.000000
+graphics/monster_044_hopperleaper.png,5,15,22,15,0.000000,0.000000
+graphics/monster_044_hopperleaper.png,5,15,22,15,0.000000,0.000000
+graphics/monster_044_hopperleaper.png,5,15,22,15,0.000000,0.000000
+graphics/monster_044_hopperleaper.png,5,15,22,15,0.000000,0.000000
+graphics/monster_044_hopperleaper.png,37,15,22,15,0.000000,0.000000
+graphics/monster_044_hopperleaper.png,66,15,25,15,0.000000,0.000000
+graphics/monster_044_hopperleaper.png,100,15,25,15,0.000000,0.000000

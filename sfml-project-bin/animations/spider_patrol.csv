@@ -1,8 +1,8 @@
-ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
-Spider_patrol,10,"1	",,,
-"				",,,,,
-TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/monster_214_level2spider_small.png,3,4,40,25,0
-graphics/monster_214_level2spider_small.png,50,4,40,25,0
-graphics/monster_214_level2spider_small.png,97,4,40,25,0
-graphics/monster_214_level2spider_small.png,3,36,40,25,0
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+Spider_patrol,10,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
+graphics/monster_214_level2spider_small.png,3,4,40,25,0.000000,0.000000
+graphics/monster_214_level2spider_small.png,50,4,40,25,0.000000,0.000000
+graphics/monster_214_level2spider_small.png,97,4,40,25,0.000000,0.000000
+graphics/monster_214_level2spider_small.png,3,36,40,25,0.000000,0.000000

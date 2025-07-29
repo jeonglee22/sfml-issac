@@ -1,14 +1,14 @@
-ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
-Body_side,10,"1	",,,
-"				",,,,,
-TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/monster_000_bodies02.png,64,64,32,32,0
-graphics/monster_000_bodies02.png,96,64,32,32,0
-graphics/monster_000_bodies02.png,0,96,32,32,0
-graphics/monster_000_bodies02.png,32,96,32,32,0
-graphics/monster_000_bodies02.png,64,96,32,32,0
-graphics/monster_000_bodies02.png,96,96,32,32,0
-graphics/monster_000_bodies02.png,0,128,32,32,0
-graphics/monster_000_bodies02.png,32,128,32,32,0
-graphics/monster_000_bodies02.png,64,128,32,32,0
-graphics/monster_000_bodies02.png,96,128,32,32,0
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+Body_side,10,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
+graphics/monster_000_bodies02.png,64,64,32,32,0.000000,0.000000
+graphics/monster_000_bodies02.png,96,64,32,32,0.000000,0.000000
+graphics/monster_000_bodies02.png,0,96,32,32,0.000000,0.000000
+graphics/monster_000_bodies02.png,32,96,32,32,0.000000,0.000000
+graphics/monster_000_bodies02.png,64,96,32,32,0.000000,0.000000
+graphics/monster_000_bodies02.png,96,96,32,32,0.000000,0.000000
+graphics/monster_000_bodies02.png,0,128,32,32,0.000000,0.000000
+graphics/monster_000_bodies02.png,32,128,32,32,0.000000,0.000000
+graphics/monster_000_bodies02.png,64,128,32,32,0.000000,0.000000
+graphics/monster_000_bodies02.png,96,128,32,32,0.000000,0.000000

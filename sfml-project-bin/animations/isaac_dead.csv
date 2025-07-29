@@ -1,5 +1,5 @@
-ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
-Isaac_dead,10,"1	",,,
-"				",,,,,
-TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/character_001_isaac.png,197,163,53,28,0
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+Isaac_dead,10,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
+graphics/character_001_isaac.png,197,163,53,28,27.500000,27.000000

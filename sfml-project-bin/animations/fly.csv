@@ -1,6 +1,6 @@
-ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
-Fly,30,"1	",,,
-"				",,,,,
-TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/monster_010_fly.png,5,7,22,20,0
-graphics/monster_010_fly.png,37,4,17,20,0
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+Fly,30,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
+graphics/monster_010_fly.png,5,7,22,20,0.000000,0.000000
+graphics/monster_010_fly.png,37,4,17,20,0.000000,0.000000

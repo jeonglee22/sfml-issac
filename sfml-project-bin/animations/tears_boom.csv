@@ -1,14 +1,14 @@
-ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
-Tears_boom,10,"1	",,,
-"				",,,,,
-TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/effects/effect_015_tearpoofa.png,64,0,64,64,0
-graphics/effects/effect_015_tearpoofa.png,128,0,64,64,0
-graphics/effects/effect_015_tearpoofa.png,192,0,64,64,0
-graphics/effects/effect_015_tearpoofa.png,0,64,64,64,0
-graphics/effects/effect_015_tearpoofa.png,64,64,64,64,0
-graphics/effects/effect_015_tearpoofa.png,128,64,64,64,0
-graphics/effects/effect_015_tearpoofa.png,192,64,64,64,0
-graphics/effects/effect_015_tearpoofa.png,0,128,64,64,0
-graphics/effects/effect_015_tearpoofa.png,64,128,64,64,0
-graphics/effects/effect_015_tearpoofa.png,128,128,64,64,0
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+Tears_boom,10,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
+graphics/effects/effect_015_tearpoofa.png,64,0,64,64,0.000000,0.000000
+graphics/effects/effect_015_tearpoofa.png,128,0,64,64,0.000000,0.000000
+graphics/effects/effect_015_tearpoofa.png,192,0,64,64,0.000000,0.000000
+graphics/effects/effect_015_tearpoofa.png,0,64,64,64,0.000000,0.000000
+graphics/effects/effect_015_tearpoofa.png,64,64,64,64,0.000000,0.000000
+graphics/effects/effect_015_tearpoofa.png,128,64,64,64,0.000000,0.000000
+graphics/effects/effect_015_tearpoofa.png,192,64,64,64,0.000000,0.000000
+graphics/effects/effect_015_tearpoofa.png,0,128,64,64,0.000000,0.000000
+graphics/effects/effect_015_tearpoofa.png,64,128,64,64,0.000000,0.000000
+graphics/effects/effect_015_tearpoofa.png,128,128,64,64,0.000000,0.000000

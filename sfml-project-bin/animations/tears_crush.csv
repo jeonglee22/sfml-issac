@@ -1,5 +1,5 @@
-ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
-Tears_crush,10,"1	",,,
-"				",,,,,
-TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/effects/effect_015_tearpoofa.png,25,23,15,15,0
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+Tears_crush,10,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
+graphics/effects/effect_015_tearpoofa.png,25,23,15,15,0.000000,0.000000

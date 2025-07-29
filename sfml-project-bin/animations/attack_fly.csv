@@ -1,8 +1,8 @@
-ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
-Attack_Fly,30,"1	",,,
-"				",,,,,
-TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/enemies/monster_010_attackfly.png,0,0,32,32,0
-graphics/enemies/monster_010_attackfly.png,32,0,32,32,0
-graphics/enemies/monster_010_attackfly.png,64,0,32,32,0
-graphics/enemies/monster_010_attackfly.png,98,0,32,32,0
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+Attack_Fly,30,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
+graphics/enemies/monster_010_attackfly.png,0,0,32,32,0.000000,0.000000
+graphics/enemies/monster_010_attackfly.png,32,0,32,32,0.000000,0.000000
+graphics/enemies/monster_010_attackfly.png,64,0,32,32,0.000000,0.000000
+graphics/enemies/monster_010_attackfly.png,98,0,32,32,0.000000,0.000000
