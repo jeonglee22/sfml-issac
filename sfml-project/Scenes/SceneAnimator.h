@@ -44,8 +44,8 @@ protected:
 	SpriteGo* animationBody = nullptr;
 	SpriteGo* spriteField = nullptr;
 
-	Origins frameOrigin = Origins::MC;
-
+	Origins frameOriginPreset = Origins::MC;
+	sf::Vector2f frameOrigin;
 
 	bool isClipDrag = false;
 	bool isSpritePick = false;
@@ -85,5 +85,7 @@ public:
 	void SetAnimationLoopType(AnimationLoopTypes ty) { animation.loopType = ty; }
 	void SetAnimationFPS(int fps) { animation.fps = fps; }
 	void SetAnimationId(const std::string& str) { animation.id = str; }
+
+	void ChangeOrigin();
 };
 

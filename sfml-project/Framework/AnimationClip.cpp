@@ -16,7 +16,9 @@ bool AnimationClip::loadFromFile(const std::string& filePath)
 		frames.push_back(
 			{ 
 				row[0], 
-				{ std::stoi(row[1]), std::stoi(row[2]), std::stoi(row[3]), std::stoi(row[4]) }
+				{ std::stoi(row[1]), std::stoi(row[2]), std::stoi(row[3]), std::stoi(row[4]) },
+				{0.f,0.f}
+				/*{ std::stof(row[5]), std::stof(row[6])},*/
 			});
 	}
 

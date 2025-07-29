@@ -11,9 +11,10 @@ struct AnimationFrame
 {
 	std::string texId;
 	sf::IntRect texCoord;
+	sf::Vector2f texOrigin;
 
 	AnimationFrame() {}
-	AnimationFrame(const std::string& texId, const sf::IntRect& texCoord) : texId(texId), texCoord(texCoord) {}
+	AnimationFrame(const std::string& texId, const sf::IntRect& texCoord, const sf::Vector2f& texOrigin) : texId(texId), texCoord(texCoord), texOrigin(texOrigin) {}
 };
 
 struct AnimationClip

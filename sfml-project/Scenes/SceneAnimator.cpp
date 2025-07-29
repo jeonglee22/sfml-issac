@@ -21,7 +21,7 @@ void SceneAnimator::Init()
 	saveAnimation = (Button *)AddGameObject(new Button());
 	clearAnimation = (Button *)AddGameObject(new Button());
 
-	background = (SpriteGo*)AddGameObject(new SpriteGo("graphics/background/basement.png"));
+	background = new SpriteGo("graphics/background/basement.png");
 	background->sortingLayer = SortingLayers::Background;
 
 	fps = (TextGo*)AddGameObject(new TextGo("fonts/DS-DIGIT.TTF"));
@@ -108,9 +108,10 @@ void SceneAnimator::Enter()
 	fps->SetString("fps : 0");
 	fps->SetPosition({30.f, 580.f});
 
+	background->Reset();
 	background->GetSprite().setTextureRect(sf::IntRect{ 0,0,234, 156});
 	background->SetOrigin(Origins::MC);
-	background->SetScale({ 2.f,2.f });
+	background->SetScale({ 4.f,4.f });
 	background->SetPosition({ 300.f, size.y * 0.5f - 100.f});
 }
 
@@ -140,6 +141,7 @@ void SceneAnimator::Update(float dt)
 	}
 
 	animator.Update(dt);
+	ChangeOrigin();
 
 	if (isLoading)
 	{
@@ -157,6 +159,8 @@ void SceneAnimator::Update(float dt)
 
 void SceneAnimator::Draw(sf::RenderWindow& window)
 {
+	background->Draw(window);
+
 	for (auto box : animationFrameBoxes)
 		window.draw(box);
 	for (auto sprite : animationSprites)
@@ -174,26 +178,26 @@ void SceneAnimator::Draw(sf::RenderWindow& window)
 rapidcsv::Document SceneAnimator::SaveAnimation()
 {
 	rapidcsv::Document doc;
-	/*doc.SetColumnName(0, "TEXTURE_ID");
+
+	doc.SetColumnName(0, "TEXTURE_ID");
 	doc.SetColumnName(1, "FPS");
 	doc.SetColumnName(2, "LOOPTYPE(0:Single, 1:Loop)");
-	doc.SetCell(0, 0, animation->id);
-	doc.SetCell(1, 0, animation->fps);
-	doc.SetCell(2, 0, animation->loopType);
-
-	float left = INT_MAX, top = INT_MAX, right = INT_MIN, bottom = INT_MIN;
+	doc.SetCell(0, 0, animation.id);
+	doc.SetCell(1, 0, std::to_string(animation.fps));
+	doc.SetCell(2, 0, std::to_string((int)animation.loopType));
 
 	std::vector<std::string> infos;
 
-	doc.SetCell(0, 2, "TEXTUREID");
-	doc.SetCell(1, 2, "LEFT");
-	doc.SetCell(2, 2, "TOP");
-	doc.SetCell(3, 2, "HEIGHT");
-	doc.SetCell(4, 2, "WIDTH");
-	doc.SetCell(5, 2, "FLIPX(0:False, 1:True)");
+	doc.SetCell(0, 2, std::string("TEXTUREID"));
+	doc.SetCell(1, 2, std::string("LEFT"));
+	doc.SetCell(2, 2, std::string("TOP"));
+	doc.SetCell(3, 2, std::string("HEIGHT"));
+	doc.SetCell(4, 2, std::string("WIDTH"));
+	doc.SetCell(5, 2, std::string("ORIGIN_X"));
+	doc.SetCell(6, 2, std::string("ORIGIN_Y"));
 
 	int i = 3;
-	for (auto frame : animation->frames)
+	for (auto frame : animation.frames)
 	{
 		infos.clear();
 
@@ -202,10 +206,11 @@ rapidcsv::Document SceneAnimator::SaveAnimation()
 		infos.push_back(std::to_string(frame.texCoord.top));
 		infos.push_back(std::to_string(frame.texCoord.width));
 		infos.push_back(std::to_string(frame.texCoord.height));
-		infos.push_back(std::to_string(0));
+		infos.push_back(std::to_string(frame.texOrigin.x));
+		infos.push_back(std::to_string(frame.texOrigin.y));
 
 		doc.InsertRow(i++, infos);
-	}*/
+	}
 
 	return doc;
 }
@@ -214,7 +219,7 @@ void SceneAnimator::SaveFile()
 {
 	rapidcsv::Document doc = SaveAnimation();
 
-	/*CHAR filename[MAX_PATH] = "";
+	CHAR filename[MAX_PATH] = "";
 	CHAR currentFilePos[MAX_PATH] = "";
 	GetCurrentDirectoryA(MAX_PATH, currentFilePos);
 
@@ -222,7 +227,7 @@ void SceneAnimator::SaveFile()
 	ZeroMemory(&ofn, sizeof(ofn));
 	ofn.lStructSize = sizeof(ofn);
 	ofn.hwndOwner = NULL;
-	ofn.lpstrFilter = "��� ����\0*.*\0�ؽ�Ʈ ����\0";
+	ofn.lpstrFilter = "All files\0*.*\0csv files\0";
 	ofn.lpstrFile = filename;
 	ofn.nMaxFile = MAX_PATH;
 	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_OVERWRITEPROMPT;
@@ -243,7 +248,7 @@ void SceneAnimator::SaveFile()
 		{
 			continue;
 		}
-	}*/
+	}
 }
 
 void SceneAnimator::LoadFile(bool isAnimation)
@@ -367,7 +372,7 @@ void SceneAnimator::PickSpriteRect()
 		(InputMgr::GetMousePosition().x >= 666.f) && !isSpritePick)
 	{
 		sf::Vector2f mousePos = ScreenToWorld( InputMgr::GetMousePosition());
-		if (Utils::PointInTransformBounds(spriteField->GetSprite(), spriteField->GetSprite().getLocalBounds(), mousePos))
+		if (spriteField != nullptr && Utils::PointInTransformBounds(spriteField->GetSprite(), spriteField->GetSprite().getLocalBounds(), mousePos))
 		{
 			spritePickRect = sf::RectangleShape();
 			spritePickRect.setFillColor(sf::Color::Transparent);
@@ -439,7 +444,7 @@ void SceneAnimator::AddPickSprite()
 		fps->SetString("fps : " + std::to_string(animation.fps));
 	}
 
-	animation.frames.push_back({ spriteSheetName , ConvertToSpriteSheetPos() });
+	animation.frames.push_back({ spriteSheetName , ConvertToSpriteSheetPos() , frameOrigin });
 	AddEachAnimationSpriteFrame(animation.frames.back());
 
 	animator.SetTarget(&animationBody->GetSprite());
@@ -470,4 +475,31 @@ void SceneAnimator::AddEachAnimationSpriteFrame(AnimationFrame frame)
 	animationSprites[animationSprites.size() - 1]->SetPosition(pos + sf::Vector2f(50.f, 50.f));
 	animationSprites[animationSprites.size() - 1]->SetScale({ 100.f / frame.texCoord.width, 100.f / frame.texCoord.height });
 	animationFrameBoxes.push_back(rect);
+}
+
+void SceneAnimator::ChangeOrigin()
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad1))
+		frameOriginPreset = Origins::BL;
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad2))
+		frameOriginPreset = Origins::BC;
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad3))
+		frameOriginPreset = Origins::BR;
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
+		frameOriginPreset = Origins::ML;
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad5))
+		frameOriginPreset = Origins::MC;
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6))
+		frameOriginPreset = Origins::MR;
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad7))
+		frameOriginPreset = Origins::TL;
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad8))
+		frameOriginPreset = Origins::TC;
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad9))
+		frameOriginPreset = Origins::TR;
+	if(animationBody != nullptr)
+	{
+		animationBody->SetOrigin(frameOriginPreset);
+		frameOrigin = animationBody->GetOrigin();
+	}
 }

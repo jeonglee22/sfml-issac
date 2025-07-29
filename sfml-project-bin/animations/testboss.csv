@@ -1,0 +1,5 @@
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+,10,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
+C:\Users\new26\kungil\sfml-issac\sfml-project-bin\graphics\boss_004_monstro.png,5,66,69,46,0.000000,0.000000
