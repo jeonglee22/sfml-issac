@@ -4,6 +4,7 @@
 #include "Monster.h"
 #include "Animator.h"
 #include "Obstacles.h"
+#include "LarryJr.h"
 
 Tears::Tears(const std::string& name)
 	: GameObject(name)
@@ -128,9 +129,7 @@ void Tears::Update(float dt)
 	}
 
 
-
 	float allowedDrop = 30.f;
-
 
 	if (hasReachedMaxRange)
 	{
@@ -193,6 +192,23 @@ void Tears::Hit()
 			SetOrigin(Origins::MC);
 			isTearsCrush = true;
 			return;
+		}
+
+		LarryJr* larry = dynamic_cast<LarryJr*>(monster);
+		if (larry != nullptr)
+		{
+			for (const auto& segment : larry->bodySegments)
+			{
+				if (isaacBounds.intersects(segment.BodyHitBox()))
+				{
+					monster->TakeDamage(damage);
+					StartSplash();
+					SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/tear block.wav"));
+					SetOrigin(Origins::MC);
+					isTearsCrush = true;
+					return;
+				}
+			}
 		}
 
 	}

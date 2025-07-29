@@ -3,7 +3,7 @@
 #include "MapMaking.h"
 
 int MapMaking::normalMapCount = 20;
-int MapMaking::startMapCount = 3;
+int MapMaking::startMapCount = 4;
 
 void MapMaking::InitMapSetting(int map[][11])
 {
