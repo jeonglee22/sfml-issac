@@ -1,0 +1,6 @@
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+,14,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+C:\Users\KGA\Desktop\GitHub\sfml-issac\sfml-project-bin\graphics\enemies\monster_029_horf.png,34,1,28,31,14.000000,15.500000
+C:\Users\KGA\Desktop\GitHub\sfml-issac\sfml-project-bin\graphics\enemies\monster_029_horf.png,0,33,32,30,14.000000,15.500000

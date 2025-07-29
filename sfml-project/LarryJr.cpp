@@ -108,17 +108,15 @@ void LarryJr::InitializeBody()
 
     maxSegments = 5;
 
-    // 바디가 제자리를 찾을 수 있도록 충분한 headTrail 미리 생성
-    int totalTrailPoints = 1000; // 충분히 많이
+    int totalTrailPoints = 1000;
     for (int i = 0; i < totalTrailPoints; i++)
     {
-        sf::Vector2f trailPos = position - currentDirection * (float)i * 200.0f; // 3픽셀 간격
+        sf::Vector2f trailPos = position - currentDirection * (float)i * 200.0f;
         headTrail.push_back(trailPos);
     }
 
     headTrail.clear();
 
-    // 바디 세그먼트 생성
     for (int i = 1; i < maxSegments; i++)
     {
         BodySegment segment;

@@ -155,6 +155,8 @@
     <ClCompile Include="Hopper.cpp" />
     <ClCompile Include="HopperIdleState.cpp" />
     <ClCompile Include="HopperJumpState.cpp" />
+    <ClCompile Include="Horf.cpp" />
+    <ClCompile Include="HorfFireState.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="Isaac.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
@@ -214,6 +216,8 @@
     <ClInclude Include="Hopper.h" />
     <ClInclude Include="HopperIdleState.h" />
     <ClInclude Include="HopperJumpState.h" />
+    <ClInclude Include="Horf.h" />
+    <ClInclude Include="HorfFireState.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="Isaac.h" />
     <ClInclude Include="Framework\Framework.h" />
