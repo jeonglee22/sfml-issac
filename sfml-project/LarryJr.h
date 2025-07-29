@@ -8,6 +8,8 @@ struct BodySegment
     Animator animator;
     sf::Vector2f position;
     int segmentType;
+
+    sf::FloatRect BodyHitBox() const { return sprite.getGlobalBounds(); }
 };
 
 class LarryJr : public Monster
@@ -21,12 +23,13 @@ protected:
     static const sf::Vector2f directions[4];
     int currentDirectionIndex;
 
-    std::vector<BodySegment> bodySegments;
     std::vector<sf::Vector2f> headTrail;
     float segmentDistance;
     int maxSegments;
 
 public:
+    std::vector<BodySegment> bodySegments;
+
     LarryJr(const std::string& name = "LarryJr");
     virtual ~LarryJr() override = default;
     void Reset() override;

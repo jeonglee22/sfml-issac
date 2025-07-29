@@ -143,15 +143,19 @@ void Monster::TakeDamage(int damage)
 
 		if (hpPercentage <= 0.75f && larry->GetSegmentCount() == 4)
 		{
-			larry->RemoveLastSegment(); // 4개 → 3개
+			larry->RemoveLastSegment();
 		}
 		else if (hpPercentage <= 0.5f && larry->GetSegmentCount() == 3)
 		{
-			larry->RemoveLastSegment(); // 3개 → 2개
+			larry->RemoveLastSegment();
 		}
 		else if (hpPercentage <= 0.25f && larry->GetSegmentCount() == 2)
 		{
-			larry->RemoveLastSegment(); // 2개 → 1개
+			larry->RemoveLastSegment();
+		}
+		else if (hpPercentage <= 0.15f && larry->GetSegmentCount() == 1)
+		{
+			larry->RemoveLastSegment();
 		}
 	}
 
