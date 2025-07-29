@@ -96,7 +96,7 @@ void Bomb::Update(float dt)
         explosionAnimationTime += dt;
         animator.Update(dt);
 
-        if (explosionAnimationTime >= explosionAnimationMaxTime)
+       if (explosionAnimationTime >= explosionAnimationMaxTime)
         {
             animator.Play("animations/bombradius.csv");
             SetOrigin(Origins::BC);

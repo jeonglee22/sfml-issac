@@ -21,7 +21,7 @@ void LarryJr::Reset()
 {
     sortingLayer = SortingLayers::Foreground;
     sortingOrder = 3;
-    SetHP(200);
+    SetHP(400);
     SetSpeed(120.0f);
     SetDetectionRange(500.0f);
     SetSkillCooldown(0.0f);
@@ -105,7 +105,7 @@ void LarryJr::InitializeBody()
         headTrail.push_back(position);
     }
 
-    for (int i = 0; i < maxSegments; i++)
+    for (int i = 1; i < maxSegments; i++)
     {
         BodySegment segment;
 
