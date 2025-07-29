@@ -22,10 +22,6 @@ SceneDev1::~SceneDev1()
 
 void SceneDev1::Init()
 {
-	int map[11][11];
-	std::vector<MapMaking::MapType> mapTypes;
-	MapMaking::MapRandomMaking(10, map, mapTypes);
-
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
 	// 첫 번째 사각형 (키보드로 회전)

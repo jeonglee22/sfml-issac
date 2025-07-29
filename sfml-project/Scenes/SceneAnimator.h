@@ -22,13 +22,13 @@ protected:
 	sf::RectangleShape line;
 	sf::RectangleShape spritePickRect;
 	sf::RectangleShape spriteSheetOutline;
+	sf::RectangleShape framePickBox;
 
 	std::string spriteSheetName;
 	TextGo* fps;
 	SpriteGo* background;
 
-	std::vector<AnimationFrame> animationFrames;
-	std::vector<sf::RectangleShape> animationFrameBoxes;
+	std::vector<sf::RectangleShape*> animationFrameBoxes;
 	std::vector<sf::Vector2f> animationFrameBoxesInitPos;
 
 	Button* saveAnimation = nullptr;
@@ -50,9 +50,12 @@ protected:
 	bool isClipDrag = false;
 	bool isSpritePick = false;
 	bool isLoading = false;
+	bool isFrameExist = false;
 
 	float beforeMousePosX;
 	float afterMousePosX;
+
+	int currentPickedFrame = 0;
 
 public:
 	SceneAnimator();
@@ -79,7 +82,8 @@ public:
 	void ClearAnimationBox();
 
 	void AddPickSprite();
-	void RemoveSpriteInFrames();
+	void DeleteSpriteFrame();
+
 	void AddEachAnimationSpriteFrame(AnimationFrame frame);
 
 	void SetAnimationLoopType(AnimationLoopTypes ty) { animation.loopType = ty; }
@@ -87,5 +91,10 @@ public:
 	void SetAnimationId(const std::string& str) { animation.id = str; }
 
 	void ChangeOrigin();
+	void ChangeCurrentPickedFrame();
+
+	bool CheckSameAnimationFrame(AnimationFrame a, AnimationFrame b);
+
+	void SetFrameBoxandSpritesPos();
 };
 

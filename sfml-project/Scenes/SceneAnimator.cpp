@@ -56,6 +56,11 @@ void SceneAnimator::Init()
 	clearAnimation->SetButtonRectOutlineThickness(3.f);
 	clearAnimation->SetTextSize(25);
 	clearAnimation->SetTextOrigin(Origins::MC);
+
+	framePickBox.setOutlineThickness(3.f);
+	framePickBox.setFillColor(sf::Color::Transparent);
+	framePickBox.setOutlineColor(sf::Color::Red);
+	framePickBox.setSize({ 100.f,100.f });
 }
 
 void SceneAnimator::Enter()
@@ -123,6 +128,8 @@ void SceneAnimator::Update(float dt)
 
 	PickSpriteRect();
 
+	ChangeCurrentPickedFrame();
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::V))
 	{
 		ConvertToSpriteSheetPos();
@@ -152,8 +159,8 @@ void SceneAnimator::Update(float dt)
 	{
 		if (InputMgr::GetKeyDown(sf::Keyboard::Q))
 			AddPickSprite();
-		if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
-			RemoveSpriteInFrames();
+		if (InputMgr::GetKeyDown(sf::Keyboard::E))
+			DeleteSpriteFrame();
 	}
 }
 
@@ -162,7 +169,9 @@ void SceneAnimator::Draw(sf::RenderWindow& window)
 	background->Draw(window);
 
 	for (auto box : animationFrameBoxes)
-		window.draw(box);
+		window.draw(*box);
+	if (isFrameExist)
+		window.draw(framePickBox);
 	for (auto sprite : animationSprites)
 		sprite->Draw(window);
 
@@ -352,16 +361,17 @@ void SceneAnimator::MoveAnimationClip()
 		afterMousePosX = InputMgr::GetMousePosition().x;
 		for (int i = 0; i < animationFrameBoxes.size(); i++)
 		{
-			animationFrameBoxes[i].setPosition(animationFrameBoxesInitPos[i] + sf::Vector2f(afterMousePosX - beforeMousePosX, 0.f));
-			animationSprites[i]->SetPosition(animationFrameBoxes[i].getPosition() + sf::Vector2f(50.f, 50.f));
+			animationFrameBoxes[i]->setPosition(animationFrameBoxesInitPos[i] + sf::Vector2f(afterMousePosX - beforeMousePosX, 0.f));
+			animationSprites[i]->SetPosition(animationFrameBoxes[i]->getPosition() + sf::Vector2f(50.f, 50.f));
 		}
+		framePickBox.setPosition((*animationFrameBoxes.begin())->getPosition());
 	}
 	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left) && isClipDrag)
 	{
 		isClipDrag = false;
 		for (int i = 0; i < animationFrameBoxes.size(); i++)
 		{
-			animationFrameBoxesInitPos[i] = animationFrameBoxes[i].getPosition();
+			animationFrameBoxesInitPos[i] = animationFrameBoxes[i]->getPosition();
 		}
 	}
 }
@@ -407,10 +417,11 @@ sf::IntRect SceneAnimator::ConvertToSpriteSheetPos()
 
 void SceneAnimator::ClearAnimationBox()
 {
-	animationFrames.clear();
 	animationSprites.clear();
 	animationFrameBoxes.clear();
 	animationFrameBoxesInitPos.clear();
+	framePickBox.setPosition({ 0.f,0.f });
+	isFrameExist = false;
 
 	animator = Animator();
 	animation = AnimationClip();
@@ -444,37 +455,68 @@ void SceneAnimator::AddPickSprite()
 		fps->SetString("fps : " + std::to_string(animation.fps));
 	}
 
-	animation.frames.push_back({ spriteSheetName , ConvertToSpriteSheetPos() , frameOrigin });
-	AddEachAnimationSpriteFrame(animation.frames.back());
+	if (currentPickedFrame == animation.frames.size() - 1 || animation.frames.size() == 0)
+		animation.frames.push_back({ spriteSheetName , ConvertToSpriteSheetPos() , frameOrigin });
+	else
+		animation.frames.insert(animation.frames.begin() + currentPickedFrame, {spriteSheetName , ConvertToSpriteSheetPos() , frameOrigin});
+	AddEachAnimationSpriteFrame(*(animation.frames.begin() + currentPickedFrame));
 
 	animator.SetTarget(&animationBody->GetSprite());
 	animator.Play(&animation);
 }
 
-void SceneAnimator::RemoveSpriteInFrames()
+void SceneAnimator::DeleteSpriteFrame()
 {
+	if (animationSprites.size() > 0)
+	{
+		animationSprites.erase(animationSprites.begin() + currentPickedFrame);
+		animationFrameBoxes.erase(--animationFrameBoxes.end());
+		animation.frames.erase(animation.frames.begin() + currentPickedFrame);
+		animationFrameBoxesInitPos.erase(--animationFrameBoxesInitPos.end());
+
+		if (currentPickedFrame == animationSprites.size())
+			currentPickedFrame--;
+
+		SetFrameBoxandSpritesPos();
+
+		if (animation.frames.size() == 0)
+			ClearAnimationBox();
+		else
+			animator.Play(&animation);
+	}
 }
 
 void SceneAnimator::AddEachAnimationSpriteFrame(AnimationFrame frame)
 {
-	animationSprites.push_back(new SpriteGo());
-	animationSprites[animationSprites.size() - 1]->SetTextureId(frame.texId);
-	animationSprites[animationSprites.size() - 1]->Init();
-	animationSprites[animationSprites.size() - 1]->sortingLayer = SortingLayers::Foreground;
-	animationSprites[animationSprites.size() - 1]->sortingOrder = 0;
-	animationSprites[animationSprites.size() - 1]->Reset();
-	animationSprites[animationSprites.size() - 1]->GetSprite().setTextureRect(frame.texCoord);
-	animationSprites[animationSprites.size() - 1]->SetOrigin((sf::Vector2f)frame.texCoord.getSize() * 0.5f);
-	sf::RectangleShape rect;
-	rect.setOutlineThickness(3.f);
-	rect.setFillColor(sf::Color::Transparent);
-	rect.setSize({ 100.f,100.f });
+	SpriteGo* sprite = new SpriteGo();
+	sprite->SetTextureId(frame.texId);
+	sprite->Init();
+	sprite->sortingLayer = SortingLayers::Foreground;
+	sprite->sortingOrder = 0;
+	sprite->Reset();
+	sprite->GetSprite().setTextureRect(frame.texCoord);
+	sprite->SetOrigin((sf::Vector2f)frame.texCoord.getSize() * 0.5f);
+	sprite->SetScale({ 100.f / frame.texCoord.width, 100.f / frame.texCoord.height });
+	if (animationSprites.size() == 0)
+		animationSprites.push_back(sprite);
+	else
+		animationSprites.insert(animationSprites.begin() + currentPickedFrame, sprite);
+	sf::RectangleShape* rect = new sf::RectangleShape();
+	rect->setOutlineThickness(3.f);
+	rect->setFillColor(sf::Color::Transparent);
+	rect->setSize({ 100.f,100.f });
 	sf::Vector2f pos = { 18.f + animationFrameBoxes.size() * 120.f, 650.f };
 	animationFrameBoxesInitPos.push_back(pos);
-	rect.setPosition(pos);
-	animationSprites[animationSprites.size() - 1]->SetPosition(pos + sf::Vector2f(50.f, 50.f));
-	animationSprites[animationSprites.size() - 1]->SetScale({ 100.f / frame.texCoord.width, 100.f / frame.texCoord.height });
 	animationFrameBoxes.push_back(rect);
+
+	SetFrameBoxandSpritesPos();
+	
+	if (!isFrameExist)
+	{
+		framePickBox.setPosition(pos);
+		currentPickedFrame = 0;
+		isFrameExist = true;
+	}
 }
 
 void SceneAnimator::ChangeOrigin()
@@ -503,3 +545,41 @@ void SceneAnimator::ChangeOrigin()
 		frameOrigin = animationBody->GetOrigin();
 	}
 }
+
+void SceneAnimator::ChangeCurrentPickedFrame()
+{
+	if (animationFrameBoxes.size() != 0)
+	{
+		if (InputMgr::GetKeyDown(sf::Keyboard::D))
+		{
+			currentPickedFrame = Utils::Clamp(++currentPickedFrame, 0, animation.frames.size() - 1);
+		}
+		if (InputMgr::GetKeyDown(sf::Keyboard::A))
+		{
+			currentPickedFrame = Utils::Clamp(--currentPickedFrame, 0, animation.frames.size() - 1);
+		}
+		framePickBox.setPosition(animationFrameBoxes[currentPickedFrame]->getPosition());
+	}
+}
+
+bool SceneAnimator::CheckSameAnimationFrame(AnimationFrame a, AnimationFrame b)
+{
+	if (a.texCoord == b.texCoord && a.texId == b.texId)
+		return true;
+	else return false;
+}
+
+void SceneAnimator::SetFrameBoxandSpritesPos()
+{
+	for (int i = 0; i < animationFrameBoxes.size(); i++)
+	{
+		animationFrameBoxes[i]->setPosition(animationFrameBoxesInitPos[i]);
+		animationSprites[i]->SetPosition(animationFrameBoxesInitPos[i] + sf::Vector2f(50.f,50.f));
+	}
+	if (currentPickedFrame >= 0)
+		framePickBox.setPosition(animationFrameBoxes[currentPickedFrame]->getPosition());
+	else
+		isFrameExist = false;
+}
+
+
