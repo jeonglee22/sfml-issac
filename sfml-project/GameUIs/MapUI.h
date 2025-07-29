@@ -14,9 +14,9 @@ protected:
 
 	sf::Vector2f oneRoomSize;
 
-	int mapIndex[15][15] = {};
-	std::string mapType[15][15] = {};
-	bool mapCleared[15][15] = {false};
+	int mapIndex[11][11] = {};
+	std::string mapType[11][11] = {};
+	bool mapCleared[11][11] = {false};
 
 	int playerXIndex = 7;
 	int beforePlayerXIndex = -1;
@@ -41,8 +41,8 @@ public:
 	void DrawPlates(sf::RenderWindow& window);
 	void DrawRooms(sf::RenderWindow& window);
 
-	void SetMapIndex(int index[][15]);
-	void SetMapType(int index[][15]);
+	void SetMapIndex(int index[][11]);
+	void SetMapType(int index[][11]);
 	void SetMapCleared(bool b, int x, int y) { mapCleared[x][y] = b; }
 	void SetPlayerXIndex(int x) { playerXIndex = x; }
 	void SetPlayerYIndex(int y) { playerYIndex = y; }

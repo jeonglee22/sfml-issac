@@ -5,6 +5,7 @@
 #include "ResourceMgr.h"
 #include "InputMgr.h"
 #include "SceneMgr.h"
+#include "MapMaking.h"
 
 SceneDev1::SceneDev1() : Scene(SceneIds::Dev1), rect1(nullptr), rect2(nullptr), 
 	circle1(nullptr), circle2(nullptr), collisionText(nullptr), modeText(nullptr)
@@ -21,6 +22,10 @@ SceneDev1::~SceneDev1()
 
 void SceneDev1::Init()
 {
+	int map[11][11];
+	std::vector<MapMaking::MapType> mapTypes;
+	MapMaking::MapRandomMaking(10, map, mapTypes);
+
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
 	// 첫 번째 사각형 (키보드로 회전)
@@ -95,6 +100,13 @@ void SceneDev1::Enter()
 void SceneDev1::Update(float dt)
 {
 	Scene::Update(dt);
+
+	if(InputMgr::GetKeyDown(sf::Keyboard::P))
+	{
+		int map[11][11];
+		std::vector<MapMaking::MapType> mapTypes;
+		MapMaking::MapRandomMaking(10, map, mapTypes);
+	}
 
 	// 모드 전환 (Tab 키)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Tab))

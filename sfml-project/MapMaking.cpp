@@ -5,15 +5,105 @@
 int MapMaking::normalMapCount = 20;
 int MapMaking::startMapCount = 3;
 
-void MapMaking::MapRandomMaking(int mapCount)
+void MapMaking::InitMapSetting(int map[][11])
+{
+	for (int i = 0; i < 11; i++)
+	{
+		for (int j = 0; j < 11; j++)
+		{
+			map[i][j] = -1;
+			if (i == 0 || i == 10)
+				map[i][j] = 99;
+			if (j == 0 || j == 10)
+				map[i][j] = 99;
+		}
+	}
+}
+
+sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::vector<MapType>& mapTypes)
 {
 	// Map Random Making algorithm
 	// make mapIndex list, mapType list
 	// mapIndex has value in -1 ~ mapCount-1
 	// mapType list has value normal, shop, boss, hidden, ...
+	mapTypes.clear();
+	InitMapSetting(map);
+	mapTypes.push_back(MapType::Start);
+
+	int startX = Utils::RandomRange(4, 7);
+	int startY = Utils::RandomRange(4, 7);
+	map[startX][startY] = 0;
+
+	int mapNumber = 1;
+	std::vector<sf::Vector2i> lastMaps;
+
+	std::queue<sf::Vector2i> mapQueue;
+	mapQueue.push({ startX, startY });
+	while (mapQueue.size() != 0)
+	{
+		sf::Vector2i nowPos = mapQueue.front();
+		mapQueue.pop();
+		int addCount = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = nowPos.x + (i % 2 == 0 ? i - 1 : 0 );
+			int nextY = nowPos.y + (i % 2 != 0 ? 2 - i : 0 );
+
+			if (map[nextX][nextY] != -1)
+				continue;
+
+			if (CheckNeighboorCount({ nextX, nextY }, map))
+				continue;
+
+			if (mapNumber >= mapCount)
+				continue;
+
+			if (Utils::RandomRange(0,2) == 1)
+				continue;
+
+			map[nextX][nextY] = mapNumber++;
+			addCount++;
+			mapQueue.push({ nextX, nextY });
+			
+		}
+		if (addCount == 0)
+		{
+			if (std::find(lastMaps.begin(), lastMaps.end(), nowPos) == lastMaps.end() && 
+				(nowPos.x != startX || nowPos.y != startY))
+			{
+				lastMaps.push_back(nowPos);
+				mapTypes.push_back(MapType::Special);
+			}
+		}
+		else
+		{
+			if (std::find(lastMaps.begin(), lastMaps.end(), nowPos) != lastMaps.end())
+			{
+				lastMaps.erase(std::find(lastMaps.begin(), lastMaps.end(), nowPos));
+				mapTypes[map[nowPos.x][nowPos.y]] = MapType::Normal;
+			}
+			else if(nowPos.x != startX || nowPos.y != startY)
+			{
+				mapTypes.push_back(MapType::Normal);
+			}
+		}
+
+		if (mapNumber < mapCount && mapQueue.size() == 0)
+		{
+			mapQueue.push({ startX, startY });
+			if(lastMaps.size() != 0)
+				mapQueue.push(lastMaps[Utils::RandomRange(0, lastMaps.size())]);
+			/*mapTypes.erase(std::find(mapTypes.begin(), mapTypes.end(), mapTypes[map[lastMaps[0].x][lastMaps[0].y]]));
+			lastMaps.erase(lastMaps.begin());*/
+		}
+	}
+	PrintMap(map);
+	for (auto last : lastMaps)
+		std::cout << last.x << ", " << last.y << std::endl;
+	return sf::Vector2i(startY, startX);
 }
 
-std::vector<Map*> MapMaking::SetMapInfo(std::vector<int> mapPos, int mapCount, std::vector<MapType> mapTypes)
+std::vector<Map*> MapMaking::SetMapInfo(int map[][11], int mapCount, std::vector<MapType> mapTypes)
 {
 	std::vector<Map*> maps;
 	for (int i = 0; i < mapCount; i++)
@@ -21,12 +111,12 @@ std::vector<Map*> MapMaking::SetMapInfo(std::vector<int> mapPos, int mapCount, s
 		maps.push_back(new Map());
 	}
 
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 11; i++)
 	{
-		for (int j = 0; j < 15; j++)
+		for (int j = 0; j < 11; j++)
 		{
-			int mapIndex = mapPos[i * 15 +j];
-			if (mapIndex != -1)
+			int mapIndex = map[i][j];
+			if (mapIndex != 99 && mapIndex != -1)
 			{
 				if (maps[mapIndex])
 					delete maps[mapIndex];
@@ -44,38 +134,14 @@ std::vector<Map*> MapMaking::SetMapInfo(std::vector<int> mapPos, int mapCount, s
 	return maps;
 }
 
-std::vector<Map*> MapMaking::SetMapInfo(std::string mapPosfile, int mapCount, std::string mapTypesfile)
-{
-	std::vector<int> mapPos;
-	std::vector<MapType> mapTypes;
-
-	rapidcsv::Document doc1(mapPosfile);
-	rapidcsv::Document doc2(mapTypesfile);
-
-	for (int i = 0; i < doc1.GetRowCount(); i++)
-	{
-		auto row = doc1.GetRow<int>(i);
-		for (auto index : row)
-			mapPos.push_back(index);
-	}
-
-	for (int i = 0; i < doc2.GetRowCount(); i++)
-	{
-		auto row = doc2.GetRow<int>(i);
-		mapTypes.push_back((MapType)row[0]);
-	}
-
-	return SetMapInfo(mapPos, mapCount, mapTypes);
-}
-
-void MapMaking::GetMapInfo(std::string mapPosfile, int mapInfo[][15])
+void MapMaking::GetMapInfo(std::string mapPosfile, int mapInfo[][11])
 {
 	rapidcsv::Document doc(mapPosfile);
 
 	for (int i = 0; i < doc.GetRowCount(); i++)
 	{
 		auto row = doc.GetRow<int>(i);
-		for (int j = 0; j < 15; j++)
+		for (int j = 0; j < 11; j++)
 			mapInfo[i][j] = row[j];
 	}
 }
@@ -87,12 +153,9 @@ void MapMaking::SetMapConnection(std::vector<Map*> maps)
 		maps[i]->SetDoor();
 		maps[i]->SetBoundary();
 		maps[i]->AddGameObjectInScene();
-		if (i > 0)
-		{
-			int xPos = maps[i]->GetStageXIndex();
-			int yPos = maps[i]->GetStageYIndex();
-			maps[i]->SetPosition({ maps[i]->GetMapSize().getSize().x * (xPos - 7) , maps[i]->GetMapSize().getSize().y * (yPos - 7) });
-		}
+		int xPos = maps[i]->GetStageXIndex();
+		int yPos = maps[i]->GetStageYIndex();
+		maps[i]->SetPosition({ maps[i]->GetMapSize().getSize().x * (xPos - 5) , maps[i]->GetMapSize().getSize().y * (yPos - 5) });
 		maps[i]->SetActiveAll(false);
 	}
 	maps[0]->SetActiveAll(true);
@@ -114,6 +177,8 @@ std::string MapMaking::PickRandomMapInPool(MapType mapType)
 		fileName += "Boss/1.csv";
 		break;
 	case MapMaking::MapType::Hidden:
+	case MapMaking::MapType::Special:
+		fileName += "Normal/" + std::to_string(Utils::RandomRange(1, normalMapCount + 1)) + ".csv";
 		break;
 	case MapMaking::MapType::Shop:
 		break;
@@ -124,4 +189,18 @@ std::string MapMaking::PickRandomMapInPool(MapType mapType)
 	}
 
 	return fileName;
+}
+
+bool MapMaking::CheckNeighboorCount(const sf::Vector2i& pos, int map[][11])
+{
+	int count = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		int neighboorX = pos.x + (i % 2 == 0 ? i - 1 : 0);
+		int neighboorY = pos.y + (i % 2 != 0 ? 2 - i : 0);
+
+		if (map[neighboorX][neighboorY] != -1 && map[neighboorX][neighboorY] != 99)
+			count++;
+	}
+	return count > 1;
 }

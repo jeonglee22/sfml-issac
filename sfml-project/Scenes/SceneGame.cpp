@@ -137,8 +137,12 @@ void SceneGame::Init()
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
-	MapMaking::MapRandomMaking(10);
-	maps = MapMaking::SetMapInfo("Mapfolder/mapPos.csv", 10, "Mapfolder/mapType.csv");
+	std::vector<MapMaking::MapType> mapTypes;
+	sf::Vector2i startPos = MapMaking::MapRandomMaking(10, mapIndex, mapTypes);
+	stageStartX = currentXIndex = startPos.x;
+	stageStartY = currentYIndex = startPos.y;
+
+	maps = MapMaking::SetMapInfo(mapIndex, 10, mapTypes);
 	for (auto& map : maps)
 		AddGameObject(map);
 
@@ -154,6 +158,8 @@ void SceneGame::Init()
 	controls->sortingOrder = 5;
 
 	mapUI = (MapUI*)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
+	mapUI->SetPlayerXIndex(startPos.x);
+	mapUI->SetPlayerYIndex(startPos.y);
 	itemUI = (ItemUI*)AddGameObject(new ItemUI("ItemUI"));
 	heartUI = (HeartUI*)AddGameObject(new HeartUI("graphics/ui_hearts.png", "HeartUI"));
 	skillUI = (SkillUI*)AddGameObject(new SkillUI("graphics/ui_chargebar.png", "SkillUI"));
@@ -191,8 +197,6 @@ void SceneGame::Enter()
 
 	Scene::Enter();
 
-	MapMaking::GetMapInfo("Mapfolder/mapPos.csv", mapIndex);
-
 	mapUI->SetScale({ 2.f,2.f });
 	itemUI->SetScale({ 2.f,2.f });
 	heartUI->SetScale({ 2.f,2.f });
@@ -201,15 +205,15 @@ void SceneGame::Enter()
 	mapUI->SetPosition({ uiView.getSize().x - 110.f, 100.f });
 
 	currentMapSize = maps[0]->GetMapSize();
-
-	worldView.setSize({ currentMapSize.getSize().x * 1.1f, currentMapSize.getSize().y });
-	worldView.setCenter(currentMapSize.getSize() * 0.5f);
-	isaac->SetPosition(center);
-
+	
 	// LoadStageField("Mapfolder/testmap3.csv");
 	mapOffset = sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f;
 
 	MapMaking::SetMapConnection(maps);
+
+	worldView.setSize({ currentMapSize.getSize().x * 1.1f, currentMapSize.getSize().y });
+	worldView.setCenter(maps[0]->GetPosition() + currentMapSize.getSize() * 0.5f);
+	isaac->SetPosition(worldView.getCenter());
 
 	beforeIndex = 0;
 
@@ -381,7 +385,7 @@ std::vector<int> SceneGame::GetNeighboorMapIndex(int x, int y)
 	else
 		up = -1;
 
-	if (y < 14)
+	if (y < 10)
 		down = mapIndex[y + 1][x];
 	else
 		down = -1;
@@ -391,7 +395,7 @@ std::vector<int> SceneGame::GetNeighboorMapIndex(int x, int y)
 	else
 		left = -1;
 
-	if (x < 14)
+	if (x < 10)
 		right = mapIndex[y][x + 1];
 	else
 		right = -1;
