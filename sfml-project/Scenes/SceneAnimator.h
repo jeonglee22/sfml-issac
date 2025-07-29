@@ -24,6 +24,8 @@ protected:
 	sf::RectangleShape spriteSheetOutline;
 
 	std::string spriteSheetName;
+	TextGo* fps;
+	SpriteGo* background;
 
 	std::vector<AnimationFrame> animationFrames;
 	std::vector<sf::RectangleShape> animationFrameBoxes;
@@ -41,6 +43,9 @@ protected:
 	Animator animator;
 	SpriteGo* animationBody = nullptr;
 	SpriteGo* spriteField = nullptr;
+
+	Origins frameOrigin = Origins::MC;
+
 
 	bool isClipDrag = false;
 	bool isSpritePick = false;

@@ -3,6 +3,7 @@
 #include "AnimationClip.h"
 #include "Animator.h"
 #include "SpriteGo.h"
+#include "TextGo.h"
 
 SceneAnimator::SceneAnimator()
 	: Scene(SceneIds::Animator)
@@ -11,12 +12,20 @@ SceneAnimator::SceneAnimator()
 
 void SceneAnimator::Init()
 {
+	texIds.push_back("graphics/background/basement.png");
+
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 
 	loadAnimation = (Button *)AddGameObject(new Button());
 	loadFile = (Button *)AddGameObject(new Button());
 	saveAnimation = (Button *)AddGameObject(new Button());
 	clearAnimation = (Button *)AddGameObject(new Button());
+
+	background = (SpriteGo*)AddGameObject(new SpriteGo("graphics/background/basement.png"));
+	background->sortingLayer = SortingLayers::Background;
+
+	fps = (TextGo*)AddGameObject(new TextGo("fonts/DS-DIGIT.TTF"));
+	fps->SetOrigin(Origins::ML);
 
 	Scene::Init();
 
@@ -94,6 +103,15 @@ void SceneAnimator::Enter()
 	clearAnimation->SetTextString("Clear");
 	clearAnimation->SetButtonRectPosition({ 0.f, 0.f });
 	clearAnimation->SetButtonFunc([this]() { ClearAnimationBox(); });
+
+	fps->SetCharacterSize(30.f);
+	fps->SetString("fps : 0");
+	fps->SetPosition({30.f, 580.f});
+
+	background->GetSprite().setTextureRect(sf::IntRect{ 0,0,234, 156});
+	background->SetOrigin(Origins::MC);
+	background->SetScale({ 2.f,2.f });
+	background->SetPosition({ 300.f, size.y * 0.5f - 100.f});
 }
 
 void SceneAnimator::Update(float dt)
@@ -107,6 +125,18 @@ void SceneAnimator::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::V))
 	{
 		ConvertToSpriteSheetPos();
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Comma))
+	{
+		animation.fps--;
+		animator.Play(&animation);
+		fps->SetString("fps : " + std::to_string(animation.fps));
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Period))
+	{
+		animation.fps++;
+		animator.Play(&animation);
+		fps->SetString("fps : " + std::to_string(animation.fps));
 	}
 
 	animator.Update(dt);
@@ -252,6 +282,7 @@ void SceneAnimator::LoadAnimationFile(const std::string &fileName)
 	ClearAnimationBox();
 	ANI_CLIP_MGR.Load(fileName);
 	animation = ANI_CLIP_MGR.Get(fileName);
+	fps->SetString("fps : " + std::to_string(animation.fps));
 }
 
 void SceneAnimator::LoadSpriteFile(const std::string& fileName)
@@ -402,8 +433,10 @@ void SceneAnimator::AddPickSprite()
 		animationBody->GetSprite().setTextureRect(ConvertToSpriteSheetPos());
 		animationBody->SetOrigin(Origins::MC);
 		animationBody->SetPosition(worldView.getCenter() - sf::Vector2f(350.f, 100.f));
-		std::cout << animationBody->GetPosition().x << ", " << animationBody->GetPosition().y << std::endl;
 		animationBody->SetScale({ 2.f,2.f });
+
+		animation.fps = 10;
+		fps->SetString("fps : " + std::to_string(animation.fps));
 	}
 
 	animation.frames.push_back({ spriteSheetName , ConvertToSpriteSheetPos() });
