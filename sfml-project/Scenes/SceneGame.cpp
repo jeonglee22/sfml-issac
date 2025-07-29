@@ -59,6 +59,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/additionals/grid_poop.png");
 	texIds.push_back("graphics/monster_044_hopperleaper.png");
 	texIds.push_back("graphics/monster_000_bodies02.png");
+	texIds.push_back("graphics/additionals/levelitem_001_itemaltar.png");
 
 	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
 

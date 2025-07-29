@@ -133,8 +133,11 @@ void EditBoxUI::Update(float dt)
 	for (int i = 0; i < 4; i++)
 	{
 		typeButtons[i]->Update(dt);
-		styleTypeButtons[i]->Update(dt);
 		obstacleTypeButtons[i]->Update(dt);
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		styleTypeButtons[i]->Update(dt);
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::R) && pickedSprite != nullptr)
 	{
@@ -190,10 +193,13 @@ void EditBoxUI::Draw(sf::RenderWindow &window)
 	for (int i = 0; i < 4; i++)
 	{
 		typeButtons[i]->Draw(window);
-		if (styleTypeButtons[i]->GetActive())
-			styleTypeButtons[i]->Draw(window);
 		if (obstacleTypeButtons[i]->GetActive())
 			obstacleTypeButtons[i]->Draw(window);
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		if (styleTypeButtons[i]->GetActive())
+			styleTypeButtons[i]->Draw(window);
 	}
 	for (int i = 0; i < textures.size(); i++)
 	{
@@ -208,7 +214,7 @@ void EditBoxUI::Draw(sf::RenderWindow &window)
 
 void EditBoxUI::InitStyleTypeButtons()
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		styleTypeButtons.push_back(new Button());
 		styleTypeButtons[i]->Init();
@@ -272,12 +278,12 @@ void EditBoxUI::InitAdditionalTypeButtons()
 
 void EditBoxUI::ResetStyleTypeButtons(float yPos)
 {
-	std::string names[4] = {"basement", "depth", "sheol", "cave"};
-	for (int i = 0; i < 4; i++)
+	std::string names[5] = {"basement", "depth", "sheol", "shop", "secret"};
+	for (int i = 0; i < 5; i++)
 	{
 		std::string name = names[i];
 		styleTypeButtons[i]->Reset();
-		styleTypeButtons[i]->SetPosition(position + sf::Vector2f(-225.f + i * 150.f, yPos));
+		styleTypeButtons[i]->SetPosition(position + sf::Vector2f(-300.f + i * 150.f, yPos));
 		styleTypeButtons[i]->SetTextPosition({0.f, -10.f});
 		styleTypeButtons[i]->SetTextString(name);
 		styleTypeButtons[i]->SetTextColor(sf::Color::White);
@@ -306,7 +312,7 @@ void EditBoxUI::ResetObstacleTypeButtons()
 	{
 		std::string name = names[i];
 		obstacleTypeButtons[i]->Reset();
-		obstacleTypeButtons[i]->SetPosition(position + sf::Vector2f(-225.f + i * 150.f, -450.f));
+		obstacleTypeButtons[i]->SetPosition(position + sf::Vector2f(-300.f + i * 150.f, -450.f));
 		obstacleTypeButtons[i]->SetTextPosition({0.f, -10.f});
 		obstacleTypeButtons[i]->SetTextString(name);
 		obstacleTypeButtons[i]->SetTextColor(sf::Color::White);
@@ -353,7 +359,7 @@ void EditBoxUI::ResetEnemyTypeButtons()
 	{
 		std::string name = names[i];
 		enemyTypeButtons[i]->Reset();
-		enemyTypeButtons[i]->SetPosition(position + sf::Vector2f(-150.f + i * 150.f, -450.f));
+		enemyTypeButtons[i]->SetPosition(position + sf::Vector2f(-300.f + i * 150.f, -450.f));
 		enemyTypeButtons[i]->SetTextPosition({0.f, -10.f});
 		enemyTypeButtons[i]->SetTextString(name);
 		enemyTypeButtons[i]->SetTextColor(sf::Color::White);
@@ -376,7 +382,7 @@ void EditBoxUI::ResetAdditionalTypeButtons()
 	{
 		std::string name = names[i];
 		additionalTypeButtons[i]->Reset();
-		additionalTypeButtons[i]->SetPosition(position + sf::Vector2f(-150.f + i * 150.f, -450.f));
+		additionalTypeButtons[i]->SetPosition(position + sf::Vector2f(-300.f + i * 150.f, -450.f));
 		additionalTypeButtons[i]->SetTextPosition({ 0.f, -10.f });
 		additionalTypeButtons[i]->SetTextString(name);
 		additionalTypeButtons[i]->SetTextColor(sf::Color::White);
@@ -462,7 +468,11 @@ void EditBoxUI::DisableAllButtons()
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		styleTypeButtons[i]->SetActive(false);
 		obstacleTypeButtons[i]->SetActive(false);
 	}
+	for (int i = 0; i < 5; i++)
+	{
+		styleTypeButtons[i]->SetActive(false);
+	}
+
 }

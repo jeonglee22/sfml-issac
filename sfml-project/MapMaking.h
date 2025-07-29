@@ -9,6 +9,7 @@ class MapMaking
 public:
 	enum class MapType
 	{
+		None = -1,
 		Normal,
 		Start,
 		Boss,
@@ -16,11 +17,21 @@ public:
 		Hidden,
 		Shop,
 		Treasure,
+		Sacrifice,
+		Large,
+		Rectangle,
+
+		TypeCount,
 	};
 
 protected:
 	static int normalMapCount;
 	static int startMapCount;
+	static int treasureMapCount;
+	static int hiddenMapCount;
+	static int shopMapCount;
+	static int sacrificeMapCount;
+	static int bossMapCount;
 
 public:
 	static void InitMapSetting(int map[][11]);
@@ -32,6 +43,8 @@ public:
 	static std::string PickRandomMapInPool(MapType mapTypes);
 
 	static bool CheckNeighboorCount(const sf::Vector2i& pos, int map[][11]);
+
+	static bool AddLargeMap(const sf::Vector2i& pos, int map[][11], bool isSquare, int MapNumber, std::queue<sf::Vector2i>& queue);
 
 	static void PrintMap(int map[][11])
 	{

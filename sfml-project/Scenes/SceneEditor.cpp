@@ -17,8 +17,9 @@ void SceneEditor::Init()
 {
 	texIds.push_back("graphics/background/basement.png");
 	texIds.push_back("graphics/background/sheol.png");
-	texIds.push_back("graphics/background/caves.png");
 	texIds.push_back("graphics/background/depths.png");
+	texIds.push_back("graphics/background/shop.png");
+	texIds.push_back("graphics/background/secret.png");
 	texIds.push_back("graphics/obstacles/grid_spikes.png");
 	texIds.push_back("graphics/obstacles/rocks/rocks_basement.png");
 	texIds.push_back("graphics/obstacles/rocks/rocks_caves.png");
@@ -43,6 +44,8 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/additionals/pickups/pickup_005_chests.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_003_key.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_016_bomb.png");
+	texIds.push_back("graphics/effect_000_shopkeepers.png");
+	texIds.push_back("graphics/shop_001_bitfont.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 

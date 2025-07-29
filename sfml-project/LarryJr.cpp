@@ -30,6 +30,7 @@ void LarryJr::Reset()
     animator.Play("animations/boss_larry_jr_head_side.csv");
     SetScale({ 2.0f, 2.0f });
     SetOrigin(Origins::MC);
+    SetPosition({ 500.f, 200.f });
 
     segmentDistance = 70.0f;
     maxSegments = 5;
@@ -109,20 +110,20 @@ void LarryJr::InitializeBody()
     maxSegments = 5;
 
     // 바디가 제자리를 찾을 수 있도록 충분한 headTrail 미리 생성
-    int totalTrailPoints = 1000; // 충분히 많이
-    for (int i = 0; i < totalTrailPoints; i++)
-    {
-        sf::Vector2f trailPos = position - currentDirection * (float)i * 200.0f; // 3픽셀 간격
-        headTrail.push_back(trailPos);
-    }
+    //int totalTrailPoints = 1500; // 충분히 많이
+    //for (int i = 0; i < totalTrailPoints; i++)
+    //{
+    //    sf::Vector2f trailPos = position - currentDirection * (float)i * 200.0f; // 3픽셀 간격
+    //    headTrail.push_back(trailPos);
+    //}
 
-    headTrail.clear();
+    //headTrail.clear();
 
     // 바디 세그먼트 생성
     for (int i = 1; i < maxSegments; i++)
     {
         BodySegment segment;
-        segment.segmentType = 1;
+        segment.segmentType = i;
         segment.position = position - currentDirection * segmentDistance * (float)i;
         bodySegments.push_back(segment);
     }
@@ -130,12 +131,12 @@ void LarryJr::InitializeBody()
     // 애니메이터 설정
     for (int i = 0; i < bodySegments.size(); i++)
     {
-        bodySegments[i].animator.SetTarget(&bodySegments[i].sprite);
-        bodySegments[i].animator.Play("animations/boss_larry_jr_body1.csv");
-
         bodySegments[i].sprite.setPosition(bodySegments[i].position);
         bodySegments[i].sprite.setScale({ 2.0f, 2.0f });
         Utils::SetOrigin(bodySegments[i].sprite, Origins::MC);
+
+        bodySegments[i].animator.SetTarget(&bodySegments[i].sprite);
+        bodySegments[i].animator.Play("animations/boss_larry_jr_body1.csv");
     }
 
     std::cout << "HeadTrail initialized with " << headTrail.size() << " points" << std::endl;
@@ -149,20 +150,20 @@ void LarryJr::UpdateBodyMovement(float dt)
 
     headTrail.insert(headTrail.begin(), position);
 
-    if (headTrail.size() > 350.f)
+    if (headTrail.size() > 900.f)
     {
         headTrail.pop_back();
     }
 
     for (int i = 0; i < bodySegments.size(); i++)
     {
-        if (frameCount < 50) // 처음 50프레임 동안은 직접 계산
+        if (frameCount < 150) // 처음 50프레임 동안은 직접 계산
         {
             bodySegments[i].position = position - currentDirection * segmentDistance * (float)(i + 1);
         }
         else // 그 후에는 trail 사용
         {
-            int trailIndex = (i + 1) * 10;
+            int trailIndex = (i + 1) * 150-1;
             if (trailIndex < headTrail.size())
             {
                 bodySegments[i].position = headTrail[trailIndex];
