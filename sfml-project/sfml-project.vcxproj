@@ -148,6 +148,7 @@
     <ClCompile Include="DingleChargeFireState.cpp" />
     <ClCompile Include="DingleFireState.cpp" />
     <ClCompile Include="DingleIdleState.cpp" />
+    <ClCompile Include="DingleRushState.cpp" />
     <ClCompile Include="Dip.cpp" />
     <ClCompile Include="DipIdleState.cpp" />
     <ClCompile Include="DipMoveState.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="DingleChargeFireState.h" />
     <ClInclude Include="DingleFireState.h" />
     <ClInclude Include="DingleIdleState.h" />
+    <ClInclude Include="DingleRushState.h" />
     <ClInclude Include="Dip.h" />
     <ClInclude Include="DipIdleState.h" />
     <ClInclude Include="DipMoveState.h" />

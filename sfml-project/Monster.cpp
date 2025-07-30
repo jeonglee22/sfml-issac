@@ -61,6 +61,15 @@ void Monster::Release()
 
 void Monster::Update(float dt)
 {
+	if (hitFlashTimer > 0)
+	{
+		hitFlashTimer -= dt;
+		if (hitFlashTimer <= 0)
+		{
+			body.setColor(sf::Color::White);
+		}
+	}
+
 	if (isDead)
 	{
 		animator.Update(dt);
@@ -142,6 +151,10 @@ std::string Monster::GetCurrentStateName() const
 void Monster::TakeDamage(int damage)
 {
 	currentHP -= damage;
+
+	body.setColor(sf::Color::Red);
+	
+	hitFlashTimer = 0.1f;
 
 	if (monsterType == Monsters::LarryJr)
 	{
