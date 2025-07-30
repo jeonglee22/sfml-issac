@@ -7,6 +7,7 @@
 #include "SpriteGo.h"
 #include "Fly.h"
 #include "Spider.h"
+#include "SkillBible.h"
 
 SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 {
@@ -55,6 +56,9 @@ void SceneDev2::Init()
 	AddGameObject(spider);
 
 	Scene::Init();
+
+	skillBible = new SkillBible();
+	skillBible->LoadJsonFile("graphics/items/items.json");
 }
 
 void SceneDev2::Enter()
@@ -92,4 +96,7 @@ void SceneDev2::Update(float dt)
 
 
 	Scene::Update(dt);
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Q))
+		skillBible->ShowJsonRandomInfo();
 }

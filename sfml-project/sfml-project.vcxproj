@@ -196,6 +196,7 @@
     <ClCompile Include="Framework\SoundMgr.cpp" />
     <ClCompile Include="GameUIs\SkillUI.cpp" />
     <ClCompile Include="Skill.cpp" />
+    <ClCompile Include="SkillBible.cpp" />
     <ClCompile Include="Spider.cpp" />
     <ClCompile Include="SpiderChargeState.cpp" />
     <ClCompile Include="SpiderJumpState.cpp" />
@@ -271,6 +272,7 @@
     <ClInclude Include="Framework\SoundMgr.h" />
     <ClInclude Include="GameUIs\SkillUI.h" />
     <ClInclude Include="Skill.h" />
+    <ClInclude Include="SkillBible.h" />
     <ClInclude Include="Spider.h" />
     <ClInclude Include="SpiderChargeState.h" />
     <ClInclude Include="SpiderJumpState.h" />
