@@ -149,9 +149,19 @@ void SceneDev2::Update(float dt)
 	}
 
 	hitBox->UpdateTransform(alter->GetSprite(), alter->GetSprite().getLocalBounds());
+	hitBox->rect.setScale(hitBox->rect.getScale() * 0.5f);
 
 	if (Utils::CheckCollision(hitBox->rect, isaac->GetHitBoxBody().rect))
 	{
+		isaac->SetSkill(skill);
 		std::cout << "Get Item!!!" << std::endl;
 	}
 }
+
+void SceneDev2::Draw(sf::RenderWindow& window)
+{
+	Scene::Draw(window);
+
+	hitBox->Draw(window);
+}
+
