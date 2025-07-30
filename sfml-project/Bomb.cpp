@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "Bomb.h"
+#include "SceneGame.h"
+#include "Monster.h"
+#include "SpriteGo.h"
 
 Bomb::Bomb(const std::string& name)
 {
@@ -89,6 +92,8 @@ void Bomb::Update(float dt)
             animator.Play("animations/explosion.csv");
             SetOrigin(Origins::BC);
             bomb.setColor(sf::Color::White);
+
+            Explosion();
         }
     }
     else
@@ -112,4 +117,36 @@ void Bomb::Draw(sf::RenderWindow& window)
 {
     window.draw(bomb);
     hitBox.Draw(window);
+}
+
+void Bomb::Explosion()
+{
+    SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+    if (scene)
+    {
+        for (auto& monster : scene->GetMonsters())
+        {
+            if (!monster->GetActive() || monster->IsDead())
+                continue;
+
+            float dist = Utils::Distance(position, monster->GetPosition());
+            if (dist <= 80.f)
+            {
+                monster->TakeDamage(60);
+            }
+        }
+
+        for (auto& obj : scene->GetMapSprites())
+        {
+            if (obj->GetName() == "rocks_basement" || obj->GetName() == "rocks_cracked")
+            {
+                float dist = Utils::Distance(position, obj->GetPosition());
+                if (dist <= 80.f)
+                {
+                    obj->SetActive(false);
+                }
+            }
+        }
+    }
+    
 }
