@@ -422,7 +422,7 @@ void EditBoxUI::LoadTextureFile(const std::vector<std::string> &filenames)
 		int pos = row[0].find_last_of("/");
 		int pos2 = row[0].find_last_of(".");
 		name = row[0].substr(pos + 1, pos2 - pos - 1);
-		textures.push_back(new SpriteGo(row[0], name));
+		textures.push_back(new SpriteGo(row[0], name + (filenames[0] == "background" ? (std::stoi(row[5]) == 1 ? "wall" : "floor") : "")));
 		if (filenames[0] == "background")
 		{
 			textures[i]->sortingLayer = SortingLayers::Background;

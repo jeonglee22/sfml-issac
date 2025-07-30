@@ -23,6 +23,7 @@ protected:
 	std::vector<Spikes *> spikes;
 	std::vector<SpriteGo *> backgrounds;
 	std::vector<HitBox *> boundary;
+	std::vector<HitBox *> doorBoundary;
 	std::vector<Item *> items;
 
 	sf::FloatRect currentMapRect;

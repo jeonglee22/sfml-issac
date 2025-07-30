@@ -248,8 +248,6 @@ void SceneGame::Update(float dt)
 		FPSTime = 0.f;
 	}
 
-	printTime += dt;
-
 	if (beforeIndex != currentMapIndex)
 	{
 		maps[currentMapIndex]->SetActiveAll(true);
@@ -297,6 +295,12 @@ void SceneGame::Update(float dt)
 		Scene::Update(dt);
 
 		ViewFollowing();
+		checkTime += dt;
+		if(checkTime >= checkTimeMax)
+		{
+			ChangeCurrentMapIndex();
+			checkTime = 0;
+		}
 
 		heartUI->SetHeartCount(isaac->GetCurrentHP());
 		heartUI->SetMaxHeartCount(isaac->GetMaxHP());
@@ -432,11 +436,9 @@ void SceneGame::ViewFollowing()
 	sf::FloatRect viewBoundary;
 	viewBoundary.left = 0;
 	viewBoundary.top = 0;
-	viewBoundary.width = currentMapSize.width - smallMapSize.width;
-	viewBoundary.height = currentMapSize.height - smallMapSize.height;
-	/*std::cout << viewBoundary.left << ", " << viewBoundary.top << ", ";
-	std::cout << viewBoundary.width << ", " << viewBoundary.height << std::endl;*/
-
+	viewBoundary.width = std::abs(currentMapSize.width - smallMapSize.width) <= 5.f ? 0.f : currentMapSize.width - smallMapSize.width;
+	viewBoundary.height = std::abs(currentMapSize.height - smallMapSize.height) <= 5.f ? 0.f : currentMapSize.height - smallMapSize.height;
+	
 	sf::Vector2f center;
 	float centerXMin = viewBoundary.left + currentMap->GetPosition().x + smallMapSize.getSize().x * 0.5f;
 	float centerXMax = viewBoundary.left + viewBoundary.width + currentMap->GetPosition().x + smallMapSize.getSize().x * 0.5f;
@@ -446,12 +448,13 @@ void SceneGame::ViewFollowing()
 	center.y = Utils::Clamp(isaac->GetPosition().y, centerYMin, centerYMax);
 
 	worldView.setCenter(center);
+}
 
-	if (printTime >= 1.f)
-	{
-		std::cout << worldView.getCenter().x << ", " << worldView.getCenter().y << std::endl;
-		std::cout << isaac->GetPosition().x << ", " << isaac->GetPosition().y << std::endl;
-		std::cout << currentMap->GetPosition().x << ", " << currentMap->GetPosition().y << std::endl;
-		printTime = 0.f;
-	}
+void SceneGame::ChangeCurrentMapIndex()
+{
+	sf::Vector2f pos = isaac->GetPosition();
+	currentXIndex = pos.x / smallMapSize.width + 5;
+	currentYIndex = pos.y / smallMapSize.height + 5;
+	mapUI->SetPlayerXIndex(currentXIndex);
+	mapUI->SetPlayerYIndex(currentYIndex);
 }

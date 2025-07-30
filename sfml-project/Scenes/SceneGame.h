@@ -60,7 +60,8 @@ protected:
 	TextGo *FPS = nullptr;
 	float FPSTime = 0.f;
 
-	float printTime = 0;
+	float checkTimeMax = 0.3f;
+	float checkTime = 0;
 
 public:
 	SceneGame();
@@ -88,4 +89,6 @@ public:
 	void AddSkillCooltimeAtClear();
 
 	void ViewFollowing();
+
+	void ChangeCurrentMapIndex();
 };
