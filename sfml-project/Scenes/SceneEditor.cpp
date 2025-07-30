@@ -44,8 +44,6 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/additionals/pickups/pickup_005_chests.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_003_key.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_016_bomb.png");
-	texIds.push_back("graphics/effect_000_shopkeepers.png");
-	texIds.push_back("graphics/shop_001_bitfont.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 

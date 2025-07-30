@@ -109,17 +109,7 @@ void LarryJr::InitializeBody()
 
     maxSegments = 5;
 
-    // ¹Ùµð°¡ Á¦ÀÚ¸®¸¦ Ã£À» ¼ö ÀÖµµ·Ï ÃæºÐÇÑ headTrail ¹Ì¸® »ý¼º
-    //int totalTrailPoints = 1500; // ÃæºÐÈ÷ ¸¹ÀÌ
-    //for (int i = 0; i < totalTrailPoints; i++)
-    //{
-    //    sf::Vector2f trailPos = position - currentDirection * (float)i * 200.0f; // 3ÇÈ¼¿ °£°Ý
-    //    headTrail.push_back(trailPos);
-    //}
 
-    //headTrail.clear();
-
-    // ¹Ùµð ¼¼±×¸ÕÆ® »ý¼º
     for (int i = 1; i < maxSegments; i++)
     {
         BodySegment segment;
@@ -128,7 +118,7 @@ void LarryJr::InitializeBody()
         bodySegments.push_back(segment);
     }
 
-    // ¾Ö´Ï¸ÞÀÌÅÍ ¼³Á¤
+    // ï¿½Ö´Ï¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     for (int i = 0; i < bodySegments.size(); i++)
     {
         bodySegments[i].sprite.setPosition(bodySegments[i].position);
@@ -157,11 +147,11 @@ void LarryJr::UpdateBodyMovement(float dt)
 
     for (int i = 0; i < bodySegments.size(); i++)
     {
-        if (frameCount < 150) // Ã³À½ 50ÇÁ·¹ÀÓ µ¿¾ÈÀº Á÷Á¢ °è»ê
+        if (frameCount < 150) // Ã³ï¿½ï¿½ 50ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
             bodySegments[i].position = position - currentDirection * segmentDistance * (float)(i + 1);
         }
-        else // ±× ÈÄ¿¡´Â trail »ç¿ë
+        else // ï¿½ï¿½ ï¿½Ä¿ï¿½ï¿½ï¿½ trail ï¿½ï¿½ï¿½
         {
             int trailIndex = (i + 1) * 150-1;
             if (trailIndex < headTrail.size())

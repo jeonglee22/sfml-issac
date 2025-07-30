@@ -8,6 +8,7 @@ protected:
 	~SceneMgr() = default;
 
 	std::unordered_map<SceneIds, Scene*> scenes;
+
 	SceneIds startScene = SceneIds::Stage;
 	SceneIds currentScene = SceneIds::None;
 	SceneIds nextScene = SceneIds::None;

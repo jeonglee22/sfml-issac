@@ -61,8 +61,13 @@ void SceneGame::Init()
 	texIds.push_back("graphics/additionals/grid_poop.png");
 	texIds.push_back("graphics/monster_044_hopperleaper.png");
 	texIds.push_back("graphics/monster_000_bodies02.png");
+	texIds.push_back("graphics/enemies/monster_029_horf.png");
+	texIds.push_back("graphics/enemies/monster_001_pooter.png");
+	texIds.push_back("graphics/enemies/monster_216_dip.png");
+	texIds.push_back("graphics/effects/effect_009_poof01_small.png");
 	texIds.push_back("graphics/additionals/levelitem_001_itemaltar.png");
 
+	texIds.push_back("graphics/enemies/boss_085_dingle.png");
 	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
 
 	texIds.push_back("graphics/minimap.png");
@@ -117,6 +122,13 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/hopper_jump.csv");
 	ANI_CLIP_MGR.Load("animations/body_front.csv");
 	ANI_CLIP_MGR.Load("animations/body_side.csv");
+	ANI_CLIP_MGR.Load("animations/horf_idle.csv");
+	ANI_CLIP_MGR.Load("animations/horf_fire.csv");
+	ANI_CLIP_MGR.Load("animations/pooter_idle.csv");
+	ANI_CLIP_MGR.Load("animations/pooter_fire.csv");
+	ANI_CLIP_MGR.Load("animations/dip_idle.csv");
+	ANI_CLIP_MGR.Load("animations/dip_move.csv");
+	ANI_CLIP_MGR.Load("animations/dip_dead.csv");
 
 	ANI_CLIP_MGR.Load("animations/tears_idle.csv");
 	ANI_CLIP_MGR.Load("animations/tears_boom.csv");
@@ -137,6 +149,11 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_body2.csv");
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_body3.csv");
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_tail.csv");
+	ANI_CLIP_MGR.Load("animations/dingle_idle.csv");
+	ANI_CLIP_MGR.Load("animations/dingle_fire_charge.csv");
+	ANI_CLIP_MGR.Load("animations/dingle_fire.csv");
+	ANI_CLIP_MGR.Load("animations/dingle_dead.csv");
+
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 

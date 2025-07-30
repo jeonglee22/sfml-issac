@@ -78,6 +78,7 @@ public:
 	std::vector<HitBox *> GetMapBoundary() { return maps[currentMapIndex]->GetBoundary(); }
 	std::vector<SpriteGo *> GetMapSprites() { return maps[currentMapIndex]->GetObjects(); }
 	std::vector<Door *> GetMapDoor() { return maps[currentMapIndex]->GetDoor(); }
+	Isaac* GetIsaac() const { return isaac; }
 	int GetMapIndex(int xPos, int yPos) { return mapIndex[yPos][xPos]; }
 	sf::FloatRect GetSmallMapSize() { return smallMapSize; }
 

@@ -50,6 +50,10 @@ enum class Monsters
 	Body,
 	Hopper,
 	LarryJr,
+	Horf,
+	Pooter,
+	Dip,
+	Dingle,
 };
 
 enum class Items

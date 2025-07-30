@@ -1,0 +1,9 @@
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+,7,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+graphics/effects/effect_009_poof01_small.png,7,94,33,27,17.500000,13.500000
+graphics/effects/effect_009_poof01_small.png,53,93,35,27,17.500000,13.500000
+graphics/effects/effect_009_poof01_small.png,100,90,38,31,17.500000,13.500000
+graphics/effects/effect_009_poof01_small.png,151,90,34,29,17.500000,13.500000
+graphics/effects/effect_009_poof01_small.png,196,95,38,24,17.500000,13.500000

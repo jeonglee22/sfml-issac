@@ -1,30 +1,19 @@
 #pragma once
 #include "MonsterState.h"
 #include "Monster.h"
-#include "WanderState.h"
+#include "HorfFIreState.h"
 
 class IdleState : public MonsterState
 {
 protected:
-    float idleTime;
-    float maxIdleTime;
+    HorfFireState horfFireState;
 
 public:
-    IdleState() : idleTime(0.0f), maxIdleTime(2.0f) {}
+    IdleState() {}
 
-    void Enter(Monster* monster) override
-    {
-        idleTime = 0.0f;
-        monster->SetVelocity(sf::Vector2f(0, 0));
-    }
-
-    void Update(Monster* monster, float dt) override
-    {
-        idleTime += dt;
-    }
-
-    void Exit(Monster* monster) override { }
-
+    void Enter(Monster* monster) override;
+    void Update(Monster* monster, float dt) override;
+    void Exit(Monster* monster) override;
     std::string GetStateName() const override { return "Idle"; }
 };
 

@@ -72,6 +72,14 @@ void Monster::Update(float dt)
 			isDead = false;
 			return;
 		}
+		if (monsterType == Monsters::Dip && deadTimer >= deadMaxTimer - 0.5f)
+		{
+			SetActive(false);
+			deadTimer = 0.0;
+			isDead = false;
+			return;
+		}
+
 	}
 	else
 	{
@@ -165,17 +173,21 @@ void Monster::TakeDamage(int damage)
 		isDead = true;
 		velocity = { 0.f,0.f };
 
-		if(monsterType == Monsters::Fly || monsterType == Monsters::AttackFly)
+		if(monsterType == Monsters::Fly || monsterType == Monsters::AttackFly || monsterType == Monsters::Pooter)
 		{
 			animator.Play("animations/fly_dead.csv");
 		}
-		if (monsterType == Monsters::Spider)
+		if (monsterType == Monsters::Spider || monsterType == Monsters::Body || monsterType == Monsters::Horf)
 		{
 			animator.Play("animations/blood_small.csv");
 		}
-		if (monsterType == Monsters::Body)
+		if (monsterType == Monsters::Dip)
 		{
-			animator.Play("animations/blood_small.csv");
+			animator.Play("animations/dip_dead.csv");
+		}
+		if (monsterType == Monsters::Dingle)
+		{
+			animator.Play("animations/dingle_dead.csv");
 		}
 		if (monsterType == Monsters::LarryJr)
 		{
@@ -232,7 +244,7 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 			}
 		}
 
-		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::LarryJr))
+		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::Dip))
 		{
 			for (auto sprite : scene->GetMapSprites())
 			{
