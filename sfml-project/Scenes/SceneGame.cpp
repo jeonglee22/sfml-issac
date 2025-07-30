@@ -207,7 +207,7 @@ void SceneGame::Enter()
 	mapUI->SetMapIndex(mapIndex);
 	mapUI->SetPosition({ uiView.getSize().x - 110.f, 100.f });
 
-	currentMapSize = maps[0]->GetMapSize();
+	currentMapSize = smallMapSize = maps[0]->GetMapSize();
 	
 	// LoadStageField("Mapfolder/testmap3.csv");
 	mapOffset = sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f;
@@ -224,11 +224,11 @@ void SceneGame::Enter()
 	{
 		shading->SetScale({ 2.f, 2.f });
 		shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
-		shading->SetPosition(currentMapSize.getSize() * 0.5f);
+		shading->SetPosition(worldView.getCenter());
 	}
 	controls->SetScale({ 2.f,2.f });
 	controls->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/controls.png").getSize()) * 0.5f);
-	controls->SetPosition(currentMapSize.getSize() * 0.5f);
+	controls->SetPosition(worldView.getCenter());
 
 	isaac->SetSkill(skill);
 	skillUI->SetSkill(isaac->GetSkill());
@@ -248,19 +248,20 @@ void SceneGame::Update(float dt)
 		FPSTime = 0.f;
 	}
 
+	printTime += dt;
+
 	if (beforeIndex != currentMapIndex)
 	{
 		maps[currentMapIndex]->SetActiveAll(true);
 		maps[currentMapIndex]->DeleteEnemyAlreadyDead();
 		maps[currentMapIndex]->DeleteItemAlreadyGet();
-		sf::Vector2f nextMapCenter = maps[currentMapIndex]->GetPosition() + maps[currentMapIndex]->GetMapSize().getSize() * 0.5f;
 		if (isMapChanging)
 		{
-			worldView.setCenter(Utils::Lerp(worldView.getCenter(), nextMapCenter, dt * 15));
+			worldView.setCenter(Utils::Lerp(worldView.getCenter(), nextMapViewStart, dt * 15));
 			isaac->SetPosition(Utils::Lerp(isaac->GetPosition(), nextSpawnPos, dt * 15));
-			if (Utils::Distance(worldView.getCenter(), nextMapCenter) <= 10.f)
+			if (Utils::Distance(worldView.getCenter(), nextMapViewStart) <= 1.f)
 			{
-				worldView.setCenter(nextMapCenter);
+				worldView.setCenter(nextMapViewStart);
 				isaac->SetPosition(nextSpawnPos);
 				isMapChanging = false;
 			}
@@ -295,6 +296,8 @@ void SceneGame::Update(float dt)
 		}
 
 		Scene::Update(dt);
+
+		ViewFollowing();
 
 		heartUI->SetHeartCount(isaac->GetCurrentHP());
 		heartUI->SetMaxHeartCount(isaac->GetMaxHP());
@@ -333,6 +336,8 @@ void SceneGame::Update(float dt)
 			if (Utils::CheckCollision(isaac->GetHitBoxBody().rect, door->GetHitBox()->rect) && door->GetMapCleared())
 			{
 				sf::Vector2f dir = door->GetDoorDirection();
+				nextMapViewStart = worldView.getCenter() + sf::Vector2f(smallMapSize.getSize().x * dir.x, smallMapSize.getSize().y * dir.y);
+
 				currentYIndex += (int)dir.y;
 				currentXIndex += (int)dir.x;
 				mapUI->SetPlayerXIndex(currentXIndex);
@@ -419,4 +424,35 @@ void SceneGame::AddSkillCooltimeAtClear()
 {
 	Skill* skill = isaac->GetSkill();
 	skill->AddSkillCooltime();
+}
+
+void SceneGame::ViewFollowing()
+{
+	Map* currentMap = maps[currentMapIndex];
+	currentMapSize = currentMap->GetMapSize();
+	sf::FloatRect viewBoundary;
+	viewBoundary.left = 0; 
+	viewBoundary.top = 0;
+	viewBoundary.width = currentMapSize.width - smallMapSize.width;
+	viewBoundary.height = currentMapSize.height - smallMapSize.height;
+	/*std::cout << viewBoundary.left << ", " << viewBoundary.top << ", ";
+	std::cout << viewBoundary.width << ", " << viewBoundary.height << std::endl;*/
+
+	sf::Vector2f center;
+	float centerXMin = viewBoundary.left + currentMap->GetPosition().x + smallMapSize.getSize().x * 0.5f;
+	float centerXMax = viewBoundary.left + viewBoundary.width + currentMap->GetPosition().x + smallMapSize.getSize().x * 0.5f;
+	float centerYMin = viewBoundary.top + currentMap->GetPosition().y + smallMapSize.getSize().y * 0.5f;
+	float centerYMax = viewBoundary.top + viewBoundary.height + currentMap->GetPosition().y + smallMapSize.getSize().y * 0.5f;
+	center.x = Utils::Clamp(isaac->GetPosition().x, centerXMin, centerXMax);
+	center.y = Utils::Clamp(isaac->GetPosition().y, centerYMin, centerYMax);
+
+	worldView.setCenter(center );
+
+	if(printTime >= 1.f)
+	{
+		std::cout << worldView.getCenter().x << ", " << worldView.getCenter().y << std::endl;
+		std::cout << isaac->GetPosition().x << ", " << isaac->GetPosition().y << std::endl;
+		std::cout << currentMap->GetPosition().x << ", " << currentMap->GetPosition().y << std::endl;
+		printTime = 0.f;
+	}
 }

@@ -36,8 +36,11 @@ protected:
 
 	sf::Vector2f offset = sf::Vector2f(140.f, 104.f);
 	sf::Vector2f mapOffset;
+	sf::Vector2f nextMapViewStart;
+	sf::Vector2f beforeMapView;
 
 	sf::FloatRect currentMapSize;
+	sf::FloatRect smallMapSize;
 
 	std::vector<SpriteGo*> shadings;
 	SpriteGo* overlay;
@@ -56,6 +59,8 @@ protected:
 
 	TextGo* FPS = nullptr;
 	float FPSTime = 0.f;
+
+	float printTime = 0;
 
 public:
 	SceneGame();
@@ -79,5 +84,7 @@ public:
 	sf::View GetWorldView() { return worldView; }
 
 	void AddSkillCooltimeAtClear();
+
+	void ViewFollowing();
 };
 

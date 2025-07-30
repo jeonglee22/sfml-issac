@@ -252,8 +252,8 @@ void MapMaking::SetMapConnection(std::vector<Map*> maps)
 		if (maps[i]->GetName() == "LargeMap")
 		{
 			sf::Vector2f pos;
-			pos.x = maps[i]->GetMapSize().getSize().x * 0.5f * (xPos - 6);
-			pos.y = maps[i]->GetMapSize().getSize().y * 0.5f * (yPos - 6);
+			pos.x = maps[0]->GetMapSize().getSize().x * (xPos - 6);
+			pos.y = maps[0]->GetMapSize().getSize().y * (yPos - 6);
 			maps[i]->SetPosition(pos);
 		}
 		else if (maps[i]->GetName() == "RectangleMap")
@@ -261,13 +261,13 @@ void MapMaking::SetMapConnection(std::vector<Map*> maps)
 			sf::Vector2f pos;
 			if(maps[i]->GetMapSize().getSize().x > maps[i]->GetMapSize().getSize().y)
 			{
-				pos.x = maps[i]->GetMapSize().getSize().x * 0.5f * (xPos - 6);
-				pos.y = maps[i]->GetMapSize().getSize().y * 0.5f * (yPos - 5);
+				pos.x = maps[0]->GetMapSize().getSize().x * (xPos - 6);
+				pos.y = maps[0]->GetMapSize().getSize().y * (yPos - 5);
 			}
 			else
 			{
-				pos.x = maps[i]->GetMapSize().getSize().x * 0.5f * (xPos - 5);
-				pos.y = maps[i]->GetMapSize().getSize().y * 0.5f * (yPos - 6);
+				pos.x = maps[0]->GetMapSize().getSize().x * (xPos - 5);
+				pos.y = maps[0]->GetMapSize().getSize().y * (yPos - 6);
 			}
 			maps[i]->SetPosition(pos);
 		}
