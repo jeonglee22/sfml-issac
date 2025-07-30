@@ -34,6 +34,8 @@ protected:
 
 	float collisionCooldown = 0.0f;
 
+	float hitFlashTimer = 0.0f;
+
 	MonsterState* currentState;
 	HitBox hitBox;
 	SceneGame* sceneGame;
