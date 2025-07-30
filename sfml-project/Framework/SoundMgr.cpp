@@ -88,7 +88,7 @@ void SoundMgr::PlaySfx(sf::SoundBuffer& buffer, bool loop)
 	}
 	sound->setBuffer(buffer);
 	buffers.push_back(&buffer);
-	std::cout << buffers.size() << std::endl;
+
 	sound->setLoop(loop);
 	sound->play();
 	playing.push_back(sound);
