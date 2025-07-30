@@ -74,6 +74,7 @@ public:
 	std::vector<Door*> GetMapDoor() { return maps[currentMapIndex]->GetDoor(); }
 
 	std::vector<int> GetNeighboorMapIndex(int x, int y);
+	sf::Vector2i GetNeighboorMapIndexInLargeMap(int x, int y);
 	
 	sf::View GetWorldView() { return worldView; }
 

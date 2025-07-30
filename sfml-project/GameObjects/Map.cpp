@@ -167,6 +167,16 @@ void Map::AddItem(const sf::Vector2f& pos, const std::string& name)
 void Map::SetDoor()
 {
 	std::vector<int> neighboorMapIndex = sceneGame->GetNeighboorMapIndex(StageXPos, StageYPos);
+	/*if (name == "RectangleMap")
+	{
+		sf::Vector2i sameIndexPos = sceneGame->GetNeighboorMapIndexInLargeMap(StageXPos, StageYPos);
+		for (int a : sceneGame->GetNeighboorMapIndex(sameIndexPos.x, sameIndexPos.y))
+			neighboorMapIndex.push_back(a);
+	}
+	else if (name == "LargeMap")
+	{
+
+	}*/
 	float width = currentMapSize.width, height = currentMapSize.height;
 	Door tempdoor = Door("graphics/additionals/door_01_normaldoor.png", "Door");
 	tempdoor.Reset();
@@ -295,7 +305,7 @@ void Map::SpriteSetting(SpriteGo *sp, const std::vector<std::string> infos)
 	sp->SetOrigin(Origins::MC);
 	sp->Reset();
 	sp->GetSprite().setTextureRect({std::stoi(infos[2]), std::stoi(infos[1]), std::stoi(infos[3]), std::stoi(infos[4])});
-	sp->SetScale({2.f, 2.f});
+	sp->SetScale({2.f * std::stof(infos[15]), 2.f * std::stof(infos[16]) });
 	sp->SetOrigin({std::stof(infos[13]), std::stof(infos[14])});
 	sp->SetPosition(sf::Vector2f(std::stof(infos[6]), std::stof(infos[7])) + sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f);
 	sp->SetRotation(std::stof(infos[12]));

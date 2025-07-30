@@ -3,12 +3,14 @@
 #include "MapMaking.h"
 
 int MapMaking::normalMapCount = 19;
-int MapMaking::startMapCount = 4;
+int MapMaking::startMapCount = 2;
 int MapMaking::treasureMapCount = 2;
-int MapMaking::hiddenMapCount = 2;
-int MapMaking::shopMapCount = 2;
-int MapMaking::sacrificeMapCount = 2;
-int MapMaking::bossMapCount = 2;
+int MapMaking::hiddenMapCount = 1;
+int MapMaking::shopMapCount = 1;
+int MapMaking::sacrificeMapCount = 1;
+int MapMaking::bossMapCount = 1;
+int MapMaking::largeMapCount = 1;
+int MapMaking::rectangleMapCount = 1;
 
 void MapMaking::InitMapSetting(int map[][11])
 {
@@ -198,13 +200,26 @@ std::vector<Map*> MapMaking::SetMapInfo(int map[][11], int mapCount, std::vector
 			if (mapIndex != 99 && mapIndex != -1)
 			{
 				if (maps[mapIndex])
+				{
 					delete maps[mapIndex];
+					maps[mapIndex] = nullptr;
+				}
 				//maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), "map" + std::to_string(mapIndex));
-				if (mapIndex == 0)
-					maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), "start" + std::to_string(mapIndex));
+				if (mapTypes[mapIndex] == MapType::Rectangle)
+				{
+					if (i > 1 && map[i - 1][j] != -1 && map[i - 1][j] != 99 && mapTypes[map[i - 1][j]] == MapType::Rectangle)
+						maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex], false), ToString(mapTypes[mapIndex]));
+					else if (j > 1 && map[i][j - 1] != -1 && map[i][j - 1] != 99 && mapTypes[map[i][j - 1]] == MapType::Rectangle)
+						maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex], true), ToString(mapTypes[mapIndex]));
+				}
 				else
-					maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), "map" + std::to_string(mapIndex));
-				maps[mapIndex]->SetStageIndex(j, i);
+				{
+					maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), ToString(mapTypes[mapIndex]));
+				}
+				if(maps[mapIndex])
+				{
+					maps[mapIndex]->SetStageIndex(j, i);
+				}
 			}
 		}
 	}
@@ -234,14 +249,39 @@ void MapMaking::SetMapConnection(std::vector<Map*> maps)
 		maps[i]->AddGameObjectInScene();
 		int xPos = maps[i]->GetStageXIndex();
 		int yPos = maps[i]->GetStageYIndex();
-		maps[i]->SetPosition({ maps[i]->GetMapSize().getSize().x * (xPos - 5) , maps[i]->GetMapSize().getSize().y * (yPos - 5) });
+		if (maps[i]->GetName() == "LargeMap")
+		{
+			sf::Vector2f pos;
+			pos.x = maps[i]->GetMapSize().getSize().x * 0.5f * (xPos - 6);
+			pos.y = maps[i]->GetMapSize().getSize().y * 0.5f * (yPos - 6);
+			maps[i]->SetPosition(pos);
+		}
+		else if (maps[i]->GetName() == "RectangleMap")
+		{
+			sf::Vector2f pos;
+			if(maps[i]->GetMapSize().getSize().x > maps[i]->GetMapSize().getSize().y)
+			{
+				pos.x = maps[i]->GetMapSize().getSize().x * 0.5f * (xPos - 6);
+				pos.y = maps[i]->GetMapSize().getSize().y * 0.5f * (yPos - 5);
+			}
+			else
+			{
+				pos.x = maps[i]->GetMapSize().getSize().x * 0.5f * (xPos - 5);
+				pos.y = maps[i]->GetMapSize().getSize().y * 0.5f * (yPos - 6);
+			}
+			maps[i]->SetPosition(pos);
+		}
+		else
+		{
+			maps[i]->SetPosition({ maps[i]->GetMapSize().getSize().x * (xPos - 5) , maps[i]->GetMapSize().getSize().y * (yPos - 5) });
+		}
 		maps[i]->SetActiveAll(false);
 	}
 	maps[0]->SetActiveAll(true);
 	maps[0]->SetCleared(true);
 }
 
-std::string MapMaking::PickRandomMapInPool(MapType mapType)
+std::string MapMaking::PickRandomMapInPool(MapType mapType, bool row)
 {
 	std::string fileName = "Mapfolder/";
 	switch (mapType)
@@ -269,6 +309,15 @@ std::string MapMaking::PickRandomMapInPool(MapType mapType)
 		break;
 	case MapMaking::MapType::Sacrifice:
 		fileName += "Sacrifice/" + std::to_string(Utils::RandomRange(1, sacrificeMapCount+1)) + ".csv";
+		break;
+	case MapMaking::MapType::Large:
+		fileName += "Large/" + std::to_string(Utils::RandomRange(1, largeMapCount+1)) + ".csv";
+		break;
+	case MapMaking::MapType::Rectangle:
+		if (row)
+			fileName += "Rectangle/Row/" + std::to_string(Utils::RandomRange(1, rectangleMapCount+1)) + ".csv";
+		else
+			fileName += "Rectangle/Column/" + std::to_string(Utils::RandomRange(1, rectangleMapCount + 1)) + ".csv";
 		break;
 	default:
 		break;
@@ -354,4 +403,43 @@ bool MapMaking::AddLargeMap(const sf::Vector2i& pos, int map[][11], bool isSquar
 	}
 
 	return true;
+}
+
+std::string MapMaking::ToString(MapType ty)
+{
+	std::string str;
+	switch (ty)
+	{
+	case MapMaking::MapType::Normal:
+		str = "NormalMap";
+		break;
+	case MapMaking::MapType::Start:
+		str = "StartlMap";
+		break;
+	case MapMaking::MapType::Boss:
+		str = "BossMap";
+		break;
+	case MapMaking::MapType::Hidden:
+		str = "HiddenMap";
+		break;
+	case MapMaking::MapType::Shop:
+		str = "ShopMap";
+		break;
+	case MapMaking::MapType::Treasure:
+		str = "TreasureMap";
+		break;
+	case MapMaking::MapType::Sacrifice:
+		str = "SacrificeMap";
+		break;
+	case MapMaking::MapType::Large:
+		str = "LargeMap";
+		break;
+	case MapMaking::MapType::Rectangle:
+		str = "RectangleMap";
+		break;
+	default:
+		break;
+	}
+
+	return str;
 }

@@ -32,6 +32,8 @@ protected:
 	static int shopMapCount;
 	static int sacrificeMapCount;
 	static int bossMapCount;
+	static int largeMapCount;
+	static int rectangleMapCount;
 
 public:
 	static void InitMapSetting(int map[][11]);
@@ -40,7 +42,7 @@ public:
 	static void GetMapInfo(std::string mapPosfile, int mapInfo[][11]);
 	static void SetMapConnection(std::vector<Map*> maps);
 
-	static std::string PickRandomMapInPool(MapType mapTypes);
+	static std::string PickRandomMapInPool(MapType mapTypes, bool row = true);
 
 	static bool CheckNeighboorCount(const sf::Vector2i& pos, int map[][11]);
 
@@ -57,5 +59,7 @@ public:
 			std::cout << std::endl;
 		}
 	}
+
+	static std::string ToString(MapType ty);
 };
 

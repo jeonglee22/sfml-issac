@@ -33,6 +33,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/background/sheol.png");
 	texIds.push_back("graphics/background/caves.png");
 	texIds.push_back("graphics/background/depths.png");
+	texIds.push_back("graphics/background/shop.png");
 	texIds.push_back("graphics/obstacles/grid_spikes.png");
 	texIds.push_back("graphics/obstacles/grid_fireplace.png");
 	texIds.push_back("graphics/obstacles/rocks/rocks_basement.png");
@@ -48,6 +49,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/additionals/door_01_normaldoor.png");
 	texIds.push_back("graphics/shading.png");
 	texIds.push_back("graphics/overlay_2.png");
+	texIds.push_back("graphics/effect_000_shopkeepers.png");
 	texIds.push_back("graphics/effect_002_bloodpoof_large1.png");
 	texIds.push_back("graphics/effect_002_bloodpoof.png");
 	texIds.push_back("graphics/items/pick ups/pickup_002_coin.png");
@@ -402,6 +404,15 @@ std::vector<int> SceneGame::GetNeighboorMapIndex(int x, int y)
 		right = -1;
 
 	return std::vector<int>{up, right, down, left};
+}
+
+sf::Vector2i SceneGame::GetNeighboorMapIndexInLargeMap(int x, int y)
+{
+	if (mapIndex[y - 1][x] == mapIndex[y][x])
+		return sf::Vector2i(x, y-1);
+	else if (mapIndex[y][x-1] == mapIndex[y][x])
+		return sf::Vector2i(x-1, y);
+	return sf::Vector2i();
 }
 
 void SceneGame::AddSkillCooltimeAtClear()

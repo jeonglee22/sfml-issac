@@ -153,19 +153,19 @@ void SceneEditor::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::D) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(-468.f, 0.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(-884.f, 0.f));
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::A) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(468.f, 0.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(884.f, 0.f));
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::W) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, 364.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, 572.f));
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::S) && !mapBox->GetCheckingMap())
 	{
-		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, -364.f));
+		worldView.setCenter(worldView.getCenter() + sf::Vector2f(0.f, -572.f));
 	}
 }
 
@@ -190,6 +190,10 @@ rapidcsv::Document SceneEditor::SaveFile()
 	doc.SetColumnName(10,"LAYER");
 	doc.SetColumnName(11,"ORDER");
 	doc.SetColumnName(12,"ROTATION");
+	doc.SetColumnName(13,"ORIGINX");
+	doc.SetColumnName(14,"ORIGINY");
+	doc.SetColumnName(15,"XSCALE");
+	doc.SetColumnName(16,"YSCALE");
 
 	float left = INT_MAX, top = INT_MAX, right = INT_MIN, bottom = INT_MIN;
 
@@ -226,6 +230,8 @@ rapidcsv::Document SceneEditor::SaveFile()
 		infos.push_back(std::to_string(sprite->GetRotation()));
 		infos.push_back(std::to_string(sprite->GetOrigin().x));
 		infos.push_back(std::to_string(sprite->GetOrigin().y));
+		infos.push_back(std::to_string(sprite->GetScale().x / 2.f));
+		infos.push_back(std::to_string(sprite->GetScale().y / 2.f));
 		doc.InsertRow(i++, infos);
 	}
 	doc.SetCell(0, 0, left);
@@ -316,7 +322,7 @@ void SceneEditor::LoadFile(const std::string& fileName)
 		loadSprite->SetOrigin(Origins::MC);
 		loadSprite->Reset();
 		loadSprite->GetSprite().setTextureRect({ std::stoi(infos[2]),std::stoi(infos[1]), std::stoi(infos[3]), std::stoi(infos[4]) });
-		loadSprite->SetScale({2.f, 2.f});
+		loadSprite->SetScale({2.f * std::stof(infos[15]), 2.f * std::stof(infos[16]) });
 		loadSprite->SetOrigin({ std::stof(infos[13]) , std::stof(infos[14]) });
 		loadSprite->SetPosition(sf::Vector2f( std::stof(infos[6]), std::stof(infos[7]) ) + mapBox->GetTopLeft());
 		loadSprite->SetRotation(std::stof(infos[12]));
