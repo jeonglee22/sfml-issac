@@ -1,0 +1,10 @@
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+,10,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+graphics/enemies/boss_085_dingle.png,0,64,64,64,32.000000,32.000000
+graphics/enemies/boss_085_dingle.png,64,64,64,64,32.000000,32.000000
+graphics/enemies/boss_085_dingle.png,128,64,64,64,32.000000,32.000000
+graphics/enemies/boss_085_dingle.png,192,64,64,64,32.000000,32.000000
+graphics/enemies/boss_085_dingle.png,256,64,64,64,32.000000,32.000000
+graphics/enemies/boss_085_dingle.png,320,64,64,64,32.000000,32.000000

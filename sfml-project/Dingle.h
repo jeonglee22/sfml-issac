@@ -21,6 +21,10 @@ protected:
 	float tearsSpeed = 300.0f;
 	int tearsDamage = 1;
 
+	bool isBouncing = false;
+	float bounceTimer = 0.0f;
+	float bounceDuration = 0.2f;
+
 public:
 	Dingle(const std::string& name = "Dingle");
 	virtual ~Dingle() override = default;
@@ -39,6 +43,27 @@ public:
 	void FireTear(const sf::Vector2f& direction);
 	void FireTripleShot();
 	void UpdateTears(float dt);
+
+	void StartBounce()
+	{
+		isBouncing = true;
+		bounceTimer = 0.0f;
+	}
+
+	bool IsBouncing() const
+	{
+		return isBouncing;
+	}
+
+	void UpdateBounce(float dt)
+	{
+		bounceTimer += dt;
+		if (bounceTimer >= bounceDuration)
+		{
+			SetVelocity(sf::Vector2f(0, 0));
+			isBouncing = false;
+		}
+	}
 
 	const std::list<EnemyTears*>& GetTears() const { return EnemyTearsList; }
 };

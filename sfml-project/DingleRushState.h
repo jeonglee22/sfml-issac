@@ -14,6 +14,10 @@ protected:
 	int currentRush = 0.;
 	bool isRush = false;
 
+	bool isExhausted = false;
+	float exhaustedTimer = 0.0f;
+	float exhaustedDuration = 2.0f;
+
 
 public:
 	// MonsterState을(를) 통해 상속됨

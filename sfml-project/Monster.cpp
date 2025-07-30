@@ -8,6 +8,7 @@
 #include "Hopper.h"
 #include "Body.h"
 #include "LarryJr.h"
+#include "Dingle.h"
 
 Monster::Monster(const std::string& name, Monsters type)
 	: GameObject(name), monsterType(type)
@@ -338,11 +339,44 @@ void Monster::HandleCollisionByType()
 		LarryJr* larry = static_cast<LarryJr*>(this);
 		larry->TurnAtWall();
 	}
-	else
+	else if (monsterType == Monsters::Fly)
 	{
 		Fly* fly = static_cast<Fly*>(this);
 		fly->SetInitialState();
 	}
+	else if (monsterType == Monsters::Dingle)
+	{
+		Dingle* dingle = static_cast<Dingle*>(this);
+
+		if (!dingle->IsBouncing()) {
+			sf::Vector2f currentVel = dingle->GetVelocity();
+			sf::Vector2f currentPos = dingle->GetPosition();
+
+			sf::Vector2f bounceDirection;
+
+			if (currentPos.y < 50)
+			{
+				bounceDirection = sf::Vector2f(currentVel.x * 0.2f, 200.0f);
+			}
+			else if (currentPos.y > 600)
+			{
+				bounceDirection = sf::Vector2f(currentVel.x * 0.2f, -200.0f);
+			}
+			else if (currentPos.x < 200)
+			{
+				bounceDirection = sf::Vector2f(200.0f, currentVel.y * 0.2f);
+			}
+			else
+			{
+				bounceDirection = sf::Vector2f(-200.0f, currentVel.y * 0.2f);
+			}
+
+			dingle->SetVelocity(bounceDirection);
+			dingle->StartBounce();
+		}
+	}
+
+
 }
 
 void Monster::HandleHopperJumpCollision()
