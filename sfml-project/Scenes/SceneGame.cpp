@@ -64,6 +64,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/enemies/monster_216_dip.png");
 	texIds.push_back("graphics/effects/effect_009_poof01_small.png");
 
+	texIds.push_back("graphics/enemies/boss_085_dingle.png");
 	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
 
 	texIds.push_back("graphics/minimap.png");
@@ -145,6 +146,10 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_body2.csv");
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_body3.csv");
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_tail.csv");
+	ANI_CLIP_MGR.Load("animations/dingle_idle.csv");
+	ANI_CLIP_MGR.Load("animations/dingle_fire_charge.csv");
+	ANI_CLIP_MGR.Load("animations/dingle_fire.csv");
+	ANI_CLIP_MGR.Load("animations/dingle_dead.csv");
 
 
 	isaac = (Isaac *)AddGameObject(new Isaac());

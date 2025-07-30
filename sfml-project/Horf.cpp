@@ -58,7 +58,7 @@ sf::FloatRect Horf::GetHitBoxMonster()
     return { bodyGlobalBounds.left + 10.f, bodyGlobalBounds.top + 10.f,  bodyGlobalBounds.width - 20.f, bodyGlobalBounds.height - 20.f };
 }
 
-void Horf::FireProjectile(const sf::Vector2f& direction)
+void Horf::FireTear(const sf::Vector2f& direction)
 {
     SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
     if (!scene)

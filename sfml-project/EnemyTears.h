@@ -34,7 +34,7 @@ public:
     void Update(float dt) override;
     void Draw(sf::RenderWindow& window) override;
 
-    void Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d);
+    void Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d, float range = 200.0f);
     void Hit();
     void StartCrush();
 

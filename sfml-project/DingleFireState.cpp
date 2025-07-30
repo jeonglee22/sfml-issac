@@ -1,23 +1,24 @@
 #include "stdafx.h"
-#include "HorfFireState.h"
+#include "DingleFireState.h"
 #include "Monster.h"
-#include "Horf.h"
+#include "Dingle.h"
 
-void HorfFireState::Enter(Monster* monster)
+void DingleFireState::Enter(Monster* monster)
 {
-    fireTimer = 0.0f;
-    hasFire = false;
-    monster->GetAnimator().Play("animations/horf_fire.csv");
-    monster->SetVelocity(sf::Vector2f(0, 0));
+	fireTimer = 0.0f;
+	hasFire = false;
+	monster->GetAnimator().Play("animations/dingle_fire.csv");
+	monster->SetVelocity(sf::Vector2f(0, 0));
+
 }
 
-void HorfFireState::Update(Monster* monster, float dt)
+void DingleFireState::Update(Monster* monster, float dt)
 {
     fireTimer += dt;
 
     if (!hasFire && fireTimer >= 0.3f)
     {
-        Horf* horf = static_cast<Horf*>(monster);
+        Dingle* dingle = static_cast<Dingle*>(monster);
 
         sf::Vector2f playerPos = monster->GetPlayerPosition();
         sf::Vector2f horfPos = monster->GetPosition();
@@ -29,7 +30,7 @@ void HorfFireState::Update(Monster* monster, float dt)
             direction /= length;
         }
 
-        horf->FireTear(direction);
+        dingle->FireTripleShot();
         hasFire = true;
 
         SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/tear fire 4.wav"));
@@ -37,11 +38,11 @@ void HorfFireState::Update(Monster* monster, float dt)
 
     if (fireTimer >= fireDuration)
     {
-        Horf* horf = static_cast<Horf*>(monster);
-        horf->ChangeToIdleState();
+        Dingle* dingle = static_cast<Dingle*>(monster);
+        dingle->ChangeToIdleState();
     }
 }
 
-void HorfFireState::Exit(Monster* monster)
+void DingleFireState::Exit(Monster* monster)
 {
 }

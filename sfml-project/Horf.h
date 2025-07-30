@@ -28,12 +28,12 @@ public:
     void ChangeToIdleState() { ChangeState(&idleState); }
     void ChangeToFireState() { ChangeState(&fireState); }
 
-    void FireProjectile(const sf::Vector2f& direction);
+    void FireTear(const sf::Vector2f& direction);
     void UpdateTears(float dt);
 
     IdleState& GetIdleState() { return idleState; }
     HorfFireState& GetShootState() { return fireState; }
 
-    const std::list<EnemyTears*>& GetProjectiles() const { return EnemyTearsList; }
+    const std::list<EnemyTears*>& GetTears() const { return EnemyTearsList; }
 };
 

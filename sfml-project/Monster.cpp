@@ -185,6 +185,10 @@ void Monster::TakeDamage(int damage)
 		{
 			animator.Play("animations/dip_dead.csv");
 		}
+		if (monsterType == Monsters::Dingle)
+		{
+			animator.Play("animations/dingle_dead.csv");
+		}
 		if (monsterType == Monsters::LarryJr)
 		{
 			animator.Play("animations/blood_small.csv");

@@ -4,9 +4,9 @@
 class HorfFireState : public MonsterState
 {
 protected:
-    float shootTimer = 0.0f;
-    float shootDuration = 0.4f;
-    bool hasShot = false;
+    float fireTimer = 0.0f;
+    float fireDuration = 0.4f;
+    bool hasFire = false;
 
 public:
     HorfFireState() {}

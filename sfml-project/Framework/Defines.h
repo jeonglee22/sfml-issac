@@ -47,6 +47,7 @@ enum class Monsters
 	Horf,
 	Pooter,
 	Dip,
+	Dingle,
 };
 
 enum class Items

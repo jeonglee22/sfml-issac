@@ -3,6 +3,7 @@
 #include "SceneGame.h"
 #include "Isaac.h"
 #include "Obstacles.h"
+#include "Monster.h"
 
 EnemyTears::EnemyTears(const std::string& name)
     : GameObject(name), speed(150.0f), damage(1), distance(0.0f), maxRange(200.0f)
@@ -46,7 +47,7 @@ void EnemyTears::Init()
 {
     animator.SetTarget(&sprite);
     sortingLayer = SortingLayers::Foreground;
-    sortingOrder = 1;
+    sortingOrder = 3;
 }
 
 void EnemyTears::Release()
@@ -128,7 +129,7 @@ void EnemyTears::Draw(sf::RenderWindow& window)
     hitBox.Draw(window);
 }
 
-void EnemyTears::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d)
+void EnemyTears::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d, float range)
 {
     SetPosition(pos);
     direction = dir;
@@ -136,6 +137,7 @@ void EnemyTears::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s,
     speed = s;
     damage = d;
     distance = 0.0f;
+    maxRange = range;
 }
 
 void EnemyTears::Hit()

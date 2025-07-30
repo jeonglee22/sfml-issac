@@ -47,6 +47,7 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/enemies/monster_001_pooter.png");
 	texIds.push_back("graphics/enemies/boss_007_dukeofflies.png");
 	texIds.push_back("graphics/enemies/monster_216_dip.png");
+	texIds.push_back("graphics/enemies/boss_085_dingle.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 
