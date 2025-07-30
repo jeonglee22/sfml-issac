@@ -10,9 +10,9 @@ protected:
 
 	Json::Value skillJson;
 
-	sf::Sprite* skill;
+	Skill* pickedSkill;
 
-	int skillCount = 340;
+	int skillCount = 300;
 
 	int pickedId = -1;
 
@@ -22,8 +22,12 @@ public:
 
 	void LoadJsonFile(const std::string& filePath);
 
-	void ShowJsonRandomInfo();
+	void PickJsonRandomInfo();
 
-	void AddTextureOfSkill();
+	void PickSkill();
+
+	Skill* GetSkill() { return pickedSkill; }
+
+	std::string ConvertName(const std::string& str);
 };
 

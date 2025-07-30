@@ -123,7 +123,7 @@
       "introduced_in": "Rebirth"
    },
    "15": {
-      "name": "<3",
+      "name": "Heart",
       "health": "1",
       "shown": true,
       "health_only": true,
@@ -1114,7 +1114,7 @@
    "153": {
       "name": "Mutant Spider",
       "delay": "3",
-      "delay_x" : "2.1",
+      "delay_x": "2.1",
       "shown": true,
       "spiderbaby": true,
       "text": "Quad shot",
@@ -2149,7 +2149,7 @@
    "301": {
       "name": "Cancer",
       "shown": true,
-      "soul_hearts" : "3",
+      "soul_hearts": "3",
       "text": "All dmg is reduced to half a heart (after getting hit in the room)",
       "introduced_in": "Rebirth"
    },
@@ -2282,7 +2282,7 @@
       "introduced_in": "Rebirth"
    },
    "320": {
-      "name": "???'s Only Friend",
+      "name": "Blue Baby's Only Friend",
       "shown": true,
       "beelzebub": true,
       "text": "Familiar (2.5 dmg / tick)",
@@ -2512,7 +2512,7 @@
       "space": true,
       "introduced_in": "Afterbirth"
    },
-   "350" : {
+   "350": {
       "name": "Toxic Shock",
       "text": "Deals 2x dmg to enemies at the start of each room",
       "shown": true,
@@ -2525,7 +2525,6 @@
       "space": true,
       "introduced_in": "Afterbirth"
    },
-
    "352": {
       "name": "Glass Cannon",
       "text": "Reduces red hearts to .5, shoots a big shot",
