@@ -73,3 +73,5 @@ graphics/obstacles/grid_fireplace.png,0,32,32,32,grid_fireplace,0.000000,259.601
 graphics/obstacles/grid_fireplace.png,0,32,32,32,grid_fireplace,52.000000,310.979187,32.000000,32.000000,1,-5,0.000000,0.000000,0.000000
 graphics/additionals/pickups/halfheart.png,0,0,16,14,halfheart,624.000000,-0.497528,16.000000,14.000000,1,-5,0.000000,0.000000,0.000000
 graphics/additionals/pickups/pickup_016_bomb.png,4,5,20,21,pickup_016_bomb,0.000000,310.979187,20.000000,21.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_216_dip.png,0,0,35,31,monster_216_dip,312.000000,0.000000,35.000000,31.000000,1,-5,0.000000,0.000000,0.000000
+graphics/enemies/monster_216_dip.png,0,0,35,31,monster_216_dip,312.000000,312.000000,35.000000,31.000000,1,-5,0.000000,0.000000,0.000000

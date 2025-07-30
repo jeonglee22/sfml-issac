@@ -35,7 +35,6 @@ void HorfFireState::Update(Monster* monster, float dt)
         SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/tear fire 4.wav"));
     }
 
-    // 발사 애니메이션 완료 후 Idle로 복귀
     if (shootTimer >= shootDuration)
     {
         Horf* horf = static_cast<Horf*>(monster);

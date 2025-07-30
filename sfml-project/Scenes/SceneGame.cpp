@@ -61,6 +61,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/monster_000_bodies02.png");
 	texIds.push_back("graphics/enemies/monster_029_horf.png");
 	texIds.push_back("graphics/enemies/monster_001_pooter.png");
+	texIds.push_back("graphics/enemies/monster_216_dip.png");
+	texIds.push_back("graphics/effects/effect_009_poof01_small.png");
 
 	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
 
@@ -120,6 +122,9 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/horf_fire.csv");
 	ANI_CLIP_MGR.Load("animations/pooter_idle.csv");
 	ANI_CLIP_MGR.Load("animations/pooter_fire.csv");
+	ANI_CLIP_MGR.Load("animations/dip_idle.csv");
+	ANI_CLIP_MGR.Load("animations/dip_move.csv");
+	ANI_CLIP_MGR.Load("animations/dip_dead.csv");
 
 	ANI_CLIP_MGR.Load("animations/tears_idle.csv");
 	ANI_CLIP_MGR.Load("animations/tears_boom.csv");

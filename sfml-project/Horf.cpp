@@ -23,7 +23,7 @@ void Horf::Reset()
 
     animator.Play("animations/horf_idle.csv");
     SetScale({ 2.0f, 2.0f });
-    SetOrigin(Origins::BC);
+    SetOrigin(Origins::MC);
 
     canUseSkill = true;
     skillTimer = 0.0f;

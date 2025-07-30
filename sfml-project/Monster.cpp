@@ -72,6 +72,14 @@ void Monster::Update(float dt)
 			isDead = false;
 			return;
 		}
+		if (monsterType == Monsters::Dip && deadTimer >= deadMaxTimer - 0.5f)
+		{
+			SetActive(false);
+			deadTimer = 0.0;
+			isDead = false;
+			return;
+		}
+
 	}
 	else
 	{
@@ -173,6 +181,10 @@ void Monster::TakeDamage(int damage)
 		{
 			animator.Play("animations/blood_small.csv");
 		}
+		if (monsterType == Monsters::Dip)
+		{
+			animator.Play("animations/dip_dead.csv");
+		}
 		if (monsterType == Monsters::LarryJr)
 		{
 			animator.Play("animations/blood_small.csv");
@@ -228,7 +240,7 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 			}
 		}
 
-		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::LarryJr))
+		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::Dip))
 		{
 			for (auto sprite : scene->GetMapSprites())
 			{

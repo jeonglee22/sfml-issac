@@ -45,6 +45,8 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/additionals/pickups/pickup_016_bomb.png");
 	texIds.push_back("graphics/enemies/monster_029_horf.png");
 	texIds.push_back("graphics/enemies/monster_001_pooter.png");
+	texIds.push_back("graphics/enemies/boss_007_dukeofflies.png");
+	texIds.push_back("graphics/enemies/monster_216_dip.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 
