@@ -27,7 +27,7 @@ void MapMaking::InitMapSetting(int map[][11])
 	}
 }
 
-sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::vector<MapType>& mapTypes)
+sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::vector<MapType> &mapTypes)
 {
 	// Map Random Making algorithm
 	// make mapIndex list, mapType list
@@ -55,7 +55,7 @@ sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::
 	MapType largeMapType = MapType::None;
 
 	std::queue<sf::Vector2i> mapQueue;
-	mapQueue.push({ startX, startY });
+	mapQueue.push({startX, startY});
 	while (mapQueue.size() != 0)
 	{
 		sf::Vector2i nowPos = mapQueue.front();
@@ -63,13 +63,13 @@ sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::
 		int addCount = 0;
 		for (int i = 0; i < 4; i++)
 		{
-			int nextX = nowPos.x + (i % 2 == 0 ? i - 1 : 0 );
-			int nextY = nowPos.y + (i % 2 != 0 ? 2 - i : 0 );
+			int nextX = nowPos.x + (i % 2 == 0 ? i - 1 : 0);
+			int nextY = nowPos.y + (i % 2 != 0 ? 2 - i : 0);
 
 			if (map[nextX][nextY] != -1)
 				continue;
 
-			if (CheckNeighboorCount({ nextX, nextY }, map))
+			if (CheckNeighboorCount({nextX, nextY}, map))
 				continue;
 
 			if (mapNumber >= mapCount)
@@ -77,7 +77,7 @@ sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::
 
 			if (isHaveLarge && (Utils::RandomRange(0, 4) == 1))
 			{
-				if(AddLargeMap({ nextX, nextY }, map, isSquare, mapNumber, mapQueue))
+				if (AddLargeMap({nextX, nextY}, map, isSquare, mapNumber, mapQueue))
 				{
 					isHaveLarge = false;
 					if (isSquare)
@@ -91,26 +91,26 @@ sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::
 				}
 			}
 
-			if (Utils::RandomRange(0,2) == 1)
+			if (Utils::RandomRange(0, 2) == 1)
 				continue;
 
 			map[nextX][nextY] = mapNumber++;
 			addCount++;
-			mapQueue.push({ nextX, nextY });
+			mapQueue.push({nextX, nextY});
 		}
 		if (addCount == 0)
 		{
-			if (std::find(lastMaps.begin(), lastMaps.end(), nowPos) == lastMaps.end() && 
+			if (std::find(lastMaps.begin(), lastMaps.end(), nowPos) == lastMaps.end() &&
 				(nowPos.x != startX || nowPos.y != startY))
 			{
-				if(map[nowPos.x][nowPos.y] != largeMapNumber)
+				if (map[nowPos.x][nowPos.y] != largeMapNumber)
 				{
 					lastMaps.push_back(nowPos);
 					mapTypes.push_back(MapType::Special);
 				}
 				else
 				{
-					if(map[nowPos.x][nowPos.y] >= mapTypes.size())
+					if (map[nowPos.x][nowPos.y] >= mapTypes.size())
 						mapTypes.push_back(largeMapType);
 				}
 			}
@@ -122,9 +122,9 @@ sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::
 				lastMaps.erase(std::find(lastMaps.begin(), lastMaps.end(), nowPos));
 				mapTypes[map[nowPos.x][nowPos.y]] = MapType::Normal;
 			}
-			else if(nowPos.x != startX || nowPos.y != startY)
+			else if (nowPos.x != startX || nowPos.y != startY)
 			{
-				if(map[nowPos.x][nowPos.y] >= mapTypes.size())
+				if (map[nowPos.x][nowPos.y] >= mapTypes.size())
 				{
 					if (map[nowPos.x][nowPos.y] == largeMapNumber)
 					{
@@ -140,8 +140,8 @@ sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::
 
 		if (mapNumber < mapCount && mapQueue.size() == 0)
 		{
-			mapQueue.push({ startX, startY });
-			if(lastMaps.size() != 0)
+			mapQueue.push({startX, startY});
+			if (lastMaps.size() != 0)
 				mapQueue.push(lastMaps[Utils::RandomRange(0, lastMaps.size())]);
 			/*mapTypes.erase(std::find(mapTypes.begin(), mapTypes.end(), mapTypes[map[lastMaps[0].x][lastMaps[0].y]]));
 			lastMaps.erase(lastMaps.begin());*/
@@ -157,8 +157,8 @@ sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::
 		sf::Vector2i maxDistanceMap = lastMaps[0];
 		for (auto map : lastMaps)
 		{
-			float distancefromMax = Utils::Distance((sf::Vector2f)maxDistanceMap, sf::Vector2f( startX, startY ));
-			if (Utils::Distance((sf::Vector2f)map, sf::Vector2f( startX, startY )) > distancefromMax)
+			float distancefromMax = Utils::Distance((sf::Vector2f)maxDistanceMap, sf::Vector2f(startX, startY));
+			if (Utils::Distance((sf::Vector2f)map, sf::Vector2f(startX, startY)) > distancefromMax)
 				maxDistanceMap = map;
 		}
 		mapTypes[map[maxDistanceMap.x][maxDistanceMap.y]] = MapType::Boss;
@@ -184,9 +184,9 @@ sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::
 	}
 }
 
-std::vector<Map*> MapMaking::SetMapInfo(int map[][11], int mapCount, std::vector<MapType> mapTypes)
+std::vector<Map *> MapMaking::SetMapInfo(int map[][11], int mapCount, std::vector<MapType> mapTypes)
 {
-	std::vector<Map*> maps;
+	std::vector<Map *> maps;
 	for (int i = 0; i < mapCount; i++)
 	{
 		maps.push_back(new Map());
@@ -204,19 +204,19 @@ std::vector<Map*> MapMaking::SetMapInfo(int map[][11], int mapCount, std::vector
 					delete maps[mapIndex];
 					maps[mapIndex] = nullptr;
 				}
-				//maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), "map" + std::to_string(mapIndex));
+				// maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), "map" + std::to_string(mapIndex));
 				if (mapTypes[mapIndex] == MapType::Rectangle)
 				{
 					if (i > 1 && map[i - 1][j] != -1 && map[i - 1][j] != 99 && mapTypes[map[i - 1][j]] == MapType::Rectangle)
-						maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex], false), ToString(mapTypes[mapIndex]));
+						maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex], false), ToString(mapTypes[mapIndex]), mapTypes[mapIndex]);
 					else if (j > 1 && map[i][j - 1] != -1 && map[i][j - 1] != 99 && mapTypes[map[i][j - 1]] == MapType::Rectangle)
-						maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex], true), ToString(mapTypes[mapIndex]));
+						maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex], true), ToString(mapTypes[mapIndex]), mapTypes[mapIndex]);
 				}
 				else
 				{
-					maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), ToString(mapTypes[mapIndex]));
+					maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex]), ToString(mapTypes[mapIndex]), mapTypes[mapIndex]);
 				}
-				if(maps[mapIndex])
+				if (maps[mapIndex])
 				{
 					maps[mapIndex]->SetStageIndex(j, i);
 				}
@@ -240,7 +240,7 @@ void MapMaking::GetMapInfo(std::string mapPosfile, int mapInfo[][11])
 	}
 }
 
-void MapMaking::SetMapConnection(std::vector<Map*> maps)
+void MapMaking::SetMapConnection(std::vector<Map *> maps)
 {
 	for (int i = 0; i < maps.size(); i++)
 	{
@@ -259,7 +259,7 @@ void MapMaking::SetMapConnection(std::vector<Map*> maps)
 		else if (maps[i]->GetName() == "RectangleMap")
 		{
 			sf::Vector2f pos;
-			if(maps[i]->GetMapSize().getSize().x > maps[i]->GetMapSize().getSize().y)
+			if (maps[i]->GetMapSize().getSize().x > maps[i]->GetMapSize().getSize().y)
 			{
 				pos.x = maps[0]->GetMapSize().getSize().x * (xPos - 6);
 				pos.y = maps[0]->GetMapSize().getSize().y * (yPos - 5);
@@ -273,7 +273,7 @@ void MapMaking::SetMapConnection(std::vector<Map*> maps)
 		}
 		else
 		{
-			maps[i]->SetPosition({ maps[i]->GetMapSize().getSize().x * (xPos - 5) , maps[i]->GetMapSize().getSize().y * (yPos - 5) });
+			maps[i]->SetPosition({maps[i]->GetMapSize().getSize().x * (xPos - 5), maps[i]->GetMapSize().getSize().y * (yPos - 5)});
 		}
 		maps[i]->SetActiveAll(false);
 	}
@@ -286,36 +286,36 @@ std::string MapMaking::PickRandomMapInPool(MapType mapType, bool row)
 	std::string fileName = "Mapfolder/";
 	switch (mapType)
 	{
-	case MapMaking::MapType::Normal:
+	case MapType::Normal:
 		fileName += "Normal/" + std::to_string(Utils::RandomRange(1, normalMapCount + 1)) + ".csv";
 		break;
-	case MapMaking::MapType::Start:
-		fileName += "Start/" + std::to_string(Utils::RandomRange(1, startMapCount+1)) + ".csv";
+	case MapType::Start:
+		fileName += "Start/" + std::to_string(Utils::RandomRange(1, startMapCount + 1)) + ".csv";
 		break;
-	case MapMaking::MapType::Boss:
+	case MapType::Boss:
 		fileName += "Boss/" + std::to_string(Utils::RandomRange(1, bossMapCount + 1)) + ".csv";
 		break;
-	case MapMaking::MapType::Hidden:
+	case MapType::Hidden:
 		fileName += "Hidden/" + std::to_string(Utils::RandomRange(1, hiddenMapCount + 1)) + ".csv";
 		break;
-	case MapMaking::MapType::Special:
+	case MapType::Special:
 		fileName += "Normal/" + std::to_string(Utils::RandomRange(1, normalMapCount + 1)) + ".csv";
 		break;
-	case MapMaking::MapType::Shop:
+	case MapType::Shop:
 		fileName += "Shop/" + std::to_string(Utils::RandomRange(1, shopMapCount + 1)) + ".csv";
 		break;
-	case MapMaking::MapType::Treasure:
-		fileName += "Treasure/" + std::to_string(Utils::RandomRange(1, treasureMapCount+1)) + ".csv";
+	case MapType::Treasure:
+		fileName += "Treasure/" + std::to_string(Utils::RandomRange(1, treasureMapCount + 1)) + ".csv";
 		break;
-	case MapMaking::MapType::Sacrifice:
-		fileName += "Sacrifice/" + std::to_string(Utils::RandomRange(1, sacrificeMapCount+1)) + ".csv";
+	case MapType::Sacrifice:
+		fileName += "Sacrifice/" + std::to_string(Utils::RandomRange(1, sacrificeMapCount + 1)) + ".csv";
 		break;
-	case MapMaking::MapType::Large:
-		fileName += "Large/" + std::to_string(Utils::RandomRange(1, largeMapCount+1)) + ".csv";
+	case MapType::Large:
+		fileName += "Large/" + std::to_string(Utils::RandomRange(1, largeMapCount + 1)) + ".csv";
 		break;
-	case MapMaking::MapType::Rectangle:
+	case MapType::Rectangle:
 		if (row)
-			fileName += "Rectangle/Row/" + std::to_string(Utils::RandomRange(1, rectangleMapCount+1)) + ".csv";
+			fileName += "Rectangle/Row/" + std::to_string(Utils::RandomRange(1, rectangleMapCount + 1)) + ".csv";
 		else
 			fileName += "Rectangle/Column/" + std::to_string(Utils::RandomRange(1, rectangleMapCount + 1)) + ".csv";
 		break;
@@ -326,7 +326,7 @@ std::string MapMaking::PickRandomMapInPool(MapType mapType, bool row)
 	return fileName;
 }
 
-bool MapMaking::CheckNeighboorCount(const sf::Vector2i& pos, int map[][11])
+bool MapMaking::CheckNeighboorCount(const sf::Vector2i &pos, int map[][11])
 {
 	int count = 0;
 	for (int i = 0; i < 4; i++)
@@ -340,7 +340,7 @@ bool MapMaking::CheckNeighboorCount(const sf::Vector2i& pos, int map[][11])
 	return count > 1;
 }
 
-bool MapMaking::AddLargeMap(const sf::Vector2i& pos, int map[][11], bool isSquare, int MapNumber, std::queue<sf::Vector2i>& queue)
+bool MapMaking::AddLargeMap(const sf::Vector2i &pos, int map[][11], bool isSquare, int MapNumber, std::queue<sf::Vector2i> &queue)
 {
 	if (isSquare)
 	{
@@ -351,7 +351,7 @@ bool MapMaking::AddLargeMap(const sf::Vector2i& pos, int map[][11], bool isSquar
 			sf::Vector2i pos1 = pos;
 			sf::Vector2i pos2 = i < 2 ? sf::Vector2i(pos.x, pos.y + 1) : sf::Vector2i(pos.x, pos.y - 1);
 			sf::Vector2i pos3 = (i == 0 || i == 3) ? sf::Vector2i(pos.x - 1, pos.y) : sf::Vector2i(pos.x + 1, pos.y);
-			sf::Vector2i pos4 = sf::Vector2i((i == 0 || i == 3) ? -1 : 1 , i < 2 ? 1 : -1) + pos;
+			sf::Vector2i pos4 = sf::Vector2i((i == 0 || i == 3) ? -1 : 1, i < 2 ? 1 : -1) + pos;
 
 			if (map[pos1.x][pos1.y] != -1 || map[pos2.x][pos2.y] != -1 || map[pos3.x][pos3.y] != -1 || map[pos4.x][pos4.y] != -1)
 				continue;
@@ -410,31 +410,31 @@ std::string MapMaking::ToString(MapType ty)
 	std::string str;
 	switch (ty)
 	{
-	case MapMaking::MapType::Normal:
+	case MapType::Normal:
 		str = "NormalMap";
 		break;
-	case MapMaking::MapType::Start:
+	case MapType::Start:
 		str = "StartlMap";
 		break;
-	case MapMaking::MapType::Boss:
+	case MapType::Boss:
 		str = "BossMap";
 		break;
-	case MapMaking::MapType::Hidden:
+	case MapType::Hidden:
 		str = "HiddenMap";
 		break;
-	case MapMaking::MapType::Shop:
+	case MapType::Shop:
 		str = "ShopMap";
 		break;
-	case MapMaking::MapType::Treasure:
+	case MapType::Treasure:
 		str = "TreasureMap";
 		break;
-	case MapMaking::MapType::Sacrifice:
+	case MapType::Sacrifice:
 		str = "SacrificeMap";
 		break;
-	case MapMaking::MapType::Large:
+	case MapType::Large:
 		str = "LargeMap";
 		break;
-	case MapMaking::MapType::Rectangle:
+	case MapType::Rectangle:
 		str = "RectangleMap";
 		break;
 	default:

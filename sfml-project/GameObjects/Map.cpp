@@ -16,8 +16,8 @@
 #include "AttackFly.h"
 #include "LarryJr.h"
 
-Map::Map(const std::string &filePath, const std::string &name)
-	: filePath(filePath), GameObject(name)
+Map::Map(const std::string &filePath, const std::string &name, const MapType ty)
+	: filePath(filePath), GameObject(name), type(ty)
 {
 }
 
@@ -39,7 +39,6 @@ void Map::SetPosition(const sf::Vector2f &pos)
 		ground->SetPosition(ground->GetPosition() + pos);
 	for (auto item : items)
 		item->SetPosition(item->GetPosition() + pos);
-
 }
 
 void Map::SetRotation(float rot)
@@ -122,9 +121,9 @@ void Map::SetCleared(bool b)
 	}
 }
 
-void Map::AddMonster(const sf::Vector2f &pos, const std::string& name)
+void Map::AddMonster(const sf::Vector2f &pos, const std::string &name)
 {
-	Monster* monster;
+	Monster *monster;
 	if (name == "monster_214_level2spider_small")
 		monster = new Spider();
 	else if (name == "monster_010_fly")
@@ -140,13 +139,13 @@ void Map::AddMonster(const sf::Vector2f &pos, const std::string& name)
 	monsters.push_back(monster);
 	monster->Init();
 	monster->Reset();
-	monster->SetPosition(pos + sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f);
+	monster->SetPosition(pos + sf::Vector2f(currentMapRect.left, currentMapRect.top) * -1.f);
 	sceneGame->AddGameObject(monster);
 }
 
-void Map::AddItem(const sf::Vector2f& pos, const std::string& name)
+void Map::AddItem(const sf::Vector2f &pos, const std::string &name)
 {
-	Item* item = new Item();
+	Item *item = new Item();
 	items.push_back(item);
 	item->Init();
 	if (name == "heart")
@@ -160,56 +159,89 @@ void Map::AddItem(const sf::Vector2f& pos, const std::string& name)
 	else if (name == "pickup_003_key")
 		item->SetItemType(Items::Key);
 	item->Reset();
-	item->SetPosition(pos + sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f);
+	item->SetPosition(pos + sf::Vector2f(currentMapRect.left, currentMapRect.top) * -1.f);
 	sceneGame->AddGameObject(item);
 }
 
 void Map::SetDoor()
 {
+	std::vector<sf::Vector2i> posDiffer;
+	sf::Vector2f currentMapSize = currentMapRect.getSize();
 	std::vector<int> neighboorMapIndex = sceneGame->GetNeighboorMapIndex(StageXPos, StageYPos);
-	/*if (name == "RectangleMap")
+	int currentMapIndex = sceneGame->GetMapIndex(StageXPos, StageYPos);
+	if (name == "RectangleMap")
 	{
-		sf::Vector2i sameIndexPos = sceneGame->GetNeighboorMapIndexInLargeMap(StageXPos, StageYPos);
-		for (int a : sceneGame->GetNeighboorMapIndex(sameIndexPos.x, sameIndexPos.y))
-			neighboorMapIndex.push_back(a);
+		posDiffer.push_back(sceneGame->GetNeighboorMapIndexInRectangleMap(StageXPos, StageYPos) - sf::Vector2i(StageXPos, StageYPos));
+		for (int i : sceneGame->GetNeighboorMapIndex(posDiffer[0].x + StageXPos, posDiffer[0].y + StageYPos))
+		{
+			neighboorMapIndex.push_back(i);
+		}
 	}
 	else if (name == "LargeMap")
 	{
-
-	}*/
-	float width = currentMapSize.width, height = currentMapSize.height;
-	Door tempdoor = Door("graphics/additionals/door_01_normaldoor.png", "Door");
-	tempdoor.Reset();
-	for (int i = 0; i < 4; i++)
-	{
-		sf::Vector2f localPos;
-		localPos.x = (width * 0.5f - 104.f) * (i % 2 == 1 ? 2.f - i : 0.f);
-		localPos.y = (height * 0.5f - 104.f) * (i % 2 == 0 ? i - 1.f : 0.f);
-		if(neighboorMapIndex[i] != -1 && neighboorMapIndex[i] != 99)
+		posDiffer.push_back({ -1,0 });
+		posDiffer.push_back({ 0,-1 });
+		posDiffer.push_back({ -1,-1 });
+		for (int i = 0; i < 3; i++)
 		{
-			doors.push_back(new Door("graphics/additionals/door_01_normaldoor.png", "Door"));
-			doors[doors.size() - 1]->Init();
-			doors[doors.size() - 1]->Reset();
-			doors[doors.size() - 1]->SetPosition(currentMapSize.getSize() * 0.5f + localPos);
-			doors[doors.size() - 1]->SetRotation(90.f * i);
-			doors[doors.size() - 1]->SetDoorDirection(i);
-		}
-		else
-		{
-			boundary.push_back(new HitBox());
-			boundary[boundary.size() - 1]->rect.setSize((sf::Vector2f)tempdoor.GetSprite().getTextureRect().getSize());
-			boundary[boundary.size() - 1]->rect.setOrigin({ boundary[boundary.size() - 1]->rect.getSize().x * 0.5f,
-				boundary[boundary.size() - 1]->rect.getSize().y});
-			boundary[boundary.size() - 1]->rect.setPosition(currentMapSize.getSize() * 0.5f + localPos);
-			boundary[boundary.size() - 1]->rect.setRotation(90.f * i);
+			for (auto index : sceneGame->GetNeighboorMapIndex(posDiffer[i].x + StageXPos, posDiffer[i].y + StageYPos))
+				neighboorMapIndex.push_back(index);
 		}
 	}
-	std::cout << std::endl;
+	float width = sceneGame->GetSmallMapSize().width, height = sceneGame->GetSmallMapSize().height;
+	Door tempdoor = Door("graphics/additionals/door_01_normaldoor.png", "Door");
+	tempdoor.Reset();
+
+	sf::Vector2f centerPos;
+	if (posDiffer.size() == 0)
+		centerPos = currentMapSize * 0.5f;
+	if (posDiffer.size() == 1)
+		centerPos = currentMapSize * 0.5f + sf::Vector2f(currentMapSize.x * 0.25f * (-posDiffer[0].x), currentMapSize.y * 0.25f * (-posDiffer[0].y));
+	if (posDiffer.size() == 3)
+		centerPos = currentMapSize * 0.75f;
+
+	for(int i = 0; i < posDiffer.size()+1; i++)
+	{
+		sf::Vector2f differPos;
+		if (i > 0)
+		{
+			differPos.x = posDiffer[i-1].x * width;
+			differPos.y = posDiffer[i-1].y * height;
+		}
+		for (int j = 0; j < 4; j++)
+		{
+			sf::Vector2f localPos;
+			localPos.x = (width * 0.5f - 104.f) * (j % 2 == 1 ? 2.f - j : 0.f);
+			localPos.y = (height * 0.5f - 104.f) * (j % 2 == 0 ? j - 1.f : 0.f);
+			if (neighboorMapIndex[i * 4 + j] == currentMapIndex)
+			{
+				continue;
+			}
+			else if (neighboorMapIndex[i * 4 + j] != -1 && neighboorMapIndex[i * 4 + j] != 99)
+			{
+				doors.push_back(new Door("graphics/additionals/door_01_normaldoor.png", "Door"));
+				doors[doors.size() - 1]->Init();
+				doors[doors.size() - 1]->Reset();
+				doors[doors.size() - 1]->SetPosition(centerPos + localPos + differPos);
+				doors[doors.size() - 1]->SetRotation(90.f * j);
+				doors[doors.size() - 1]->SetDoorDirection(j);
+			}
+			else
+			{
+				boundary.push_back(new HitBox());
+				boundary[boundary.size() - 1]->rect.setSize((sf::Vector2f)tempdoor.GetSprite().getTextureRect().getSize());
+				boundary[boundary.size() - 1]->rect.setOrigin({ boundary[boundary.size() - 1]->rect.getSize().x * 0.5f,
+															   boundary[boundary.size() - 1]->rect.getSize().y });
+				boundary[boundary.size() - 1]->rect.setPosition(centerPos + localPos + differPos);
+				boundary[boundary.size() - 1]->rect.setRotation(90.f * j);
+			}
+		}
+	}
 }
 
 void Map::SetBoundary()
 {
-	float left = currentMapSize.left, top = currentMapSize.top, width = currentMapSize.width, height = currentMapSize.height;
+	float left = currentMapRect.left, top = currentMapRect.top, width = currentMapRect.width, height = currentMapRect.height;
 	Door tempdoor = Door("graphics/additionals/door_01_normaldoor.png", "Door");
 	tempdoor.Reset();
 	sf::Vector2f doorSize = (sf::Vector2f)tempdoor.GetSprite().getTextureRect().getSize();
@@ -221,7 +253,7 @@ void Map::SetBoundary()
 		if (i < 2)
 		{
 			// boundary[i]->rect.setSize({ currentMapSize.width, 104.f });
-			sf::Vector2f rowBound = {(currentMapSize.width - doorSize.x) * 0.5f, 104.f};
+			sf::Vector2f rowBound = {(currentMapRect.width - doorSize.x) * 0.5f, 104.f};
 			boundary[i * 2 + nonDoorCount]->rect.setSize(rowBound);
 			boundary[i * 2 + 1 + nonDoorCount]->rect.setSize(rowBound);
 			boundary[i * 2 + nonDoorCount]->rect.setOrigin({rowBound.x + doorSize.x * 0.5f, 52.f});
@@ -230,21 +262,21 @@ void Map::SetBoundary()
 		else
 		{
 			// boundary[i]->rect.setSize({ 104.f, currentMapSize.height });
-			sf::Vector2f colBound = {104.f, (currentMapSize.height - doorSize.x) * 0.5f};
+			sf::Vector2f colBound = {104.f, (currentMapRect.height - doorSize.x) * 0.5f};
 			boundary[i * 2 + nonDoorCount]->rect.setSize(colBound);
 			boundary[i * 2 + 1 + nonDoorCount]->rect.setSize(colBound);
 			boundary[i * 2 + nonDoorCount]->rect.setOrigin({52.f, colBound.y + doorSize.x * 0.5f});
 			boundary[i * 2 + 1 + nonDoorCount]->rect.setOrigin({52.f, -doorSize.x * 0.5f});
 		}
 	}
-	boundary[nonDoorCount]->rect.setPosition({currentMapSize.getSize().x * 0.5f, 52.f});
-	boundary[1 + nonDoorCount]->rect.setPosition({currentMapSize.getSize().x * 0.5f, 52.f});
-	boundary[2 + nonDoorCount]->rect.setPosition({currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f});
-	boundary[3 + nonDoorCount]->rect.setPosition({currentMapSize.getSize().x * 0.5f, currentMapSize.getSize().y - 52.f});
-	boundary[4 + nonDoorCount]->rect.setPosition({52.f, currentMapSize.getSize().y * 0.5f});
-	boundary[5 + nonDoorCount]->rect.setPosition({52.f, currentMapSize.getSize().y * 0.5f});
-	boundary[6 + nonDoorCount]->rect.setPosition({currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f});
-	boundary[7 + nonDoorCount]->rect.setPosition({currentMapSize.getSize().x - 52.f, currentMapSize.getSize().y * 0.5f});
+	boundary[nonDoorCount]->rect.setPosition({currentMapRect.getSize().x * 0.5f, 52.f});
+	boundary[1 + nonDoorCount]->rect.setPosition({currentMapRect.getSize().x * 0.5f, 52.f});
+	boundary[2 + nonDoorCount]->rect.setPosition({currentMapRect.getSize().x * 0.5f, currentMapRect.getSize().y - 52.f});
+	boundary[3 + nonDoorCount]->rect.setPosition({currentMapRect.getSize().x * 0.5f, currentMapRect.getSize().y - 52.f});
+	boundary[4 + nonDoorCount]->rect.setPosition({52.f, currentMapRect.getSize().y * 0.5f});
+	boundary[5 + nonDoorCount]->rect.setPosition({52.f, currentMapRect.getSize().y * 0.5f});
+	boundary[6 + nonDoorCount]->rect.setPosition({currentMapRect.getSize().x - 52.f, currentMapRect.getSize().y * 0.5f});
+	boundary[7 + nonDoorCount]->rect.setPosition({currentMapRect.getSize().x - 52.f, currentMapRect.getSize().y * 0.5f});
 }
 
 void Map::ClearSprites()
@@ -260,7 +292,7 @@ void Map::LoadStageField(const std::string &filePath)
 {
 	rapidcsv::Document doc(filePath);
 
-	currentMapSize = sf::FloatRect(doc.GetCell<float>(0, 0), doc.GetCell<float>(1, 0), doc.GetCell<float>(2, 0), doc.GetCell<float>(3, 0));
+	currentMapRect = sf::FloatRect(doc.GetCell<float>(0, 0), doc.GetCell<float>(1, 0), doc.GetCell<float>(2, 0), doc.GetCell<float>(3, 0));
 
 	ClearSprites();
 	for (int i = 0; i < doc.GetRowCount() - 1; i++)
@@ -286,11 +318,11 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 	}
 	else if (infos[5].substr(0, 4) == "mons" || infos[5].substr(0, 4) == "boss")
 	{
-		AddMonster({ std::stof(infos[6]),std::stof(infos[7]) }, infos[5]);
+		AddMonster({std::stof(infos[6]), std::stof(infos[7])}, infos[5]);
 	}
 	else if (infos[5].substr(0, 4) == "pick" || infos[5] == "heart" || infos[5] == "halfheart")
 	{
-		AddItem({ std::stof(infos[6]),std::stof(infos[7]) }, infos[5]);
+		AddItem({std::stof(infos[6]), std::stof(infos[7])}, infos[5]);
 	}
 	else
 	{
@@ -305,9 +337,9 @@ void Map::SpriteSetting(SpriteGo *sp, const std::vector<std::string> infos)
 	sp->SetOrigin(Origins::MC);
 	sp->Reset();
 	sp->GetSprite().setTextureRect({std::stoi(infos[2]), std::stoi(infos[1]), std::stoi(infos[3]), std::stoi(infos[4])});
-	sp->SetScale({2.f * std::stof(infos[15]), 2.f * std::stof(infos[16]) });
+	sp->SetScale({2.f * std::stof(infos[15]), 2.f * std::stof(infos[16])});
 	sp->SetOrigin({std::stof(infos[13]), std::stof(infos[14])});
-	sp->SetPosition(sf::Vector2f(std::stof(infos[6]), std::stof(infos[7])) + sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f);
+	sp->SetPosition(sf::Vector2f(std::stof(infos[6]), std::stof(infos[7])) + sf::Vector2f(currentMapRect.left, currentMapRect.top) * -1.f);
 	sp->SetRotation(std::stof(infos[12]));
 	sp->sortingLayer = (SortingLayers)std::stoi(infos[10]);
 	sp->sortingOrder = std::stoi(infos[11]);
@@ -327,7 +359,6 @@ void Map::AddGameObjectInScene()
 		sceneGame->AddGameObject(ground);
 	for (auto item : items)
 		sceneGame->AddGameObject(item);
-
 }
 
 void Map::SetActiveAll(bool b)

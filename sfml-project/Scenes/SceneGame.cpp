@@ -140,34 +140,35 @@ void SceneGame::Init()
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
-	std::vector<MapMaking::MapType> mapTypes;
+	std::vector<MapType> mapTypes;
 	sf::Vector2i startPos = MapMaking::MapRandomMaking(10, mapIndex, mapTypes);
 	stageStartX = currentXIndex = startPos.x;
 	stageStartY = currentYIndex = startPos.y;
 
 	maps = MapMaking::SetMapInfo(mapIndex, 10, mapTypes);
-	for (auto& map : maps)
+	for (auto &map : maps)
 		AddGameObject(map);
 
-	for(int i =0; i <1;i++)
+	for (int i = 0; i < 1; i++)
 	{
-		shadings.push_back((SpriteGo*)AddGameObject(new SpriteGo("graphics/shading.png")));
+		shadings.push_back((SpriteGo *)AddGameObject(new SpriteGo("graphics/shading.png")));
 
 		shadings[i]->sortingLayer = SortingLayers::Background;
 		shadings[i]->sortingOrder = 20;
 	}
-	controls = (SpriteGo*)AddGameObject(new SpriteGo("graphics/controls.png"));
+	controls = (SpriteGo *)AddGameObject(new SpriteGo("graphics/controls.png"));
 	controls->sortingLayer = SortingLayers::Background;
 	controls->sortingOrder = 5;
 
-	mapUI = (MapUI*)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
+	mapUI = (MapUI *)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
 	mapUI->SetPlayerXIndex(startPos.x);
 	mapUI->SetPlayerYIndex(startPos.y);
-	itemUI = (ItemUI*)AddGameObject(new ItemUI("ItemUI"));
-	heartUI = (HeartUI*)AddGameObject(new HeartUI("graphics/ui_hearts.png", "HeartUI"));
-	skillUI = (SkillUI*)AddGameObject(new SkillUI("graphics/ui_chargebar.png", "SkillUI"));
+	itemUI = (ItemUI *)AddGameObject(new ItemUI("ItemUI"));
+	heartUI = (HeartUI *)AddGameObject(new HeartUI("graphics/ui_hearts.png", "HeartUI"));
+	skillUI = (SkillUI *)AddGameObject(new SkillUI("graphics/ui_chargebar.png", "SkillUI"));
 	skill = new Skill("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png", "necronomicon");
-	skill->SetSkillFunc([this]() {
+	skill->SetSkillFunc([this]()
+						{
 		for (auto monster : monsters)
 		{
 			if (!monster->GetActive() || monster->IsDead())
@@ -176,11 +177,10 @@ void SceneGame::Init()
 			}
 				monster->TakeDamage(40);
 
-		}
-	});
+		} });
 	skill->SetTotalSkillCooltime(4);
 
-	FPS = (TextGo*)AddGameObject(new TextGo("fonts/DS-DIGIT.ttf", "frame"));
+	FPS = (TextGo *)AddGameObject(new TextGo("fonts/DS-DIGIT.ttf", "frame"));
 	FPS->SetCharacterSize(30);
 	FPS->SetOrigin(Origins::MC);
 	FPS->sortingLayer = SortingLayers::UI;
@@ -191,30 +191,30 @@ void SceneGame::Init()
 
 void SceneGame::Enter()
 {
-	FRAMEWORK.GetWindow().setSize({ 960, 540 });
+	FRAMEWORK.GetWindow().setSize({960, 540});
 	auto size = FRAMEWORK.GetWindowSizeF();
 
-	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
+	sf::Vector2f center{size.x * 0.5f, size.y * 0.5f};
 	uiView.setSize(size);
 	uiView.setCenter(center);
 
 	Scene::Enter();
 
-	mapUI->SetScale({ 2.f,2.f });
-	itemUI->SetScale({ 2.f,2.f });
-	heartUI->SetScale({ 2.f,2.f });
+	mapUI->SetScale({2.f, 2.f});
+	itemUI->SetScale({2.f, 2.f});
+	heartUI->SetScale({2.f, 2.f});
 
 	mapUI->SetMapIndex(mapIndex);
-	mapUI->SetPosition({ uiView.getSize().x - 110.f, 100.f });
+	mapUI->SetPosition({uiView.getSize().x - 110.f, 100.f});
 
 	currentMapSize = smallMapSize = maps[0]->GetMapSize();
-	
+
 	// LoadStageField("Mapfolder/testmap3.csv");
 	mapOffset = sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f;
 
 	MapMaking::SetMapConnection(maps);
 
-	worldView.setSize({ currentMapSize.getSize().x * 1.1f, currentMapSize.getSize().y });
+	worldView.setSize({currentMapSize.getSize().x * 1.1f, currentMapSize.getSize().y});
 	worldView.setCenter(maps[0]->GetPosition() + currentMapSize.getSize() * 0.5f);
 	isaac->SetPosition(worldView.getCenter());
 
@@ -222,17 +222,17 @@ void SceneGame::Enter()
 
 	for (auto shading : shadings)
 	{
-		shading->SetScale({ 2.f, 2.f });
+		shading->SetScale({2.f, 2.f});
 		shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
 		shading->SetPosition(worldView.getCenter());
 	}
-	controls->SetScale({ 2.f,2.f });
+	controls->SetScale({2.f, 2.f});
 	controls->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/controls.png").getSize()) * 0.5f);
 	controls->SetPosition(worldView.getCenter());
 
 	isaac->SetSkill(skill);
 	skillUI->SetSkill(isaac->GetSkill());
-	skillUI->SetPosition({ 60.f,60.f });
+	skillUI->SetPosition({60.f, 60.f});
 
 	FPS->SetPosition({150.f, 50.f});
 }
@@ -262,7 +262,6 @@ void SceneGame::Update(float dt)
 			if (Utils::Distance(worldView.getCenter(), nextMapViewStart) <= 1.f)
 			{
 				worldView.setCenter(nextMapViewStart);
-				isaac->SetPosition(nextSpawnPos);
 				isMapChanging = false;
 			}
 		}
@@ -302,12 +301,12 @@ void SceneGame::Update(float dt)
 		heartUI->SetHeartCount(isaac->GetCurrentHP());
 		heartUI->SetMaxHeartCount(isaac->GetMaxHP());
 
-		if(isaac->GetBombCount() != itemUI->GetBombCount())
+		if (isaac->GetBombCount() != itemUI->GetBombCount())
 			itemUI->SetItemUICount(Items::Bomb, isaac->GetBombCount());
 
 		if (isaac && !isMapChanging)
 		{
-			Map* currentMap = maps[currentMapIndex];
+			Map *currentMap = maps[currentMapIndex];
 			auto items = currentMap->GetItems();
 
 			for (auto item : items)
@@ -342,7 +341,7 @@ void SceneGame::Update(float dt)
 				currentXIndex += (int)dir.x;
 				mapUI->SetPlayerXIndex(currentXIndex);
 				mapUI->SetPlayerYIndex(currentYIndex);
-				
+
 				isMapChanging = true;
 				currentMapIndex = mapIndex[currentYIndex][currentXIndex];
 				nextSpawnPos = isaac->GetPosition() + door->GetDoorDirection() * 210.f;
@@ -411,27 +410,27 @@ std::vector<int> SceneGame::GetNeighboorMapIndex(int x, int y)
 	return std::vector<int>{up, right, down, left};
 }
 
-sf::Vector2i SceneGame::GetNeighboorMapIndexInLargeMap(int x, int y)
+sf::Vector2i SceneGame::GetNeighboorMapIndexInRectangleMap(int x, int y)
 {
 	if (mapIndex[y - 1][x] == mapIndex[y][x])
-		return sf::Vector2i(x, y-1);
-	else if (mapIndex[y][x-1] == mapIndex[y][x])
-		return sf::Vector2i(x-1, y);
+		return sf::Vector2i(x, y - 1);
+	else if (mapIndex[y][x - 1] == mapIndex[y][x])
+		return sf::Vector2i(x - 1, y);
 	return sf::Vector2i();
 }
 
 void SceneGame::AddSkillCooltimeAtClear()
 {
-	Skill* skill = isaac->GetSkill();
+	Skill *skill = isaac->GetSkill();
 	skill->AddSkillCooltime();
 }
 
 void SceneGame::ViewFollowing()
 {
-	Map* currentMap = maps[currentMapIndex];
+	Map *currentMap = maps[currentMapIndex];
 	currentMapSize = currentMap->GetMapSize();
 	sf::FloatRect viewBoundary;
-	viewBoundary.left = 0; 
+	viewBoundary.left = 0;
 	viewBoundary.top = 0;
 	viewBoundary.width = currentMapSize.width - smallMapSize.width;
 	viewBoundary.height = currentMapSize.height - smallMapSize.height;
@@ -446,9 +445,9 @@ void SceneGame::ViewFollowing()
 	center.x = Utils::Clamp(isaac->GetPosition().x, centerXMin, centerXMax);
 	center.y = Utils::Clamp(isaac->GetPosition().y, centerYMin, centerYMax);
 
-	worldView.setCenter(center );
+	worldView.setCenter(center);
 
-	if(printTime >= 1.f)
+	if (printTime >= 1.f)
 	{
 		std::cout << worldView.getCenter().x << ", " << worldView.getCenter().y << std::endl;
 		std::cout << isaac->GetPosition().x << ", " << isaac->GetPosition().y << std::endl;

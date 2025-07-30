@@ -6,24 +6,6 @@ class SceneGame;
 
 class MapMaking
 {
-public:
-	enum class MapType
-	{
-		None = -1,
-		Normal,
-		Start,
-		Boss,
-		Special,
-		Hidden,
-		Shop,
-		Treasure,
-		Sacrifice,
-		Large,
-		Rectangle,
-
-		TypeCount,
-	};
-
 protected:
 	static int normalMapCount;
 	static int startMapCount;
@@ -38,15 +20,15 @@ protected:
 public:
 	static void InitMapSetting(int map[][11]);
 	static sf::Vector2i MapRandomMaking(const int mapCount, int map[][11], std::vector<MapType> &mapTypes);
-	static std::vector<Map*> SetMapInfo(int map[][11], int mapCount, std::vector<MapType> mapTypes);
+	static std::vector<Map *> SetMapInfo(int map[][11], int mapCount, std::vector<MapType> mapTypes);
 	static void GetMapInfo(std::string mapPosfile, int mapInfo[][11]);
-	static void SetMapConnection(std::vector<Map*> maps);
+	static void SetMapConnection(std::vector<Map *> maps);
 
 	static std::string PickRandomMapInPool(MapType mapTypes, bool row = true);
 
-	static bool CheckNeighboorCount(const sf::Vector2i& pos, int map[][11]);
+	static bool CheckNeighboorCount(const sf::Vector2i &pos, int map[][11]);
 
-	static bool AddLargeMap(const sf::Vector2i& pos, int map[][11], bool isSquare, int MapNumber, std::queue<sf::Vector2i>& queue);
+	static bool AddLargeMap(const sf::Vector2i &pos, int map[][11], bool isSquare, int MapNumber, std::queue<sf::Vector2i> &queue);
 
 	static void PrintMap(int map[][11])
 	{
@@ -62,4 +44,3 @@ public:
 
 	static std::string ToString(MapType ty);
 };
-

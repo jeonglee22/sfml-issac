@@ -100,7 +100,7 @@ void SceneDev1::Update(float dt)
 	if(InputMgr::GetKeyDown(sf::Keyboard::P))
 	{
 		int map[11][11];
-		std::vector<MapMaking::MapType> mapTypes;
+		std::vector<MapType> mapTypes;
 		MapMaking::MapRandomMaking(10, map, mapTypes);
 	}
 

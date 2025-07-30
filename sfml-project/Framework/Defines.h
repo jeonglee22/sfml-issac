@@ -12,9 +12,15 @@ enum class SortingLayers
 
 enum class Origins
 {
-	TL, TC, TR,	// 0 1 2
-	ML, MC, MR,	// 3 4 5
-	BL, BC, BR, // 6 7 8
+	TL,
+	TC,
+	TR, // 0 1 2
+	ML,
+	MC,
+	MR, // 3 4 5
+	BL,
+	BC,
+	BR, // 6 7 8
 	Custom
 };
 
@@ -53,4 +59,21 @@ enum class Items
 	Heart,
 	Bomb,
 	Key,
+};
+
+enum class MapType
+{
+	None = -1,
+	Normal,
+	Start,
+	Boss,
+	Special,
+	Hidden,
+	Shop,
+	Treasure,
+	Sacrifice,
+	Large,
+	Rectangle,
+
+	TypeCount,
 };
