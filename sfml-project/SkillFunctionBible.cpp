@@ -8,7 +8,8 @@ void SkillFunctionBible::SetIsaac()
 		isaac = ((SceneGame*)SCENE_MGR.GetCurrentScene())->GetIsaac();
 }
 
-void SkillFunctionBible::AddSkillFunction(const std::string& skillName, std::function<void()>& func)
+void SkillFunctionBible::AddSkillFunction()
 {
-	skillFunctionBible.insert({ skillName, func });
+	Necronomicon necro;
+	skillFunctionBible.insert({ "thenecronomicon", necro() });
 }

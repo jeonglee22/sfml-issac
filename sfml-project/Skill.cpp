@@ -57,6 +57,7 @@ void Skill::Update(float dt)
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::Q) && skillCoolTime == currentCoolTime)
 	{
+		isUseSkill = true;
 		skillFunc();
 		currentCoolTime = 0;
 	}
@@ -64,9 +65,30 @@ void Skill::Update(float dt)
 	{
 		AddSkillCooltime();
 	}
+
+	if (isUseSkill)
+	{
+		skillActionTime += dt;
+		if (skillActionTime > skillActionMax)
+		{
+			skillActionTime = 0.f;
+			isUseSkill = false;
+		}
+	}
 }
 
 void Skill::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+
+	if(isUseSkill)
+	{
+		window.draw(effectBody);
+	}
+}
+
+void Skill::SetEffectBody()
+{
+	TEXTURE_MGR.Load(effectId);
+	effectBody.setTexture(TEXTURE_MGR.Get(effectId));
 }

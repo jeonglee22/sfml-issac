@@ -89,7 +89,7 @@ void SkillUI::Reset()
 
 void SkillUI::Update(float dt)
 {
-	if (skill->GetCurrentCooltime() != imageCoolTime)
+	if (skill != nullptr && skill->GetCurrentCooltime() != imageCoolTime)
 	{
 		imageCoolTime = skill->GetCurrentCooltime();
 		ChangeCoolTimeTexture();

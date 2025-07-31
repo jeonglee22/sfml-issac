@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SkillBible.h"
+#include "SkillFunctionBible.h"
 
 void SkillBible::LoadJsonFile(const std::string& filePath)
 {
@@ -26,7 +27,6 @@ void SkillBible::PickSkill()
 
 		while (status == Json::nullValue)
 		{
-			std::cout << pickedId << std::endl;
 			PickJsonRandomInfo();
 			status = skillJson[std::to_string(pickedId)];
 		}
@@ -40,7 +40,6 @@ void SkillBible::PickSkill()
 		std::string name;
 		if (std::find(memberNames.begin(), memberNames.end(), "name") != memberNames.end())
 			name = status["name"].asString();
-		std::cout << name << ", " << pickedId << std::endl;
 
 		std::string texId = "graphics/additionals/collectibles/collectibles_";
 		if (pickedId < 10)
@@ -58,7 +57,15 @@ void SkillBible::PickSkill()
 		std::string convertedName = ConvertName(name);
 		texId += convertedName + ".png";
 
-		pickedSkill = new Skill(texId, convertedName);
+		if (bible != nullptr)
+		{
+			delete bible;
+		}
+		bible = new SkillFunctionBible();
+		bible->AddSkillFunction();
+
+		pickedSkill = bible->GetSkill("thenecronomicon");
+
 		TEXTURE_MGR.Load(texId);
 	}
 }

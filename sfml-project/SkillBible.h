@@ -2,12 +2,15 @@
 #include <json/json.h>
 #include <Skill.h>
 
+class SkillFunctionBible;
+
 class SkillBible
 {
 protected:
 	Json::Value skillJson;
 
-	Skill* pickedSkill;
+	Skill* pickedSkill = nullptr;
+	SkillFunctionBible* bible;
 
 	int skillCount = 300;
 
