@@ -39,7 +39,7 @@ void DingleFireState::Update(Monster* monster, float dt)
     if (fireTimer >= fireDuration)
     {
         Dingle* dingle = static_cast<Dingle*>(monster);
-        dingle->ChangeToRushState();
+        dingle->ChangeToIdleState();
     }
 }
 

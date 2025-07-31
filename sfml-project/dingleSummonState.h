@@ -1,11 +1,15 @@
 #pragma once
 #include "MonsterState.h"
 
-class dingleSummonState : public MonsterState
+class Dingle;
+
+class DingleSummonState : public MonsterState
 {
 protected:
 	float summonTimer = 0.0f;
 	float summonDuration = 2.0f;
+
+	bool hasSummoned = false;
 
 public:
 
@@ -17,6 +21,8 @@ public:
 	void Exit(Monster* monster) override;
 
 	std::string GetStateName() const override { return "DingleSummon"; }
+
+	void SummonOneDip(Dingle* dingle);
 
 };
 

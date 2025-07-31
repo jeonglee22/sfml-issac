@@ -10,6 +10,9 @@ protected:
 	sf::Vector2f targetPosition;
 	float jumpSpeed;
 
+	float moveTimer = 0.0f;
+	float maxMoveTime = 2.0f;
+
 	static std::random_device rd;
 	std::mt19937 gen;
 	std::uniform_real_distribution<float> angleDist;

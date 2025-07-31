@@ -243,10 +243,13 @@
     <ClCompile Include="DingleRushState.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="dingleSummonState.cpp">
+    <ClCompile Include="DingleSummonState.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Mulligan.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Chest.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -485,13 +488,16 @@
     <ClInclude Include="ItemAltar.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Chest.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <ClInclude Include="DingleRushState.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="dingleSummonState.h">
+    <ClInclude Include="DingleSummonState.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Mulligan.h">

@@ -15,7 +15,7 @@ protected:
 	DingleChargeFireState chargeFireState;
 	DingleFireState fireState;
 	DingleRushState rushState;
-	dingleSummonState summonState;
+	DingleSummonState summonState;
 
 	std::list<EnemyTears*> EnemyTearsList;
 	std::list<EnemyTears*> EnemyTearsPool;

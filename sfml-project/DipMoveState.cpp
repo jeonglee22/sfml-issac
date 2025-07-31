@@ -18,6 +18,8 @@ void DipMoveState::Enter(Monster* monster)
     jumpDirection = sf::Vector2f(std::cos(angle), std::sin(angle));
     targetPosition = startPosition + jumpDirection * jumpDistance;
 
+    moveTimer = 0.0f;
+
     monster->GetAnimator().Play("animations/dip_move.csv");
     monster->SetOrigin(Origins::MC);
     monster->SetVelocity(jumpDirection * jumpSpeed);
@@ -25,11 +27,20 @@ void DipMoveState::Enter(Monster* monster)
 
 void DipMoveState::Update(Monster* monster, float dt)
 {
+    moveTimer += dt;
+
     sf::Vector2f currentPos = monster->GetPosition();
     sf::Vector2f diff = currentPos - targetPosition;
     float squaredDistance = diff.x * diff.x + diff.y * diff.y;
 
-    if (squaredDistance < 30.0f * 30.0f) {
+
+    //if (squaredDistance < 100.0f * 100.0f) {
+    //    monster->SetVelocity(sf::Vector2f(0, 0));
+    //    Dip* dip = static_cast<Dip*>(monster);
+    //    dip->ChangeToIdleState();
+    //}
+
+    if (squaredDistance < 100.0f * 100.0f || moveTimer >= maxMoveTime) {
         monster->SetVelocity(sf::Vector2f(0, 0));
         Dip* dip = static_cast<Dip*>(monster);
         dip->ChangeToIdleState();

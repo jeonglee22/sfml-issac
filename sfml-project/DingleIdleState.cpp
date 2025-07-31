@@ -24,7 +24,23 @@ void DingleIdleState::Update(Monster* monster, float dt)
     if (idleTimer >= idleDuration)
     {
         Dingle* dingle = static_cast<Dingle*>(monster);
-        dingle->ChangeToChargeFireState();
+
+        int randomChoice = Utils::RandomRange(1, 4);
+
+        std::cout << "딩글 랜덤 선택: " << randomChoice;
+
+        switch (randomChoice)
+        {
+        case 1:
+            dingle->ChangeToChargeFireState();
+            break;
+        case 2:
+            dingle->ChangeToSummonState();
+            break;
+        case 3:
+            dingle->ChangeToRushState();
+            break;
+        }
     }
 }
 
