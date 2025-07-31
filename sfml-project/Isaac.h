@@ -66,6 +66,7 @@ protected:
 	int tearCount = 1;
 
 	bool isDead = false;
+	bool isBackShoot = false;
 
 	float tearDamage = 35.f;
 	float tearSpeed = 250.f;
@@ -135,4 +136,6 @@ public:
 	void SetTearDamage(float s) { tearDamage = s; }
 	float GetTearSpeed() const { return tearSpeed; }
 	void SetTearSpeed(float s) { tearSpeed = s; }
+
+	void SetBackShoot(bool b) { isBackShoot = b; }
 };

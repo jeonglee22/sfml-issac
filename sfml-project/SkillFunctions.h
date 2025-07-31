@@ -326,7 +326,7 @@ struct MomsEye
 				{
 					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 					Isaac* isaac = sceneGame->GetIsaac();
-					isaac->SetMaxHP(isaac->GetMaxHP() + 2);
+					isaac->SetBackShoot(true);
 				}
 			});
 		skill->SetSkillPassive(true);

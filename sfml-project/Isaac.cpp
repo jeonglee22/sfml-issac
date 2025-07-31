@@ -494,8 +494,12 @@ void Isaac::FireTear(const sf::Vector2f &direction)
 	}
 
 	std::vector<Tears*> tears;
+	
+	int doBackShoot = 0;
+	if(isBackShoot)
+		doBackShoot = Utils::RandomRange(0.f, 1.f) <= 0.5f ? 1 : 0;
 
-	for(int i = 0; i < tearCount; i++)
+	for(int i = 0; i < tearCount + doBackShoot; i++)
 	{
 		Tears* tear = nullptr;
 
@@ -539,7 +543,7 @@ void Isaac::FireTear(const sf::Vector2f &direction)
 		firePosition.y += Utils::RandomRange(-43.f, -23.f);
 	}
 
-	for (int i = 0; i < tearCount; i++)
+	for (int i = 0; i < tearCount + doBackShoot; i++)
 	{
 		if (tearCount == 1)
 			tears[i]->Fire(firePosition, direction, tearSpeed, (int)std::round(tearDamage));
@@ -557,6 +561,10 @@ void Isaac::FireTear(const sf::Vector2f &direction)
 				newfirePos.x += (direction.y < 0 ? -1.f : 1.f) * (1 - i) * 10.f;
 			}
 			tears[i]->Fire(newfirePos, newDirection, tearSpeed, (int)std::round(tearDamage));
+		}
+		if (i == tearCount)
+		{
+			tears[i]->Fire(firePosition, direction * -1.f, tearSpeed, (int)std::round(tearDamage));
 		}
 		tearsList.push_back(tears[i]);
 		sceneGame->AddGameObject(tears[i]);

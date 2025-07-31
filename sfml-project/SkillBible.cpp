@@ -60,7 +60,7 @@ void SkillBible::PickSkill()
 
 		std::vector<std::string> skillNames = {"thenecronomicon", "thesadonion", "theinnereye", 
 			"cricketshead", "numberone", "bloodofthemartyr", "boom", "dinner", "lunch", "breakfast", "dessert",
-			"tammyshead", "yumheart"};
+			"tammyshead", "yumheart", "momseye"};
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_001_thesadonion.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_002_theinnereye.png");
@@ -74,6 +74,7 @@ void SkillBible::PickSkill()
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_025_breakfast.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_038_tammyshead.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_045_yumheart.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_055_momseye.png");
 
 		if (bible != nullptr)
 		{

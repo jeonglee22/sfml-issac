@@ -61,4 +61,8 @@ void SkillFunctionBible::AddSkillFunction()
 	YumHeart yumheart;
 	skillFunctionBible.insert({"yumheart", yumheart()});
 	skillNames.push_back("yumheart");
+
+	MomsEye momseye;
+	skillFunctionBible.insert({"momseye", momseye()});
+	skillNames.push_back("momseye");
 }
