@@ -455,17 +455,8 @@ void Isaac::Update(float dt)
 		}
 	}
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num5))
-	{
-		std::cout << "���� HP: " << currentHP << std::endl;
-		std::cout << "����: " << inventory.coinCount << std::endl;
-		std::cout << "��ź: " << inventory.bombCount << std::endl;
-		std::cout << "����: " << inventory.keyCount << std::endl;
-	}
-
 	if (InputMgr::GetKeyDown(sf::Keyboard::E) && inventory.bombCount > 0)
 	{
-		std::cout << "��ź ����" << std::endl;
 		InstallBomb();
 	}
 

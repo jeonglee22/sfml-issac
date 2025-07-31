@@ -24,7 +24,6 @@ void DingleIdleState::Update(Monster* monster, float dt)
     if (idleTimer >= idleDuration)
     {
         Dingle* dingle = static_cast<Dingle*>(monster);
-        std::cout << "È£Ãâ" << std::endl;
         dingle->ChangeToChargeFireState();
     }
 }
