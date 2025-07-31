@@ -66,6 +66,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/enemies/monster_216_dip.png");
 	texIds.push_back("graphics/effects/effect_009_poof01_small.png");
 	texIds.push_back("graphics/additionals/levelitem_001_itemaltar.png");
+	texIds.push_back("graphics/enemies/monster_054_mulligan.png");
 
 	texIds.push_back("graphics/enemies/boss_085_dingle.png");
 	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
@@ -129,6 +130,8 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/dip_idle.csv");
 	ANI_CLIP_MGR.Load("animations/dip_move.csv");
 	ANI_CLIP_MGR.Load("animations/dip_dead.csv");
+	ANI_CLIP_MGR.Load("animations/mulligan_idle.csv");
+	ANI_CLIP_MGR.Load("animations/mulligan_dead.csv");
 
 	ANI_CLIP_MGR.Load("animations/tears_idle.csv");
 	ANI_CLIP_MGR.Load("animations/tears_boom.csv");

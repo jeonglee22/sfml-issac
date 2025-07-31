@@ -1,0 +1,7 @@
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+,10,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+graphics/enemies/monster_054_mulligan.png,96,48,48,48,24.000000,24.000000
+graphics/enemies/monster_054_mulligan.png,48,48,48,48,24.000000,24.000000
+graphics/enemies/monster_054_mulligan.png,0,48,48,48,24.000000,24.000000

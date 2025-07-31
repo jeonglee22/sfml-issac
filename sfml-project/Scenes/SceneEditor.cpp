@@ -48,6 +48,7 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/enemies/monster_029_horf.png");
 	texIds.push_back("graphics/enemies/monster_001_pooter.png");
 	texIds.push_back("graphics/enemies/monster_216_dip.png");
+	texIds.push_back("graphics/enemies/monster_054_mulligan.png");
 
 	fontIds.push_back("fonts/DS-DIGIT.TTF");
 

@@ -7,7 +7,9 @@ class Bomb : public GameObject
 {
 protected:
 	sf::Sprite bomb;
+    sf::Sprite bombRadius;
 	Animator animator;
+    Animator radiusAnimator;
 	HitBox hitBox;
 
 	float explosionTime = 0.0f;

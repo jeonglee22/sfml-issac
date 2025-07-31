@@ -44,6 +44,7 @@ void Bomb::SetOrigin(const sf::Vector2f& o)
 void Bomb::Init()
 {
     animator.SetTarget(&bomb);
+    radiusAnimator.SetTarget(&bombRadius);
     sortingLayer = SortingLayers::Foreground;
     sortingOrder = 1;
 }
@@ -55,7 +56,7 @@ void Bomb::Release()
 void Bomb::Reset()
 {
     sortingLayer = SortingLayers::Foreground;
-    sortingOrder = 2;
+    sortingOrder = 1;
 
     explosionTime = 0.0f;
     explosionAnimationTime = 0.0f;
@@ -71,6 +72,7 @@ void Bomb::Update(float dt)
     {
         explosionTime += dt;
         animator.Update(dt);
+        radiusAnimator.Update(dt);
 
         if (explosionTime > explosionMaxTime - 2.0f)
         {
@@ -91,6 +93,9 @@ void Bomb::Update(float dt)
 
             animator.Play("animations/explosion.csv");
             SetOrigin(Origins::BC);
+            bombRadius.setPosition(GetPosition().x, GetPosition().y + 100.f);
+            bombRadius.setScale({2.0f, 2.0f});
+            radiusAnimator.Play("animations/bombradius.csv");
             bomb.setColor(sf::Color::White);
 
             Explosion();
@@ -100,12 +105,13 @@ void Bomb::Update(float dt)
     {
         explosionAnimationTime += dt;
         animator.Update(dt);
+        radiusAnimator.Update(dt);
 
        if (explosionAnimationTime >= explosionAnimationMaxTime)
-        {
-            animator.Play("animations/bombradius.csv");
-            SetOrigin(Origins::BC);
-        }
+       {
+            animator.Play("animations/empty.csv");
+            SetOrigin(Origins::MC);
+       }
     }
 
     hitBox.UpdateTransform(bomb, bomb.getLocalBounds());
@@ -115,6 +121,7 @@ void Bomb::Update(float dt)
 
 void Bomb::Draw(sf::RenderWindow& window)
 {
+    window.draw(bombRadius);
     window.draw(bomb);
     hitBox.Draw(window);
 }
