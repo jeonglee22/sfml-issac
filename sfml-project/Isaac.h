@@ -113,7 +113,10 @@ public:
 	HitBox GetHitBoxBody() const { return hitBoxBody; }
 	HitBox GetHitBoxHead() const { return hitBoxHead; }
 	int GetCurrentHP() const { return currentHP; }
+	void SetCurrentHP(int hp) { currentHP = hp; }
 	int GetMaxHP() const { return maxHP; }
+	void SetMaxHP(int hp) { maxHP = hp; }
+	float GetInvincibleTime() const { return invincibleTime; }
 
 	void SetActiveSkill(Skill* skill) { this->activeSkill = skill; }
 	Skill* GetActiveSkill() { return activeSkill; }

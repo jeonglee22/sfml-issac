@@ -57,16 +57,20 @@ void SkillBible::PickSkill()
 		std::string convertedName = ConvertName(name);
 		texId += convertedName + ".png";
 		TEXTURE_MGR.Load(texId);
-		std::cout << texId << std::endl;
 
 		std::vector<std::string> skillNames = {"thenecronomicon", "thesadonion", "theinnereye", 
-			"cricketshead", "numberone", "bloodofthemartyr"};
+			"cricketshead", "numberone", "bloodofthemartyr", "boom", "dinner", "lunch", "breakfast", "dessert"};
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_001_thesadonion.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_002_theinnereye.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_004_cricketshead.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_006_numberone.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_007_bloodofthemartyr.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_019_boom.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_022_lunch.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_023_dinner.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_024_dessert.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_025_breakfast.png");
 
 		if (bible != nullptr)
 		{

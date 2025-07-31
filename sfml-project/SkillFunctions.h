@@ -152,3 +152,109 @@ struct BloodMartyr
 		return skill;
 	};
 };
+
+struct Boom
+{
+	Skill* operator() ()
+	{
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_019_boom.png", "boom");
+
+		skill->SetSkillFunc([]()
+			{
+				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+				{
+					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+					Isaac* isaac = sceneGame->GetIsaac();
+					for(int i = 0; i < 10; i++)
+						isaac->AddItem(Items::Bomb);
+				}
+			});
+		skill->SetSkillPassive(true);
+
+		return skill;
+	};
+};
+
+struct Lunch
+{
+	Skill* operator() ()
+	{
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_022_lunch.png", "lunch");
+
+		skill->SetSkillFunc([]()
+			{
+				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+				{
+					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+					Isaac* isaac = sceneGame->GetIsaac();
+					isaac->SetMaxHP(isaac->GetMaxHP() + 2);
+				}
+			});
+		skill->SetSkillPassive(true);
+
+		return skill;
+	};
+};
+
+struct Dinner
+{
+	Skill* operator() ()
+	{
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_023_dinner.png", "dinner");
+
+		skill->SetSkillFunc([]()
+			{
+				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+				{
+					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+					Isaac* isaac = sceneGame->GetIsaac();
+					isaac->SetMaxHP(isaac->GetMaxHP() + 2);
+				}
+			});
+		skill->SetSkillPassive(true);
+
+		return skill;
+	};
+};
+
+struct Dessert
+{
+	Skill* operator() ()
+	{
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_024_dessert.png", "dessert");
+
+		skill->SetSkillFunc([]()
+			{
+				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+				{
+					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+					Isaac* isaac = sceneGame->GetIsaac();
+					isaac->SetMaxHP(isaac->GetMaxHP() + 2);
+				}
+			});
+		skill->SetSkillPassive(true);
+
+		return skill;
+	};
+};
+
+struct Breakfast
+{
+	Skill* operator() ()
+	{
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_025_breakfast.png", "breakfast");
+
+		skill->SetSkillFunc([]()
+			{
+				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+				{
+					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+					Isaac* isaac = sceneGame->GetIsaac();
+					isaac->SetMaxHP(isaac->GetMaxHP() + 2);
+				}
+			});
+		skill->SetSkillPassive(true);
+
+		return skill;
+	};
+};

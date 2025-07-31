@@ -351,7 +351,6 @@ void SceneGame::Update(float dt)
 				if (doorType == MapType::Sacrifice)
 				{
 					isaac->TakeDamage(1);
-					isaac->Update(dt);
 				}
 
 				currentYIndex += (int)dir.y;

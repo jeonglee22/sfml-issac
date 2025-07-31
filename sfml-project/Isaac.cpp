@@ -474,8 +474,7 @@ void Isaac::Update(float dt)
 
 	MonsterCollision();
 
-	hitBoxHead.UpdateTransform(head, head.getLocalBounds());
-	hitBoxBody.UpdateTransform(body, body.getLocalBounds());
+	HitBoxUpdate();
 }
 
 void Isaac::Draw(sf::RenderWindow &window)
