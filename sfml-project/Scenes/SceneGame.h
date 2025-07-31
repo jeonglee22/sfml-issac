@@ -85,6 +85,7 @@ public:
 	SkillUI* GetSkillUI() { return skillUI; }
 	int GetMapIndex(int xPos, int yPos) { return mapIndex[yPos][xPos]; }
 	sf::FloatRect GetSmallMapSize() { return smallMapSize; }
+	Map* GetCurrentMap() { return maps[currentMapIndex]; }
 
 	std::vector<int> GetNeighboorMapIndex(int x, int y);
 	sf::Vector2i GetNeighboorMapIndexInRectangleMap(int x, int y);

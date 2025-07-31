@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Animator.h"
 #include "Hitbox.h"
+#include "Item.h"
 
 class Chest : public GameObject
 {
@@ -10,10 +11,14 @@ protected:
 	Animator animator;
 
 	ChestType chestType;
-
 	bool isOpen = false;
-
 	HitBox hitBox;
+
+	std::vector<Item*> droppedItems;
+	std::vector<sf::Vector2f> itemVelocities;
+	std::vector<float> itemCollectibleTimers;
+	std::vector<char> itemGrounded;
+	bool itemsSpawned = false;
 
 public:
 	Chest(const std::string& name = "");
@@ -41,5 +46,11 @@ public:
 		return sprite.getGlobalBounds();
 	}
 
+	void SpawnItems();
+	void UpdateItemPhysics(float dt);
+	const std::vector<Item*>& GetDroppedItems() const { return droppedItems; }
+
+	void CreateDroppedItem(Items itemType, const sf::Vector2f& startPos, const sf::Vector2f& velocity);
+	bool IsItemMoving(Item* targetItem);
 };
 

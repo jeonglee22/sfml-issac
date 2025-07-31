@@ -21,6 +21,7 @@
 #include "Skill.h"
 #include "MapMaking.h"
 #include "TextGo.h"
+#include "Chest.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Stage)
@@ -326,15 +327,30 @@ void SceneGame::Update(float dt)
 		{
 			Map *currentMap = maps[currentMapIndex];
 			auto items = currentMap->GetItems();
+			auto chests = currentMap->GetChests();
 
 			for (auto item : items)
 			{
 				if (item->GetActive() && Utils::CheckCollision(isaac->GetHitBoxBody().rect, item->GetHitBox().rect))
 				{
-					isaac->AddItem(item->GetItemType());
-					itemUI->SetItemUICount(item->GetItemType(), itemUI->GetItemUICount(item->GetItemType()) + 1);
-					item->SetActive(false);
-					item->SetItemGet(true);
+					bool canCollect = true;
+
+					for (auto chest : chests)
+					{
+						if (chest->IsItemMoving(item))
+						{
+							canCollect = false;
+							break;
+						}
+					}
+
+					if (canCollect)
+					{
+						isaac->AddItem(item->GetItemType());
+						itemUI->SetItemUICount(item->GetItemType(), itemUI->GetItemUICount(item->GetItemType()) + 1);
+						item->SetActive(false);
+						item->SetItemGet(true);
+					}
 				}
 			}
 		}

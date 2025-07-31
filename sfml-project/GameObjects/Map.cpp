@@ -367,7 +367,7 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 	{
 		AddItem({std::stof(infos[6]), std::stof(infos[7])}, infos[5]);
 	}
-	else if (infos[5] == "chests")
+	else if (infos[5] == "chests" || infos[5] == "chests_gold")
 	{
 		AddChest({ std::stof(infos[6]), std::stof(infos[7]) }, infos[5]);
 	}

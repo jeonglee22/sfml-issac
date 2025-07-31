@@ -78,6 +78,7 @@ public:
 	std::vector<Monster *> GetMonsters() const { return monsters; }
 	std::vector<Item *> GetItems() const { return items; }
 	std::vector<Chest*> GetChests() const { return chests; }
+	void AddItemToList(Item* item) { items.push_back(item); }
 
 	void AddMonster(const sf::Vector2f &pos, const std::string &name);
 	void AddItem(const sf::Vector2f &pos, const std::string &name);

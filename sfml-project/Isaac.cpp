@@ -583,9 +583,8 @@ void Isaac::ChestCollision()
 
 		if (isaacBounds.intersects(chestBounds))
 		{
-			std::cout << "호출 " << std::endl;
 			chest->ChestOpen();
-			return;
+			break;
 		}
 
 	}
