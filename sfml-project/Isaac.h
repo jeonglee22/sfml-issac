@@ -22,13 +22,16 @@ class Isaac : public GameObject
 protected:
 	sf::Sprite body;
 	sf::Sprite head;
+	std::vector<sf::Sprite> headAdditionals;
 	Animator bodyAnimator;
 	Animator headAnimator;
+	std::vector<Animator> additionalsAnimator;
 	ItemInventory inventory;
 
 	std::map<std::string, std::string> headAnimation;
 	std::map<std::string, std::string> headTearsAnimation;
 	std::map<std::string, std::string> bodyAnimation;
+	std::map<std::string, std::string> additonalsAnimation;
 
 	std::string currentHeadAnimation = "front";
 	std::string currentBodyAnimation = "idle";

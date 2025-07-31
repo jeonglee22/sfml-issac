@@ -4,6 +4,7 @@
 #include "Skill.h"
 #include "SceneGame.h"
 #include "Monster.h"
+#include "Tears.h"
 
 class Skill;
 
@@ -68,7 +69,7 @@ struct TheInnerEye
 {
 	Skill* operator() ()
 	{
-		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_002_theinnereye.png", "sadonion");
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_002_theinnereye.png", "theinnereye");
 
 		skill->SetSkillFunc([]()
 			{
@@ -77,6 +78,7 @@ struct TheInnerEye
 					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 					Isaac* isaac = sceneGame->GetIsaac();
 					isaac->SetTearCount(3);
+					isaac->SetShootInterval(isaac->GetShootInterval() * 2.1f);
 				}
 			});
 		skill->SetSkillPassive(true);
@@ -98,6 +100,51 @@ struct CricketsHead
 					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 					Isaac* isaac = sceneGame->GetIsaac();
 					isaac->SetTearDamage((isaac->GetTearDamage() + 5) * 1.5f);
+				}
+			});
+		skill->SetSkillPassive(true);
+
+		return skill;
+	};
+};
+
+struct NumberOne
+{
+	Skill* operator() ()
+	{
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_006_numberone.png", "numberone");
+
+		skill->SetSkillFunc([]()
+			{
+				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+				{
+					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+					Isaac* isaac = sceneGame->GetIsaac();
+					isaac->SetShootInterval(isaac->GetShootInterval() / 1.5f);
+					Tears::AddTearRange(-100.f);
+					Tears::SetTearColor(sf::Color::Yellow);
+				}
+			});
+		skill->SetSkillPassive(true);
+
+		return skill;
+	};
+};
+
+struct BloodMartyr
+{
+	Skill* operator() ()
+	{
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_007_bloodofthemartyr.png", "bloodofthemartyr");
+
+		skill->SetSkillFunc([]()
+			{
+				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+				{
+					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+					Isaac* isaac = sceneGame->GetIsaac();
+					isaac->SetTearDamage(isaac->GetTearDamage() + 10.f);
+					Tears::SetTearColor(sf::Color::Red);
 				}
 			});
 		skill->SetSkillPassive(true);

@@ -559,7 +559,6 @@ void Isaac::FireTear(const sf::Vector2f &direction)
 			}
 			tears[i]->Fire(newfirePos, newDirection, 250.f, (int)std::round(tearDamage));
 		}
-		std::cout << std::round(tearDamage) << std::endl;
 		tearsList.push_back(tears[i]);
 		sceneGame->AddGameObject(tears[i]);
 	}

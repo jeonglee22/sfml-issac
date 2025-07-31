@@ -59,11 +59,14 @@ void SkillBible::PickSkill()
 		TEXTURE_MGR.Load(texId);
 		std::cout << texId << std::endl;
 
-		std::vector<std::string> skillNames = {"thenecronomicon", "thesadonion", "theinnereye", "cricketshead"};
+		std::vector<std::string> skillNames = {"thenecronomicon", "thesadonion", "theinnereye", 
+			"cricketshead", "numberone", "bloodofthemartyr"};
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_001_thesadonion.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_002_theinnereye.png");
 		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_004_cricketshead.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_006_numberone.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_007_bloodofthemartyr.png");
 
 		if (bible != nullptr)
 		{

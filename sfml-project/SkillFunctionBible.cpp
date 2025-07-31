@@ -25,4 +25,12 @@ void SkillFunctionBible::AddSkillFunction()
 	CricketsHead cricketshead;
 	skillFunctionBible.insert({"cricketshead", cricketshead()});
 	skillNames.push_back("cricketshead");
+
+	NumberOne numberone;
+	skillFunctionBible.insert({"numberone", numberone()});
+	skillNames.push_back("numberone");
+
+	BloodMartyr bloodmartyr;
+	skillFunctionBible.insert({"bloodofthemartyr", bloodmartyr()});
+	skillNames.push_back("bloodofthemartyr");
 }

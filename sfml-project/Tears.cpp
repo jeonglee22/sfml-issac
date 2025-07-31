@@ -6,6 +6,11 @@
 #include "Obstacles.h"
 #include "LarryJr.h"
 
+std::string Tears::tearIdle = "animations/tears_idle.csv";
+std::string Tears::tearBoom = "animations/tears_boom.csv";
+sf::Color Tears::tearColor = sf::Color::White;
+float Tears::maxRange = 300.f;
+
 Tears::Tears(const std::string& name)
 	: GameObject(name)
 {
@@ -58,7 +63,7 @@ void Tears::Release()
 
 void Tears::Reset()
 {
-	animator.Play("animations/tears_idle.csv");
+	animator.Play(tearIdle);
 
 	tearsCrushTime = 0.0f;
 	isTearsCrush = false;
@@ -66,6 +71,7 @@ void Tears::Reset()
 	hasReachedMaxRange = false;
 
 	Utils::SetOrigin(sprite, Origins::MC);
+	sprite.setColor(tearColor);
 	SetScale({ 1.5f, 1.5f });
 }
 
@@ -223,7 +229,7 @@ void Tears::StartSplash()
 		return;
 	}
 
-	animator.Play("animations/tears_boom.csv");
+	animator.Play(tearBoom);
 
 	isTearsCrush = true;
 	tearsCrushTime = 0.0f;
