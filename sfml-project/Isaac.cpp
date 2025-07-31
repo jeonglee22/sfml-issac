@@ -285,176 +285,174 @@ void Isaac::Update(float dt)
 		}
 	}
 
-		shootTimer += dt;
-		bool shootingKeyPressed = false;
-		sf::Vector2f shootInput = { 0.f, 0.f };
-		sf::Vector2f finalShootDirection = { 0.f, 0.f };
+	shootTimer += dt;
+	bool shootingKeyPressed = false;
+	sf::Vector2f shootInput = { 0.f, 0.f };
+	sf::Vector2f finalShootDirection = { 0.f, 0.f };
 
-		if (InputMgr::GetKey(sf::Keyboard::Right))
-		{
-			shootInput = sf::Vector2f(1.f, 0.f);
-			shootingKeyPressed = true;
-		}
-		else if (InputMgr::GetKey(sf::Keyboard::Left))
-		{
-			shootInput = sf::Vector2f(-1.f, 0.f);
-			shootingKeyPressed = true;
-		}
-		else if (InputMgr::GetKey(sf::Keyboard::Up))
-		{
-			shootInput = sf::Vector2f(0.f, -1.f);
-			shootingKeyPressed = true;
-		}
-		else if (InputMgr::GetKey(sf::Keyboard::Down))
-		{
-			shootInput = sf::Vector2f(0.f, 1.f);
-			shootingKeyPressed = true;
-		}
+	if (InputMgr::GetKey(sf::Keyboard::Right))
+	{
+		shootInput = sf::Vector2f(1.f, 0.f);
+		shootingKeyPressed = true;
+	}
+	else if (InputMgr::GetKey(sf::Keyboard::Left))
+	{
+		shootInput = sf::Vector2f(-1.f, 0.f);
+		shootingKeyPressed = true;
+	}
+	else if (InputMgr::GetKey(sf::Keyboard::Up))
+	{
+		shootInput = sf::Vector2f(0.f, -1.f);
+		shootingKeyPressed = true;
+	}
+	else if (InputMgr::GetKey(sf::Keyboard::Down))
+	{
+		shootInput = sf::Vector2f(0.f, 1.f);
+		shootingKeyPressed = true;
+	}
 
-		if (shootingKeyPressed)
-		{
-			finalShootDirection = shootInput;
+	if (shootingKeyPressed)
+	{
+		finalShootDirection = shootInput;
 
-			if (abs(h) > 0.1f || abs(w) > 0.1f)
+		if (abs(h) > 0.1f || abs(w) > 0.1f)
+		{
+			sf::Vector2f moveDirection = { h, w };
+
+			float influence = 0.3f;
+			finalShootDirection.x += moveDirection.x * influence;
+			finalShootDirection.y += moveDirection.y * influence;
+
+			float length = sqrt(finalShootDirection.x * finalShootDirection.x +
+				finalShootDirection.y * finalShootDirection.y);
+			if (length > 0)
 			{
-				sf::Vector2f moveDirection = { h, w };
-
-				float influence = 0.3f;
-				finalShootDirection.x += moveDirection.x * influence;
-				finalShootDirection.y += moveDirection.y * influence;
-
-				float length = sqrt(finalShootDirection.x * finalShootDirection.x +
-					finalShootDirection.y * finalShootDirection.y);
-				if (length > 0)
-				{
-					finalShootDirection.x /= length;
-					finalShootDirection.y /= length;
-				}
+				finalShootDirection.x /= length;
+				finalShootDirection.y /= length;
 			}
-
-
-			if (!isHurt)
-			{
-				if (shootInput.x > 0.f)
-				{
-					head.setScale({ 2.f, 2.f });
-					PlayHeadTearsAnimation("side");
-				}
-				else if (shootInput.x < 0.f)
-				{
-					head.setScale({ -2.f, 2.f });
-					PlayHeadTearsAnimation("side");
-				}
-				else if (shootInput.y < 0.f)
-				{
-					head.setScale(body.getScale());
-					PlayHeadTearsAnimation("rare");
-				}
-				else if (shootInput.y > 0.f)
-				{
-					head.setScale(body.getScale());
-					PlayHeadTearsAnimation("front");
-
-				}
-				if (abs(h) > 0.1f || abs(w) > 0.1f)
-				{
-					if (w < 0.f)
-					{
-						PlayBodyAnimation("run_height");
-					}
-					else if (w > 0.f)
-					{
-						PlayBodyAnimation("run_height");
-					}
-					else if (h != 0.f)
-					{
-						PlayBodyAnimation("run_weight");
-					}
-				}
-				else
-				{
-					PlayBodyAnimation("idle");
-				}
-			}
-			if (shootTimer >= shootInterval)
-			{
-				FireTear(finalShootDirection);
-				SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/tear fire 4.wav"));
-				shootTimer = 0.f;
-			}
-			shootTimer += dt;
-			wasKeyPressed = true;
 		}
-		else
+
+
+		if (!isHurt)
 		{
-			if (!InputMgr::GetKey(sf::Keyboard::Right) &&
-				!InputMgr::GetKey(sf::Keyboard::Left) &&
-				!InputMgr::GetKey(sf::Keyboard::Up) &&
-				!InputMgr::GetKey(sf::Keyboard::Down))
+			if (shootInput.x > 0.f)
 			{
-				wasKeyPressed = false;
+				head.setScale({ 2.f, 2.f });
+				PlayHeadTearsAnimation("side");
 			}
-			if (!isHurt)
+			else if (shootInput.x < 0.f)
+			{
+				head.setScale({ -2.f, 2.f });
+				PlayHeadTearsAnimation("side");
+			}
+			else if (shootInput.y < 0.f)
 			{
 				head.setScale(body.getScale());
+				PlayHeadTearsAnimation("rare");
+			}
+			else if (shootInput.y > 0.f)
+			{
+				head.setScale(body.getScale());
+				PlayHeadTearsAnimation("front");
 
-				if (h == 0.f && w == 0.f)
+			}
+			if (abs(h) > 0.1f || abs(w) > 0.1f)
+			{
+				if (w < 0.f)
 				{
-					PlayHeadAnimation("front");
-					PlayBodyAnimation("idle");
+					PlayBodyAnimation("run_height");
 				}
-				else
+				else if (w > 0.f)
 				{
-					if (w < 0.f)
-					{
-						PlayHeadAnimation("rare");
-						PlayBodyAnimation("run_height");
-					}
-					else if (w > 0.f)
-					{
-						PlayHeadAnimation("front");
-						PlayBodyAnimation("run_height");
-					}
-					else if (h != 0.f)
-					{
-						PlayHeadAnimation("side");
-						PlayBodyAnimation("run_weight");
-					}
+					PlayBodyAnimation("run_height");
 				}
+				else if (h != 0.f)
+				{
+					PlayBodyAnimation("run_weight");
+				}
+			}
+			else
+			{
+				PlayBodyAnimation("idle");
+			}
 		}
-
-		if (!isHurt && (InputMgr::GetKeyUp(sf::Keyboard::Up) || InputMgr::GetKeyUp(sf::Keyboard::Down) || InputMgr::GetKeyUp(sf::Keyboard::Left) || InputMgr::GetKeyUp(sf::Keyboard::Right)))
+		if (shootTimer >= shootInterval)
 		{
-			float currentH = InputMgr::GetAxis(Axis::Horizontal);
-			float currentW = InputMgr::GetAxis(Axis::Vertical);
+			FireTear(finalShootDirection);
+			SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/tear fire 4.wav"));
+			shootTimer = 0.f;
+		}
+		shootTimer += dt;
+		wasKeyPressed = true;
+	}
+	else
+	{
+		if (!InputMgr::GetKey(sf::Keyboard::Right) &&
+			!InputMgr::GetKey(sf::Keyboard::Left) &&
+			!InputMgr::GetKey(sf::Keyboard::Up) &&
+			!InputMgr::GetKey(sf::Keyboard::Down))
+		{
+			wasKeyPressed = false;
+		}
+		if (!isHurt)
+		{
+			head.setScale(body.getScale());
 
-			if (currentH == 0.f && currentW == 0.f)
+			if (h == 0.f && w == 0.f)
 			{
 				PlayHeadAnimation("front");
 				PlayBodyAnimation("idle");
 			}
 			else
 			{
-
-				if (currentW < 0.f)
+				if (w < 0.f)
 				{
 					PlayHeadAnimation("rare");
 					PlayBodyAnimation("run_height");
 				}
-				else if (currentW > 0.f)
+				else if (w > 0.f)
 				{
 					PlayHeadAnimation("front");
 					PlayBodyAnimation("run_height");
 				}
-				else if (currentH != 0.f)
+				else if (h != 0.f)
 				{
 					PlayHeadAnimation("side");
 					PlayBodyAnimation("run_weight");
 				}
 			}
 		}
+	}
 
+	if (!isHurt && (InputMgr::GetKeyUp(sf::Keyboard::Up) || InputMgr::GetKeyUp(sf::Keyboard::Down) || InputMgr::GetKeyUp(sf::Keyboard::Left) || InputMgr::GetKeyUp(sf::Keyboard::Right)))
+	{
+		float currentH = InputMgr::GetAxis(Axis::Horizontal);
+		float currentW = InputMgr::GetAxis(Axis::Vertical);
 
+		if (currentH == 0.f && currentW == 0.f)
+		{
+			PlayHeadAnimation("front");
+			PlayBodyAnimation("idle");
+		}
+		else
+		{
+
+			if (currentW < 0.f)
+			{
+				PlayHeadAnimation("rare");
+				PlayBodyAnimation("run_height");
+			}
+			else if (currentW > 0.f)
+			{
+				PlayHeadAnimation("front");
+				PlayBodyAnimation("run_height");
+			}
+			else if (currentH != 0.f)
+			{
+				PlayHeadAnimation("side");
+				PlayBodyAnimation("run_weight");
+			}
+		}
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num5))

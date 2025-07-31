@@ -177,6 +177,7 @@
     <ClCompile Include="Framework\Scene.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="GameUIs\ItemUI.cpp" />
+    <ClCompile Include="ItemAltar.cpp" />
     <ClCompile Include="LarryJr.cpp" />
     <ClCompile Include="LarryMoveState.cpp" />
     <ClCompile Include="main.cpp" />
@@ -199,6 +200,8 @@
     <ClCompile Include="Framework\SoundMgr.cpp" />
     <ClCompile Include="GameUIs\SkillUI.cpp" />
     <ClCompile Include="Skill.cpp" />
+    <ClCompile Include="SkillBible.cpp" />
+    <ClCompile Include="SkillFunctionBible.cpp" />
     <ClCompile Include="Spider.cpp" />
     <ClCompile Include="SpiderChargeState.cpp" />
     <ClCompile Include="SpiderJumpState.cpp" />
@@ -259,6 +262,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="GameUIs\ItemUI.h" />
     <ClInclude Include="GameUIs\MapUI.h" />
+    <ClInclude Include="ItemAltar.h" />
     <ClInclude Include="LarryJr.h" />
     <ClInclude Include="LarryMoveState.h" />
     <ClInclude Include="MapMaking.h" />
@@ -277,6 +281,8 @@
     <ClInclude Include="Framework\SoundMgr.h" />
     <ClInclude Include="GameUIs\SkillUI.h" />
     <ClInclude Include="Skill.h" />
+    <ClInclude Include="SkillBible.h" />
+    <ClInclude Include="SkillFunctionBible.h" />
     <ClInclude Include="Spider.h" />
     <ClInclude Include="SpiderChargeState.h" />
     <ClInclude Include="SpiderJumpState.h" />
@@ -290,7 +296,17 @@
     <ClInclude Include="GameObjects\Walls.h" />
     <ClInclude Include="WanderState.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\JsonCpp.Windows.1.9.2\build\JsonCpp.Windows.targets" Condition="Exists('packages\JsonCpp.Windows.1.9.2\build\JsonCpp.Windows.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>이 프로젝트는 이 컴퓨터에 없는 NuGet 패키지를 참조합니다. 해당 패키지를 다운로드하려면 NuGet 패키지 복원을 사용하십시오. 자세한 내용은 http://go.microsoft.com/fwlink/?LinkID=322105를 참조하십시오. 누락된 파일은 {0}입니다.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\JsonCpp.Windows.1.9.2\build\JsonCpp.Windows.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\JsonCpp.Windows.1.9.2\build\JsonCpp.Windows.targets'))" />
+  </Target>
 </Project>

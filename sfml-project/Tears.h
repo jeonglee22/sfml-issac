@@ -11,7 +11,6 @@ class Tears : public GameObject
 protected:
 	sf::Sprite sprite;
 	Animator animator;
-	
 
 	sf::Vector2f direction;
 	sf::Vector2f velocity;

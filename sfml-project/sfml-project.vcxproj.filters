@@ -231,6 +231,15 @@
     <ClCompile Include="DingleFireState.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SkillBible.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillFunctionBible.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemAltar.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="DingleRushState.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -467,6 +476,18 @@
     <ClInclude Include="DingleFireState.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SkillBible.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillFunctionBible.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemAltar.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
     <ClInclude Include="DingleRushState.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>

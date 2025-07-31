@@ -7,10 +7,17 @@ protected:
 	sf::Sprite body;
 	std::string texId;
 
+	sf::Sprite effectBody;
+	std::string effectId;
+
 	int skillCoolTime;
 	int currentCoolTime = 0;
 
 	std::function<void()> skillFunc;
+
+	bool isUseSkill = false;
+	float skillActionMax = 1.f;
+	float skillActionTime = 0.f;
 
 public:
 	Skill(const std::string& textureId = "", const std::string& name = "");
@@ -30,6 +37,10 @@ public:
 
 	void SetTotalSkillCooltime(int c) { skillCoolTime = c; }
 	int GetTotalSkillCooltime() const { return skillCoolTime; }
+	void SetEffectId(const std::string& str) { effectId = str; }
+	std::string GetEffectId() const { return effectId; }
+	void SetEffectBody();
+	sf::Sprite& GetEffectBody() { return effectBody; }
 	int GetCurrentCooltime() const { return currentCoolTime; }
 	void AddSkillCooltime() { currentCoolTime = Utils::Clamp(++currentCoolTime, 0, skillCoolTime); }
 	void SetSkillFunc(const std::function<void()>& func) { skillFunc = func; }

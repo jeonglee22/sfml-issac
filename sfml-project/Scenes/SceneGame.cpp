@@ -186,19 +186,6 @@ void SceneGame::Init()
 	itemUI = (ItemUI *)AddGameObject(new ItemUI("ItemUI"));
 	heartUI = (HeartUI *)AddGameObject(new HeartUI("graphics/ui_hearts.png", "HeartUI"));
 	skillUI = (SkillUI *)AddGameObject(new SkillUI("graphics/ui_chargebar.png", "SkillUI"));
-	skill = new Skill("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png", "necronomicon");
-	skill->SetSkillFunc([this]()
-						{
-		for (auto monster : monsters)
-		{
-			if (!monster->GetActive() || monster->IsDead())
-			{
-				continue;
-			}
-				monster->TakeDamage(40);
-
-		} });
-	skill->SetTotalSkillCooltime(4);
 
 	FPS = (TextGo *)AddGameObject(new TextGo("fonts/DS-DIGIT.ttf", "frame"));
 	FPS->SetCharacterSize(30);
@@ -250,8 +237,6 @@ void SceneGame::Enter()
 	controls->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/controls.png").getSize()) * 0.5f);
 	controls->SetPosition(worldView.getCenter());
 
-	isaac->SetSkill(skill);
-	skillUI->SetSkill(isaac->GetSkill());
 	skillUI->SetPosition({60.f, 60.f});
 
 	FPS->SetPosition({150.f, 50.f});
@@ -446,7 +431,10 @@ sf::Vector2i SceneGame::GetNeighboorMapIndexInRectangleMap(int x, int y)
 void SceneGame::AddSkillCooltimeAtClear()
 {
 	Skill *skill = isaac->GetSkill();
-	skill->AddSkillCooltime();
+	if(skill != nullptr)
+	{
+		skill->AddSkillCooltime();
+	}
 }
 
 void SceneGame::ViewFollowing()

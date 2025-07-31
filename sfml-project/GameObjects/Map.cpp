@@ -19,6 +19,7 @@
 #include "Pooter.h"
 #include "Dip.h"
 #include "Dingle.h"
+#include "ItemAltar.h"
 
 Map::Map(const std::string &filePath, const std::string &name, const MapType ty)
 	: filePath(filePath), GameObject(name), type(ty)
@@ -331,6 +332,12 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 		spikes.push_back(new Spikes(infos[0], infos[5]));
 		SpriteSetting(spikes[spikes.size() - 1], infos);
 		allObjects.push_back(spikes[spikes.size() - 1]);
+	}
+	else if (infos[5].substr(0,5) == "level")
+	{
+		obstacles.push_back(new ItemAltar(infos[0], infos[5]));
+		SpriteSetting(obstacles[obstacles.size() - 1], infos);
+		allObjects.push_back(obstacles[obstacles.size() - 1]);
 	}
 	else if (infos[5].substr(0, 4) == "mons" || infos[5].substr(0, 4) == "boss")
 	{
