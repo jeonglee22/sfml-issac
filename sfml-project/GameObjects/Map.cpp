@@ -20,6 +20,7 @@
 #include "Dip.h"
 #include "Dingle.h"
 #include "ItemAltar.h"
+#include "Mulligan.h"
 
 Map::Map(const std::string &filePath, const std::string &name, const MapType ty)
 	: filePath(filePath), GameObject(name), type(ty)
@@ -143,6 +144,8 @@ void Map::AddMonster(const sf::Vector2f &pos, const std::string &name)
 		monster = new Pooter();
 	else if (name == "monster_216_dip")
 		monster = new Dip();
+	else if (name == "monster_054_mulligan")
+		monster = new Mulligan();
 	else if (name == "boss_085_dingle")
 		monster = new Dingle();
 	else if (name == "boss_001_larryjr")
