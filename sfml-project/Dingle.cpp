@@ -18,7 +18,7 @@ sf::FloatRect Dingle::GetHitBoxMonster()
 void Dingle::Reset()
 {
     sortingLayer = SortingLayers::Foreground;
-    sortingOrder = 2;
+    sortingOrder = 3;
 
     SetHP(3000);
     SetSpeed(30.0f);

@@ -85,7 +85,16 @@ public:
 
 	Animator& GetAnimator() { return animator; }
 	HitBox& GetHitBox() { return hitBox; }
-	virtual sf::FloatRect GetHitBoxMonster() { return { 0,0,0,0 }; }
+	virtual sf::FloatRect GetHitBoxMonster() {
+		return { 0,0,0,0 };
+	}
+	sf::RectangleShape GetHitBoxMonsterShape(sf::FloatRect rect)
+	{
+		sf::RectangleShape shape;
+		shape.setPosition(rect.left, rect.top);
+		shape.setSize(sf::Vector2f(rect.width, rect.height));
+		return shape;
+	}
 	virtual void SetInitialState() = 0;
 
 	void UpdateSkillTimer(float dt);

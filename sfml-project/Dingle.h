@@ -5,6 +5,7 @@
 #include "DingleFireState.h"
 #include "EnemyTears.h"
 #include "DingleRushState.h"
+#include "DingleSummonState.h"
 
 
 class Dingle : public Monster
@@ -14,6 +15,7 @@ protected:
 	DingleChargeFireState chargeFireState;
 	DingleFireState fireState;
 	DingleRushState rushState;
+	dingleSummonState summonState;
 
 	std::list<EnemyTears*> EnemyTearsList;
 	std::list<EnemyTears*> EnemyTearsPool;
@@ -35,6 +37,7 @@ public:
 	void ChangeToChargeFireState() { ChangeState(&chargeFireState); }
 	void ChangeToFireState() { ChangeState(&fireState); }
 	void ChangeToRushState() { ChangeState(&rushState); }
+	void ChangeToSummonState() { ChangeState(&summonState); }
 
 	void Reset() override;
 	void UseSkill() override;

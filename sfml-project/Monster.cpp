@@ -53,7 +53,7 @@ void Monster::Init()
 	animator.SetTarget(&body);
 
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 1;
+	sortingOrder = 2;
 }
 
 void Monster::Release()
@@ -251,7 +251,7 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 	{
 		for (auto boundary : scene->GetMapBoundary())
 		{
-			if (Utils::CheckCollision(hitBox.rect, boundary->rect))
+			if (Utils::CheckCollision(GetHitBoxMonsterShape(GetHitBoxMonster()), boundary->rect))
 			{
 				willCollide = true;
 				break;
@@ -263,7 +263,7 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 			for (auto sprite : scene->GetMapSprites())
 			{
 				if ((sprite->GetName() == "rocks_basement" || sprite->GetName() == "grid_pit_basement") &&
-					Utils::CheckCollision(hitBox.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
+					Utils::CheckCollision(GetHitBoxMonsterShape(GetHitBoxMonster()), ((Obstacles*)sprite)->GetHitBox()->rect))
 				{
 					willCollide = true;
 					break;
@@ -283,6 +283,16 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 	{
 		hitBox.UpdateTransform(body, body.getLocalBounds());
 	}
+
+	if (velocity.x > 0)
+	{
+		SetScale({-2.0, 2.0});
+	}
+	else
+	{
+		SetScale({ 2.0, 2.0 });
+	}
+
 
 	return willCollide;
 }

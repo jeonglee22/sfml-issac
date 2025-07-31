@@ -54,6 +54,7 @@ enum class Monsters
 	Pooter,
 	Dip,
 	Dingle,
+	Mulligan,
 };
 
 enum class Items

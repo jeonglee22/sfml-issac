@@ -156,6 +156,7 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/dingle_rush_charge.csv");
 	ANI_CLIP_MGR.Load("animations/dingle_rush.csv");
 	ANI_CLIP_MGR.Load("animations/dingle_exhausted.csv");
+	ANI_CLIP_MGR.Load("animations/dingle_summon.csv");
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 

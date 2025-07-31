@@ -36,7 +36,7 @@ void DingleRushState::Update(Monster* monster, float dt)
             if (currentRush >= maxRushCount)
             {
                 Dingle* dingle = static_cast<Dingle*>(monster);
-                dingle->ChangeToIdleState();
+                dingle->ChangeToSummonState();
             }
             else
             {
@@ -45,14 +45,6 @@ void DingleRushState::Update(Monster* monster, float dt)
         }
         return;
     }
-
-    if (currentRush >= maxRushCount)
-    {
-        Dingle* dingle = static_cast<Dingle*>(monster);
-        dingle->ChangeToIdleState();
-        return;
-    }
-
 
 
     if (!isRush)

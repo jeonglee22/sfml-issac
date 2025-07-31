@@ -149,6 +149,7 @@
     <ClCompile Include="DingleFireState.cpp" />
     <ClCompile Include="DingleIdleState.cpp" />
     <ClCompile Include="DingleRushState.cpp" />
+    <ClCompile Include="dingleSummonState.cpp" />
     <ClCompile Include="Dip.cpp" />
     <ClCompile Include="DipIdleState.cpp" />
     <ClCompile Include="DipMoveState.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="GameObjects\Map.cpp" />
     <ClCompile Include="GameUIs\MapUI.cpp" />
     <ClCompile Include="MapMaking.cpp" />
+    <ClCompile Include="Mulligan.cpp" />
     <ClCompile Include="Pooter.cpp" />
     <ClCompile Include="PooterFireState.cpp" />
     <ClCompile Include="PooterWanderState.cpp" />
@@ -222,6 +224,7 @@
     <ClInclude Include="DingleFireState.h" />
     <ClInclude Include="DingleIdleState.h" />
     <ClInclude Include="DingleRushState.h" />
+    <ClInclude Include="dingleSummonState.h" />
     <ClInclude Include="Dip.h" />
     <ClInclude Include="DipIdleState.h" />
     <ClInclude Include="DipMoveState.h" />
@@ -259,6 +262,7 @@
     <ClInclude Include="LarryJr.h" />
     <ClInclude Include="LarryMoveState.h" />
     <ClInclude Include="MapMaking.h" />
+    <ClInclude Include="Mulligan.h" />
     <ClInclude Include="Pooter.h" />
     <ClInclude Include="PooterFireState.h" />
     <ClInclude Include="PooterWanderState.h" />
