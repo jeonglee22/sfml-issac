@@ -68,6 +68,7 @@ protected:
 	bool isDead = false;
 
 	float tearDamage = 35.f;
+	float tearSpeed = 250.f;
 
 	HitBox hitBoxHead;
 	HitBox hitBoxBody;
@@ -132,4 +133,6 @@ public:
 	void SetTearCount(int s) { tearCount = s; }
 	int GetTearDamage() const { return tearDamage; }
 	void SetTearDamage(float s) { tearDamage = s; }
+	float GetTearSpeed() const { return tearSpeed; }
+	void SetTearSpeed(float s) { tearSpeed = s; }
 };

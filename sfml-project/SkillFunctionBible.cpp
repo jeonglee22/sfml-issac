@@ -53,4 +53,12 @@ void SkillFunctionBible::AddSkillFunction()
 	Dessert dessert;
 	skillFunctionBible.insert({"dessert", dessert()});
 	skillNames.push_back("dessert");
+	
+	TammyHead tammyhead;
+	skillFunctionBible.insert({"tammyshead", tammyhead()});
+	skillNames.push_back("tammyshead");
+
+	YumHeart yumheart;
+	skillFunctionBible.insert({"yumheart", yumheart()});
+	skillNames.push_back("yumheart");
 }

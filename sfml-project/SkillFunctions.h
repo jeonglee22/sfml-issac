@@ -188,6 +188,7 @@ struct Lunch
 					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 					Isaac* isaac = sceneGame->GetIsaac();
 					isaac->SetMaxHP(isaac->GetMaxHP() + 2);
+					isaac->SetCurrentHP(isaac->GetCurrentHP() + 2);
 				}
 			});
 		skill->SetSkillPassive(true);
@@ -209,6 +210,7 @@ struct Dinner
 					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 					Isaac* isaac = sceneGame->GetIsaac();
 					isaac->SetMaxHP(isaac->GetMaxHP() + 2);
+					isaac->SetCurrentHP(isaac->GetCurrentHP() + 2);
 				}
 			});
 		skill->SetSkillPassive(true);
@@ -230,6 +232,7 @@ struct Dessert
 					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 					Isaac* isaac = sceneGame->GetIsaac();
 					isaac->SetMaxHP(isaac->GetMaxHP() + 2);
+					isaac->SetCurrentHP(isaac->GetCurrentHP() + 2);
 				}
 			});
 		skill->SetSkillPassive(true);
@@ -243,6 +246,79 @@ struct Breakfast
 	Skill* operator() ()
 	{
 		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_025_breakfast.png", "breakfast");
+
+		skill->SetSkillFunc([]()
+			{
+				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+				{
+					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+					Isaac* isaac = sceneGame->GetIsaac();
+					isaac->SetMaxHP(isaac->GetMaxHP() + 2);
+					isaac->SetCurrentHP(isaac->GetCurrentHP() + 2);
+				}
+			});
+		skill->SetSkillPassive(true);
+
+		return skill;
+	};
+};
+
+struct TammyHead
+{
+	Skill* operator() ()
+	{
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_038_tammyshead.png", "tammyshead");
+
+		skill->SetSkillFunc([]()
+			{
+				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+				{
+					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+					Isaac* isaac = sceneGame->GetIsaac();
+					std::vector<Tears*> tears;
+					for (int i = 0; i < 10; i++)
+					{
+						Tears* tear = new Tears();
+						tear->Init();
+						tear->Reset();
+						sceneGame->AddGameObject(tear);
+						sf::Vector2f tearDirection = Utils::GetNormal({ std::cos(Utils::DegreeToRadian(36 * i)), std::sin(Utils::DegreeToRadian(36 * i)) });
+						tear->Fire(isaac->GetPosition(), tearDirection, isaac->GetTearSpeed(), isaac->GetTearDamage() + 250.f);
+					}
+				}
+			});
+		skill->SetTotalSkillCooltime(1);
+
+		return skill;
+	};
+};
+
+struct YumHeart
+{
+	Skill* operator() ()
+	{
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_045_yumheart.png", "yumheart");
+
+		skill->SetSkillFunc([]()
+			{
+				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+				{
+					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+					Isaac* isaac = sceneGame->GetIsaac();
+					isaac->SetCurrentHP(Utils::Clamp(isaac->GetCurrentHP() + 2, 0, isaac->GetMaxHP()));
+				}
+			});
+		skill->SetTotalSkillCooltime(4);
+
+		return skill;
+	};
+};
+
+struct MomsEye
+{
+	Skill* operator() ()
+	{
+		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_055_momseye.png", "momseye");
 
 		skill->SetSkillFunc([]()
 			{

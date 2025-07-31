@@ -542,7 +542,7 @@ void Isaac::FireTear(const sf::Vector2f &direction)
 	for (int i = 0; i < tearCount; i++)
 	{
 		if (tearCount == 1)
-			tears[i]->Fire(firePosition, direction, 250.f, (int)std::round(tearDamage));
+			tears[i]->Fire(firePosition, direction, tearSpeed, (int)std::round(tearDamage));
 		else if (tearCount == 3)
 		{
 			sf::Vector2f newfirePos = firePosition;
@@ -556,7 +556,7 @@ void Isaac::FireTear(const sf::Vector2f &direction)
 			{
 				newfirePos.x += (direction.y < 0 ? -1.f : 1.f) * (1 - i) * 10.f;
 			}
-			tears[i]->Fire(newfirePos, newDirection, 250.f, (int)std::round(tearDamage));
+			tears[i]->Fire(newfirePos, newDirection, tearSpeed, (int)std::round(tearDamage));
 		}
 		tearsList.push_back(tears[i]);
 		sceneGame->AddGameObject(tears[i]);
