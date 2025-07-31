@@ -19,6 +19,7 @@ class SceneGame : public Scene
 {
 protected:
 	int mapIndex[11][11];
+	std::vector<MapType> mapTypes;
 
 	int beforeIndex = 0;
 	int stageStartX = 7;
@@ -81,6 +82,7 @@ public:
 	Isaac* GetIsaac() { return isaac; }
 	SkillUI* GetSkillUI() { return skillUI; }
 	int GetMapIndex(int xPos, int yPos) { return mapIndex[yPos][xPos]; }
+	std::vector<MapType> GetMapTypes() { return mapTypes; }
 	sf::FloatRect GetSmallMapSize() { return smallMapSize; }
 
 	std::vector<int> GetNeighboorMapIndex(int x, int y);

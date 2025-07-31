@@ -8,8 +8,13 @@ protected:
 	sf::Sprite doorClosedLeft;
 	sf::Sprite doorClosedRight;
 	sf::Sprite doorOpened;
+	sf::IntRect doorOpenedRect = { 84, 16, 25, 23 };
+	sf::IntRect doorClosedRightRect = { 84,64,25,23 };
+	sf::IntRect doorClosedLeftRect = { 19,64,25,23 };
 
-	HitBox* hitBox;
+	sf::IntRect doorTextureRect;
+
+	HitBox* hitBox = nullptr;
 
 	bool isCleared = false;
 
@@ -17,8 +22,10 @@ protected:
 
 	sf::Vector2f doorDirection;
 
+	MapType type;
+
 public:
-	Door(const std::string& texId = "", const std::string& name = "");
+	Door(MapType type = MapType::None, const std::string& name = "");
 	virtual ~Door() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
@@ -34,6 +41,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	HitBox* GetHitBox() const { return hitBox; }
+	MapType GetDoorType() const { return type; }
 	bool GetMapCleared() const { return isCleared; }
 	void SetMapCleared(bool b) { isCleared = b; }
 	sf::Vector2i GetDoorSize() const { return doorOpened.getTextureRect().getSize() * 2; }

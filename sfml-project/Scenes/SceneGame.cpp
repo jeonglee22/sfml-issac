@@ -46,7 +46,9 @@ void SceneGame::Init()
 	texIds.push_back("graphics/monster_214_level2spider_small.png");
 	texIds.push_back("graphics/effects/effect_015_tearpoofa.png");
 	texIds.push_back("graphics/additionals/door_01_normaldoor.png");
-	texIds.push_back("graphics/additionals/door_01_normaldoor.png");
+	texIds.push_back("graphics/additionals/door_02_treasureroomdoor.png");
+	texIds.push_back("graphics/additionals/door_04_selfsacrificeroomdoor.png");
+	texIds.push_back("graphics/additionals/door_10_bossroomdoor.png");
 	texIds.push_back("graphics/shading.png");
 	texIds.push_back("graphics/overlay_2.png");
 	texIds.push_back("graphics/effect_000_shopkeepers.png");
@@ -160,7 +162,6 @@ void SceneGame::Init()
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
-	std::vector<MapType> mapTypes;
 	sf::Vector2i startPos = MapMaking::MapRandomMaking(10, mapIndex, mapTypes);
 	stageStartX = currentXIndex = startPos.x;
 	stageStartY = currentYIndex = startPos.y;
@@ -345,6 +346,13 @@ void SceneGame::Update(float dt)
 			{
 				sf::Vector2f dir = door->GetDoorDirection();
 				nextMapViewStart = worldView.getCenter() + sf::Vector2f(smallMapSize.getSize().x * dir.x, smallMapSize.getSize().y * dir.y);
+
+				auto doorType = door->GetDoorType();
+				if (doorType == MapType::Sacrifice)
+				{
+					isaac->TakeDamage(1);
+					isaac->Update(dt);
+				}
 
 				currentYIndex += (int)dir.y;
 				currentXIndex += (int)dir.x;
