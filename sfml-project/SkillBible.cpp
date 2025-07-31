@@ -2,7 +2,7 @@
 #include "SkillBible.h"
 #include "SkillFunctionBible.h"
 
-void SkillBible::LoadJsonFile(const std::string& filePath)
+void SkillBible::LoadJsonFile(const std::string &filePath)
 {
 	std::ifstream file(filePath);
 
@@ -56,6 +56,14 @@ void SkillBible::PickSkill()
 		}
 		std::string convertedName = ConvertName(name);
 		texId += convertedName + ".png";
+		TEXTURE_MGR.Load(texId);
+		std::cout << texId << std::endl;
+
+		std::vector<std::string> skillNames = {"thenecronomicon", "thesadonion", "theinnereye", "cricketshead"};
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_001_thesadonion.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_002_theinnereye.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_004_cricketshead.png");
 
 		if (bible != nullptr)
 		{
@@ -64,17 +72,16 @@ void SkillBible::PickSkill()
 		bible = new SkillFunctionBible();
 		bible->AddSkillFunction();
 
-		pickedSkill = bible->GetSkill("thenecronomicon");
-
-		TEXTURE_MGR.Load(texId);
+		int pos = Utils::RandomRange(0, skillNames.size());
+		pickedSkill = bible->GetSkill(skillNames[pos]);
 	}
 }
 
-std::string SkillBible::ConvertName(const std::string& str)
+std::string SkillBible::ConvertName(const std::string &str)
 {
 	std::string result;
 
-	for (const char& c : str)
+	for (const char &c : str)
 	{
 		if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))
 			result += c;

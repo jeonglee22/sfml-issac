@@ -283,6 +283,7 @@
     <ClInclude Include="Skill.h" />
     <ClInclude Include="SkillBible.h" />
     <ClInclude Include="SkillFunctionBible.h" />
+    <ClInclude Include="SkillFunctions.h" />
     <ClInclude Include="Spider.h" />
     <ClInclude Include="SpiderChargeState.h" />
     <ClInclude Include="SpiderJumpState.h" />

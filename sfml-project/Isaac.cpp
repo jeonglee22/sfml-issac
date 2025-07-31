@@ -134,9 +134,9 @@ void Isaac::Reset()
 
 void Isaac::Update(float dt)
 {
-	if(skill != nullptr)
+	if(activeSkill != nullptr)
 	{
-		skill->Update(dt);
+		activeSkill->Update(dt);
 	}
 
 	headAnimator.Update(dt);
@@ -323,6 +323,8 @@ void Isaac::Update(float dt)
 			finalShootDirection.x += moveDirection.x * influence;
 			finalShootDirection.y += moveDirection.y * influence;
 
+			//Utils::Normalize(finalShootDirection);
+
 			float length = sqrt(finalShootDirection.x * finalShootDirection.x +
 				finalShootDirection.y * finalShootDirection.y);
 			if (length > 0)
@@ -492,21 +494,27 @@ void Isaac::FireTear(const sf::Vector2f &direction)
 		return;
 	}
 
-	Tears *tears = nullptr;
+	std::vector<Tears*> tears;
 
-	if (tearsPool.empty())
+	for(int i = 0; i < tearCount; i++)
 	{
-		tears = new Tears();
-		tears->Init();
-	}
-	else
-	{
-		tears = tearsPool.front();
-		tearsPool.pop_front();
-		tears->SetActive(true);
-	}
+		Tears* tear = nullptr;
 
-	tears->Reset();
+		if (tearsPool.empty())
+		{
+			tear = new Tears();
+			tear->Init();
+		}
+		else
+		{
+			tear = tearsPool.front();
+			tearsPool.pop_front();
+			tear->SetActive(true);
+		}
+
+		tear->Reset();
+		tears.push_back(tear);
+	}
 
 	sf::Vector2f firePosition = position;
 
@@ -532,10 +540,29 @@ void Isaac::FireTear(const sf::Vector2f &direction)
 		firePosition.y += Utils::RandomRange(-43.f, -23.f);
 	}
 
-	tears->Fire( firePosition, direction, 250.f, 35);
-	tearsList.push_back(tears);
-
-	sceneGame->AddGameObject(tears);
+	for (int i = 0; i < tearCount; i++)
+	{
+		if (tearCount == 1)
+			tears[i]->Fire(firePosition, direction, 250.f, (int)std::round(tearDamage));
+		else if (tearCount == 3)
+		{
+			sf::Vector2f newfirePos = firePosition;
+			float angle = Utils::Angle(direction);
+			sf::Vector2f newDirection = Utils::GetNormal(sf::Vector2f(std::cos(Utils::DegreeToRadian(angle + 3 * (i - 1))), std::sin(Utils::DegreeToRadian(angle + 3 * (i - 1)))));
+			if (direction.x != 0.f)
+			{
+				newfirePos.y += (direction.x > 0 ? -1.f : 1.f) * (1 - i) * 10.f;
+			}
+			if (direction.y != 0.f)
+			{
+				newfirePos.x += (direction.y < 0 ? -1.f : 1.f) * (1 - i) * 10.f;
+			}
+			tears[i]->Fire(newfirePos, newDirection, 250.f, (int)std::round(tearDamage));
+		}
+		std::cout << std::round(tearDamage) << std::endl;
+		tearsList.push_back(tears[i]);
+		sceneGame->AddGameObject(tears[i]);
+	}
 }
 
 void Isaac::MonsterCollision()

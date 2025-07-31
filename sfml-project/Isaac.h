@@ -60,12 +60,17 @@ protected:
 	int maxHP = 6;
 	int currentHP = 6;
 
+	int tearCount = 1;
+
 	bool isDead = false;
+
+	float tearDamage = 35.f;
 
 	HitBox hitBoxHead;
 	HitBox hitBoxBody;
 
-	Skill* skill = nullptr;
+	Skill* activeSkill = nullptr;
+	std::vector<Skill*> passiveSkill;
 
 public:
 	Isaac(const std::string& name = "");
@@ -107,10 +112,18 @@ public:
 	int GetCurrentHP() const { return currentHP; }
 	int GetMaxHP() const { return maxHP; }
 
-	void SetSkill(Skill* skill) { this->skill = skill; }
-	Skill* GetSkill() { return skill; }
+	void SetActiveSkill(Skill* skill) { this->activeSkill = skill; }
+	Skill* GetActiveSkill() { return activeSkill; }
+	void SetPassiveSkill(Skill* skill) { passiveSkill.push_back(skill); }
 
 	int GetCoinCount() const { return inventory.coinCount; }
 	int GetBombCount() const { return inventory.bombCount; }
 	int GetKeyCount() const { return inventory.keyCount; }
+
+	float GetShootInterval() const { return shootInterval; }
+	void SetShootInterval(float s) { shootInterval = s; }
+	int GetTearCount() const { return tearCount; }
+	void SetTearCount(int s) { tearCount = s; }
+	int GetTearDamage() const { return tearDamage; }
+	void SetTearDamage(float s) { tearDamage = s; }
 };

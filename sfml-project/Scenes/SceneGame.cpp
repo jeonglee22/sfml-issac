@@ -77,7 +77,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/ui_hearts.png");
 	texIds.push_back("graphics/controls.png");
 	texIds.push_back("graphics/ui_chargebar.png");
-	texIds.push_back("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png");
+	//texIds.push_back("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png");5
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
@@ -438,7 +438,7 @@ sf::Vector2i SceneGame::GetNeighboorMapIndexInRectangleMap(int x, int y)
 
 void SceneGame::AddSkillCooltimeAtClear()
 {
-	Skill *skill = isaac->GetSkill();
+	Skill *skill = isaac->GetActiveSkill();
 	if(skill != nullptr)
 	{
 		skill->AddSkillCooltime();

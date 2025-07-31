@@ -91,8 +91,16 @@ void ItemAltar::Update(float dt)
 
 	if (Utils::CheckCollision(isaac->GetHitBoxBody().rect, hitBox->rect) && IsGetSkill)
 	{
-		isaac->SetSkill(skill);
-		skillUI->SetSkill(skill);
+		if(!skill->GetSkillPassive())
+		{
+			isaac->SetActiveSkill(skill);
+			skillUI->SetSkill(skill);
+		}
+		else
+		{
+			isaac->SetPassiveSkill(skill);
+			skill->ApplyPassive();
+		}
 
 		skill->SetActive(false);
 		IsGetSkill = false;

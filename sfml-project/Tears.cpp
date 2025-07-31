@@ -100,6 +100,7 @@ void Tears::Update(float dt)
 	}
 
 	SetPosition(position + velocity * dt);
+	SetScale((damage / (float)initDamage) * sf::Vector2f(1.5f, 1.5f));
 	hitBox.UpdateTransform(sprite, sprite.getLocalBounds());
 
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());

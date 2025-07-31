@@ -16,6 +16,7 @@ protected:
 	sf::Vector2f velocity;
 	float speed = 0.f;
 	int damage = 35;
+	int initDamage = 35;
 
 	float distance = 0.f;
 	float maxRange = 300.f;
@@ -31,6 +32,8 @@ protected:
 
 	SceneGame* sceneGame;
 	HitBox hitBox;
+
+
 
 public:
 	Tears(const std::string& name = "");
