@@ -86,7 +86,7 @@ public:
 
 	void FireTear(const sf::Vector2f& direction);
 	void MonsterCollision();
-	void ItemCollision();
+	void ChestCollision();
 	void HitBoxUpdate();
 	void SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box);
 

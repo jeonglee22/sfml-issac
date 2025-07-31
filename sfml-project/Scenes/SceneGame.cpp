@@ -67,6 +67,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/effects/effect_009_poof01_small.png");
 	texIds.push_back("graphics/additionals/levelitem_001_itemaltar.png");
 	texIds.push_back("graphics/enemies/monster_054_mulligan.png");
+	texIds.push_back("graphics/additionals/pickups/chests.png");
+	texIds.push_back("graphics/additionals/pickups/chests_gold.png");
 
 	texIds.push_back("graphics/enemies/boss_085_dingle.png");
 	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
@@ -141,6 +143,10 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/half_heart.csv");
 	ANI_CLIP_MGR.Load("animations/bomb.csv");
 	ANI_CLIP_MGR.Load("animations/key.csv");
+	ANI_CLIP_MGR.Load("animations/chest_normal.csv");
+	ANI_CLIP_MGR.Load("animations/chest_normal_open.csv");
+	ANI_CLIP_MGR.Load("animations/chest_gold.csv");
+	ANI_CLIP_MGR.Load("animations/chest_gold_open.csv");
 
 	ANI_CLIP_MGR.Load("animations/explosion.csv");
 	ANI_CLIP_MGR.Load("animations/bombradius.csv");

@@ -82,3 +82,9 @@ enum class MapType
 
 	TypeCount,
 };
+
+enum class ChestType
+{
+	Normal,
+	Gold,
+};

@@ -31,7 +31,8 @@ void Mulligan::Draw(sf::RenderWindow& window)
 {
     window.draw(mulliganBody);
     window.draw(mulliganHead);
-    hitBox.Draw(window);
+    headHitBox.Draw(window);
+    bodyHitBox.Draw(window);
 
 }
 
@@ -72,8 +73,8 @@ void Mulligan::Update(float dt)
     headAnimator.Update(dt);
     bodyAnimator.Update(dt);
 
-    hitBox.UpdateTransform(mulliganHead, mulliganHead.getGlobalBounds());
-    hitBox.UpdateTransform(mulliganBody, mulliganBody.getGlobalBounds());
+    headHitBox.UpdateTransform(mulliganHead, mulliganHead.getLocalBounds());
+    bodyHitBox.UpdateTransform(mulliganBody, mulliganBody.getLocalBounds());
 }
 
 void Mulligan::UseSkill()

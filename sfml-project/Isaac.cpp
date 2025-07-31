@@ -10,6 +10,7 @@
 #include "Skill.h"
 #include "Map.h"
 #include "Bomb.h"
+#include "Chest.h"
 
 Isaac::Isaac(const std::string &name)
 	: GameObject(name)
@@ -460,7 +461,7 @@ void Isaac::Update(float dt)
 		InstallBomb();
 	}
 
-
+	ChestCollision();
 	MonsterCollision();
 
 	hitBoxHead.UpdateTransform(head, head.getLocalBounds());
@@ -559,8 +560,37 @@ void Isaac::MonsterCollision()
 	}
 }
 
-void Isaac::ItemCollision()
+void Isaac::ChestCollision()
 {
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (!scene)
+	{
+		return;
+	}
+
+	auto chests = scene->GetChests();
+
+	sf::FloatRect isaacBounds = head.getGlobalBounds();
+
+	for (auto& chest : chests)
+	{
+		if (chest->IsOpen())
+		{
+			continue;
+		}
+
+		sf::FloatRect chestBounds = chest->GetHitBoxChest();
+
+		if (isaacBounds.intersects(chestBounds))
+		{
+			std::cout << "호출 " << std::endl;
+			chest->ChestOpen();
+			return;
+		}
+
+	}
+
+
 }
 
 void Isaac::HitBoxUpdate()

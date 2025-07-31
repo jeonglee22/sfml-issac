@@ -9,6 +9,7 @@ class HitBox;
 class SceneGame;
 class Monster;
 class Item;
+class Chest;
 
 class Map : public GameObject
 {
@@ -25,6 +26,7 @@ protected:
 	std::vector<HitBox *> boundary;
 	std::vector<HitBox *> doorBoundary;
 	std::vector<Item *> items;
+	std::vector<Chest *> chests;
 
 	sf::FloatRect currentMapRect;
 
@@ -75,9 +77,11 @@ public:
 	std::vector<SpriteGo *> GetObjects() const { return allObjects; }
 	std::vector<Monster *> GetMonsters() const { return monsters; }
 	std::vector<Item *> GetItems() const { return items; }
+	std::vector<Chest*> GetChests() const { return chests; }
 
 	void AddMonster(const sf::Vector2f &pos, const std::string &name);
 	void AddItem(const sf::Vector2f &pos, const std::string &name);
+	void AddChest(const sf::Vector2f& pos, const std::string& name);
 	void SetDoor();
 	void SetBoundary();
 

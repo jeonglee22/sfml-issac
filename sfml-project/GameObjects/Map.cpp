@@ -21,6 +21,7 @@
 #include "Dingle.h"
 #include "ItemAltar.h"
 #include "Mulligan.h"
+#include "Chest.h"
 
 Map::Map(const std::string &filePath, const std::string &name, const MapType ty)
 	: filePath(filePath), GameObject(name), type(ty)
@@ -45,6 +46,8 @@ void Map::SetPosition(const sf::Vector2f &pos)
 		ground->SetPosition(ground->GetPosition() + pos);
 	for (auto item : items)
 		item->SetPosition(item->GetPosition() + pos);
+	for (auto chest : chests)
+		chest->SetPosition(chest->GetPosition() + pos);
 }
 
 void Map::SetRotation(float rot)
@@ -177,6 +180,20 @@ void Map::AddItem(const sf::Vector2f &pos, const std::string &name)
 	item->Reset();
 	item->SetPosition(pos + sf::Vector2f(currentMapRect.left, currentMapRect.top) * -1.f);
 	sceneGame->AddGameObject(item);
+}
+
+void Map::AddChest(const sf::Vector2f& pos, const std::string& name)
+{
+	Chest* chest = new Chest();
+	chests.push_back(chest);
+	chest->Init();
+	if (name == "chests")
+		chest->SetItemType(ChestType::Normal);
+	else if (name == "chests_gold")
+		chest->SetItemType(ChestType::Gold);
+	chest->Reset();
+	chest->SetPosition(pos + sf::Vector2f(currentMapRect.left, currentMapRect.top) * -1.f);
+	sceneGame->AddGameObject(chest);
 }
 
 void Map::SetDoor()
@@ -350,6 +367,10 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 	{
 		AddItem({std::stof(infos[6]), std::stof(infos[7])}, infos[5]);
 	}
+	else if (infos[5] == "chests")
+	{
+		AddChest({ std::stof(infos[6]), std::stof(infos[7]) }, infos[5]);
+	}
 	else
 	{
 		backgrounds.push_back(new SpriteGo(infos[0], infos[5]));
@@ -385,6 +406,9 @@ void Map::AddGameObjectInScene()
 		sceneGame->AddGameObject(ground);
 	for (auto item : items)
 		sceneGame->AddGameObject(item);
+	for (auto chest : chests)
+		sceneGame->AddGameObject(chest);
+
 }
 
 void Map::SetActiveAll(bool b)
@@ -401,6 +425,8 @@ void Map::SetActiveAll(bool b)
 		ground->SetActive(b);
 	for (auto item : items)
 		item->SetActive(b);
+	for (auto chest : chests)
+		chest->SetActive(b);
 }
 
 bool Map::CheckAllEnemyDead()

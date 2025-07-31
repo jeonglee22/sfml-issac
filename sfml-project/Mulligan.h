@@ -15,7 +15,8 @@ protected:
 	Animator headAnimator;
 	Animator bodyAnimator;
 
-	HitBox hitBox;
+	HitBox headHitBox;
+	HitBox bodyHitBox;
 
 public:
 	Mulligan(const std::string& name = "Mulligan");

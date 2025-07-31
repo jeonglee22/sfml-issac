@@ -144,6 +144,7 @@
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="ChaseState.cpp" />
+    <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Dingle.cpp" />
     <ClCompile Include="DingleChargeFireState.cpp" />
     <ClCompile Include="DingleFireState.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Body.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="ChaseState.h" />
+    <ClInclude Include="Chest.h" />
     <ClInclude Include="Dingle.h" />
     <ClInclude Include="DingleChargeFireState.h" />
     <ClInclude Include="DingleFireState.h" />

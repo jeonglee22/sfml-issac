@@ -41,7 +41,8 @@ void SceneEditor::Init()
 	texIds.push_back("graphics/additionals/pickups/heart.png");
 	texIds.push_back("graphics/additionals/pickups/halfheart.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_002_coin.png");
-	texIds.push_back("graphics/additionals/pickups/pickup_005_chests.png");
+	texIds.push_back("graphics/additionals/pickups/chests.png");
+	texIds.push_back("graphics/additionals/pickups/chests_gold.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_003_key.png");
 	texIds.push_back("graphics/additionals/pickups/pickup_016_bomb.png");
 	texIds.push_back("graphics/enemies/boss_085_dingle.png");

@@ -5,6 +5,7 @@
 class SpriteGo;
 class Isaac;
 class Monster;
+class Chest;
 class HitBox;
 class Door;
 class Map;
@@ -33,6 +34,7 @@ protected:
 	std::vector<Monster *> monsters;
 	std::vector<HitBox *> boundary;
 	std::vector<Door *> doors;
+	std::vector<Chest*> chests;
 
 	sf::Vector2f offset = sf::Vector2f(140.f, 104.f);
 	sf::Vector2f mapOffset;
@@ -78,6 +80,7 @@ public:
 	std::vector<HitBox *> GetMapBoundary() { return maps[currentMapIndex]->GetBoundary(); }
 	std::vector<SpriteGo *> GetMapSprites() { return maps[currentMapIndex]->GetObjects(); }
 	std::vector<Door *> GetMapDoor() { return maps[currentMapIndex]->GetDoor(); }
+	std::vector<Chest *> GetChests() { return maps[currentMapIndex]->GetChests(); }
 	Isaac* GetIsaac() { return isaac; }
 	SkillUI* GetSkillUI() { return skillUI; }
 	int GetMapIndex(int xPos, int yPos) { return mapIndex[yPos][xPos]; }
