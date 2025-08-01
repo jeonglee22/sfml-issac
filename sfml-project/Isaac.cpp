@@ -22,6 +22,11 @@ void Isaac::SetPosition(const sf::Vector2f &pos)
 	position = pos;
 	body.setPosition(position);
 	head.setPosition(position.x, position.y - 20.f);
+
+	for (sf::Sprite sprite : headAdditionals)
+	{
+		sprite.setPosition(position.x, position.y - 20.f);
+	}
 }
 
 void Isaac::SetRotation(float angle)
@@ -36,6 +41,11 @@ void Isaac::SetScale(const sf::Vector2f &s)
 	scale = s;
 	head.setScale(scale);
 	body.setScale(scale);
+
+	for (sf::Sprite sprite : headAdditionals)
+	{
+		sprite.setScale(scale);
+	}
 }
 
 void Isaac::SetOrigin(Origins preset)
@@ -59,6 +69,12 @@ void Isaac::Init()
 {
 	headAnimator.SetTarget(&head);
 	bodyAnimator.SetTarget(&body);
+
+	//for (int i = 0; i < additionalsAnimator.size() && i < headAdditionals.size(); ++i)
+	//{
+	//	additionalsAnimator[i].SetTarget(&headAdditionals[i]);
+	//}
+
 }
 
 void Isaac::Release()
@@ -105,7 +121,8 @@ void Isaac::Reset()
 	  {"run_weight", "animations/isaac_run_weight.csv"},
 	  {"run_height", "animations/isaac_run_height.csv"},
 	  {"hurt", "animations/isaac_hurt.csv"},
-	  {"dead", "animations/isaac_dead.csv" }
+	  {"dead", "animations/isaac_dead.csv" },
+	  {"happy", "animations/isaac_happy.csv"}
 	};
 
 
@@ -126,6 +143,9 @@ void Isaac::Reset()
 	shootTimer = 0.0f;
 	wasKeyPressed = false;
 	currentHP = inventory.heartCount;
+
+	isGettingItem = false;
+	itemAnimationTime = 0.0f;
 
 	isDead = false;
 
@@ -189,6 +209,27 @@ void Isaac::Update(float dt)
 		else
 		{
 			++bombIt;
+		}
+	}
+
+	if (isGettingItem)
+	{
+		std::cout << "is Getting Item true" << std::endl;
+
+		itemAnimationTime += dt;
+
+		if (itemAnimationTime < itemAnimationMaxTime)
+		{
+			PlayHeadAnimation("empty");
+			PlayBodyAnimation("happy");
+		}
+		else
+		{
+			PlayHeadAnimation("front");
+			PlayBodyAnimation("idle");
+
+			itemAnimationTime = 0.0f;
+			isGettingItem = false;
 		}
 	}
 
@@ -324,8 +365,6 @@ void Isaac::Update(float dt)
 			finalShootDirection.x += moveDirection.x * influence;
 			finalShootDirection.y += moveDirection.y * influence;
 
-			//Utils::Normalize(finalShootDirection);
-
 			float length = sqrt(finalShootDirection.x * finalShootDirection.x +
 				finalShootDirection.y * finalShootDirection.y);
 			if (length > 0)
@@ -336,26 +375,30 @@ void Isaac::Update(float dt)
 		}
 
 
-		if (!isHurt)
+		if (!isHurt && !isGettingItem)
 		{
 			if (shootInput.x > 0.f)
 			{
 				head.setScale({ 2.f, 2.f });
+				head.setPosition(position.x, position.y - 19.f);
 				PlayHeadTearsAnimation("side");
 			}
 			else if (shootInput.x < 0.f)
 			{
 				head.setScale({ -2.f, 2.f });
 				PlayHeadTearsAnimation("side");
+				head.setPosition(position.x, position.y - 19.f);
 			}
 			else if (shootInput.y < 0.f)
 			{
 				head.setScale(body.getScale());
+				head.setPosition(position.x, position.y - 19.f);
 				PlayHeadTearsAnimation("rare");
 			}
 			else if (shootInput.y > 0.f)
 			{
 				head.setScale(body.getScale());
+				head.setPosition(position.x, position.y - 19.f);
 				PlayHeadTearsAnimation("front");
 
 			}
@@ -397,7 +440,7 @@ void Isaac::Update(float dt)
 		{
 			wasKeyPressed = false;
 		}
-		if (!isHurt)
+		if (!isHurt && !isGettingItem)
 		{
 			head.setScale(body.getScale());
 
@@ -427,7 +470,7 @@ void Isaac::Update(float dt)
 		}
 	}
 
-	if (!isHurt && (InputMgr::GetKeyUp(sf::Keyboard::Up) || InputMgr::GetKeyUp(sf::Keyboard::Down) || InputMgr::GetKeyUp(sf::Keyboard::Left) || InputMgr::GetKeyUp(sf::Keyboard::Right)))
+	if (!isHurt && !isGettingItem && (InputMgr::GetKeyUp(sf::Keyboard::Up) || InputMgr::GetKeyUp(sf::Keyboard::Down) || InputMgr::GetKeyUp(sf::Keyboard::Left) || InputMgr::GetKeyUp(sf::Keyboard::Right)))
 	{
 		float currentH = InputMgr::GetAxis(Axis::Horizontal);
 		float currentW = InputMgr::GetAxis(Axis::Vertical);
@@ -463,6 +506,7 @@ void Isaac::Update(float dt)
 		InstallBomb();
 	}
 
+	ChangeAnimation();
 	ChestCollision();
 	MonsterCollision();
 
@@ -603,7 +647,7 @@ void Isaac::ChestCollision()
 
 	auto chests = scene->GetChests();
 
-	sf::FloatRect isaacBounds = head.getGlobalBounds();
+	sf::FloatRect isaacBounds = body.getGlobalBounds();
 
 	for (auto& chest : chests)
 	{
@@ -616,8 +660,17 @@ void Isaac::ChestCollision()
 
 		if (isaacBounds.intersects(chestBounds))
 		{
-			chest->ChestOpen();
-			break;
+			if (chest->GetChestType() == ChestType::Normal)
+			{
+				chest->ChestOpen();
+				break;
+			}
+			if (chest->GetChestType() == ChestType::Gold && inventory.keyCount > 0)
+			{
+				chest->ChestOpen();
+				inventory.keyCount--;
+				break;
+			}
 		}
 
 	}
@@ -765,4 +818,49 @@ void Isaac::InstallBomb()
 
 	inventory.bombCount--;
 	sceneGame->AddGameObject(bomb);
+}
+
+void Isaac::ChangeAnimation()
+{
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (!scene)
+	{
+		return;
+	}
+
+	for (Skill* skill : passiveSkill)
+	{
+		if (skill->GetTextId() == "graphics/additionals/collectibles/collectibles_006_numberone.png")
+		{
+			headAnimation =
+			{
+				{"front", "animations/isaac_head_front_number_one.csv"},
+				{"side", "animations/isaac_head_side_number_one.csv"},
+				{"rare", "animations/isaac_head_rare_number_one.csv"},
+				{"empty", "animations/empty.csv"}
+			};
+			headTearsAnimation =
+			{
+				{"front", "animations/isaac_head_front_tears_number_one.csv"},
+				{"side", "animations/isaac_head_side_tears_number_one.csv"},
+				{"rare", "animations/isaac_head_rare_tears_number_one.csv"}
+			};
+		}
+		else if (skill->GetTextId() == "graphics/additionals/collectibles/collectibles_004_cricketshead.png")
+		{
+			headAnimation =
+			{
+				{"front", "animations/isaac_head_front_c_head.csv"},
+				{"side", "animations/isaac_head_side_c_head.csv"},
+				{"rare", "animations/isaac_head_rare_c_head.csv"},
+				{"empty", "animations/empty.csv"}
+			};
+			headTearsAnimation =
+			{
+				{"front", "animations/isaac_head_front_tears_c_head.csv"},
+				{"side", "animations/isaac_head_side_tears_c_head.csv"},
+				{"rare", "animations/isaac_head_rare_tears_c_head.csv"}
+			};
+		}
+	}
 }
