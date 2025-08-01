@@ -3,7 +3,7 @@
 #include "MapMaking.h"
 
 int MapMaking::normalMapCount = 19;
-int MapMaking::startMapCount = 10;
+int MapMaking::startMapCount = 1;
 int MapMaking::treasureMapCount = 2;
 int MapMaking::hiddenMapCount = 1;
 int MapMaking::shopMapCount = 1;

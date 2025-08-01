@@ -48,6 +48,7 @@ public:
 	void SetSkillFunc(const std::function<void()>& func) { skillFunc = func; }
 	void SetSkillPassive(bool b) { isPassive = b; }
 	bool GetSkillPassive() { return isPassive; }
+	std::string GetTextId() const { return texId; };
 
 	void ApplyPassive() { skillFunc(); }
 };

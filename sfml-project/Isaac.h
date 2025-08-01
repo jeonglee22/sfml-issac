@@ -16,6 +16,8 @@ class SceneDev2;
 class SceneGame;
 class Skill;
 class Bomb;
+class Skill;
+class Chest;
 
 class Isaac : public GameObject
 {
@@ -36,6 +38,8 @@ protected:
 	std::string currentHeadAnimation = "front";
 	std::string currentBodyAnimation = "idle";
 
+	ChestType chestType;
+
 	bool isShooting = false;
 
 	std::list<Tears*> tearsList;
@@ -45,6 +49,7 @@ protected:
 
 	SceneDev2* sceneDev2 = nullptr;
 	SceneGame* sceneGame = nullptr;
+	//Skill* skill = nullptr;
 
 	sf::Vector2f velocity = { 0.f, 0.f };
 	float speed = 250.f;
@@ -56,9 +61,14 @@ protected:
 	float invincibleTime = 0.0f;
 	float invincibleMaxTime = 1.2f;
 
+	float itemAnimationTime = 0.0f;
+	float itemAnimationMaxTime = 1.5f;
+
 	bool isHurt = false;
 	float currentHurtTime = 0.0;
 	float maxHurtTime = 0.4f;
+
+	bool isGettingItem = false;
 
 	int maxHP = 6;
 	int currentHP = 6;
@@ -119,6 +129,8 @@ public:
 	int GetMaxHP() const { return maxHP; }
 	void SetMaxHP(int hp) { maxHP = hp; }
 	float GetInvincibleTime() const { return invincibleTime; }
+	void GetiingItem(bool a) { isGettingItem = a; }
+	bool IsGetttingItem() { return isGettingItem; }
 
 	void SetActiveSkill(Skill* skill) { this->activeSkill = skill; }
 	Skill* GetActiveSkill() { return activeSkill; }
@@ -138,4 +150,5 @@ public:
 	void SetTearSpeed(float s) { tearSpeed = s; }
 
 	void SetBackShoot(bool b) { isBackShoot = b; }
+	void ChangeAnimation();
 };
