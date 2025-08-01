@@ -63,7 +63,7 @@ void ItemAltar::Reset()
 	skill->sortingLayer = SortingLayers::Foreground;
 	skill->sortingOrder = 1;
 	skill->Reset();
-	skill->SetOrigin(Origins::MC);
+	skill->SetOrigin(Origins::TL);
 	skill->SetPosition(this->GetPosition() + skillPos);
 	skill->SetScale({ 2.f,2.f });
 
@@ -78,7 +78,7 @@ void ItemAltar::Update(float dt)
 {
 	Obstacles::Update(dt);
 
-	if(skill->GetActive())
+	if(skill != nullptr && skill->GetActive())
 	{
 		skill->SetPosition(skill->GetPosition() + sf::Vector2f(0, dir) * dt * 5.f);
 		movingTime += dt;
@@ -87,14 +87,21 @@ void ItemAltar::Update(float dt)
 			dir *= -1.f;
 			movingTime = 0.f;
 		}
+		changeCoolTime += dt;
 	}
 
-	if (Utils::CheckCollision(isaac->GetHitBoxBody().rect, hitBox->rect) && IsGetSkill)
+	if (Utils::CheckCollision(isaac->GetHitBoxBody().rect, hitBox->rect) && IsGetSkill && changeCoolTime > changeCoolTimeMax)
 	{
-		if(!skill->GetSkillPassive())
+		if (!skill->GetSkillPassive())
 		{
+			Skill* temp = nullptr;
+			if (isaac->GetActiveSkill() != nullptr)
+			{
+				temp = isaac->GetActiveSkill();
+			}
 			isaac->SetActiveSkill(skill);
 			skillUI->SetSkill(skill);
+			skill = temp;
 		}
 		else
 		{
@@ -102,8 +109,24 @@ void ItemAltar::Update(float dt)
 			skill->ApplyPassive();
 		}
 
-		skill->SetActive(false);
+		if (skill != nullptr && skill->GetSkillPassive())
+		{
+			skill->SetActive(false);
+		}
+
 		IsGetSkill = false;
+		if (skill != nullptr && !skill->GetSkillPassive())
+		{
+			IsGetSkill = true;
+			skill->sortingLayer = SortingLayers::Foreground;
+			skill->sortingOrder = 1;
+			skill->Reset();
+			skill->SetOrigin(Origins::TL);
+			skill->SetPosition(this->GetPosition() + skillPos);
+			skill->SetScale({ 2.f,2.f });
+			movingTime = 0.f;
+		}
+		changeCoolTime = 0.f;
 	}
 }
 
@@ -111,7 +134,7 @@ void ItemAltar::Draw(sf::RenderWindow& window)
 { 
 	Obstacles::Draw(window);
 
-	if(skill->GetActive())
+	if (skill != nullptr && skill->GetActive())
 	{
 		skill->Draw(window);
 	}
