@@ -257,7 +257,7 @@ void Isaac::Update(float dt)
 		for (auto sprite : sceneGame->GetMapSprites())
 		{
 			if ((sprite->GetName() == "rocks_basement" || sprite->GetName() == "grid_pit_basement") 
-				&& Utils::CheckCollision(hitBoxBody.rect, ((Obstacles*)sprite)->GetHitBox()->rect))
+				&& Utils::CheckCollision(hitBoxBody.rect, ((Obstacles*)sprite)->GetHitBox()->rect) && sprite->GetActive())
 			{
 				SpritesPositionAtCollision(beforePos, ((Obstacles*)sprite)->GetHitBox());
 			}
@@ -281,6 +281,13 @@ void Isaac::Update(float dt)
 		{
 			if (!door->GetMapCleared() && Utils::CheckCollision(hitBoxBody.rect, door->GetHitBox()->rect))
 			{
+				bool currentMapCleared = sceneGame->GetCurrentMap()->GetCleared();
+				if (currentMapCleared && door->GetDoorLocked() && inventory.keyCount > 0)
+				{
+					inventory.keyCount--;
+					door->SetDoorLocked(false);
+					door->PlayUnlock();
+				}
 				SpritesPositionAtCollision(beforePos, door->GetHitBox());
 			}
 		}
@@ -462,7 +469,20 @@ void Isaac::Update(float dt)
 	{
 		InstallBomb();
 	}
-
+#ifdef DEF_DEV
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num9))
+	{
+		inventory.coinCount++;
+		inventory.keyCount++;
+		inventory.bombCount++;
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num8))
+	{
+		inventory.coinCount--;
+		inventory.keyCount--;
+		inventory.bombCount--;
+	}
+#endif DEF_DEV
 	ChestCollision();
 	MonsterCollision();
 
@@ -765,4 +785,12 @@ void Isaac::InstallBomb()
 
 	inventory.bombCount--;
 	sceneGame->AddGameObject(bomb);
+}
+
+void Isaac::ClampItemCounts()
+{
+	inventory.bombCount = Utils::Clamp(inventory.bombCount, 0, 100);
+	inventory.keyCount = Utils::Clamp(inventory.keyCount, 0, 100);
+	inventory.coinCount = Utils::Clamp(inventory.coinCount, 0, 100);
+	inventory.heartCount = Utils::Clamp(inventory.heartCount, 0, 100);
 }

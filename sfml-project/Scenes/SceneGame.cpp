@@ -323,6 +323,8 @@ void SceneGame::Update(float dt)
 
 		if (isaac->GetBombCount() != itemUI->GetBombCount())
 			itemUI->SetItemUICount(Items::Bomb, isaac->GetBombCount());
+		if (isaac->GetKeyCount() != itemUI->GetKeyCount())
+			itemUI->SetItemUICount(Items::Key, isaac->GetKeyCount());
 
 		if (isaac && !isMapChanging)
 		{

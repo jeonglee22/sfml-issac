@@ -134,7 +134,8 @@ void Map::SetCleared(bool b)
 	isCleared = b;
 	for (auto door : doors)
 	{
-		door->SetMapCleared(b);
+		if(!door->GetDoorLocked())
+			door->SetMapCleared(b);
 	}
 }
 
@@ -260,19 +261,32 @@ void Map::SetDoor()
 			}
 			else if (neighboorMapIndex[i * 4 + j] != -1 && neighboorMapIndex[i * 4 + j] != 99)
 			{
+				Door* door = nullptr;
 				if( sceneGame->GetMapTypes()[currentMapIndex] != MapType::Normal &&
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Special &&
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Large &&
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Rectangle &&
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Start)
-					doors.push_back(new Door(sceneGame->GetMapTypes()[currentMapIndex], "Door"));
+					door = new Door(sceneGame->GetMapTypes()[currentMapIndex], "Door");
 				else
-					doors.push_back(new Door(sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]], "Door"));
-				doors[doors.size() - 1]->Init();
-				doors[doors.size() - 1]->Reset();
-				doors[doors.size() - 1]->SetPosition(centerPos + localPos + differPos);
-				doors[doors.size() - 1]->SetRotation(90.f * j);
-				doors[doors.size() - 1]->SetDoorDirection(j);
+				{
+					door = new Door(sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]], "Door");
+					if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Shop)
+					{
+						door->SetDoorLocked(true);
+					}
+					if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Treasure)
+					{
+						if (Utils::RandomRange(0.f,1.f) <= 0.5f)
+							door->SetDoorLocked(true);
+					}
+				}
+				door->Init();
+				door->Reset();
+				door->SetPosition(centerPos + localPos + differPos);
+				door->SetRotation(90.f * j);
+				door->SetDoorDirection(j);
+				doors.push_back(door);
 			}
 			else
 			{

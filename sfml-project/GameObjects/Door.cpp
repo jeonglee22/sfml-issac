@@ -90,6 +90,8 @@ void Door::Init()
 	sortingLayer = SortingLayers::Background;
 	sortingOrder = 3;
 
+	animator = new Animator();
+
 	SetOrigin(Origins::BC);
 
 	hitBox = new HitBox();
@@ -104,6 +106,9 @@ void Door::Release()
 
 void Door::Reset()
 {
+	if(isLocked)
+		doorClosedRightRect = { 84, 112, 25, 23 };
+
 	SpriteGo::Reset();
 	sprite.setTextureRect(doorTextureRect);
 
@@ -166,4 +171,8 @@ void Door::SetDoorDirection(int i)
 	default:
 		break;
 	}
+}
+
+void Door::PlayUnlock()
+{
 }

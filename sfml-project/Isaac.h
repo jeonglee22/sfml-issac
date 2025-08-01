@@ -138,4 +138,6 @@ public:
 	void SetTearSpeed(float s) { tearSpeed = s; }
 
 	void SetBackShoot(bool b) { isBackShoot = b; }
+
+	void ClampItemCounts();
 };
