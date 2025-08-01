@@ -9,7 +9,6 @@
 #include "Body.h"
 #include "LarryJr.h"
 #include "Dingle.h"
-#include "Door.h"
 
 Monster::Monster(const std::string& name, Monsters type)
 	: GameObject(name), monsterType(type)
@@ -253,15 +252,6 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 		for (auto boundary : scene->GetMapBoundary())
 		{
 			if (Utils::CheckCollision(GetHitBoxMonsterShape(GetHitBoxMonster()), boundary->rect))
-			{
-				willCollide = true;
-				break;
-			}
-		}
-
-		for (auto door : scene->GetMapDoor())
-		{
-			if (Utils::CheckCollision(GetHitBoxMonsterShape(GetHitBoxMonster()), door->GetHitBox()->rect))
 			{
 				willCollide = true;
 				break;
