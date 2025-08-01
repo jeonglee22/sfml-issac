@@ -160,6 +160,8 @@ void Isaac::Update(float dt)
 		activeSkill->Update(dt);
 	}
 
+	ClampItemCounts();
+
 	headAnimator.Update(dt);
 	bodyAnimator.Update(dt);
 
