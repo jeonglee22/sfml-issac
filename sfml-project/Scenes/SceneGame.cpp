@@ -72,6 +72,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/enemies/monster_054_mulligan.png");
 	texIds.push_back("graphics/additionals/pickups/chests.png");
 	texIds.push_back("graphics/additionals/pickups/chests_gold.png");
+	texIds.push_back("graphics/costume_048_numberone.png");
+	texIds.push_back("graphics/coustumes/costume_037_maxshead.png");
 
 	texIds.push_back("graphics/enemies/boss_085_dingle.png");
 	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
@@ -114,6 +116,21 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_hurt.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_dead.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_happy.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_number_one.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_number_one.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_rare_number_one.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_tears_number_one.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears_number_one.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears_number_one.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_c_head.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_c_head.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_rare_c_head.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_tears_c_head.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears_c_head.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears_c_head.csv");
+
+
 
 	ANI_CLIP_MGR.Load("animations/fly.csv");
 	ANI_CLIP_MGR.Load("animations/attack_fly.csv");

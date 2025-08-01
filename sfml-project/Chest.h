@@ -32,6 +32,7 @@ public:
 	void SetItemType(ChestType type) { chestType = type; }
 	void ChestOpen();
 	bool IsOpen() { return isOpen; }
+	ChestType GetChestType() { return chestType; }
 
 	void Init() override;
 	void Release() override;

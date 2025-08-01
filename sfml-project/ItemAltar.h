@@ -14,6 +14,9 @@ protected:
 	Skill* skill = nullptr;
 	SkillUI* skillUI = nullptr;
 	SkillBible* bible = nullptr;
+	
+	float getSkillTime = 0.0f;
+	float getSkillMaxTime = 1.0f;
 
 	sf::Vector2f skillPos = sf::Vector2f(0, -40.f);
 

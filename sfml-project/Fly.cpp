@@ -39,5 +39,5 @@ void Fly::SetInitialState()
 sf::FloatRect Fly::GetHitBoxMonster()
 {
     sf::FloatRect bodyGlobalBounds = body.getGlobalBounds();
-    return { bodyGlobalBounds.left + 20.f, bodyGlobalBounds.top + 20.f, 3.f, 3.f };
+    return { bodyGlobalBounds.left + 15.f, bodyGlobalBounds.top + 15.f, bodyGlobalBounds.width - 30.f, bodyGlobalBounds.height - 30.f };
 }

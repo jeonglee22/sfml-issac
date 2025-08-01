@@ -78,6 +78,7 @@ void ItemAltar::Update(float dt)
 {
 	Obstacles::Update(dt);
 
+
 	if(skill->GetActive())
 	{
 		skill->SetPosition(skill->GetPosition() + sf::Vector2f(0, dir) * dt * 5.f);
@@ -102,6 +103,7 @@ void ItemAltar::Update(float dt)
 			skill->ApplyPassive();
 		}
 
+		isaac->GetiingItem(true);
 		skill->SetActive(false);
 		IsGetSkill = false;
 	}
