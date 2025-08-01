@@ -283,7 +283,7 @@ struct TammyHead
 						tear->Reset();
 						sceneGame->AddGameObject(tear);
 						sf::Vector2f tearDirection = Utils::GetNormal({ std::cos(Utils::DegreeToRadian(36 * i)), std::sin(Utils::DegreeToRadian(36 * i)) });
-						tear->Fire(isaac->GetPosition(), tearDirection, isaac->GetTearSpeed(), isaac->GetTearDamage() + 250.f);
+						tear->Fire(isaac->GetPosition() - sf::Vector2f(0.f, 20.f), tearDirection, isaac->GetTearSpeed(), isaac->GetTearDamage() + 250.f);
 					}
 				}
 			});

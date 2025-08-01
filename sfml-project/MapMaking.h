@@ -43,4 +43,7 @@ public:
 	}
 
 	static std::string ToString(MapType ty);
+
+	static sf::Vector2i FindHiddenPos(int map[][11]);
+	static int GetNeighboorMapCount(int map[][11], const sf::Vector2i& pos);
 };

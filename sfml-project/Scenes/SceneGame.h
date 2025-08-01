@@ -79,6 +79,7 @@ public:
 	void EnemyCollosion();
 	std::vector<Monster *> GetMonsters() { return maps[currentMapIndex]->GetMonsters(); }
 	std::vector<HitBox *> GetMapBoundary() { return maps[currentMapIndex]->GetBoundary(); }
+	std::vector<HitBox *> GetMapTearBoundary() { return maps[currentMapIndex]->GetTearBoundary(); }
 	std::vector<SpriteGo *> GetMapSprites() { return maps[currentMapIndex]->GetObjects(); }
 	std::vector<Door *> GetMapDoor() { return maps[currentMapIndex]->GetDoor(); }
 	std::vector<Chest *> GetChests() { return maps[currentMapIndex]->GetChests(); }
