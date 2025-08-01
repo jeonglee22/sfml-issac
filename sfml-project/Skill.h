@@ -10,7 +10,7 @@ protected:
 	sf::Sprite effectBody;
 	std::string effectId;
 
-	int skillCoolTime;
+	int skillCoolTime = 0;
 	int currentCoolTime = 0;
 
 	std::function<void()> skillFunc;
@@ -18,6 +18,8 @@ protected:
 	bool isUseSkill = false;
 	float skillActionMax = 1.f;
 	float skillActionTime = 0.f;
+
+	bool isPassive = false;
 
 public:
 	Skill(const std::string& textureId = "", const std::string& name = "");
@@ -35,7 +37,7 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	void SetTotalSkillCooltime(int c) { skillCoolTime = c; }
+	void SetTotalSkillCooltime(int c) { skillCoolTime = c; currentCoolTime = c; }
 	int GetTotalSkillCooltime() const { return skillCoolTime; }
 	void SetEffectId(const std::string& str) { effectId = str; }
 	std::string GetEffectId() const { return effectId; }
@@ -44,5 +46,9 @@ public:
 	int GetCurrentCooltime() const { return currentCoolTime; }
 	void AddSkillCooltime() { currentCoolTime = Utils::Clamp(++currentCoolTime, 0, skillCoolTime); }
 	void SetSkillFunc(const std::function<void()>& func) { skillFunc = func; }
+	void SetSkillPassive(bool b) { isPassive = b; }
+	bool GetSkillPassive() { return isPassive; }
+
+	void ApplyPassive() { skillFunc(); }
 };
 

@@ -22,13 +22,16 @@ class Isaac : public GameObject
 protected:
 	sf::Sprite body;
 	sf::Sprite head;
+	std::vector<sf::Sprite> headAdditionals;
 	Animator bodyAnimator;
 	Animator headAnimator;
+	std::vector<Animator> additionalsAnimator;
 	ItemInventory inventory;
 
 	std::map<std::string, std::string> headAnimation;
 	std::map<std::string, std::string> headTearsAnimation;
 	std::map<std::string, std::string> bodyAnimation;
+	std::map<std::string, std::string> additonalsAnimation;
 
 	std::string currentHeadAnimation = "front";
 	std::string currentBodyAnimation = "idle";
@@ -60,12 +63,19 @@ protected:
 	int maxHP = 6;
 	int currentHP = 6;
 
+	int tearCount = 1;
+
 	bool isDead = false;
+	bool isBackShoot = false;
+
+	float tearDamage = 35.f;
+	float tearSpeed = 250.f;
 
 	HitBox hitBoxHead;
 	HitBox hitBoxBody;
 
-	Skill* skill = nullptr;
+	Skill* activeSkill = nullptr;
+	std::vector<Skill*> passiveSkill;
 
 public:
 	Isaac(const std::string& name = "");
@@ -105,12 +115,27 @@ public:
 	HitBox GetHitBoxBody() const { return hitBoxBody; }
 	HitBox GetHitBoxHead() const { return hitBoxHead; }
 	int GetCurrentHP() const { return currentHP; }
+	void SetCurrentHP(int hp) { currentHP = hp; }
 	int GetMaxHP() const { return maxHP; }
+	void SetMaxHP(int hp) { maxHP = hp; }
+	float GetInvincibleTime() const { return invincibleTime; }
 
-	void SetSkill(Skill* skill) { this->skill = skill; }
-	Skill* GetSkill() { return skill; }
+	void SetActiveSkill(Skill* skill) { this->activeSkill = skill; }
+	Skill* GetActiveSkill() { return activeSkill; }
+	void SetPassiveSkill(Skill* skill) { passiveSkill.push_back(skill); }
 
 	int GetCoinCount() const { return inventory.coinCount; }
 	int GetBombCount() const { return inventory.bombCount; }
 	int GetKeyCount() const { return inventory.keyCount; }
+
+	float GetShootInterval() const { return shootInterval; }
+	void SetShootInterval(float s) { shootInterval = s; }
+	int GetTearCount() const { return tearCount; }
+	void SetTearCount(int s) { tearCount = s; }
+	int GetTearDamage() const { return tearDamage; }
+	void SetTearDamage(float s) { tearDamage = s; }
+	float GetTearSpeed() const { return tearSpeed; }
+	void SetTearSpeed(float s) { tearSpeed = s; }
+
+	void SetBackShoot(bool b) { isBackShoot = b; }
 };

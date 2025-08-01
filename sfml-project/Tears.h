@@ -16,9 +16,10 @@ protected:
 	sf::Vector2f velocity;
 	float speed = 0.f;
 	int damage = 35;
+	int initDamage = 35;
 
 	float distance = 0.f;
-	float maxRange = 300.f;
+	
 	sf::Vector2f startPosition;
 	sf::Vector2f gravity = { 0.f, 800.f };
 
@@ -31,6 +32,11 @@ protected:
 
 	SceneGame* sceneGame;
 	HitBox hitBox;
+
+	static float maxRange;
+	static std::string tearIdle;
+	static std::string tearBoom;
+	static sf::Color tearColor;
 
 public:
 	Tears(const std::string& name = "");
@@ -52,5 +58,9 @@ public:
 	void Hit();
 	void StartSplash();
 
+	static void SetTearIdleAni(const std::string& idleAni) { Tears::tearIdle = idleAni; }
+	static void SetTearBoomAni(const std::string& boomAni) { Tears::tearBoom = boomAni; }
+	static void SetTearColor(const sf::Color& c) { Tears::tearColor = c; }
+	static void AddTearRange(float t) { Tears::maxRange = Utils::Clamp(Tears::maxRange + t, 50.f, 1000.f); }
 };
 

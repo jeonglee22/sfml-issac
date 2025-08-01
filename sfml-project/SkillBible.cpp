@@ -2,7 +2,7 @@
 #include "SkillBible.h"
 #include "SkillFunctionBible.h"
 
-void SkillBible::LoadJsonFile(const std::string& filePath)
+void SkillBible::LoadJsonFile(const std::string &filePath)
 {
 	std::ifstream file(filePath);
 
@@ -56,6 +56,25 @@ void SkillBible::PickSkill()
 		}
 		std::string convertedName = ConvertName(name);
 		texId += convertedName + ".png";
+		TEXTURE_MGR.Load(texId);
+
+		std::vector<std::string> skillNames = {"thenecronomicon", "thesadonion", "theinnereye", 
+			"cricketshead", "numberone", "bloodofthemartyr", "boom", "dinner", "lunch", "breakfast", "dessert",
+			"tammyshead", "yumheart", "momseye"};
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_001_thesadonion.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_002_theinnereye.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_004_cricketshead.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_006_numberone.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_007_bloodofthemartyr.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_019_boom.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_022_lunch.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_023_dinner.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_024_dessert.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_025_breakfast.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_038_tammyshead.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_045_yumheart.png");
+		TEXTURE_MGR.Load("graphics/additionals/collectibles/collectibles_055_momseye.png");
 
 		if (bible != nullptr)
 		{
@@ -64,17 +83,16 @@ void SkillBible::PickSkill()
 		bible = new SkillFunctionBible();
 		bible->AddSkillFunction();
 
-		pickedSkill = bible->GetSkill("thenecronomicon");
-
-		TEXTURE_MGR.Load(texId);
+		int pos = Utils::RandomRange(0, skillNames.size());
+		pickedSkill = bible->GetSkill(skillNames[pos]);
 	}
 }
 
-std::string SkillBible::ConvertName(const std::string& str)
+std::string SkillBible::ConvertName(const std::string &str)
 {
 	std::string result;
 
-	for (const char& c : str)
+	for (const char &c : str)
 	{
 		if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))
 			result += c;

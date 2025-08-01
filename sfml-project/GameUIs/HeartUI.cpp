@@ -76,14 +76,14 @@ void HeartUI::Update(float dt)
 	{
 		for (int i = 0; i < (maxHPCount - beforeMaxHPCount) / 2; i++)
 		{
-			hearts.push_back(new sf::Sprite());
+			sf::Sprite* heart = new sf::Sprite();
+			heart->setTexture(TEXTURE_MGR.Get(texId), true);
+			heart->setTextureRect(fullHeart);
+			heart->setOrigin((sf::Vector2f)fullHeart.getSize() * 0.5f);
+			heart->setScale({ 2.f,2.f });
+			hearts.push_back(heart);
 		}
-		for (int i = 0; i < (maxHPCount - beforeMaxHPCount) / 2; i++)
-		{
-			hearts[i + (maxHPCount + 1) / 2]->setTexture(TEXTURE_MGR.Get(texId), true);
-			hearts[i + (maxHPCount + 1) / 2]->setTextureRect(emptyHeart);
-			hearts[i + (maxHPCount + 1) / 2]->setOrigin((sf::Vector2f)emptyHeart.getSize() * 0.5f);
-		}
+		SetPosition(GetPosition());
 		beforeMaxHPCount = maxHPCount;
 	}
 	if(beforeHPCount != currentHPCount)

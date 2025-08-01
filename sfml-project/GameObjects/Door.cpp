@@ -1,9 +1,44 @@
 #include "stdafx.h"
 #include "Door.h"
 
-Door::Door(const std::string& texId, const std::string& name)
-	: SpriteGo(texId, name)
+Door::Door(MapType type, const std::string& name)
+	:SpriteGo("", name), type(type)
 {
+	switch (type)
+	{
+	case MapType::Normal:
+	case MapType::Rectangle:
+	case MapType::Large:
+	case MapType::Start:
+	case MapType::Special:
+		this->textureId = "graphics/additionals/door_01_normaldoor.png";
+		doorTextureRect = { 8, 9, 49, 33 };
+		break;
+	case MapType::Boss:
+		textureId = "graphics/additionals/door_10_bossroomdoor.png";
+		doorTextureRect = {2,3,61,39};
+		break;
+	case MapType::Hidden:
+		textureId = "graphics/additionals/door_01_normaldoor.png";
+		doorTextureRect = { 8, 9, 49, 33 };
+		break;
+	case MapType::Shop:
+		textureId = "graphics/additionals/door_01_normaldoor.png";
+		doorTextureRect = { 8, 9, 49, 33 };
+		doorClosedRightRect = { 84, 112, 25, 23 };
+		break;
+	case MapType::Treasure:
+		textureId = "graphics/additionals/door_02_treasureroomdoor.png";
+		doorTextureRect = { 8, 4, 49, 38 };
+		break;
+	case MapType::Sacrifice:
+		textureId = "graphics/additionals/door_04_selfsacrificeroomdoor.png";
+		doorTextureRect = { 8, 9, 49, 33 };
+		break;
+	default:
+		textureId = "";
+		break;
+	}
 }
 
 void Door::SetPosition(const sf::Vector2f& pos)
@@ -28,6 +63,13 @@ void Door::SetScale(const sf::Vector2f& s)
 	doorOpened.setScale(s);
 	doorClosedLeft.setScale(s);
 	doorClosedRight.setScale(s);
+	if(type == MapType::Boss)
+	{
+		doorOpened.setScale({s.x * 1.5f, s.y});
+		doorClosedLeft.setScale({ s.x * 1.5f, s.y });
+		doorClosedRight.setScale({ s.x * 1.5f, s.y });
+	}
+	
 }
 
 void Door::SetOrigin(const sf::Vector2f& o)
@@ -63,20 +105,20 @@ void Door::Release()
 void Door::Reset()
 {
 	SpriteGo::Reset();
-	sprite.setTextureRect({ 8, 9, 49, 33 });
+	sprite.setTextureRect(doorTextureRect);
 
 	doorOpened.setTexture(TEXTURE_MGR.Get(textureId), true);
 	doorClosedLeft.setTexture(TEXTURE_MGR.Get(textureId), true);
 	doorClosedRight.setTexture(TEXTURE_MGR.Get(textureId), true);
 
-	doorOpened.setTextureRect({ 84,16,25,23 });
-	doorClosedLeft.setTextureRect({ 19,64,14,23 });
-	doorClosedRight.setTextureRect({ 96,64,14,23 });
+	doorOpened.setTextureRect(doorOpenedRect);
+	doorClosedLeft.setTextureRect(doorClosedLeftRect);
+	doorClosedRight.setTextureRect(doorClosedRightRect);
 
 	SetOrigin(Origins::BC);
 	doorOpened.setOrigin({(float) doorOpened.getTextureRect().getSize().x * 0.5f, (float)doorOpened.getTextureRect().getSize().y + 2.f });
-	doorClosedLeft.setOrigin({ (float)doorClosedLeft.getTextureRect().getSize().x, (float)doorClosedLeft.getTextureRect().getSize().y +2.f });
-	doorClosedRight.setOrigin({ 0.f, (float)doorClosedRight.getTextureRect().getSize().y +2.f });
+	doorClosedLeft.setOrigin({ (float)doorClosedLeft.getTextureRect().getSize().x * 0.5f, (float)doorClosedLeft.getTextureRect().getSize().y +2.f });
+	doorClosedRight.setOrigin({ (float)doorClosedRight.getTextureRect().getSize().x * 0.5f, (float)doorClosedRight.getTextureRect().getSize().y +2.f });
 
 	SetPosition(FRAMEWORK.GetWindowSizeF() * 0.5f);
 	SetScale({ 2.f,2.f });

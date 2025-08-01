@@ -222,7 +222,7 @@ void Map::SetDoor()
 		}
 	}
 	float width = sceneGame->GetSmallMapSize().width, height = sceneGame->GetSmallMapSize().height;
-	Door tempdoor = Door("graphics/additionals/door_01_normaldoor.png", "Door");
+	Door tempdoor = Door(MapType::Normal, "Door");
 	tempdoor.Reset();
 
 	sf::Vector2f centerPos;
@@ -252,7 +252,14 @@ void Map::SetDoor()
 			}
 			else if (neighboorMapIndex[i * 4 + j] != -1 && neighboorMapIndex[i * 4 + j] != 99)
 			{
-				doors.push_back(new Door("graphics/additionals/door_01_normaldoor.png", "Door"));
+				if( sceneGame->GetMapTypes()[currentMapIndex] != MapType::Normal &&
+					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Special &&
+					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Large &&
+					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Rectangle &&
+					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Start)
+					doors.push_back(new Door(sceneGame->GetMapTypes()[currentMapIndex], "Door"));
+				else
+					doors.push_back(new Door(sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]], "Door"));
 				doors[doors.size() - 1]->Init();
 				doors[doors.size() - 1]->Reset();
 				doors[doors.size() - 1]->SetPosition(centerPos + localPos + differPos);
@@ -277,7 +284,7 @@ void Map::SetDoor()
 void Map::SetBoundary()
 {
 	float left = currentMapRect.left, top = currentMapRect.top, width = currentMapRect.width, height = currentMapRect.height;
-	Door tempdoor = Door("graphics/additionals/door_01_normaldoor.png", "Door");
+	Door tempdoor = Door(MapType::Normal, "Door");
 	tempdoor.Reset();
 	sf::Vector2f doorSize = (sf::Vector2f)tempdoor.GetSprite().getTextureRect().getSize();
 	int boundaryCount = boundary.size();

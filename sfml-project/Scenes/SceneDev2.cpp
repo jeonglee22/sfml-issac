@@ -153,7 +153,7 @@ void SceneDev2::Update(float dt)
 
 	if (Utils::CheckCollision(hitBox->rect, isaac->GetHitBoxBody().rect))
 	{
-		isaac->SetSkill(skill);
+		isaac->SetActiveSkill(skill);
 		std::cout << "Get Item!!!" << std::endl;
 	}
 }

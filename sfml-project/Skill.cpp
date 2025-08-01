@@ -55,7 +55,7 @@ void Skill::Reset()
 
 void Skill::Update(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Q) && skillCoolTime == currentCoolTime)
+	if (InputMgr::GetKeyDown(sf::Keyboard::Q) && skillCoolTime == currentCoolTime && !isPassive)
 	{
 		isUseSkill = true;
 		skillFunc();
