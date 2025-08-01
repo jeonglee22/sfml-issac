@@ -62,7 +62,7 @@ void MapUI::Reset()
 	body.setTextureRect({0,0,55,49});
 	Utils::SetOrigin(body, originPreset);
 
-	for (int i = 0; i < 225; i++)
+	for (int i = 0; i < 121; i++)
 	{
 		plates.push_back(new sf::Sprite(TEXTURE_MGR.Get(texId), mapIconRect["plate"]));
 		plates[i]->setScale({ 2.f,2.f });

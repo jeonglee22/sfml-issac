@@ -19,8 +19,8 @@ Door::Door(MapType type, const std::string& name)
 		doorTextureRect = {2,3,61,39};
 		break;
 	case MapType::Hidden:
-		textureId = "graphics/additionals/door_01_normaldoor.png";
-		doorTextureRect = { 8, 9, 49, 33 };
+		textureId = "graphics/effects/holeinwall.png";
+		doorTextureRect = { 0, 0, 49, 42 };
 		break;
 	case MapType::Shop:
 		textureId = "graphics/additionals/door_01_normaldoor.png";
@@ -129,6 +129,10 @@ void Door::Reset()
 	doorClosedRight.setTextureRect(doorClosedRightRect);
 
 	SetOrigin(Origins::BC);
+	if (type == MapType::Hidden)
+	{
+		sprite.setOrigin(GetOrigin() + sf::Vector2f(0.f, -10.f));
+	}
 	doorOpened.setOrigin({(float) doorOpened.getTextureRect().getSize().x * 0.5f, (float)doorOpened.getTextureRect().getSize().y + 2.f });
 	doorClosedLeft.setOrigin({ (float)doorClosedLeft.getTextureRect().getSize().x * 0.5f, (float)doorClosedLeft.getTextureRect().getSize().y +2.f });
 	doorClosedRight.setOrigin({ (float)doorClosedRight.getTextureRect().getSize().x * 0.5f, (float)doorClosedRight.getTextureRect().getSize().y +2.f });

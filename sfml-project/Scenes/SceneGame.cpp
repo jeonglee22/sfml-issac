@@ -36,6 +36,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/background/depths.png");
 	texIds.push_back("graphics/background/shop.png");
 	texIds.push_back("graphics/background/secret.png");
+	texIds.push_back("graphics/effects/holeinwall.png");
 	texIds.push_back("graphics/obstacles/grid_spikes.png");
 	texIds.push_back("graphics/obstacles/grid_fireplace.png");
 	texIds.push_back("graphics/obstacles/rocks/rocks_basement.png");
