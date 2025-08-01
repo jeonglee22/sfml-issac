@@ -15,11 +15,14 @@ protected:
 	SkillUI* skillUI = nullptr;
 	SkillBible* bible = nullptr;
 
-	sf::Vector2f skillPos = sf::Vector2f(0, -40.f);
+	sf::Vector2f skillPos = sf::Vector2f(-5.f, -50.f);
 
 	float movingTimeMax = 1.f;
 	float movingTime = 0.f;
 	float dir = -1.f;
+
+	float changeCoolTime = 0.f;
+	float changeCoolTimeMax = 1.f;
 
 	bool IsGetSkill = true;
 
