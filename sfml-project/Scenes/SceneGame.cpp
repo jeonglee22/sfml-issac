@@ -63,6 +63,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/items/pick ups/pickup_003_key.png");
 	texIds.push_back("graphics/effects/effect_029_explosion.png");
 	texIds.push_back("graphics/effects/effect_017_bombradius.png");
+	texIds.push_back("graphics/effects/effect_023_starflash.png");
 	texIds.push_back("graphics/additionals/grid_poop.png");
 	texIds.push_back("graphics/monster_044_hopperleaper.png");
 	texIds.push_back("graphics/monster_000_bodies02.png");
@@ -172,6 +173,8 @@ void SceneGame::Init()
 
 	ANI_CLIP_MGR.Load("animations/explosion.csv");
 	ANI_CLIP_MGR.Load("animations/bombradius.csv");
+
+	ANI_CLIP_MGR.Load("animations/star_effect.csv");
 
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_head_front.csv");
 	ANI_CLIP_MGR.Load("animations/boss_larry_jr_head_rare.csv");

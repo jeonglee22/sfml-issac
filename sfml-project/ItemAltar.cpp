@@ -93,6 +93,11 @@ void ItemAltar::Update(float dt)
 
 	if (Utils::CheckCollision(isaac->GetHitBoxBody().rect, hitBox->rect) && IsGetSkill && changeCoolTime > changeCoolTimeMax)
 	{
+		if (skill != nullptr)
+		{
+			isaac->DisplayItem(skill->GetTextId());
+		}
+
 		if (!skill->GetSkillPassive())
 		{
 			Skill* temp = nullptr;
@@ -112,10 +117,9 @@ void ItemAltar::Update(float dt)
 
 		if (skill != nullptr && skill->GetSkillPassive())
 		{
-			
 		skill->SetActive(false);
 		}
-		isaac->GetiingItem(true);
+		//isaac->GetiingItem(true);
 		IsGetSkill = false;
 		if (skill != nullptr && !skill->GetSkillPassive())
 		{

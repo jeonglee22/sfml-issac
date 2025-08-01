@@ -10,7 +10,7 @@ class ItemAltar : public Obstacles
 {
 protected:
 	Isaac* isaac = nullptr;
-
+	
 	Skill* skill = nullptr;
 	SkillUI* skillUI = nullptr;
 	SkillBible* bible = nullptr;

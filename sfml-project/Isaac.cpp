@@ -23,6 +23,12 @@ void Isaac::SetPosition(const sf::Vector2f &pos)
 	body.setPosition(position);
 	head.setPosition(position.x, position.y - 20.f);
 
+	if (isDisplayingItem)
+	{
+		itemDisplaySprite.setPosition(position + itemDisplayOffset);
+		itemEffectSprite.setPosition(position + itemDisplayOffset);
+	}
+
 	//for (sf::Sprite sprite : headAdditionals)
 	//{
 	//	sprite.setPosition(position.x, position.y - 20.f);
@@ -69,6 +75,7 @@ void Isaac::Init()
 {
 	headAnimator.SetTarget(&head);
 	bodyAnimator.SetTarget(&body);
+	itemEffectAnimator.SetTarget(&itemEffectSprite);
 
 	//for (int i = 0; i < additionalsAnimator.size() && i < headAdditionals.size(); ++i)
 	//{
@@ -146,6 +153,7 @@ void Isaac::Reset()
 
 	isGettingItem = false;
 	itemAnimationTime = 0.0f;
+	isDisplayingItem = false;
 
 	isDead = false;
 
@@ -164,6 +172,13 @@ void Isaac::Update(float dt)
 
 	headAnimator.Update(dt);
 	bodyAnimator.Update(dt);
+
+	if (isDisplayingItem)
+	{
+		itemEffectAnimator.Update(dt);
+	}
+
+	UpdateItemDisplay(dt);
 
 	if (isDead)
 	{
@@ -216,8 +231,6 @@ void Isaac::Update(float dt)
 
 	if (isGettingItem)
 	{
-		std::cout << "is Getting Item true" << std::endl;
-
 		itemAnimationTime += dt;
 
 		if (itemAnimationTime < itemAnimationMaxTime)
@@ -539,6 +552,12 @@ void Isaac::Draw(sf::RenderWindow &window)
 	window.draw(body);
 	window.draw(head);
 
+	if (isDisplayingItem)
+	{
+		window.draw(itemEffectSprite);
+		window.draw(itemDisplaySprite);
+	}
+
 	hitBoxHead.Draw(window);
 	hitBoxBody.Draw(window);
 }
@@ -702,6 +721,8 @@ void Isaac::ChestCollision()
 void Isaac::HitBoxUpdate()
 {
 	hitBoxHead.UpdateTransform(head, head.getLocalBounds());
+	hitBoxHead.rect.setSize({ 20.f, 20.f });
+	hitBoxHead.rect.setOrigin({ 10.f, 25.f });
 	hitBoxBody.UpdateTransform(body, body.getLocalBounds());
 	hitBoxBody.rect.setSize({ 10.f, 10.f });
 	hitBoxBody.rect.setOrigin({ 5.f, 20.f });
@@ -891,5 +912,44 @@ void Isaac::ChangeAnimation()
 				{"rare", "animations/isaac_head_rare_tears_c_head.csv"}
 			};
 		}
+	}
+}
+
+void Isaac::DisplayItem(const std::string& textureId)
+{
+	itemDisplaySprite.setTexture(TEXTURE_MGR.Get(textureId));
+
+	Utils::SetOrigin(itemDisplaySprite, Origins::MC);
+	itemDisplaySprite.setScale({ 2.0f, 2.0f });
+	itemDisplaySprite.setPosition(position + itemDisplayOffset);
+
+	itemEffectAnimator.Play("animations/star_effect.csv");
+	Utils::SetOrigin(itemEffectSprite, Origins::MC);
+	itemEffectSprite.setScale({ 2.2f, 2.2f });
+	itemEffectSprite.setPosition(position + itemDisplayOffset);
+
+	isDisplayingItem = true;
+	itemDisplayTime = 0.0f;
+
+	isGettingItem = true;
+	itemAnimationTime = 0.0f;
+}
+
+void Isaac::UpdateItemDisplay(float dt)
+{
+	if (!isDisplayingItem)
+	{
+		return;
+	}
+
+	itemDisplayTime += dt;
+
+	itemDisplaySprite.setPosition(position + itemDisplayOffset);
+	itemEffectSprite.setPosition(position + itemDisplayOffset);
+
+	if (itemDisplayTime >= itemDisplayMaxTime)
+	{
+		isDisplayingItem = false;
+		itemDisplayTime = 0.0f;
 	}
 }

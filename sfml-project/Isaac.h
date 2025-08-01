@@ -87,6 +87,14 @@ protected:
 	Skill* activeSkill = nullptr;
 	std::vector<Skill*> passiveSkill;
 
+	sf::Sprite itemDisplaySprite;
+	bool isDisplayingItem = false;
+	float itemDisplayTime = 0.0f;
+	float itemDisplayMaxTime = 1.5f;
+	sf::Vector2f itemDisplayOffset = sf::Vector2f(0.f, -90.f);
+	sf::Sprite itemEffectSprite;
+	Animator itemEffectAnimator;
+
 public:
 	Isaac(const std::string& name = "");
 	~Isaac() = default;
@@ -119,6 +127,9 @@ public:
 	bool IsCurrentBodyAnimation(const std::string& animation) const;
 
 	void AddItem(Items itemType);
+
+	void DisplayItem(const std::string& textureId);
+	void UpdateItemDisplay(float dt);
 
 	void InstallBomb();
 
