@@ -1,6 +1,8 @@
 TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
-Fly,30,1,,,,
+Fly,35,1,,,,
 ,,,,,,
 TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
-graphics/monster_010_fly.png,5,7,22,20,11.000000,10.000000
-graphics/monster_010_fly.png,37,4,17,20,11.000000,10.000000
+graphics/monster_010_fly.png,0,0,32,32,16.000000,16.000000
+graphics/monster_010_fly.png,32,0,32,32,16.000000,16.000000
+graphics/monster_010_fly.png,64,0,32,32,16.000000,16.000000
+graphics/monster_010_fly.png,96,0,32,32,16.000000,16.000000

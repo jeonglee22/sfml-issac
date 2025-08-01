@@ -21,7 +21,7 @@ void Isaac::SetPosition(const sf::Vector2f &pos)
 {
 	position = pos;
 	body.setPosition(position);
-	head.setPosition(position.x, position.y - 17.f);
+	head.setPosition(position.x, position.y - 20.f);
 }
 
 void Isaac::SetRotation(float angle)
