@@ -25,6 +25,7 @@ protected:
 	std::vector<SpriteGo *> backgrounds;
 	std::vector<HitBox *> boundary;
 	std::vector<HitBox *> doorBoundary;
+	std::vector<HitBox *> tearBoundary;
 	std::vector<Item *> items;
 	std::vector<Chest *> chests;
 
@@ -73,6 +74,7 @@ public:
 
 	sf::FloatRect GetMapSize() const { return currentMapRect; }
 	std::vector<HitBox *> GetBoundary() const { return boundary; }
+	std::vector<HitBox *> GetTearBoundary() const { return tearBoundary; }
 	std::vector<Door *> GetDoor() const { return doors; }
 	std::vector<SpriteGo *> GetObjects() const { return allObjects; }
 	std::vector<Monster *> GetMonsters() const { return monsters; }

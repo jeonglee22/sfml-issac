@@ -124,7 +124,7 @@ void Tears::Update(float dt)
 			}
 		}
 
-		for (auto boundary : scene->GetMapBoundary())
+		for (auto boundary : scene->GetMapTearBoundary())
 		{
 			if (Utils::CheckCollision(hitBox.rect, boundary->rect))
 			{

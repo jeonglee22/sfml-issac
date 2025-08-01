@@ -38,6 +38,8 @@ void Map::SetPosition(const sf::Vector2f &pos)
 		door->SetPosition(door->GetPosition() + pos);
 	for (auto boundary : boundary)
 		boundary->rect.setPosition(boundary->rect.getPosition() + pos);
+	for (auto tearboundary : tearBoundary)
+		tearboundary->rect.setPosition(tearboundary->rect.getPosition() + pos);
 	for (auto spike : spikes)
 		spike->SetPosition(spike->GetPosition() + pos);
 	for (auto obstacle : obstacles)
@@ -109,7 +111,13 @@ void Map::Update(float dt)
 void Map::Draw(sf::RenderWindow &window)
 {
 	for (int i = 0; i < boundary.size(); i++)
+	{
 		boundary[i]->Draw(window);
+	}
+	for (int i = 0; i < tearBoundary.size(); i++)
+	{
+		tearBoundary[i]->Draw(window);
+	}
 }
 
 void Map::SetCleared(bool b)
@@ -268,12 +276,12 @@ void Map::SetDoor()
 			}
 			else
 			{
-				doorBoundary.push_back(new HitBox());
-				doorBoundary[doorBoundary.size() - 1]->rect.setSize((sf::Vector2f)tempdoor.GetSprite().getTextureRect().getSize());
-				doorBoundary[doorBoundary.size() - 1]->rect.setOrigin({ doorBoundary[doorBoundary.size() - 1]->rect.getSize().x * 0.5f,
-															   doorBoundary[doorBoundary.size() - 1]->rect.getSize().y });
-				doorBoundary[doorBoundary.size() - 1]->rect.setPosition(centerPos + localPos + differPos);
-				doorBoundary[doorBoundary.size() - 1]->rect.setRotation(90.f * j);
+				HitBox* doorBoundaryBox = new HitBox();
+				doorBoundaryBox->rect.setSize((sf::Vector2f)tempdoor.GetSprite().getTextureRect().getSize());
+				doorBoundaryBox->rect.setOrigin({ doorBoundaryBox->rect.getSize().x * 0.5f, doorBoundaryBox->rect.getSize().y });
+				doorBoundaryBox->rect.setPosition(centerPos + localPos + differPos);
+				doorBoundaryBox->rect.setRotation(90.f * j);
+				doorBoundary.push_back(doorBoundaryBox);
 			}
 		}
 	}
@@ -296,15 +304,20 @@ void Map::SetBoundary()
 		boundary.push_back(new HitBox());
 		boundary.push_back(new HitBox());
 
-		boundary[i * 2 + boundaryCount]->rect.setSize(Bound);
-		boundary[i * 2 + 1 + boundaryCount]->rect.setSize(Bound);
-		boundary[i * 2 + boundaryCount]->rect.setOrigin({ Bound.x + doorSize.x * 0.5f, 104.f});
-		boundary[i * 2 + 1 + boundaryCount]->rect.setOrigin({-doorSize.x * 0.5f, 104.f});
-		boundary[i * 2 + boundaryCount]->rect.setRotation(doorBoundary[i]->rect.getRotation());
-		boundary[i * 2 + 1 + boundaryCount]->rect.setRotation(doorBoundary[i]->rect.getRotation());
-		boundary[i * 2 + boundaryCount]->rect.setPosition(doorBoundary[i]->rect.getPosition());
-		boundary[i * 2 + 1 + boundaryCount]->rect.setPosition(doorBoundary[i]->rect.getPosition());
+		for(int j = 0; j < 2; j++)
+		{
+			boundary[i * 2 + j + boundaryCount]->rect.setSize(Bound);
+			boundary[i * 2 + j + boundaryCount]->rect.setOrigin({ j == 0 ? Bound.x + doorSize.x * 0.5f : -doorSize.x * 0.5f, 104.f });
+			boundary[i * 2 + j + boundaryCount]->rect.setRotation(doorBoundary[i]->rect.getRotation());
+			boundary[i * 2 + j + boundaryCount]->rect.setPosition(doorBoundary[i]->rect.getPosition());
+		}
 
+		HitBox* tearBox = new HitBox();
+		tearBox->rect.setSize({ sceneGame->GetSmallMapSize().width, 50.f });
+		tearBox->rect.setOrigin({ tearBox->rect.getSize().x * 0.5f, 104.f });
+		tearBox->rect.setRotation(doorBoundary[i]->rect.getRotation());
+		tearBox->rect.setPosition(doorBoundary[i]->rect.getPosition());
+		tearBoundary.push_back(tearBox);
 	}
 	boundaryCount = boundary.size();
 	for (int i = 0; i < doors.size(); i++)
@@ -312,14 +325,20 @@ void Map::SetBoundary()
 		boundary.push_back(new HitBox());
 		boundary.push_back(new HitBox());
 
-		boundary[i * 2 + boundaryCount]->rect.setSize(Bound);
-		boundary[i * 2 + 1 + boundaryCount]->rect.setSize(Bound);
-		boundary[i * 2 + boundaryCount]->rect.setOrigin({ Bound.x + doorSize.x * 0.5f, 104.f});
-		boundary[i * 2 + 1 + boundaryCount]->rect.setOrigin({-doorSize.x * 0.5f, 104.f});
-		boundary[i * 2 + boundaryCount]->rect.setRotation(doors[i]->GetRotation());
-		boundary[i * 2 + 1 + boundaryCount]->rect.setRotation(doors[i]->GetRotation());
-		boundary[i * 2 + boundaryCount]->rect.setPosition(doors[i]->GetPosition());
-		boundary[i * 2 + 1 + boundaryCount]->rect.setPosition(doors[i]->GetPosition());
+		for (int j = 0; j < 2; j++)
+		{
+			boundary[i * 2 + j + boundaryCount]->rect.setSize(Bound);
+			boundary[i * 2 + j + boundaryCount]->rect.setOrigin({ j == 0 ? Bound.x + doorSize.x * 0.5f : -doorSize.x * 0.5f, 104.f });
+			boundary[i * 2 + j + boundaryCount]->rect.setRotation(doors[i]->GetRotation());
+			boundary[i * 2 + j + boundaryCount]->rect.setPosition(doors[i]->GetPosition());
+		}
+
+		HitBox* tearBox = new HitBox();
+		tearBox->rect.setSize({ sceneGame->GetSmallMapSize().width, 50.f });
+		tearBox->rect.setOrigin({ sceneGame->GetSmallMapSize().width * 0.5f , 104.f});
+		tearBox->rect.setRotation(doors[i]->GetRotation());
+		tearBox->rect.setPosition(doors[i]->GetPosition());
+		tearBoundary.push_back(tearBox);
 	}
 }
 
