@@ -23,10 +23,10 @@ void Isaac::SetPosition(const sf::Vector2f &pos)
 	body.setPosition(position);
 	head.setPosition(position.x, position.y - 20.f);
 
-	for (sf::Sprite sprite : headAdditionals)
-	{
-		sprite.setPosition(position.x, position.y - 20.f);
-	}
+	//for (sf::Sprite sprite : headAdditionals)
+	//{
+	//	sprite.setPosition(position.x, position.y - 20.f);
+	//}
 }
 
 void Isaac::SetRotation(float angle)
@@ -704,7 +704,7 @@ void Isaac::HitBoxUpdate()
 	hitBoxHead.UpdateTransform(head, head.getLocalBounds());
 	hitBoxBody.UpdateTransform(body, body.getLocalBounds());
 	hitBoxBody.rect.setSize({ 10.f, 10.f });
-	hitBoxBody.rect.setOrigin({ 5.f, 10.f });
+	hitBoxBody.rect.setOrigin({ 5.f, 20.f });
 }
 
 void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* box)
