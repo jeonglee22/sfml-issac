@@ -19,14 +19,18 @@ protected:
 
 	bool isCleared = false;
 	bool isLocked = false;
+	bool isStartKeyAnimation = false;
 
 	sf::Vector2f doorOffset = { 0.f,0.f };
+	sf::Vector2f keyOffset = { 0.f,-18.f };
 
 	sf::Vector2f doorDirection;
 
 	Animator* animator;
-	sf::Sprite keyBody;
-	std::string keyAnimation;
+	sf::Sprite* key = nullptr;
+
+	float keyPlayingTime = 0.f;
+	float keyPlayingTimeMax = 1.2f;
 
 	MapType type;
 
@@ -55,6 +59,7 @@ public:
 	sf::Vector2i GetDoorSize() const { return doorOpened.getTextureRect().getSize() * 2; }
 	void SetDoorDirection(int i);
 	sf::Vector2f GetDoorDirection() const { return doorDirection; }
+	bool GetDoorStart() const { return isStartKeyAnimation; }
 
 	void PlayUnlock();
 };

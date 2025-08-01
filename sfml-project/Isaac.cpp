@@ -282,10 +282,9 @@ void Isaac::Update(float dt)
 			if (!door->GetMapCleared() && Utils::CheckCollision(hitBoxBody.rect, door->GetHitBox()->rect))
 			{
 				bool currentMapCleared = sceneGame->GetCurrentMap()->GetCleared();
-				if (currentMapCleared && door->GetDoorLocked() && inventory.keyCount > 0)
+				if (currentMapCleared && door->GetDoorLocked() && inventory.keyCount > 0 && !door->GetDoorStart())
 				{
 					inventory.keyCount--;
-					door->SetDoorLocked(false);
 					door->PlayUnlock();
 				}
 				SpritesPositionAtCollision(beforePos, door->GetHitBox());

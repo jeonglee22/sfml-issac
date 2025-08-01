@@ -178,6 +178,15 @@ sf::Vector2i MapMaking::MapRandomMaking(const int mapCount, int map[][11], std::
 			mapTypes[map[randomMap.x][randomMap.y]] = MapType::Shop;
 		}
 
+		sf::Vector2i hiddenPos = FindHiddenPos(map);
+		if (hiddenPos == sf::Vector2i{0, 0})
+		{
+			return MapRandomMaking(mapCount, map, mapTypes);
+		}
+
+		map[hiddenPos.x][hiddenPos.y] = mapNumber;
+		mapTypes.push_back(MapType::Hidden);
+
 		PrintMap(map);
 
 		return sf::Vector2i(startY, startX);
@@ -442,4 +451,45 @@ std::string MapMaking::ToString(MapType ty)
 	}
 
 	return str;
+}
+
+sf::Vector2i MapMaking::FindHiddenPos(int map[][11])
+{
+	sf::Vector2i hiddenPos;
+	std::vector<sf::Vector2i> hiddenPosVector;
+
+	for (int i = 1; i < 10; i++)
+	{
+		for (int j = 1; j < 10; j++)
+		{
+			int value = map[i][j];
+			if (value == -1)
+			{
+				int count = GetNeighboorMapCount(map, { i,j });
+				if (count > 2)
+					hiddenPosVector.push_back({ i,j });
+			}
+		}
+	}
+
+	if (hiddenPosVector.size() > 0)
+	{
+		int index = Utils::RandomRange(0, hiddenPosVector.size());
+		hiddenPos = hiddenPosVector[index];
+	}
+	return	hiddenPos;
+}
+
+int MapMaking::GetNeighboorMapCount(int map[][11], const sf::Vector2i& pos)
+{
+	int count = 0;
+
+	for (int i = 0; i < 4; i++)
+	{
+		int val = map[pos.x + (i%2 ? 0 : 1 - i)][pos.y + (i % 2 ? 2-i : 0)];
+		if (val != -1 && val != 99)
+			count++;
+	}
+
+	return count;
 }

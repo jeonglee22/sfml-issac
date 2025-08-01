@@ -47,6 +47,7 @@ void Door::SetPosition(const sf::Vector2f& pos)
 	doorOpened.setPosition(pos + doorOffset);
 	doorClosedLeft.setPosition(pos + doorOffset);
 	doorClosedRight.setPosition(pos + doorOffset);
+	key->setPosition(pos);
 }
 
 void Door::SetRotation(float rot)
@@ -55,6 +56,7 @@ void Door::SetRotation(float rot)
 	doorOpened.setRotation(rot);
 	doorClosedLeft.setRotation(rot);
 	doorClosedRight.setRotation(rot);
+	key->setRotation(rot);
 }
 
 void Door::SetScale(const sf::Vector2f& s)
@@ -63,6 +65,7 @@ void Door::SetScale(const sf::Vector2f& s)
 	doorOpened.setScale(s);
 	doorClosedLeft.setScale(s);
 	doorClosedRight.setScale(s);
+	key->setScale(s);
 	if(type == MapType::Boss)
 	{
 		doorOpened.setScale({s.x * 1.5f, s.y});
@@ -78,6 +81,7 @@ void Door::SetOrigin(const sf::Vector2f& o)
 	doorOpened.setOrigin(o);
 	doorClosedLeft.setOrigin(o);
 	doorClosedRight.setOrigin(o);
+	key->setOrigin(o);
 }
 
 void Door::SetOrigin(Origins preset)
@@ -92,9 +96,13 @@ void Door::Init()
 
 	animator = new Animator();
 
+	TEXTURE_MGR.Load("graphics/additionals/door_01_normaldoor.png");
+	ANI_CLIP_MGR.Load("animations/key_insert.csv");
+
 	SetOrigin(Origins::BC);
 
 	hitBox = new HitBox();
+	key = new sf::Sprite();
 
 	SpriteGo::Init();
 }
@@ -127,6 +135,12 @@ void Door::Reset()
 
 	SetPosition(FRAMEWORK.GetWindowSizeF() * 0.5f);
 	SetScale({ 2.f,2.f });
+
+	key->setTexture(TEXTURE_MGR.Get("graphics/additionals/door_01_normaldoor.png"), true);
+	key->setTextureRect({ 105,167,15,22 });
+	//key->setOrigin({ key->getLocalBounds().width * 0.5f + 5.f, 25.f});
+
+	animator->SetTarget(key);
 }
 
 void Door::Update(float dt)
@@ -137,6 +151,24 @@ void Door::Update(float dt)
 		bounds.height *= 0.3f;
 	}
 	hitBox->UpdateTransform(doorOpened, bounds);
+	
+	if (isStartKeyAnimation)
+	{
+		keyPlayingTime += dt;
+		if (keyPlayingTime > keyPlayingTimeMax)
+		{
+			animator->Stop();
+		}
+	}
+
+	if (!animator->IsPlaying() && isLocked && isStartKeyAnimation)
+	{
+		isLocked = false;
+		isCleared = true;
+		isStartKeyAnimation = false;
+	}
+
+	animator->Update(dt);
 }
 
 void Door::Draw(sf::RenderWindow& window)
@@ -150,6 +182,10 @@ void Door::Draw(sf::RenderWindow& window)
 	}
 	SpriteGo::Draw(window);
 	hitBox->Draw(window);
+	if (isStartKeyAnimation)
+	{
+		window.draw(*key);
+	}
 }
 
 void Door::SetDoorDirection(int i)
@@ -175,4 +211,6 @@ void Door::SetDoorDirection(int i)
 
 void Door::PlayUnlock()
 {
+	animator->Play("animations/key_insert.csv");
+	isStartKeyAnimation = true;
 }

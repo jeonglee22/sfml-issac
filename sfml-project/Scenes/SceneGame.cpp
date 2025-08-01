@@ -35,6 +35,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/background/caves.png");
 	texIds.push_back("graphics/background/depths.png");
 	texIds.push_back("graphics/background/shop.png");
+	texIds.push_back("graphics/background/secret.png");
 	texIds.push_back("graphics/obstacles/grid_spikes.png");
 	texIds.push_back("graphics/obstacles/grid_fireplace.png");
 	texIds.push_back("graphics/obstacles/rocks/rocks_basement.png");
@@ -176,7 +177,7 @@ void SceneGame::Init()
 	stageStartX = currentXIndex = startPos.x;
 	stageStartY = currentYIndex = startPos.y;
 
-	maps = MapMaking::SetMapInfo(mapIndex, 10, mapTypes);
+	maps = MapMaking::SetMapInfo(mapIndex, 11, mapTypes);
 	for (auto &map : maps)
 		AddGameObject(map);
 

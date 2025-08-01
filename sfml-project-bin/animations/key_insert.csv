@@ -1,0 +1,13 @@
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+,7,0,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+graphics/additionals/door_01_normaldoor.png,102,167,21,22,7.500000,13.000000
+graphics/additionals/door_01_normaldoor.png,5,146,21,14,7.500000,13.000000
+graphics/additionals/door_01_normaldoor.png,39,146,17,14,7.500000,13.000000
+graphics/additionals/door_01_normaldoor.png,73,146,13,14,7.500000,13.000000
+graphics/additionals/door_01_normaldoor.png,106,146,11,15,7.500000,13.000000
+graphics/additionals/door_01_normaldoor.png,9,162,13,15,7.500000,13.000000
+graphics/additionals/door_01_normaldoor.png,41,162,12,14,7.500000,13.000000
+graphics/additionals/door_01_normaldoor.png,73,162,14,12,7.500000,13.000000
+graphics/additionals/door_01_normaldoor.png,89,173,9,14,7.500000,13.000000

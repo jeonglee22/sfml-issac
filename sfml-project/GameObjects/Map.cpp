@@ -232,6 +232,7 @@ void Map::SetDoor()
 	}
 	float width = sceneGame->GetSmallMapSize().width, height = sceneGame->GetSmallMapSize().height;
 	Door tempdoor = Door(MapType::Normal, "Door");
+	tempdoor.Init();
 	tempdoor.Reset();
 
 	sf::Vector2f centerPos;
@@ -307,6 +308,7 @@ void Map::SetBoundary()
 {
 	float left = currentMapRect.left, top = currentMapRect.top, width = currentMapRect.width, height = currentMapRect.height;
 	Door tempdoor = Door(MapType::Normal, "Door");
+	tempdoor.Init();
 	tempdoor.Reset();
 	sf::Vector2f doorSize = (sf::Vector2f)tempdoor.GetSprite().getTextureRect().getSize();
 	int boundaryCount = boundary.size();
