@@ -14,25 +14,37 @@ ItemAltar::ItemAltar(const std::string& texId, const std::string& name)
 void ItemAltar::SetPosition(const sf::Vector2f& pos)
 {
 	SpriteGo::SetPosition(pos);
-	skill->SetPosition(pos + skillPos);
+	if(skill)
+	{
+		skill->SetPosition(pos + skillPos);
+	}
 }
 
 void ItemAltar::SetRotation(float rot)
 {
 	SpriteGo::SetRotation(rot);
-	skill->SetRotation(rot);
+	if(skill)
+	{
+		skill->SetRotation(rot);
+	}
 }
 
 void ItemAltar::SetScale(const sf::Vector2f& s)
 {
 	SpriteGo::SetScale(s);
-	skill->SetScale(s);
+	if(skill)
+	{
+		skill->SetScale(s);
+	}
 }
 
 void ItemAltar::SetOrigin(const sf::Vector2f& o)
 {
 	SpriteGo::SetOrigin(o);
-	skill->SetOrigin(o);
+	if(skill)
+	{
+		skill->SetOrigin(o);
+	}
 }
 
 void ItemAltar::SetOrigin(Origins preset)

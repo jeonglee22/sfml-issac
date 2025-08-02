@@ -22,6 +22,7 @@
 #include "MapMaking.h"
 #include "TextGo.h"
 #include "Chest.h"
+#include "ItemAltar.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Stage)
@@ -260,6 +261,10 @@ void SceneGame::Init()
 	clearDoor->sortingLayer = SortingLayers::Foreground;
 	clearDoor->sortingOrder = 1;
 
+	clearAltar = (ItemAltar*)AddGameObject(new ItemAltar("graphics/additionals/levelitem_001_itemaltar.png", "clearaltar"));
+	clearAltar->sortingLayer = SortingLayers::Foreground;
+	clearAltar->sortingOrder = 1;
+
 	Scene::Init();
 }
 
@@ -311,6 +316,11 @@ void SceneGame::Enter()
 	clearDoor->SetOrigin(Origins::MC);
 	clearDoor->SetScale({ 2.f,2.f });
 	clearDoor->SetActive(false);
+
+	clearAltar->GetSprite().setTextureRect({2,5,27,23});
+	clearAltar->SetOrigin(Origins::TL);
+	clearAltar->SetScale({ 2.f,2.f });
+	clearAltar->SetActive(false);
 
 	currentMapIndex = 0;
 }
@@ -461,7 +471,7 @@ void SceneGame::Update(float dt)
 		{
 			isBossClear = true;
 			clearDoor->SetActive(true);
-			clearDoor->SetPosition(worldView.getCenter() + sf::Vector2f(0, -100.f));
+			clearDoor->SetPosition(worldView.getCenter() + sf::Vector2f(0, -100.f));	
 		}
 	}
 
@@ -471,6 +481,8 @@ void SceneGame::Update(float dt)
 		if (doorOpenTime >= doorOpenTimeMax)
 		{
 			clearDoor->GetSprite().setTextureRect(clearDooropenrect);
+			clearAltar->SetActive(true);
+			clearAltar->SetPosition(worldView.getCenter() + sf::Vector2f(0, 100.f) - clearAltar->GetSprite().getLocalBounds().getSize() * 0.5f);
 			isCanGoNext = true;
 		}
 	}

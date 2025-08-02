@@ -15,6 +15,7 @@ class HeartUI;
 class SkillUI;
 class Skill;
 class TextGo;
+class ItemAltar;
 
 class SceneGame : public Scene
 {
@@ -62,6 +63,7 @@ protected:
 	float checkTime = 0;
 
 	SpriteGo* clearDoor;
+	ItemAltar* clearAltar;
 	sf::IntRect clearDoorclosedrect = { 16,80,32,32 };
 	sf::IntRect clearDooropenrect = {16,16,32,32};
 	bool isBossClear = false;
