@@ -1,8 +1,10 @@
-#include "stdafx.h"
+    #include "stdafx.h"
 #include "Bomb.h"
 #include "SceneGame.h"
 #include "Monster.h"
 #include "SpriteGo.h"
+#include "Door.h"
+#include "Map.h"
 
 Bomb::Bomb(const std::string& name)
 {
@@ -61,7 +63,7 @@ void Bomb::Reset()
     explosionTime = 0.0f;
     explosionAnimationTime = 0.0f;
     wasExplosion = false;
-    animator.Play("animations/bomb.csv");
+    animator.Play("animations/bombInstall.csv");
     SetScale({ 2.0f, 2.0f });
     SetOrigin(Origins::BC);
 }
@@ -93,7 +95,7 @@ void Bomb::Update(float dt)
 
             animator.Play("animations/explosion.csv");
             SetOrigin(Origins::BC);
-            bombRadius.setPosition(GetPosition().x, GetPosition().y + 100.f);
+            bombRadius.setPosition(GetPosition().x, GetPosition().y);
             bombRadius.setScale({2.0f, 2.0f});
             radiusAnimator.Play("animations/bombradius.csv");
             bomb.setColor(sf::Color::White);
@@ -117,8 +119,6 @@ void Bomb::Update(float dt)
     hitBox.UpdateTransform(bomb, bomb.getLocalBounds());
 }
 
-
-
 void Bomb::Draw(sf::RenderWindow& window)
 {
     window.draw(bombRadius);
@@ -137,7 +137,7 @@ void Bomb::Explosion()
                 continue;
 
             float dist = Utils::Distance(position, monster->GetPosition());
-            if (dist <= 80.f)
+            if (dist <= explosionDistance)
             {
                 monster->TakeDamage(60);
             }
@@ -148,12 +148,39 @@ void Bomb::Explosion()
             if (obj->GetName() == "rocks_basement" || obj->GetName() == "rocks_cracked")
             {
                 float dist = Utils::Distance(position, obj->GetPosition());
-                if (dist <= 80.f)
+                if (dist <= explosionDistance)
                 {
                     obj->SetActive(false);
                 }
             }
         }
+
+        for (auto& door : scene->GetMapDoor())
+        {
+            float dist = Utils::Distance(position, door->GetPosition());
+            bool currentMapCleared = scene->GetCurrentMap()->GetCleared();
+            if (door->GetDoorType() == MapType::Hidden && dist <= explosionDistance && currentMapCleared && door->GetDoorHidden())
+            {
+                door->SetDoorHidden(false);
+                door->SetMapCleared(true);
+                sf::Vector2f doorDirection = door->GetDoorDirection();
+                int mapIndex = scene->GetMapIndex(scene->GetCurrentMap()->GetStageXIndex() + doorDirection.x, scene->GetCurrentMap()->GetStageYIndex() + doorDirection.y);
+                SetHiddenNeighboorDoorOpen(scene->GetMap(mapIndex), doorDirection * -1.f);
+            }
+        }
     }
-    
+}
+
+void Bomb::SetHiddenNeighboorDoorOpen(Map* hiddenMap, sf::Vector2f doorDir)
+{
+    std::vector<Door*> doors = hiddenMap->GetDoor();
+
+    for (auto door : doors)
+    {
+        if (door->GetDoorDirection() == doorDir)
+        {
+            door->SetDoorHidden(false);
+            door->SetMapCleared(true);
+        }
+    }
 }

@@ -1,5 +1,5 @@
 TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
-Bombradius,10,1,,,,
+Bomb,10,1,,,,
 ,,,,,,
 TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
-graphics/effects/effect_017_bombradius.png,0,0,96,50,48.000000,50.000000
+"graphics/items/pick ups/pickup_016_bomb.png",4,3,22,21,11.000000,21.000000

@@ -85,6 +85,37 @@ void Map::Init()
 
 void Map::Release()
 {
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+	{
+		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+		
+		for (auto& obj : monsters)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : obstacles)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : doors)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : spikes)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : backgrounds)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : items)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : chests)
+			sceneGame->RemoveGameObject(obj);
+
+		allObjects.clear();
+		monsters.clear();
+		obstacles.clear();
+		doors.clear();
+		spikes.clear();
+		backgrounds.clear();
+		boundary.clear();
+		doorBoundary.clear();
+		tearBoundary.clear();
+		items.clear();
+		chests.clear();
+	}
 }
 
 void Map::Reset()
@@ -134,7 +165,7 @@ void Map::SetCleared(bool b)
 	isCleared = b;
 	for (auto door : doors)
 	{
-		if(!door->GetDoorLocked())
+		if(!door->GetDoorLocked() && !door->GetDoorHidden())
 			door->SetMapCleared(b);
 	}
 }
@@ -188,6 +219,11 @@ void Map::AddItem(const sf::Vector2f &pos, const std::string &name)
 		item->SetItemType(Items::Key);
 	item->Reset();
 	item->SetPosition(pos + sf::Vector2f(currentMapRect.left, currentMapRect.top) * -1.f);
+	if (type == MapType::Shop)
+	{
+		int cost = Utils::RandomRange(1, 10);
+		item->SetItemCost(cost);
+	}
 	sceneGame->AddGameObject(item);
 }
 
@@ -268,7 +304,13 @@ void Map::SetDoor()
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Large &&
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Rectangle &&
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Start)
+				{
 					door = new Door(sceneGame->GetMapTypes()[currentMapIndex], "Door");
+					if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Hidden)
+					{
+						door->SetDoorHidden(true);
+					}
+				}
 				else
 				{
 					door = new Door(sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]], "Door");
@@ -276,10 +318,14 @@ void Map::SetDoor()
 					{
 						door->SetDoorLocked(true);
 					}
-					if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Treasure)
+					else if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Treasure)
 					{
 						if (Utils::RandomRange(0.f,1.f) <= 0.5f)
 							door->SetDoorLocked(true);
+					}
+					else if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Hidden)
+					{
+						door->SetDoorHidden(true);
 					}
 				}
 				door->Init();
@@ -417,6 +463,8 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 	{
 		backgrounds.push_back(new SpriteGo(infos[0], infos[5]));
 		SpriteSetting(backgrounds[backgrounds.size() - 1], infos);
+		sf::Color spriteColor = backgrounds[backgrounds.size() - 1]->GetSprite().getColor();
+		backgrounds[backgrounds.size() - 1]->GetSprite().setColor(sf::Color(spriteColor.r * 0.7, spriteColor.g * 0.7, spriteColor.b * 0.7, spriteColor.a));
 	}
 }
 
@@ -436,8 +484,6 @@ void Map::SpriteSetting(SpriteGo *sp, const std::vector<std::string> infos)
 
 void Map::AddGameObjectInScene()
 {
-	for (auto monster : monsters)
-		sceneGame->AddGameObject(monster);
 	for (auto door : doors)
 		sceneGame->AddGameObject(door);
 	for (auto spike : spikes)
@@ -446,10 +492,6 @@ void Map::AddGameObjectInScene()
 		sceneGame->AddGameObject(obstacle);
 	for (auto ground : backgrounds)
 		sceneGame->AddGameObject(ground);
-	for (auto item : items)
-		sceneGame->AddGameObject(item);
-	for (auto chest : chests)
-		sceneGame->AddGameObject(chest);
 
 }
 

@@ -885,7 +885,7 @@ void Isaac::InstallBomb()
 	}
 
 	bomb->Reset();
-	bomb->SetPosition(position);
+	bomb->SetPosition(position - sf::Vector2f(0, bomb->GetLocalBounds().getSize().y));
 	bombsList.push_back(bomb);
 
 	inventory.bombCount--;

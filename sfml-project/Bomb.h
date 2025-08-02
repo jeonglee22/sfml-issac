@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Animator.h"
 #include "HitBox.h"
+#include "Map.h"
 
 class Bomb : public GameObject
 {
@@ -17,6 +18,8 @@ protected:
 
     float explosionAnimationTime = 0.0f;
     float explosionAnimationMaxTime = 0.5f;
+
+    float explosionDistance = 80.f;
 
     bool wasExplosion = false;
 
@@ -38,5 +41,6 @@ public:
 
     void Explosion();
 
+    void SetHiddenNeighboorDoorOpen(Map* hiddenMap, sf::Vector2f doorDir);
 };
 

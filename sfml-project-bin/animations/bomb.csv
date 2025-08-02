@@ -2,4 +2,4 @@ TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
 Bomb,10,1,,,,
 ,,,,,,
 TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
-"graphics/items/pick ups/pickup_016_bomb.png",4,3,22,21,11.000000,11.000000
+"graphics/items/pick ups/pickup_016_bomb.png",4,3,22,21,0.000000,0.000000

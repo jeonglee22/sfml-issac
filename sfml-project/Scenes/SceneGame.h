@@ -30,12 +30,7 @@ protected:
 	sf::Vector2f nextSpawnPos;
 
 	std::vector<Map *> maps;
-	std::vector<SpriteGo *> mapSprites;
 	Isaac *isaac = nullptr;
-	std::vector<Monster *> monsters;
-	std::vector<HitBox *> boundary;
-	std::vector<Door *> doors;
-	std::vector<Chest*> chests;
 
 	sf::Vector2f offset = sf::Vector2f(140.f, 104.f);
 	sf::Vector2f mapOffset;
@@ -62,6 +57,7 @@ protected:
 
 	TextGo *FPS = nullptr;
 	float FPSTime = 0.f;
+	int frameCount = 0;
 
 	float checkTimeMax = 0.3f;
 	float checkTime = 0;
@@ -77,18 +73,22 @@ public:
 	void Draw(sf::RenderWindow &window) override;
 
 	void EnemyCollosion();
+
 	std::vector<Monster *> GetMonsters() { return maps[currentMapIndex]->GetMonsters(); }
 	std::vector<HitBox *> GetMapBoundary() { return maps[currentMapIndex]->GetBoundary(); }
 	std::vector<HitBox *> GetMapTearBoundary() { return maps[currentMapIndex]->GetTearBoundary(); }
 	std::vector<SpriteGo *> GetMapSprites() { return maps[currentMapIndex]->GetObjects(); }
 	std::vector<Door *> GetMapDoor() { return maps[currentMapIndex]->GetDoor(); }
 	std::vector<Chest *> GetChests() { return maps[currentMapIndex]->GetChests(); }
+
 	Isaac* GetIsaac() { return isaac; }
 	SkillUI* GetSkillUI() { return skillUI; }
+
 	int GetMapIndex(int xPos, int yPos) { return mapIndex[yPos][xPos]; }
 	std::vector<MapType> GetMapTypes() { return mapTypes; }
 	sf::FloatRect GetSmallMapSize() { return smallMapSize; }
 	Map* GetCurrentMap() { return maps[currentMapIndex]; }
+	Map* GetMap(int index) { return maps[index]; }
 
 	std::vector<int> GetNeighboorMapIndex(int x, int y);
 	sf::Vector2i GetNeighboorMapIndexInRectangleMap(int x, int y);
@@ -100,4 +100,8 @@ public:
 	void ViewFollowing();
 
 	void ChangeCurrentMapIndex();
+
+	void SetItemUICount();
+
+	void GoNextMap();
 };

@@ -18,6 +18,7 @@ protected:
 	HitBox* hitBox = nullptr;
 
 	bool isCleared = false;
+	bool isHidden = false;
 	bool isLocked = false;
 	bool isStartKeyAnimation = false;
 
@@ -54,6 +55,8 @@ public:
 	MapType GetDoorType() const { return type; }
 	void SetDoorLocked(bool b) { isLocked = b; }
 	bool GetDoorLocked() const { return isLocked; }
+	void SetDoorHidden(bool b) { isHidden = b; }
+	bool GetDoorHidden() const { return isHidden; }
 	bool GetMapCleared() const { return isCleared; }
 	void SetMapCleared(bool b) { isCleared = b; }
 	sf::Vector2i GetDoorSize() const { return doorOpened.getTextureRect().getSize() * 2; }

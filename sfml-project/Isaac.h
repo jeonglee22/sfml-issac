@@ -164,6 +164,9 @@ public:
 	int GetCoinCount() const { return inventory.coinCount; }
 	int GetBombCount() const { return inventory.bombCount; }
 	int GetKeyCount() const { return inventory.keyCount; }
+	void SetCoinCount(int c) { inventory.coinCount = c; }
+	void SetBombCount(int c) { inventory.bombCount = c; }
+	void SetKeyCount(int c) { inventory.keyCount = c; }
 
 	float GetShootInterval() const { return shootInterval; }
 	void SetShootInterval(float s) { shootInterval = s; }

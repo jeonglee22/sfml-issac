@@ -66,21 +66,24 @@ void ItemUI::Init()
 	{
 		fontImage.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 	}
+}
 
+void ItemUI::Release()
+{
+	coinCountSprites.clear();
+	bombCountSprites.clear();
+	keyCountSprites.clear();
+}
+
+void ItemUI::Reset()
+{
 	for (int i = 0; i < 2; i++)
 	{
 		coinCountSprites.push_back(new sf::Sprite());
 		bombCountSprites.push_back(new sf::Sprite());
 		keyCountSprites.push_back(new sf::Sprite());
 	}
-}
 
-void ItemUI::Release()
-{
-}
-
-void ItemUI::Reset()
-{
 	coinImage.setTexture(TEXTURE_MGR.Get("graphics/hudpickups.png"));
 	coinImage.setTextureRect(coinRect);
 	coinImage.setOrigin((sf::Vector2f)coinRect.getSize() * 0.5f);
@@ -130,6 +133,7 @@ void ItemUI::Draw(sf::RenderWindow& window)
 	window.draw(coinImage);
 	window.draw(bombImage);
 	window.draw(keyImage);
+	if(coinCountSprites.size() > 0 && bombCountSprites.size() > 0 && keyCountSprites.size() > 0)
 	for (int i = 0; i < 2; i++)
 	{
 		window.draw(*coinCountSprites[i]);
