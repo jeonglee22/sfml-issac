@@ -44,6 +44,7 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+	std::string GetItemType(const std::string& textureId);
 
 	HitBox* GetHitBox() { return hitBox; }
 

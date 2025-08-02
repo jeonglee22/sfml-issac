@@ -96,6 +96,12 @@ void ItemAltar::Update(float dt)
 		if (skill != nullptr)
 		{
 			isaac->DisplayItem(skill->GetTextId());
+
+			std::string itemType = GetItemType(skill->GetTextId());
+			if (!itemType.empty())
+			{
+				isaac->AddAdditionalItem(itemType);
+			}
 		}
 
 		if (!skill->GetSkillPassive())
@@ -144,4 +150,13 @@ void ItemAltar::Draw(sf::RenderWindow& window)
 	{
 		skill->Draw(window);
 	}
+}
+
+std::string ItemAltar::GetItemType(const std::string& textureId)
+{
+	if (textureId.find("collectibles_007_bloodofthemartyr") != std::string::npos)
+	{
+		return "bloodofthemartyr";
+	}
+	return "";
 }

@@ -10,6 +10,16 @@ struct ItemInventory
 	int keyCount = 0;
 };
 
+struct AdditionalLayer
+{
+	sf::Sprite sprite;
+	Animator animator;
+	std::string itemId;
+	bool isActive;
+
+	AdditionalLayer() : isActive(false) {}
+};
+
 class HitBox;
 class Tears;
 class SceneDev2;
@@ -29,6 +39,10 @@ protected:
 	Animator headAnimator;
 	std::vector<Animator> additionalsAnimator;
 	ItemInventory inventory;
+	std::vector<AdditionalLayer> additionalLayers;
+	std::map<std::string, int> itemToLayerIndex;
+
+	std::map<std::string, std::map<std::string, std::string>> additionalAnimations;
 
 	std::map<std::string, std::string> headAnimation;
 	std::map<std::string, std::string> headTearsAnimation;
@@ -164,4 +178,9 @@ public:
 
 	void ClampItemCounts();
 	void ChangeAnimation();
+
+	void AddAdditionalItem(const std::string& itemId);
+	void RemoveAdditionalItem(const std::string& itemId);
+	void UpdateAdditionalAnimations(const std::string& direction);
+	void SetupAdditionalAnimations();
 };

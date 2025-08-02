@@ -23,6 +23,14 @@ void Isaac::SetPosition(const sf::Vector2f &pos)
 	body.setPosition(position);
 	head.setPosition(position.x, position.y - 20.f);
 
+	for (auto& layer : additionalLayers)
+	{
+		if (layer.isActive)
+		{
+			layer.sprite.setPosition(position.x, position.y - 20.f);
+		}
+	}
+
 	if (isDisplayingItem)
 	{
 		itemDisplaySprite.setPosition(position + itemDisplayOffset);
@@ -77,11 +85,13 @@ void Isaac::Init()
 	bodyAnimator.SetTarget(&body);
 	itemEffectAnimator.SetTarget(&itemEffectSprite);
 
-	//for (int i = 0; i < additionalsAnimator.size() && i < headAdditionals.size(); ++i)
-	//{
-	//	additionalsAnimator[i].SetTarget(&headAdditionals[i]);
-	//}
+	additionalLayers.resize(5);
+	for (int i = 0; i < additionalLayers.size(); ++i)
+	{
+		additionalLayers[i].animator.SetTarget(&additionalLayers[i].sprite);
+	}
 
+	SetupAdditionalAnimations();
 }
 
 void Isaac::Release()
@@ -172,6 +182,14 @@ void Isaac::Update(float dt)
 
 	headAnimator.Update(dt);
 	bodyAnimator.Update(dt);
+
+	for (auto& layer : additionalLayers)
+	{
+		if (layer.isActive)
+		{
+			layer.animator.Update(dt);
+		}
+	}
 
 	if (isDisplayingItem)
 	{
@@ -552,6 +570,14 @@ void Isaac::Draw(sf::RenderWindow &window)
 	window.draw(body);
 	window.draw(head);
 
+	for (const auto& layer : additionalLayers)
+	{
+		if (layer.isActive)
+		{
+			window.draw(layer.sprite);
+		}
+	}
+
 	if (isDisplayingItem)
 	{
 		window.draw(itemEffectSprite);
@@ -776,6 +802,8 @@ void Isaac::PlayHeadAnimation(const std::string& animation)
 	{
 		headAnimator.Play(it->second);
 		currentHeadAnimation = animation;
+
+		UpdateAdditionalAnimations(animation);
 	}
 }
 
@@ -786,6 +814,8 @@ void Isaac::PlayHeadTearsAnimation(const std::string& animation)
 	{
 		headAnimator.Play(it->second);
 		currentHeadAnimation = "tears_" + animation;
+
+		UpdateAdditionalAnimations("tears_" + animation);
 	}
 }
 
@@ -951,5 +981,84 @@ void Isaac::UpdateItemDisplay(float dt)
 	{
 		isDisplayingItem = false;
 		itemDisplayTime = 0.0f;
+	}
+}
+
+void Isaac::SetupAdditionalAnimations()
+{
+	additionalAnimations["bloodofthemartyr"] = {
+		{"front", "animations/isaac_head_front_martyr.csv"},
+		{"side", "animations/isaac_head_side_martyr.csv"},
+		{"rare", "animations/isaac_head_rare_martyr.csv"},
+		{"tears_front", "animations/isaac_head_front_tears_martyr.csv"},
+		{"tears_side", "animations/isaac_head_side_tears_martyr.csv"},
+		{"tears_rare", "animations/isaac_head_rare_tears_martyr.csv"}
+	};
+}
+
+void Isaac::AddAdditionalItem(const std::string& itemId)
+{
+	if (itemToLayerIndex.find(itemId) != itemToLayerIndex.end())
+	{
+		return;
+	}
+
+	for (int i = 0; i < additionalLayers.size(); ++i)
+	{
+		if (!additionalLayers[i].isActive)
+		{
+			additionalLayers[i].isActive = true;
+			additionalLayers[i].itemId = itemId;
+
+			if (additionalAnimations.find(itemId) != additionalAnimations.end())
+			{
+				additionalLayers[i].animator.Play(additionalAnimations[itemId]["front"]);
+			}
+
+			additionalLayers[i].sprite.setPosition(head.getPosition());
+			additionalLayers[i].sprite.setScale(head.getScale());
+			Utils::SetOrigin(additionalLayers[i].sprite, Origins::MC);
+
+			itemToLayerIndex[itemId] = i;
+
+			std::cout << "Added additional item: " << itemId << " to layer " << i << std::endl;
+			break;
+		}
+	}
+}
+
+void Isaac::RemoveAdditionalItem(const std::string& itemId)
+{
+	auto it = itemToLayerIndex.find(itemId);
+	if (it != itemToLayerIndex.end())
+	{
+		int layerIndex = it->second;
+		additionalLayers[layerIndex].isActive = false;
+		additionalLayers[layerIndex].itemId = "";
+		itemToLayerIndex.erase(it);
+
+		std::cout << "Removed additional item: " << itemId << std::endl;
+	}
+}
+
+void Isaac::UpdateAdditionalAnimations(const std::string& direction)
+{
+	for (auto& layer : additionalLayers)
+	{
+		if (layer.isActive)
+		{
+			auto itemAnimations = additionalAnimations.find(layer.itemId);
+			if (itemAnimations != additionalAnimations.end())
+			{
+				auto animationPath = itemAnimations->second.find(direction);
+				if (animationPath != itemAnimations->second.end())
+				{
+					layer.animator.Play(animationPath->second);
+				}
+			}
+
+			layer.sprite.setPosition(head.getPosition());
+			layer.sprite.setScale(head.getScale());
+		}
 	}
 }
