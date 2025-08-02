@@ -48,7 +48,6 @@ protected:
 	ItemUI *itemUI;
 	HeartUI *heartUI;
 	SkillUI *skillUI;
-	Skill *skill;
 
 	int currentMapIndex = 0;
 

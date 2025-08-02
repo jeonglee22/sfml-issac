@@ -47,19 +47,20 @@ void HeartUI::Init()
 {
 	sortingLayer = SortingLayers::UI;
 	sortingOrder = 0;
-
-	for (int i = 0; i < (maxHPCount + 1) / 2; i++)
-	{
-		hearts.push_back(new sf::Sprite());
-	}
 }
 
 void HeartUI::Release()
 {
+	hearts.clear();
 }
 
 void HeartUI::Reset()
 {
+	for (int i = 0; i < (maxHPCount + 1) / 2; i++)
+	{
+		hearts.push_back(new sf::Sprite());
+	}
+
 	for (int i = 0; i < (maxHPCount + 1) / 2; i++)
 	{
 		hearts[i]->setTexture(TEXTURE_MGR.Get(texId), true);

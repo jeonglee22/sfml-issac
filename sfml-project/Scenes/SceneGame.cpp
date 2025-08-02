@@ -588,8 +588,11 @@ void SceneGame::GoNextMap()
 	itemUI->Release();
 	heartUI->Release();
 	skillUI->Release();
-	if(skill)
-		skill->Release();
+
+	SOUND_MGR.StopAllSfx();
+	SOUND_MGR.StopBgm();
+
+	currentMapIndex = 0;
 
 	SCENE_MGR.ChangeScene(SceneIds::Stage);
 }

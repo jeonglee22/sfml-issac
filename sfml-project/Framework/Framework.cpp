@@ -44,17 +44,7 @@ void Framework::Do()
         {
             Variables::isDrawHitBox = !Variables::isDrawHitBox;
         }
-        if (InputMgr::GetKeyDown(sf::Keyboard::F11))
-        {
-            FRAMEWORK.GetWindow().setSize({ 1920,1080 });
-        }
-        if (InputMgr::GetKeyDown(sf::Keyboard::F9))
-        {
-            FRAMEWORK.GetWindow().setSize({ 960, 540 });
-        }
 #endif
-
-
         SCENE_MGR.Update(deltaTime);
 
         // Draw
