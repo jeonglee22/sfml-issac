@@ -942,6 +942,22 @@ void Isaac::ChangeAnimation()
 				{"rare", "animations/isaac_head_rare_tears_c_head.csv"}
 			};
 		}
+		else if (skill->GetTextId() == "graphics/additionals/collectibles/collectibles_055_momseye.png")
+		{
+			headAnimation =
+			{
+				{"front", "animations/isaac_head_front_momseye.csv"},
+				{"side", "animations/isaac_head_side_momseye.csv"},
+				{"rare", "animations/isaac_head_rare_momseye.csv"},
+				{"empty", "animations/empty.csv"}
+			};
+			headTearsAnimation =
+			{
+				{"front", "animations/isaac_head_front_tears_momseye.csv"},
+				{"side", "animations/isaac_head_side_tears_momseye.csv"},
+				{"rare", "animations/isaac_head_rare_tears_momseye.csv"}
+			};
+		}
 	}
 }
 
@@ -994,6 +1010,30 @@ void Isaac::SetupAdditionalAnimations()
 		{"tears_side", "animations/isaac_head_side_tears_martyr.csv"},
 		{"tears_rare", "animations/isaac_head_rare_tears_martyr.csv"}
 	};
+
+	additionalAnimations["boom"] = {
+		{"front", "animations/isaac_head_front_boom.csv"},
+		{"side", "animations/isaac_head_side_boom.csv"},
+		{"rare", "animations/isaac_head_rare_boom.csv"},
+		{"tears_front", "animations/isaac_head_front_tears_boom.csv"},
+		{"tears_side", "animations/isaac_head_side_tears_boom.csv"},
+		{"tears_rare", "animations/isaac_head_rare_tears_boom.csv"}
+	};
+
+	additionalAnimations["theinnereye"] = {
+	{"front", "animations/isaac_head_front_innereye.csv"},
+	{"side", "animations/isaac_head_side_innereye.csv"},
+	{"rare", "animations/isaac_head_rare_innereye.csv"},
+	{"tears_front", "animations/isaac_head_front_tears_innereye.csv"},
+	{"tears_side", "animations/isaac_head_side_tears_innereye.csv"},
+	{"tears_rare", "animations/isaac_head_rare_tears_innereye.csv"}
+	};
+
+	additionalAnimations["sadonion"] = {
+	{"front", "animations/isaac_head_front_sadonion.csv"},
+	{"side", "animations/isaac_head_side_sadonion.csv"}
+	};
+
 }
 
 void Isaac::AddAdditionalItem(const std::string& itemId)
@@ -1021,7 +1061,6 @@ void Isaac::AddAdditionalItem(const std::string& itemId)
 
 			itemToLayerIndex[itemId] = i;
 
-			std::cout << "Added additional item: " << itemId << " to layer " << i << std::endl;
 			break;
 		}
 	}
@@ -1037,7 +1076,6 @@ void Isaac::RemoveAdditionalItem(const std::string& itemId)
 		additionalLayers[layerIndex].itemId = "";
 		itemToLayerIndex.erase(it);
 
-		std::cout << "Removed additional item: " << itemId << std::endl;
 	}
 }
 

@@ -158,5 +158,17 @@ std::string ItemAltar::GetItemType(const std::string& textureId)
 	{
 		return "bloodofthemartyr";
 	}
+	if (textureId.find("collectibles_019_boom") != std::string::npos)
+	{
+		return "boom";
+	}
+	if (textureId.find("collectibles_002_theinnereye") != std::string::npos)
+	{
+		return "theinnereye";
+	}
+	if (textureId.find("collectibles_001_thesadonion") != std::string::npos)
+	{
+		return "sadonion";
+	}
 	return "";
 }

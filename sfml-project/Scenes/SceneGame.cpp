@@ -78,6 +78,10 @@ void SceneGame::Init()
 	texIds.push_back("graphics/costume_048_numberone.png");
 	texIds.push_back("graphics/coustumes/costume_037_maxshead.png");
 	texIds.push_back("graphics/coustumes/costume_017_bloodofthemartyr.png");
+	texIds.push_back("graphics/coustumes/costume_018_boom.png");
+	texIds.push_back("graphics/coustumes/costume_040_momseye.png");
+	texIds.push_back("graphics/coustumes/costume_029_theinnereye.png");
+	texIds.push_back("graphics/coustumes/costume_058_sadonion.png");
 
 	texIds.push_back("graphics/enemies/boss_085_dingle.png");
 	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
@@ -135,12 +139,33 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/isaac_head_front_tears_c_head.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears_c_head.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears_c_head.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_momseye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_momseye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_rare_momseye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_tears_momseye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears_momseye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears_momseye.csv");
+
 	ANI_CLIP_MGR.Load("animations/isaac_head_front_martyr.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_side_martyr.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_rare_martyr.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_front_tears_martyr.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears_martyr.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears_martyr.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_boom.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_boom.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_rare_boom.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_tears_boom.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears_boom.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears_boom.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_innereye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_innereye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_rare_innereye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_tears_innereye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears_innereye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears_innereye.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_front_sadonion.csv");
+	ANI_CLIP_MGR.Load("animations/isaac_head_side_sadonion.csv");
 
 
 	ANI_CLIP_MGR.Load("animations/fly.csv");
