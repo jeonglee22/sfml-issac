@@ -27,6 +27,7 @@ public:
     void SetScale(const sf::Vector2f& s) override;
     void SetOrigin(const sf::Vector2f& o) override;
     void SetOrigin(Origins preset) override;
+    void SetColor() { sprite.setColor(sf::Color(116, 86, 78, 255)); }
 
     void Init() override;
     void Release() override;

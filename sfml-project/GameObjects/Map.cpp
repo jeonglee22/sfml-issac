@@ -22,6 +22,7 @@
 #include "ItemAltar.h"
 #include "Mulligan.h"
 #include "Chest.h"
+#include "Monstro.h"
 
 Map::Map(const std::string &filePath, const std::string &name, const MapType ty)
 	: filePath(filePath), GameObject(name), type(ty)
@@ -195,6 +196,8 @@ void Map::AddMonster(const sf::Vector2f &pos, const std::string &name)
 		monster = new LarryJr();
 	else if (name == "monster_044_hopperleaper")
 		monster = new Hopper();
+	else if (name == "boss_004_monstro")
+		monster = new Monstro();
 	monsters.push_back(monster);
 	monster->Init();
 	monster->Reset();

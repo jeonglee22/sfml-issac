@@ -65,7 +65,8 @@ void EnemyTears::Reset()
 
     Utils::SetOrigin(sprite, Origins::MC);
     SetScale({ 1.5f, 1.5f });
-    sprite.setColor(sf::Color(116,86,78,255));
+    sprite.setColor(sf::Color::Red);
+    //sprite.setColor(sf::Color(116,86,78,255));
 }
 
 void EnemyTears::Update(float dt)

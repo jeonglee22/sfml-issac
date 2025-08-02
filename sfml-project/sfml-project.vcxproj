@@ -186,6 +186,13 @@
     <ClCompile Include="GameObjects\Map.cpp" />
     <ClCompile Include="GameUIs\MapUI.cpp" />
     <ClCompile Include="MapMaking.cpp" />
+    <ClCompile Include="Monstro.cpp" />
+    <ClCompile Include="MonstroFireState.cpp" />
+    <ClCompile Include="MonstroIdleState.cpp" />
+    <ClCompile Include="MonstroJumpChargeState.cpp" />
+    <ClCompile Include="MonstroJumpingState.cpp" />
+    <ClCompile Include="MonstroLandingState.cpp" />
+    <ClCompile Include="MonstroSmallJumpState.cpp" />
     <ClCompile Include="Mulligan.cpp" />
     <ClCompile Include="Pooter.cpp" />
     <ClCompile Include="PooterFireState.cpp" />
@@ -268,6 +275,13 @@
     <ClInclude Include="LarryJr.h" />
     <ClInclude Include="LarryMoveState.h" />
     <ClInclude Include="MapMaking.h" />
+    <ClInclude Include="Monstro.h" />
+    <ClInclude Include="MonstroFireState.h" />
+    <ClInclude Include="MonstroIdleState.h" />
+    <ClInclude Include="MonstroJumpChargeState.h" />
+    <ClInclude Include="MonstroJumpingState.h" />
+    <ClInclude Include="MonstroLandingState.h" />
+    <ClInclude Include="MonstroSmallJumpState.h" />
     <ClInclude Include="Mulligan.h" />
     <ClInclude Include="Pooter.h" />
     <ClInclude Include="PooterFireState.h" />

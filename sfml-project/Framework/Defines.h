@@ -55,6 +55,7 @@ enum class Monsters
 	Dip,
 	Dingle,
 	Mulligan,
+	Monstro,
 };
 
 enum class Items

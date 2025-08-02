@@ -1,0 +1,9 @@
+TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
+,10,1,,,,
+,,,,,,
+TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
+graphics/enemies/boss_004_monstro.png,80,112,80,112,40.000000,56.000000
+graphics/enemies/boss_004_monstro.png,160,112,80,112,40.000000,56.000000
+graphics/enemies/boss_004_monstro.png,160,112,80,112,40.000000,56.000000
+graphics/enemies/boss_004_monstro.png,160,112,80,112,40.000000,56.000000
+graphics/enemies/boss_004_monstro.png,160,112,80,112,40.000000,56.000000

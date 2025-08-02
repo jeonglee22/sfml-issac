@@ -85,6 +85,7 @@ void SceneGame::Init()
 
 	texIds.push_back("graphics/enemies/boss_085_dingle.png");
 	texIds.push_back("graphics/enemies/boss_001_larryjr.png");
+	texIds.push_back("graphics/enemies/boss_004_monstro.png");
 
 	texIds.push_back("graphics/minimap.png");
 	texIds.push_back("graphics/hudpickups.png");
@@ -224,6 +225,13 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/dingle_rush.csv");
 	ANI_CLIP_MGR.Load("animations/dingle_exhausted.csv");
 	ANI_CLIP_MGR.Load("animations/dingle_summon.csv");
+	ANI_CLIP_MGR.Load("animations/monstro_idle.csv");
+	ANI_CLIP_MGR.Load("animations/monstro_fire.csv");
+	ANI_CLIP_MGR.Load("animations/monstro_fire_charge.csv");
+	ANI_CLIP_MGR.Load("animations/monstro_landing.csv");
+	ANI_CLIP_MGR.Load("animations/monstro_jump_charge.csv");
+	ANI_CLIP_MGR.Load("animations/monstro_jump.csv");
+	ANI_CLIP_MGR.Load("animations/monstro_small_jump.csv");
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 

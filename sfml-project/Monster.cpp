@@ -10,6 +10,7 @@
 #include "LarryJr.h"
 #include "Dingle.h"
 #include "Door.h"
+#include "Monstro.h"
 
 Monster::Monster(const std::string& name, Monsters type)
 	: GameObject(name), monsterType(type)
@@ -268,7 +269,7 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 			}
 		}
 
-		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::Dip))
+		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::Dip ||monsterType == Monsters::Monstro))
 		{
 			for (auto sprite : scene->GetMapSprites())
 			{
