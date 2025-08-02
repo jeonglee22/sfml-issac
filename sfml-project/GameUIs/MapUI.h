@@ -20,7 +20,7 @@ protected:
 	int mapIndex[11][11] = {};
 	std::vector<MapType> mapType;
 	std::vector<Map*> maps;
-	bool mapCleared[11][11] = {false};
+	int mapStatus[11][11];
 
 	int playerXIndex = 7;
 	int beforePlayerXIndex = -1;
@@ -49,11 +49,13 @@ public:
 	void SetMapIndex(int index[][11]);
 	void SetMapType(std::vector<MapType> types) { mapType = types; }
 	void SetMaps(std::vector<Map*> maps) { this->maps = maps; }
-	void SetMapCleared(bool b, int x, int y) { mapCleared[x][y] = b; }
 	void SetPlayerXIndex(int x) { playerXIndex = x; }
 	void SetPlayerYIndex(int y) { playerYIndex = y; }
 
 	void LoadMapUITextures();
 	std::string MatchTypeIcon(MapType ty);
+
+	void ChangeBeforeRoomClear(int x, int y);
+	void ChangeCurrentRoomVisit(int x, int y);
 };
 

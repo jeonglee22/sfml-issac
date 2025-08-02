@@ -164,7 +164,8 @@ void Bomb::Explosion()
                 door->SetDoorHidden(false);
                 door->SetMapCleared(true);
                 sf::Vector2f doorDirection = door->GetDoorDirection();
-                int mapIndex = scene->GetMapIndex(scene->GetCurrentMap()->GetStageXIndex() + doorDirection.x, scene->GetCurrentMap()->GetStageYIndex() + doorDirection.y);
+                std::cout << doorDirection.x << ", " << doorDirection.y << std::endl;
+                int mapIndex = scene->GetMapIndex(scene->GetCurrentXIndex() + doorDirection.x, scene->GetCurrentYIndex() + doorDirection.y);
                 SetHiddenNeighboorDoorOpen(scene->GetMap(mapIndex), doorDirection * -1.f);
             }
         }
@@ -175,7 +176,7 @@ void Bomb::SetHiddenNeighboorDoorOpen(Map* hiddenMap, sf::Vector2f doorDir)
 {
     std::vector<Door*> doors = hiddenMap->GetDoor();
 
-    for (auto door : doors)
+    for (auto& door : doors)
     {
         if (door->GetDoorDirection() == doorDir)
         {

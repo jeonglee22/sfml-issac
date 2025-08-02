@@ -93,6 +93,8 @@ public:
 	SkillUI* GetSkillUI() { return skillUI; }
 
 	int GetMapIndex(int xPos, int yPos) { return mapIndex[yPos][xPos]; }
+	int GetCurrentXIndex() const { return currentXIndex; }
+	int GetCurrentYIndex() const { return currentYIndex; }
 	std::vector<MapType> GetMapTypes() { return mapTypes; }
 	sf::FloatRect GetSmallMapSize() { return smallMapSize; }
 	Map* GetCurrentMap() { return maps[currentMapIndex]; }

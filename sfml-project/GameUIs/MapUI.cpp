@@ -91,13 +91,14 @@ void MapUI::Reset()
 		icons[i]->setScale({ 2.f,2.f });
 		icons[i]->setOrigin(icons[i]->getLocalBounds().getSize() * 0.5f);
 
-		mapCleared[i / 11][i % 11] = false;
+		mapStatus[i / 11][i % 11] = 0;
 	}
 
-	SetMapCleared(true, playerXIndex, playerYIndex);
+	mapStatus[playerYIndex][playerXIndex] = 2;
 	oneRoomSize = rooms[0]->getGlobalBounds().getSize();
 
-	beforePlayerXIndex = beforePlayerYIndex = -1;
+	beforePlayerXIndex = -1;
+	beforePlayerYIndex = -1;
 }
 
 void MapUI::Update(float dt)
@@ -119,13 +120,13 @@ void MapUI::Update(float dt)
 				}
 			}
 		}
-		rooms[playerYIndex * 11 + playerXIndex]->setTexture(TEXTURE_MGR.Get(texId), true);
-		rooms[playerYIndex * 11 + playerXIndex]->setTextureRect(mapIconRect["current5"]);
+		ChangeCurrentRoomVisit(playerYIndex, playerXIndex);
 		if(beforePlayerXIndex != -1 && beforePlayerYIndex != -1)
 		{
-			rooms[beforePlayerYIndex * 11 + beforePlayerXIndex]->setTexture(TEXTURE_MGR.Get(texId), true);
-			rooms[beforePlayerYIndex * 11 + beforePlayerXIndex]->setTextureRect(mapIconRect["clear5"]);
+			ChangeBeforeRoomClear(beforePlayerYIndex, beforePlayerXIndex);
+			mapStatus[beforePlayerYIndex][beforePlayerXIndex] = 1;
 		}
+		mapStatus[playerYIndex][playerXIndex] = 2;
 		beforePlayerXIndex = playerXIndex;
 		beforePlayerYIndex = playerYIndex;
 	}
@@ -151,12 +152,9 @@ void MapUI::DrawPlates(sf::RenderWindow& window)
 			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 10);
 			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 10);
 			int index = mapIndex[yIndex][xIndex];
-			if (index != -1)
+			if (index != -1 && mapStatus[yIndex][xIndex] > 0)
 			{
-				/*if (mapType[index] == MapType::Hidden && maps[index]->)
-					
-				else*/
-					window.draw(*plates[yIndex * 11 + xIndex]);
+				window.draw(*plates[yIndex * 11 + xIndex]);
 			}
 		}
 	}
@@ -171,7 +169,7 @@ void MapUI::DrawRooms(sf::RenderWindow& window)
 			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 10);
 			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 10);
 			int index = mapIndex[yIndex][xIndex];
-			if (index != -1)
+			if (index != -1 && mapStatus[yIndex][xIndex] > 0)
 			{
 				window.draw(*rooms[yIndex * 11 + xIndex]);
 			}
@@ -188,7 +186,7 @@ void MapUI::DrawIcons(sf::RenderWindow& window)
 			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 10);
 			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 10);
 			int index = mapIndex[yIndex][xIndex];
-			if (index != -1 && index != 99)
+			if (index != -1 && index != 99 && mapStatus[yIndex][xIndex] > 0)
 			{
 				window.draw(*icons[11 * yIndex + xIndex]);
 			}
@@ -254,4 +252,28 @@ std::string MapUI::MatchTypeIcon(MapType ty)
 	}
 
 	return iconName;
+}
+
+void MapUI::ChangeBeforeRoomClear(int x, int y)
+{
+	rooms[x * 11 + y]->setTexture(TEXTURE_MGR.Get(texId), true);
+	rooms[x * 11 + y]->setTextureRect(mapIconRect["clear5"]);
+	mapStatus[x][y] = 2;
+}
+
+void MapUI::ChangeCurrentRoomVisit(int x, int y)
+{
+	rooms[x * 11 + y]->setTexture(TEXTURE_MGR.Get(texId), true);
+	rooms[x * 11 + y]->setTextureRect(mapIconRect["current5"]);
+	mapStatus[x][y] = 3;
+	if (mapType[mapIndex[x][y]] == MapType::Hidden)
+		return;
+	for (int i = 0; i < 4; i++)
+	{
+		int indexX = x + (i % 2 ? 0 : i - 1);
+		int indexY = y + (i % 2 ? 2 - i : 0);
+		int index = mapIndex[indexX][indexY];
+		if (index != -1 && index != 99 && mapType[index] != MapType::Hidden)
+			mapStatus[indexX][indexY] = 1;
+	}
 }

@@ -329,7 +329,8 @@ void Map::SetDoor()
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Start)
 				{
 					door = new Door(sceneGame->GetMapTypes()[currentMapIndex], "Door");
-					if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Hidden)
+					if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Hidden ||
+						sceneGame->GetMapTypes()[currentMapIndex] == MapType::Hidden)
 					{
 						door->SetDoorHidden(true);
 					}
