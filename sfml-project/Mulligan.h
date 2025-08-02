@@ -25,6 +25,7 @@ public:
 	void SetPosition(const sf::Vector2f& pos) override;
 	/*void SetScale(const sf::Vector2f& s) override;*/
 	void Draw(sf::RenderWindow& window) override;
+	void BodyAnimatorPlayEmpty() { bodyAnimator.Play("animations/empty.csv"); }
 
 
 	void Reset() override;

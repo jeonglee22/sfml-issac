@@ -2,5 +2,5 @@ TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
 ,10,1,,,,
 ,,,,,,
 TEXTUREID,LEFT,TOP,WIDHT,HEIGHT,ORIGIN_X,ORIGIN_Y
-graphics/enemies/monster_216_dip.png,5,33,22,29,10.000000,15.500000
-graphics/enemies/monster_216_dip.png,38,31,20,31,10.000000,15.500000
+graphics/enemies/monster_216_dip.png,0,32,32,32,16.000000,16.000000
+graphics/enemies/monster_216_dip.png,32,32,32,32,16.000000,16.000000

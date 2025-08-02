@@ -692,6 +692,15 @@ void Isaac::MonsterCollision()
 			continue;
 		}
 
+		if (monster->GetMonsterType() == Monsters::Monstro)
+		{
+			std::string currentState = monster->GetCurrentStateName();
+			if (currentState == "MonstroJumping")
+			{
+				continue;
+			}
+		}
+
 		sf::FloatRect monsterBounds = monster->GetHitBoxMonster();
 
 		if (isaacBounds.intersects(monsterBounds) && invincibleTime == 0)
@@ -1032,9 +1041,10 @@ void Isaac::SetupAdditionalAnimations()
 	additionalAnimations["sadonion"] = {
 	{"front", "animations/isaac_head_front_sadonion.csv"},
 	{"side", "animations/isaac_head_side_sadonion.csv"},
-
-
-
+	{"rare", "animations/isaac_head_front_sadonion.csv"},
+	{"tears_front", "animations/isaac_head_front_sadonion.csv"},
+	{"tears_side", "animations/isaac_head_side_sadonion.csv"},
+	{"tears_rare", "animations/isaac_head_front_sadonion.csv"},
 	};
 
 }

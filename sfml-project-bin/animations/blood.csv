@@ -1,5 +1,5 @@
 TEXTURE_ID,FPS,"LOOPTYPE(0:Single, 1:Loop)",,,,
-Blood,10,1,,,,
+Blood,20,1,,,,
 ,,,,,,
 TEXTUREID,LEFT,TOP,HEIGHT,WIDTH,ORIGIN_X,ORIGIN_Y
 graphics/effect_002_bloodpoof_large1.png,0,0,80,80,0.000000,0.000000
@@ -8,4 +8,17 @@ graphics/effect_002_bloodpoof_large1.png,160,0,80,80,0.000000,0.000000
 graphics/effect_002_bloodpoof_large1.png,240,0,80,80,0.000000,0.000000
 graphics/effect_002_bloodpoof_large1.png,0,80,80,80,0.000000,0.000000
 graphics/effect_002_bloodpoof_large1.png,80,80,80,80,0.000000,0.000000
-graphics/effect_002_bloodpoof_large1.png,80,80,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,160,80,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,240,80,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,0,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,80,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,160,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,240,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,240,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,240,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,240,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,240,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,240,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,240,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,240,160,80,80,0.000000,0.000000
+graphics/effect_002_bloodpoof_large1.png,240,160,80,80,0.000000,0.000000

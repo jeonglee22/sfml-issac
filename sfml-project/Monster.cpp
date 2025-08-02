@@ -11,6 +11,8 @@
 #include "Dingle.h"
 #include "Door.h"
 #include "Monstro.h"
+#include "Dip.h"
+#include "Mulligan.h"
 
 Monster::Monster(const std::string& name, Monsters type)
 	: GameObject(name), monsterType(type)
@@ -201,13 +203,19 @@ void Monster::TakeDamage(int damage)
 		{
 			animator.Play("animations/dip_dead.csv");
 		}
+		if (monsterType == Monsters::Mulligan)
+		{
+			Mulligan* mulligan = static_cast<Mulligan*>(this);
+			mulligan->BodyAnimatorPlayEmpty();
+			animator.Play("animations/blood_small.csv");
+		}
 		if (monsterType == Monsters::Dingle)
 		{
 			animator.Play("animations/dingle_dead.csv");
 		}
-		if (monsterType == Monsters::LarryJr)
+		if (monsterType == Monsters::Monstro)
 		{
-			animator.Play("animations/blood_small.csv");
+			animator.Play("animations/blood.csv");
 		}
 		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/death burst small.wav"));
 		SetOrigin(Origins::MC);
@@ -350,11 +358,11 @@ void Monster::HandleCollisionByType()
 		Body* body = static_cast<Body*>(this);
 		body->SetInitialState();
 	}
-	//else if (monsterType == Monsters::Hopper)
-	//{
-	//	Hopper* hopper = static_cast<Hopper*>(this);
-	//	hopper->ChangeToIdleState();
-	//}
+	else if (monsterType == Monsters::Hopper)
+	{
+		Hopper* hopper = static_cast<Hopper*>(this);
+		hopper->ChangeToIdleState();
+	}
 	else if (monsterType == Monsters::LarryJr)
 	{
 		LarryJr* larry = static_cast<LarryJr*>(this);
@@ -364,6 +372,11 @@ void Monster::HandleCollisionByType()
 	{
 		Fly* fly = static_cast<Fly*>(this);
 		fly->SetInitialState();
+	}
+	else if (monsterType == Monsters::Dip)
+	{
+		Dip* dip = static_cast<Dip*>(this);
+		dip->SetInitialState();
 	}
 	else if (monsterType == Monsters::Dingle)
 	{

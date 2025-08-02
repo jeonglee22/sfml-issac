@@ -8,7 +8,7 @@ Mulligan::Mulligan(const std::string& name)
 
 void Mulligan::Init()
 {
-    headAnimator.SetTarget(&mulliganHead);
+    animator.SetTarget(&mulliganHead);
     bodyAnimator.SetTarget(&mulliganBody);
 }
 
@@ -16,7 +16,7 @@ void Mulligan::SetPosition(const sf::Vector2f& pos)
 {
     position = pos;
     mulliganBody.setPosition(position);
-    mulliganHead.setPosition(position.x, position.y - 50.f);
+    mulliganHead.setPosition(position.x, position.y - 60.f);
 
 }
 
@@ -43,10 +43,10 @@ void Mulligan::Reset()
     sortingLayer = SortingLayers::Foreground;
     sortingOrder = 2;
 
-    headAnimator.Play("animations/mulligan_idle.csv");
+    animator.Play("animations/mulligan_idle.csv");
     bodyAnimator.Play("animations/isaac_run_height.csv");
 
-    headAnimator.SetTarget(&mulliganHead);
+    animator.SetTarget(&mulliganHead);
     bodyAnimator.SetTarget(&mulliganBody);
 
     SetHP(130);

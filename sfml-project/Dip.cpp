@@ -9,8 +9,7 @@ Dip::Dip(const std::string& name)
 sf::FloatRect Dip::GetHitBoxMonster()
 {
     sf::FloatRect bodyGlobalBounds = body.getGlobalBounds();
-    return { bodyGlobalBounds.left + 15.f, bodyGlobalBounds.top + 15.f,
-             bodyGlobalBounds.width - 30.f, bodyGlobalBounds.height - 30.f };
+    return { bodyGlobalBounds.left + 30.f, bodyGlobalBounds.top + 30.f, bodyGlobalBounds.width - 60.f, bodyGlobalBounds.height - 60.f };
 }
 
 void Dip::Reset()
