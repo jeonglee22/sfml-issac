@@ -5,6 +5,7 @@
 #include "SceneGame.h"
 #include "Monster.h"
 #include "Tears.h"
+#include "SpriteGo.h"
 
 class Skill;
 
@@ -14,7 +15,7 @@ struct Necronomicon
 	{
 		Skill* skill = new Skill("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png", "necronomicon");
 
-		skill->SetSkillFunc([]()
+		skill->SetSkillFunc([skill]()
 			{
 				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
 				{
@@ -27,19 +28,28 @@ struct Necronomicon
 						}
 						monster->TakeDamage(400);
 					}
+					/*skill->GetEffectBody()->SetPosition(sceneGame->GetWorldView().getCenter());
+					std::cout << sceneGame->GetIsaac()->GetPosition().x << ", ";
+					std::cout << sceneGame->GetIsaac()->GetPosition().y << std::endl;
+					std::cout << sceneGame->GetWorldView().getCenter().x << ", ";
+					std::cout << sceneGame->GetWorldView().getCenter().y << std::endl;*/
 				}
 			});
 		skill->SetTotalSkillCooltime(4);
-		skill->SetEffectId("graphics/giantbook_001_necronomicon.png");
+		/*skill->SetEffectId("graphics/giantbook_001_necronomicon.png");
 		skill->SetEffectBody();
-		sf::Sprite& body = skill->GetEffectBody();
+		SpriteGo* body = skill->GetEffectBody();
 		if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
 		{
 			SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
-			body.setOrigin(sf::Vector2f(body.getTexture()->getSize().x * 0.5f, body.getTexture()->getSize().y));
-			body.setPosition(sceneGame->GetWorldView().getCenter());
-			body.setScale({ 2.f,2.f });
-		}
+			body->SetOrigin(sf::Vector2f(body->GetSprite().getTexture()->getSize().x * 0.5f, body->GetSprite().getTexture()->getSize().y));
+			body->SetPosition(sceneGame->GetWorldView().getCenter());
+			body->SetScale({ 2.f,2.f });
+			body->sortingLayer = SortingLayers::Foreground;
+			body->sortingOrder = 10;
+			body->SetActive(false);
+			sceneGame->AddGameObject(body);
+		}*/
 		return skill;
 	};
 };

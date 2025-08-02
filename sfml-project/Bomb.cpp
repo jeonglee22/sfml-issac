@@ -165,7 +165,6 @@ void Bomb::Explosion()
                 door->SetDoorHidden(false);
                 door->SetMapCleared(true);
                 sf::Vector2f doorDirection = door->GetDoorDirection();
-                std::cout << doorDirection.x << ", " << doorDirection.y << std::endl;
                 int mapIndex = scene->GetMapIndex(scene->GetCurrentXIndex() + doorDirection.x, scene->GetCurrentYIndex() + doorDirection.y);
                 MapUI* mapUI = scene->GetMapUI();
                 mapUI->SetMapStatus(scene->GetCurrentYIndex() + doorDirection.y, scene->GetCurrentXIndex() + doorDirection.x, 1);
