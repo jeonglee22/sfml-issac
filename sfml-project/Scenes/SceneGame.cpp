@@ -274,6 +274,8 @@ void SceneGame::Enter()
 
 	mapUI->SetPlayerXIndex(stageStartX);
 	mapUI->SetPlayerYIndex(stageStartY);
+	mapUI->SetMapIndex(mapIndex);
+	mapUI->SetMapType(mapTypes);
 
 	Scene::Enter();
 
@@ -281,7 +283,6 @@ void SceneGame::Enter()
 	itemUI->SetScale({2.f, 2.f});
 	heartUI->SetScale({2.f, 2.f});
 
-	mapUI->SetMapIndex(mapIndex);
 	mapUI->SetPosition({uiView.getSize().x - 110.f, 100.f});
 
 	currentMapSize = smallMapSize = maps[0]->GetMapSize();
@@ -290,6 +291,7 @@ void SceneGame::Enter()
 	mapOffset = sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f;
 
 	MapMaking::SetMapConnection(maps);
+	mapUI->SetMaps(maps);
 
 	worldView.setSize({currentMapSize.getSize().x * 1.1f, currentMapSize.getSize().y});
 	worldView.setCenter(maps[0]->GetPosition() + currentMapSize.getSize() * 0.5f);

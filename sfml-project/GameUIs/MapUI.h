@@ -1,5 +1,8 @@
 #pragma once
 #include "GameObject.h"
+
+class Map;
+
 class MapUI : public GameObject
 {
 protected:
@@ -15,7 +18,8 @@ protected:
 	sf::Vector2f oneRoomSize;
 
 	int mapIndex[11][11] = {};
-	std::string mapType[11][11] = {};
+	std::vector<MapType> mapType;
+	std::vector<Map*> maps;
 	bool mapCleared[11][11] = {false};
 
 	int playerXIndex = 7;
@@ -40,13 +44,16 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 	void DrawPlates(sf::RenderWindow& window);
 	void DrawRooms(sf::RenderWindow& window);
+	void DrawIcons(sf::RenderWindow& window);
 
 	void SetMapIndex(int index[][11]);
-	void SetMapType(int index[][11]);
+	void SetMapType(std::vector<MapType> types) { mapType = types; }
+	void SetMaps(std::vector<Map*> maps) { this->maps = maps; }
 	void SetMapCleared(bool b, int x, int y) { mapCleared[x][y] = b; }
 	void SetPlayerXIndex(int x) { playerXIndex = x; }
 	void SetPlayerYIndex(int y) { playerYIndex = y; }
 
 	void LoadMapUITextures();
+	std::string MatchTypeIcon(MapType ty);
 };
 

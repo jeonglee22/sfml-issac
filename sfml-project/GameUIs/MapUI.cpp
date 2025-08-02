@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "MapUI.h"
+#include "Map.h"
 #include "rapidcsv.h"
 
 MapUI::MapUI(const std::string& textureId, const std::string& name)
@@ -73,6 +74,23 @@ void MapUI::Reset()
 		rooms[i]->setScale({ 2.f,2.f });
 		rooms[i]->setOrigin(rooms[i]->getLocalBounds().getSize() * 0.5f);
 
+		icons.push_back(new sf::Sprite(TEXTURE_MGR.Get(texId)));
+		int yIndex = i / 11;
+		int xIndex = i % 11;
+		int index = mapIndex[yIndex][xIndex];
+		if (index != -1 && index != 99)
+		{
+			MapType ty = mapType[index];
+			std::string name = MatchTypeIcon(ty);
+			icons[i]->setTextureRect(mapIconRect[name]);
+		}
+		else
+		{
+			icons[i]->setTextureRect(mapIconRect["empty"]);
+		}
+		icons[i]->setScale({ 2.f,2.f });
+		icons[i]->setOrigin(icons[i]->getLocalBounds().getSize() * 0.5f);
+
 		mapCleared[i / 11][i % 11] = false;
 	}
 
@@ -92,10 +110,12 @@ void MapUI::Update(float dt)
 			{
 				int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 10);
 				int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 10);
-				if (mapIndex[yIndex][xIndex] != -1 && mapIndex[yIndex][xIndex] != 99)
+				int index = mapIndex[yIndex][xIndex];
+				if (index != -1 && index != 99)
 				{
 					plates[yIndex * 11 + xIndex]->setPosition(position + sf::Vector2f(j * oneRoomSize.x, i * oneRoomSize.y));
 					rooms[yIndex * 11 + xIndex]->setPosition(position + sf::Vector2f(j * oneRoomSize.x, i * oneRoomSize.y));
+					icons[yIndex * 11 + xIndex]->setPosition(position + sf::Vector2f(j * oneRoomSize.x, i * oneRoomSize.y));
 				}
 			}
 		}
@@ -118,6 +138,7 @@ void MapUI::Draw(sf::RenderWindow& window)
 	{
 		DrawPlates(window);
 		DrawRooms(window);
+		DrawIcons(window);
 	}
 }
 
@@ -129,9 +150,13 @@ void MapUI::DrawPlates(sf::RenderWindow& window)
 		{
 			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 10);
 			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 10);
-			if (mapIndex[yIndex][xIndex] != -1)
+			int index = mapIndex[yIndex][xIndex];
+			if (index != -1)
 			{
-				window.draw(*plates[yIndex * 11 + xIndex]);
+				/*if (mapType[index] == MapType::Hidden && maps[index]->)
+					
+				else*/
+					window.draw(*plates[yIndex * 11 + xIndex]);
 			}
 		}
 	}
@@ -145,7 +170,8 @@ void MapUI::DrawRooms(sf::RenderWindow& window)
 		{
 			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 10);
 			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 10);
-			if (mapIndex[yIndex][xIndex] != -1)
+			int index = mapIndex[yIndex][xIndex];
+			if (index != -1)
 			{
 				window.draw(*rooms[yIndex * 11 + xIndex]);
 			}
@@ -153,18 +179,24 @@ void MapUI::DrawRooms(sf::RenderWindow& window)
 	}
 }
 
-void MapUI::SetMapIndex(int index[][11])
+void MapUI::DrawIcons(sf::RenderWindow& window)
 {
-	for (int i = 0; i < 11; i++)
+	for (int i = -2; i < 3; i++)
 	{
-		for (int j = 0; j < 11; j++)
+		for (int j = -2; j < 3; j++)
 		{
-			mapIndex[i][j] = index[i][j];
+			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 10);
+			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 10);
+			int index = mapIndex[yIndex][xIndex];
+			if (index != -1 && index != 99)
+			{
+				window.draw(*icons[11 * yIndex + xIndex]);
+			}
 		}
 	}
 }
 
-void MapUI::SetMapType(int index[][11])
+void MapUI::SetMapIndex(int index[][11])
 {
 	for (int i = 0; i < 11; i++)
 	{
@@ -187,4 +219,39 @@ void MapUI::LoadMapUITextures()
 		sf::IntRect rect = {std::stoi(row[1]),std::stoi(row[2]),std::stoi(row[3]) ,std::stoi(row[4]) };
 		mapIconRect.insert({ row[0], rect });
 	}
+}
+
+std::string MapUI::MatchTypeIcon(MapType ty)
+{
+	std::string iconName;
+
+	switch (ty)
+	{
+	case MapType::Normal:
+	case MapType::Special:
+	case MapType::Large:
+	case MapType::Rectangle:
+	case MapType::Start:
+		iconName = "empty";
+		break;
+	case MapType::Boss:
+		iconName = "boss";
+		break;
+	case MapType::Hidden:
+		iconName = "hidden";
+		break;
+	case MapType::Shop:
+		iconName = "shop";
+		break;
+	case MapType::Treasure:
+		iconName = "treasure";
+		break;
+	case MapType::Sacrifice:
+		iconName = "sacrifice";
+		break;
+	default:
+		break;
+	}
+
+	return iconName;
 }
