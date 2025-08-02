@@ -23,6 +23,7 @@ void SoundMgr::Release()
 		delete sound;
 	}
 	playing.clear();
+	buffers.clear();
 }
 
 void SoundMgr::Update(float dt)
@@ -30,7 +31,7 @@ void SoundMgr::Update(float dt)
 	auto it = playing.begin();
 	while (it != playing.end())
 	{
-		if ((*it)->getStatus() == sf::Sound::Stopped)
+		if ((*it) != nullptr && (*it)->getStatus() == sf::Sound::Stopped)
 		{
 			buffers.erase(std::find(buffers.begin(), buffers.end(), (*it)->getBuffer()));
 			waiting.push_back(*it);
@@ -72,7 +73,7 @@ void SoundMgr::PlaySfx(sf::SoundBuffer& buffer, bool loop)
 {
 	sf::Sound* sound = nullptr;
 
-	if (std::find(buffers.begin(), buffers.end(), &buffer) != buffers.end())
+	if (buffers.size() > 0 && std::find(buffers.begin(), buffers.end(), &buffer) != buffers.end())
 		return;
 
 	if (waiting.empty())

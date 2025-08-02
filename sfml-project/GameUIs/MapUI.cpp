@@ -46,21 +46,24 @@ void MapUI::Init()
 	sortingOrder = 0;
 
 	SetOrigin(Origins::MC);
-
-	LoadMapUITextures();
-
-	SetMapCleared(true, 7, 7);
 }
 
 void MapUI::Release()
 {
+	plates.clear();
+	rooms.clear();
+	icons.clear();
 }
 
 void MapUI::Reset()
 {
+	LoadMapUITextures();
+
 	body.setTexture(TEXTURE_MGR.Get(texId));
 	body.setTextureRect({0,0,55,49});
 	Utils::SetOrigin(body, originPreset);
+
+	SetMapCleared(true, playerXIndex, playerYIndex);
 
 	for (int i = 0; i < 121; i++)
 	{
@@ -108,8 +111,11 @@ void MapUI::Update(float dt)
 void MapUI::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
-	DrawPlates(window);
-	DrawRooms(window);
+	if(plates.size() > 0)
+	{
+		DrawPlates(window);
+		DrawRooms(window);
+	}
 }
 
 void MapUI::DrawPlates(sf::RenderWindow& window)

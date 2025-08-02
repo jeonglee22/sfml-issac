@@ -30,12 +30,7 @@ protected:
 	sf::Vector2f nextSpawnPos;
 
 	std::vector<Map *> maps;
-	std::vector<SpriteGo *> mapSprites;
 	Isaac *isaac = nullptr;
-	std::vector<Monster *> monsters;
-	std::vector<HitBox *> boundary;
-	std::vector<Door *> doors;
-	std::vector<Chest*> chests;
 
 	sf::Vector2f offset = sf::Vector2f(140.f, 104.f);
 	sf::Vector2f mapOffset;
@@ -62,6 +57,7 @@ protected:
 
 	TextGo *FPS = nullptr;
 	float FPSTime = 0.f;
+	int frameCount = 0;
 
 	float checkTimeMax = 0.3f;
 	float checkTime = 0;
@@ -106,4 +102,6 @@ public:
 	void ChangeCurrentMapIndex();
 
 	void SetItemUICount();
+
+	void GoNextMap();
 };

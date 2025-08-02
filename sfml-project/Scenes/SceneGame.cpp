@@ -85,7 +85,6 @@ void SceneGame::Init()
 	texIds.push_back("graphics/ui_hearts.png");
 	texIds.push_back("graphics/controls.png");
 	texIds.push_back("graphics/ui_chargebar.png");
-	//texIds.push_back("graphics/additionals/collectibles/collectibles_035_thenecronomicon.png");5
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
@@ -101,6 +100,7 @@ void SceneGame::Init()
 	soundIds.push_back("sounds/door heavy open.wav");
 	soundIds.push_back("sounds/door heavy close.wav");
 
+	ANI_CLIP_MGR.Load("animations/key_insert.csv");
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/run.csv");
 	ANI_CLIP_MGR.Load("animations/jump.csv");
@@ -130,8 +130,6 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/isaac_head_front_tears_c_head.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_side_tears_c_head.csv");
 	ANI_CLIP_MGR.Load("animations/isaac_head_rare_tears_c_head.csv");
-
-
 
 	ANI_CLIP_MGR.Load("animations/fly.csv");
 	ANI_CLIP_MGR.Load("animations/attack_fly.csv");
@@ -212,8 +210,7 @@ void SceneGame::Init()
 	controls->GetSprite().setColor(sf::Color::Black);
 
 	mapUI = (MapUI *)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
-	mapUI->SetPlayerXIndex(startPos.x);
-	mapUI->SetPlayerYIndex(startPos.y);
+	
 	itemUI = (ItemUI *)AddGameObject(new ItemUI("ItemUI"));
 	heartUI = (HeartUI *)AddGameObject(new HeartUI("graphics/ui_hearts.png", "HeartUI"));
 	skillUI = (SkillUI *)AddGameObject(new SkillUI("graphics/ui_chargebar.png", "SkillUI"));
@@ -244,6 +241,8 @@ void SceneGame::Enter()
 
 	mapUI->SetMapIndex(mapIndex);
 	mapUI->SetPosition({uiView.getSize().x - 110.f, 100.f});
+	mapUI->SetPlayerXIndex(stageStartX);
+	mapUI->SetPlayerYIndex(stageStartY);
 
 	currentMapSize = smallMapSize = maps[0]->GetMapSize();
 
@@ -278,10 +277,12 @@ void SceneGame::Update(float dt)
 	SOUND_MGR.SetSfxVolume(20);
 
 	FPSTime += dt;
+	frameCount++;
 	if (FPSTime >= 1.f)
 	{
-		FPS->SetString("FPS : " + std::to_string(1 / dt));
+		FPS->SetString("FPS : " + std::to_string(frameCount));
 		FPSTime = 0.f;
+		frameCount = 0.f;
 	}
 
 	if (beforeIndex != currentMapIndex)
@@ -313,16 +314,12 @@ void SceneGame::Update(float dt)
 			{
 				isaac = player;
 			}
-			if (auto monster = dynamic_cast<Monster *>(gameObject))
-			{
-				monsters.push_back(monster);
-			}
 		}
 
 		if (isaac)
 		{
 			sf::Vector2f playerPos = isaac->GetPosition();
-			for (auto &monster : monsters)
+			for (auto &monster : GetMonsters())
 			{
 				monster->SetPlayerPosition(playerPos);
 			}
@@ -416,14 +413,18 @@ void SceneGame::Update(float dt)
 			}
 		}
 	}
+
+#ifdef DEF_DEV
+	if (InputMgr::GetKeyDown(sf::Keyboard::M))
+	{
+		GoNextMap();
+	}
+#endif // DEF_DEV
 }
 
 void SceneGame::Draw(sf::RenderWindow &window)
 {
 	Scene::Draw(window);
-
-	for (int i = 0; i < boundary.size(); i++)
-		boundary[i]->Draw(window);
 }
 
 void SceneGame::EnemyCollosion()
@@ -434,16 +435,12 @@ void SceneGame::EnemyCollosion()
 		{
 			isaac = player;
 		}
-		if (auto monster = dynamic_cast<Monster *>(gameObject))
-		{
-			monsters.push_back(monster);
-		}
 	}
 
 	if (isaac)
 	{
 		sf::Vector2f playerPos = isaac->GetPosition();
-		for (auto &monster : monsters)
+		for (auto &monster : GetMonsters())
 		{
 			monster->SetPlayerPosition(playerPos);
 		}
@@ -533,4 +530,28 @@ void SceneGame::SetItemUICount()
 		itemUI->SetItemUICount(Items::Key, isaac->GetKeyCount());
 	if (isaac->GetCoinCount() != itemUI->GetCoinCount())
 		itemUI->SetItemUICount(Items::Coin, isaac->GetCoinCount());
+}
+
+void SceneGame::GoNextMap()
+{
+	sf::Vector2i startPos = MapMaking::MapRandomMaking(10, mapIndex, mapTypes);
+	stageStartX = currentXIndex = startPos.x;
+	stageStartY = currentYIndex = startPos.y;
+
+	for (auto& map : maps)
+		RemoveGameObject(map);
+	maps.clear();
+
+	maps = MapMaking::SetMapInfo(mapIndex, 11, mapTypes);
+	for (auto& map : maps)
+		AddGameObject(map);
+
+	mapUI->Release();
+	itemUI->Release();
+	heartUI->Release();
+	skillUI->Release();
+	if(skill)
+		skill->Release();
+
+	SCENE_MGR.ChangeScene(SceneIds::Stage);
 }

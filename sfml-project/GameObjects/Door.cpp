@@ -97,9 +97,6 @@ void Door::Init()
 
 	animator = new Animator();
 
-	TEXTURE_MGR.Load("graphics/additionals/door_01_normaldoor.png");
-	ANI_CLIP_MGR.Load("animations/key_insert.csv");
-
 	SetOrigin(Origins::BC);
 
 	hitBox = new HitBox();
@@ -111,6 +108,8 @@ void Door::Init()
 void Door::Release()
 {
 	delete hitBox;
+	delete key;
+	delete animator;
 }
 
 void Door::Reset()

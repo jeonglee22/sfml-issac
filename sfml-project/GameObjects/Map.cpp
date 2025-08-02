@@ -85,6 +85,37 @@ void Map::Init()
 
 void Map::Release()
 {
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+	{
+		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+		
+		for (auto& obj : monsters)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : obstacles)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : doors)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : spikes)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : backgrounds)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : items)
+			sceneGame->RemoveGameObject(obj);
+		for (auto& obj : chests)
+			sceneGame->RemoveGameObject(obj);
+
+		allObjects.clear();
+		monsters.clear();
+		obstacles.clear();
+		doors.clear();
+		spikes.clear();
+		backgrounds.clear();
+		boundary.clear();
+		doorBoundary.clear();
+		tearBoundary.clear();
+		items.clear();
+		chests.clear();
+	}
 }
 
 void Map::Reset()
@@ -453,8 +484,6 @@ void Map::SpriteSetting(SpriteGo *sp, const std::vector<std::string> infos)
 
 void Map::AddGameObjectInScene()
 {
-	for (auto monster : monsters)
-		sceneGame->AddGameObject(monster);
 	for (auto door : doors)
 		sceneGame->AddGameObject(door);
 	for (auto spike : spikes)
@@ -463,10 +492,6 @@ void Map::AddGameObjectInScene()
 		sceneGame->AddGameObject(obstacle);
 	for (auto ground : backgrounds)
 		sceneGame->AddGameObject(ground);
-	for (auto item : items)
-		sceneGame->AddGameObject(item);
-	for (auto chest : chests)
-		sceneGame->AddGameObject(chest);
 
 }
 
