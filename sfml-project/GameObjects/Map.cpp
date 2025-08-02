@@ -188,6 +188,11 @@ void Map::AddItem(const sf::Vector2f &pos, const std::string &name)
 		item->SetItemType(Items::Key);
 	item->Reset();
 	item->SetPosition(pos + sf::Vector2f(currentMapRect.left, currentMapRect.top) * -1.f);
+	if (type == MapType::Shop)
+	{
+		int cost = Utils::RandomRange(1, 10);
+		item->SetItemCost(cost);
+	}
 	sceneGame->AddGameObject(item);
 }
 

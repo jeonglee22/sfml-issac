@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Item.h"
+#include "SceneGame.h"
+#include "Isaac.h"
 
 Item::Item(const std::string& name)
 	: GameObject(name)
@@ -10,6 +12,8 @@ void Item::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);
 	sprite.setPosition(pos);
+	if (isGetCost)
+		itemCost->setPosition(pos + sf::Vector2f(0, sprite.getLocalBounds().getSize().y * 2.f + 10.f));
 }
 
 void Item::SetRotation(float rot)
@@ -101,6 +105,20 @@ void Item::Update(float dt)
 		}
 	}
 
+	if (isGetCost && SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
+	{
+		SceneGame* scene = (SceneGame*) SCENE_MGR.GetCurrentScene();
+		int isaacCoin = scene->GetIsaac()->GetCoinCount();
+		if (isaacCoin < cost)
+		{
+			itemCost->setColor(sf::Color::Red);
+		}
+		else
+		{
+			itemCost->setColor(sf::Color::White);
+		}
+	}
+
 	hitBox.UpdateTransform(sprite, sprite.getLocalBounds());
 }
 
@@ -108,4 +126,17 @@ void Item::Draw(sf::RenderWindow& window)
 {
 	window.draw(sprite);
 	hitBox.Draw(window);
+	if (isGetCost)
+		window.draw(*itemCost);
+}
+
+void Item::SetItemCost(int cost)
+{
+	isGetCost = true;
+	this->cost = cost;
+	std::string texId = "graphics/items/shop/" + std::to_string(cost) + ".png";
+	TEXTURE_MGR.Load(texId);
+	itemCost = new sf::Sprite(TEXTURE_MGR.Get(texId));
+	itemCost->setPosition(position - sf::Vector2f(0, sprite.getLocalBounds().getSize().y + 10.f));
+	itemCost->setScale({ 2.f,2.f });
 }

@@ -17,6 +17,11 @@ protected:
 
 	bool wasGet;
 
+	bool isGetCost = false;
+	int cost = 0;
+	sf::Sprite* itemCost;
+	sf::Vector2f itemCostPos = sf::Vector2f(0, sprite.getLocalBounds().getSize().y + 10.f);
+
 public:
 	Item(const std::string& name = "");
 	virtual ~Item() = default;
@@ -40,6 +45,8 @@ public:
 	Items GetItemType()const { return itemType; }
 	HitBox& GetHitBox() { return hitBox; }
 
-
+	void SetItemCost(int cost);
+	int GetItemCost() const { return cost; }
+	bool IsGetCost() const { return isGetCost; }
 };
 

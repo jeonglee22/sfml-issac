@@ -63,7 +63,7 @@ void Bomb::Reset()
     explosionTime = 0.0f;
     explosionAnimationTime = 0.0f;
     wasExplosion = false;
-    animator.Play("animations/bomb.csv");
+    animator.Play("animations/bombInstall.csv");
     SetScale({ 2.0f, 2.0f });
     SetOrigin(Origins::BC);
 }
@@ -118,8 +118,6 @@ void Bomb::Update(float dt)
 
     hitBox.UpdateTransform(bomb, bomb.getLocalBounds());
 }
-
-
 
 void Bomb::Draw(sf::RenderWindow& window)
 {

@@ -163,6 +163,7 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/heart.csv");
 	ANI_CLIP_MGR.Load("animations/half_heart.csv");
 	ANI_CLIP_MGR.Load("animations/bomb.csv");
+	ANI_CLIP_MGR.Load("animations/bombInstall.csv");
 	ANI_CLIP_MGR.Load("animations/key.csv");
 	ANI_CLIP_MGR.Load("animations/chest_normal.csv");
 	ANI_CLIP_MGR.Load("animations/chest_normal_open.csv");
@@ -340,10 +341,7 @@ void SceneGame::Update(float dt)
 		heartUI->SetHeartCount(isaac->GetCurrentHP());
 		heartUI->SetMaxHeartCount(isaac->GetMaxHP());
 
-		if (isaac->GetBombCount() != itemUI->GetBombCount())
-			itemUI->SetItemUICount(Items::Bomb, isaac->GetBombCount());
-		if (isaac->GetKeyCount() != itemUI->GetKeyCount())
-			itemUI->SetItemUICount(Items::Key, isaac->GetKeyCount());
+		SetItemUICount();
 
 		if (isaac && !isMapChanging)
 		{
@@ -368,6 +366,13 @@ void SceneGame::Update(float dt)
 
 					if (canCollect)
 					{
+						if (item->IsGetCost())
+						{
+							if (isaac->GetCoinCount() >= item->GetItemCost())
+								isaac->SetCoinCount(isaac->GetCoinCount() - item->GetItemCost());
+							else
+								continue;
+						}
 						isaac->AddItem(item->GetItemType());
 						itemUI->SetItemUICount(item->GetItemType(), itemUI->GetItemUICount(item->GetItemType()) + 1);
 						item->SetActive(false);
@@ -518,4 +523,14 @@ void SceneGame::ChangeCurrentMapIndex()
 	currentYIndex = pos.y / smallMapSize.height + 5;
 	mapUI->SetPlayerXIndex(currentXIndex);
 	mapUI->SetPlayerYIndex(currentYIndex);
+}
+
+void SceneGame::SetItemUICount()
+{
+	if (isaac->GetBombCount() != itemUI->GetBombCount())
+		itemUI->SetItemUICount(Items::Bomb, isaac->GetBombCount());
+	if (isaac->GetKeyCount() != itemUI->GetKeyCount())
+		itemUI->SetItemUICount(Items::Key, isaac->GetKeyCount());
+	if (isaac->GetCoinCount() != itemUI->GetCoinCount())
+		itemUI->SetItemUICount(Items::Coin, isaac->GetCoinCount());
 }
