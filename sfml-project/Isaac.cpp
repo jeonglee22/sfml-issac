@@ -1031,7 +1031,10 @@ void Isaac::SetupAdditionalAnimations()
 
 	additionalAnimations["sadonion"] = {
 	{"front", "animations/isaac_head_front_sadonion.csv"},
-	{"side", "animations/isaac_head_side_sadonion.csv"}
+	{"side", "animations/isaac_head_side_sadonion.csv"},
+
+
+
 	};
 
 }
