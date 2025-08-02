@@ -20,6 +20,7 @@ Door::Door(MapType type, const std::string& name)
 		break;
 	case MapType::Hidden:
 		textureId = "graphics/effects/holeinwall.png";
+		isHidden = true;
 		doorTextureRect = { 0, 0, 49, 42 };
 		break;
 	case MapType::Shop:
@@ -177,18 +178,26 @@ void Door::Update(float dt)
 
 void Door::Draw(sf::RenderWindow& window)
 {
-	if (isCleared)
-		window.draw(doorOpened);
+	if(!isHidden)
+	{
+		if (isCleared)
+			window.draw(doorOpened);
+		else
+		{
+			window.draw(doorClosedLeft);
+			window.draw(doorClosedRight);
+		}
+
+		SpriteGo::Draw(window);
+		hitBox->Draw(window);
+		if (isStartKeyAnimation)
+		{
+			window.draw(*key);
+		}
+	}
 	else
 	{
-		window.draw(doorClosedLeft);
-		window.draw(doorClosedRight);
-	}
-	SpriteGo::Draw(window);
-	hitBox->Draw(window);
-	if (isStartKeyAnimation)
-	{
-		window.draw(*key);
+		hitBox->Draw(window);
 	}
 }
 

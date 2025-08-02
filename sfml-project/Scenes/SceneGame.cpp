@@ -104,7 +104,6 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/run.csv");
 	ANI_CLIP_MGR.Load("animations/jump.csv");
-
 	ANI_CLIP_MGR.Load("animations/empty.csv");
 
 	ANI_CLIP_MGR.Load("animations/isaac_body_idle.csv");
@@ -209,6 +208,7 @@ void SceneGame::Init()
 	controls = (SpriteGo *)AddGameObject(new SpriteGo("graphics/controls.png"));
 	controls->sortingLayer = SortingLayers::Background;
 	controls->sortingOrder = 5;
+	controls->GetSprite().setColor(sf::Color::Black);
 
 	mapUI = (MapUI *)AddGameObject(new MapUI("graphics/minimap.png", "mapUI"));
 	mapUI->SetPlayerXIndex(startPos.x);

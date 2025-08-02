@@ -134,7 +134,7 @@ void Map::SetCleared(bool b)
 	isCleared = b;
 	for (auto door : doors)
 	{
-		if(!door->GetDoorLocked())
+		if(!door->GetDoorLocked() && !door->GetDoorHidden())
 			door->SetMapCleared(b);
 	}
 }
@@ -268,7 +268,13 @@ void Map::SetDoor()
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Large &&
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Rectangle &&
 					sceneGame->GetMapTypes()[currentMapIndex] != MapType::Start)
+				{
 					door = new Door(sceneGame->GetMapTypes()[currentMapIndex], "Door");
+					if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Hidden)
+					{
+						door->SetDoorHidden(true);
+					}
+				}
 				else
 				{
 					door = new Door(sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]], "Door");
@@ -276,10 +282,14 @@ void Map::SetDoor()
 					{
 						door->SetDoorLocked(true);
 					}
-					if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Treasure)
+					else if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Treasure)
 					{
 						if (Utils::RandomRange(0.f,1.f) <= 0.5f)
 							door->SetDoorLocked(true);
+					}
+					else if (sceneGame->GetMapTypes()[neighboorMapIndex[i * 4 + j]] == MapType::Hidden)
+					{
+						door->SetDoorHidden(true);
 					}
 				}
 				door->Init();
@@ -417,6 +427,8 @@ void Map::CreateMatchedTypeGO(const std::vector<std::string> infos)
 	{
 		backgrounds.push_back(new SpriteGo(infos[0], infos[5]));
 		SpriteSetting(backgrounds[backgrounds.size() - 1], infos);
+		sf::Color spriteColor = backgrounds[backgrounds.size() - 1]->GetSprite().getColor();
+		backgrounds[backgrounds.size() - 1]->GetSprite().setColor(sf::Color(spriteColor.r * 0.7, spriteColor.g * 0.7, spriteColor.b * 0.7, spriteColor.a));
 	}
 }
 

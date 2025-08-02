@@ -54,7 +54,7 @@ void Tears::Init()
 	animator.SetTarget(&sprite);
 
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 1;
+	sortingOrder = 2;
 }
 
 void Tears::Release()
