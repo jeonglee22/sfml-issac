@@ -99,6 +99,7 @@ public:
 	sf::FloatRect GetSmallMapSize() { return smallMapSize; }
 	Map* GetCurrentMap() { return maps[currentMapIndex]; }
 	Map* GetMap(int index) { return maps[index]; }
+	MapUI* GetMapUI() { return mapUI; }
 
 	std::vector<int> GetNeighboorMapIndex(int x, int y);
 	sf::Vector2i GetNeighboorMapIndexInRectangleMap(int x, int y);

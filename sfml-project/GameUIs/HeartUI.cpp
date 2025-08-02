@@ -81,8 +81,8 @@ void HeartUI::Update(float dt)
 		{
 			sf::Sprite* heart = new sf::Sprite();
 			heart->setTexture(TEXTURE_MGR.Get(texId), true);
-			heart->setTextureRect(fullHeart);
-			heart->setOrigin((sf::Vector2f)fullHeart.getSize() * 0.5f);
+			heart->setTextureRect(emptyHeart);
+			heart->setOrigin((sf::Vector2f)emptyHeart.getSize() * 0.5f);
 			heart->setScale({ 2.f,2.f });
 			hearts.push_back(heart);
 		}

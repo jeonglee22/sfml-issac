@@ -279,7 +279,7 @@ void SceneGame::Enter()
 
 	Scene::Enter();
 
-	mapUI->SetScale({2.f, 2.f});
+	mapUI->SetScale({2.2f, 2.2f});
 	itemUI->SetScale({2.f, 2.f});
 	heartUI->SetScale({2.f, 2.f});
 
@@ -333,6 +333,7 @@ void SceneGame::Update(float dt)
 		maps[currentMapIndex]->SetActiveAll(true);
 		maps[currentMapIndex]->DeleteEnemyAlreadyDead();
 		maps[currentMapIndex]->DeleteItemAlreadyGet();
+		mapUI->Update(dt);
 		if (isMapChanging)
 		{
 			worldView.setCenter(Utils::Lerp(worldView.getCenter(), nextMapViewStart, dt * 15));

@@ -71,7 +71,7 @@ void MapUI::Reset()
 		plates[i]->setOrigin(plates[i]->getLocalBounds().getSize() * 0.5f);
 
 		rooms.push_back(new sf::Sprite(TEXTURE_MGR.Get(texId), mapIconRect["dark5"]));
-		rooms[i]->setScale({ 2.f,2.f });
+		rooms[i]->setScale({ 2.5f,2.5f });
 		rooms[i]->setOrigin(rooms[i]->getLocalBounds().getSize() * 0.5f);
 
 		icons.push_back(new sf::Sprite(TEXTURE_MGR.Get(texId)));
@@ -91,10 +91,10 @@ void MapUI::Reset()
 		icons[i]->setScale({ 2.f,2.f });
 		icons[i]->setOrigin(icons[i]->getLocalBounds().getSize() * 0.5f);
 
-		mapStatus[i / 11][i % 11] = 0;
+		mapStatus[i / 11][i % 11] = Status::None;
 	}
 
-	mapStatus[playerYIndex][playerXIndex] = 2;
+	mapStatus[playerYIndex][playerXIndex] = Status::Current;
 	oneRoomSize = rooms[0]->getGlobalBounds().getSize();
 
 	beforePlayerXIndex = -1;
@@ -121,12 +121,14 @@ void MapUI::Update(float dt)
 			}
 		}
 		ChangeCurrentRoomVisit(playerYIndex, playerXIndex);
-		if(beforePlayerXIndex != -1 && beforePlayerYIndex != -1)
+		if(mapIndex[playerYIndex][playerXIndex] != mapIndex[beforePlayerYIndex][beforePlayerXIndex])
 		{
-			ChangeBeforeRoomClear(beforePlayerYIndex, beforePlayerXIndex);
-			mapStatus[beforePlayerYIndex][beforePlayerXIndex] = 1;
+			//ChangeCurrentRoomVisit(playerYIndex, playerXIndex);
+			if (beforePlayerXIndex != -1 && beforePlayerYIndex != -1)
+			{
+				ChangeBeforeRoomClear(beforePlayerYIndex, beforePlayerXIndex);
+			}
 		}
-		mapStatus[playerYIndex][playerXIndex] = 2;
 		beforePlayerXIndex = playerXIndex;
 		beforePlayerYIndex = playerYIndex;
 	}
@@ -152,7 +154,7 @@ void MapUI::DrawPlates(sf::RenderWindow& window)
 			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 10);
 			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 10);
 			int index = mapIndex[yIndex][xIndex];
-			if (index != -1 && mapStatus[yIndex][xIndex] > 0)
+			if (index != -1 && mapStatus[yIndex][xIndex] > Status::None)
 			{
 				window.draw(*plates[yIndex * 11 + xIndex]);
 			}
@@ -169,7 +171,7 @@ void MapUI::DrawRooms(sf::RenderWindow& window)
 			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 10);
 			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 10);
 			int index = mapIndex[yIndex][xIndex];
-			if (index != -1 && mapStatus[yIndex][xIndex] > 0)
+			if (index != -1 && mapStatus[yIndex][xIndex] > Status::None)
 			{
 				window.draw(*rooms[yIndex * 11 + xIndex]);
 			}
@@ -186,7 +188,7 @@ void MapUI::DrawIcons(sf::RenderWindow& window)
 			int yIndex = (int)Utils::Clamp(playerYIndex + i, 0, 10);
 			int xIndex = (int)Utils::Clamp(playerXIndex + j, 0, 10);
 			int index = mapIndex[yIndex][xIndex];
-			if (index != -1 && index != 99 && mapStatus[yIndex][xIndex] > 0)
+			if (index != -1 && index != 99 && mapStatus[yIndex][xIndex] > Status::None)
 			{
 				window.draw(*icons[11 * yIndex + xIndex]);
 			}
@@ -256,24 +258,143 @@ std::string MapUI::MatchTypeIcon(MapType ty)
 
 void MapUI::ChangeBeforeRoomClear(int x, int y)
 {
-	rooms[x * 11 + y]->setTexture(TEXTURE_MGR.Get(texId), true);
-	rooms[x * 11 + y]->setTextureRect(mapIconRect["clear5"]);
-	mapStatus[x][y] = 2;
+	SetRoomStatus(x, y, mapType[mapIndex[x][y]], Status::Clear);
 }
 
 void MapUI::ChangeCurrentRoomVisit(int x, int y)
 {
-	rooms[x * 11 + y]->setTexture(TEXTURE_MGR.Get(texId), true);
-	rooms[x * 11 + y]->setTextureRect(mapIconRect["current5"]);
-	mapStatus[x][y] = 3;
+	SetRoomStatus(x, y, mapType[mapIndex[x][y]], Status::Current);
 	if (mapType[mapIndex[x][y]] == MapType::Hidden)
 		return;
+	
 	for (int i = 0; i < 4; i++)
 	{
 		int indexX = x + (i % 2 ? 0 : i - 1);
 		int indexY = y + (i % 2 ? 2 - i : 0);
 		int index = mapIndex[indexX][indexY];
-		if (index != -1 && index != 99 && mapType[index] != MapType::Hidden)
-			mapStatus[indexX][indexY] = 1;
+		if (index != -1 && index != 99 && mapType[index] != MapType::Hidden && mapStatus[indexX][indexY] == Status::None)
+			SetRoomStatus(indexX, indexY, mapType[index], Status::Dark);
+	}
+}
+
+void MapUI::SetRoomStatus(int x, int y, MapType ty, Status status)
+{
+	int yIndex = maps[mapIndex[x][y]]->GetStageYIndex();
+	int xIndex = maps[mapIndex[x][y]]->GetStageXIndex();
+	switch (ty)
+	{
+	case MapType::Normal:
+	case MapType::Start:
+	case MapType::Boss:
+	case MapType::Special:
+	case MapType::Hidden:
+	case MapType::Shop:
+	case MapType::Treasure:
+	case MapType::Sacrifice:
+		mapStatus[x][y] = status;
+		{
+			switch (status)
+			{
+			case MapUI::Status::Dark:
+				rooms[x * 11 + y]->setTextureRect(mapIconRect["dark5"]);
+				break;
+			case MapUI::Status::Current:
+				rooms[x * 11 + y]->setTextureRect(mapIconRect["current5"]);
+				break;
+			case MapUI::Status::Clear:
+				rooms[x * 11 + y]->setTextureRect(mapIconRect["clear5"]);
+				break;
+			default:
+				break;
+			}
+		}
+		break;
+	case MapType::Large:
+		SetLargeRoomStatus(yIndex, xIndex, status);
+		break;
+	case MapType::Rectangle:
+		if (maps[mapIndex[x][y]]->GetIsRowMap())
+		{
+			SetRowRoomStatus(yIndex, xIndex, status);
+		}
+		else
+		{
+			SetColumnRoomStatus(yIndex, xIndex, status);
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void MapUI::SetLargeRoomStatus(int x, int y, Status status)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		int indexX = x + (i < 2 ? -1 : 0);
+		int indexY = y + (i % 2 == 0 ? -1 : 0);
+		int index = indexX * 11 + indexY;
+		int numpad = 9 - (i < 2 ? i : i + 1 ) * 2;
+		mapStatus[indexX][indexY] = status;
+		switch (status)
+		{
+		case MapUI::Status::Dark:
+			rooms[index]->setTextureRect(mapIconRect["dark" + std::to_string(numpad)]);
+			break;
+		case MapUI::Status::Current:
+			rooms[index]->setTextureRect(mapIconRect["current" + std::to_string(numpad)]);
+			break;
+		case MapUI::Status::Clear:
+			rooms[index]->setTextureRect(mapIconRect["clear" + std::to_string(numpad)]);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void MapUI::SetRowRoomStatus(int x, int y, Status status)
+{
+	mapStatus[x][y-1] = status;
+	mapStatus[x][y] = status;
+	switch (status)
+	{
+	case MapUI::Status::Dark:
+		rooms[x * 11 + y - 1]->setTextureRect(mapIconRect["dark6"]);
+		rooms[x * 11 + y]->setTextureRect(mapIconRect["dark4"]);
+		break;
+	case MapUI::Status::Current:
+		rooms[x * 11 + y - 1]->setTextureRect(mapIconRect["current6"]);
+		rooms[x * 11 + y]->setTextureRect(mapIconRect["current4"]);
+		break;
+	case MapUI::Status::Clear:
+		rooms[x * 11 + y - 1]->setTextureRect(mapIconRect["clear6"]);
+		rooms[x * 11 + y]->setTextureRect(mapIconRect["clear4"]);
+		break;
+	default:
+		break;
+	}
+}
+
+void MapUI::SetColumnRoomStatus(int x, int y, Status status)
+{
+	mapStatus[x-1][y] = status;
+	mapStatus[x][y] = status;
+	switch (status)
+	{
+	case MapUI::Status::Dark:
+		rooms[(x - 1) * 11 + y]->setTextureRect(mapIconRect["dark8"]);
+		rooms[x * 11 + y]->setTextureRect(mapIconRect["dark2"]);
+		break;
+	case MapUI::Status::Current:
+		rooms[(x - 1) * 11 + y]->setTextureRect(mapIconRect["current8"]);
+		rooms[x * 11 + y]->setTextureRect(mapIconRect["current2"]);
+		break;
+	case MapUI::Status::Clear:
+		rooms[(x - 1) * 11 + y]->setTextureRect(mapIconRect["clear8"]);
+		rooms[x * 11 + y]->setTextureRect(mapIconRect["clear2"]);
+		break;
+	default:
+		break;
 	}
 }

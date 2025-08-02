@@ -73,6 +73,7 @@ public:
 	void SetType(MapType ty) { type = ty; }
 	MapType GetType() const { return type; }
 	void IsRowMap(bool b) { isRow = b; }
+	bool GetIsRowMap() const { return isRow; }
 
 	sf::FloatRect GetMapSize() const { return currentMapRect; }
 	std::vector<HitBox*> GetBoundary() const { return boundary; }

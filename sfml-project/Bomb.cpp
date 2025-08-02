@@ -1,9 +1,10 @@
-    #include "stdafx.h"
+#include "stdafx.h"
 #include "Bomb.h"
 #include "SceneGame.h"
 #include "Monster.h"
 #include "SpriteGo.h"
 #include "Door.h"
+#include "MapUI.h"
 #include "Map.h"
 
 Bomb::Bomb(const std::string& name)
@@ -166,6 +167,8 @@ void Bomb::Explosion()
                 sf::Vector2f doorDirection = door->GetDoorDirection();
                 std::cout << doorDirection.x << ", " << doorDirection.y << std::endl;
                 int mapIndex = scene->GetMapIndex(scene->GetCurrentXIndex() + doorDirection.x, scene->GetCurrentYIndex() + doorDirection.y);
+                MapUI* mapUI = scene->GetMapUI();
+                mapUI->SetMapStatus(scene->GetCurrentYIndex() + doorDirection.y, scene->GetCurrentXIndex() + doorDirection.x, 1);
                 SetHiddenNeighboorDoorOpen(scene->GetMap(mapIndex), doorDirection * -1.f);
             }
         }
