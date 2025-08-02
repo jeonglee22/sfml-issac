@@ -63,8 +63,6 @@ void MapUI::Reset()
 	body.setTextureRect({0,0,55,49});
 	Utils::SetOrigin(body, originPreset);
 
-	SetMapCleared(true, playerXIndex, playerYIndex);
-
 	for (int i = 0; i < 121; i++)
 	{
 		plates.push_back(new sf::Sprite(TEXTURE_MGR.Get(texId), mapIconRect["plate"]));
@@ -74,9 +72,14 @@ void MapUI::Reset()
 		rooms.push_back(new sf::Sprite(TEXTURE_MGR.Get(texId), mapIconRect["dark5"]));
 		rooms[i]->setScale({ 2.f,2.f });
 		rooms[i]->setOrigin(rooms[i]->getLocalBounds().getSize() * 0.5f);
+
+		mapCleared[i / 11][i % 11] = false;
 	}
 
+	SetMapCleared(true, playerXIndex, playerYIndex);
 	oneRoomSize = rooms[0]->getGlobalBounds().getSize();
+
+	beforePlayerXIndex = beforePlayerYIndex = -1;
 }
 
 void MapUI::Update(float dt)

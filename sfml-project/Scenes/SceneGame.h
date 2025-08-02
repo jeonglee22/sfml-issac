@@ -40,7 +40,7 @@ protected:
 	sf::FloatRect currentMapSize;
 	sf::FloatRect smallMapSize;
 
-	std::vector<SpriteGo *> shadings;
+	SpriteGo * shadings;
 	SpriteGo *overlay;
 	SpriteGo *controls;
 
@@ -60,6 +60,13 @@ protected:
 
 	float checkTimeMax = 0.3f;
 	float checkTime = 0;
+
+	SpriteGo* clearDoor;
+	sf::IntRect clearDoorclosedrect = { 16,80,32,32 };
+	sf::IntRect clearDooropenrect = {16,16,32,32};
+	bool isBossClear = false;
+	float doorOpenTimeMax = .5f;
+	float doorOpenTime = 0.f;
 
 public:
 	SceneGame();

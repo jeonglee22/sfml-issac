@@ -217,9 +217,15 @@ std::vector<Map *> MapMaking::SetMapInfo(int map[][11], int mapCount, std::vecto
 				if (mapTypes[mapIndex] == MapType::Rectangle)
 				{
 					if (i > 1 && map[i - 1][j] != -1 && map[i - 1][j] != 99 && mapTypes[map[i - 1][j]] == MapType::Rectangle)
+					{
 						maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex], false), ToString(mapTypes[mapIndex]), mapTypes[mapIndex]);
+						maps[mapIndex]->IsRowMap(false);
+					}
 					else if (j > 1 && map[i][j - 1] != -1 && map[i][j - 1] != 99 && mapTypes[map[i][j - 1]] == MapType::Rectangle)
+					{
 						maps[mapIndex] = new Map(PickRandomMapInPool(mapTypes[mapIndex], true), ToString(mapTypes[mapIndex]), mapTypes[mapIndex]);
+						maps[mapIndex]->IsRowMap(true);
+					}
 				}
 				else
 				{
@@ -272,11 +278,13 @@ void MapMaking::SetMapConnection(std::vector<Map *> maps)
 			{
 				pos.x = maps[0]->GetMapSize().getSize().x * (xPos - 6);
 				pos.y = maps[0]->GetMapSize().getSize().y * (yPos - 5);
+				
 			}
 			else
 			{
 				pos.x = maps[0]->GetMapSize().getSize().x * (xPos - 5);
 				pos.y = maps[0]->GetMapSize().getSize().y * (yPos - 6);
+				maps[i]->IsRowMap(false);
 			}
 			maps[i]->SetPosition(pos);
 		}

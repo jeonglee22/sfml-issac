@@ -44,6 +44,7 @@ protected:
 	SceneGame* sceneGame;
 
 	bool isCleared = true;
+	bool isRow = false;
 
 public:
 	Map(const std::string& filePath = "", const std::string& name = "", const MapType ty = MapType::None);
@@ -71,6 +72,7 @@ public:
 	bool GetCleared() const { return isCleared; }
 	void SetType(MapType ty) { type = ty; }
 	MapType GetType() const { return type; }
+	void IsRowMap(bool b) { isRow = b; }
 
 	sf::FloatRect GetMapSize() const { return currentMapRect; }
 	std::vector<HitBox*> GetBoundary() const { return boundary; }

@@ -52,7 +52,11 @@ void SceneGame::Init()
 	texIds.push_back("graphics/additionals/door_02_treasureroomdoor.png");
 	texIds.push_back("graphics/additionals/door_04_selfsacrificeroomdoor.png");
 	texIds.push_back("graphics/additionals/door_10_bossroomdoor.png");
+	texIds.push_back("graphics/door_11_trapdoor.png");
 	texIds.push_back("graphics/shading.png");
+	texIds.push_back("graphics/shading_1x2.png");
+	texIds.push_back("graphics/shading_2x1.png");
+	texIds.push_back("graphics/shading_2x2.png");
 	texIds.push_back("graphics/overlay_2.png");
 	texIds.push_back("graphics/effect_000_shopkeepers.png");
 	texIds.push_back("graphics/effect_002_bloodpoof_large1.png");
@@ -235,13 +239,6 @@ void SceneGame::Init()
 	for (auto &map : maps)
 		AddGameObject(map);
 
-	for (int i = 0; i < 1; i++)
-	{
-		shadings.push_back((SpriteGo *)AddGameObject(new SpriteGo("graphics/shading.png")));
-
-		shadings[i]->sortingLayer = SortingLayers::Background;
-		shadings[i]->sortingOrder = 20;
-	}
 	controls = (SpriteGo *)AddGameObject(new SpriteGo("graphics/controls.png"));
 	controls->sortingLayer = SortingLayers::Background;
 	controls->sortingOrder = 5;
@@ -259,6 +256,10 @@ void SceneGame::Init()
 	FPS->sortingLayer = SortingLayers::UI;
 	FPS->sortingOrder = 50;
 
+	clearDoor = (SpriteGo*)AddGameObject(new SpriteGo("graphics/door_11_trapdoor.png", "bosscleardoor"));
+	clearDoor->sortingLayer = SortingLayers::Foreground;
+	clearDoor->sortingOrder = 1;
+
 	Scene::Init();
 }
 
@@ -271,6 +272,9 @@ void SceneGame::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(center);
 
+	mapUI->SetPlayerXIndex(stageStartX);
+	mapUI->SetPlayerYIndex(stageStartY);
+
 	Scene::Enter();
 
 	mapUI->SetScale({2.f, 2.f});
@@ -279,8 +283,6 @@ void SceneGame::Enter()
 
 	mapUI->SetMapIndex(mapIndex);
 	mapUI->SetPosition({uiView.getSize().x - 110.f, 100.f});
-	mapUI->SetPlayerXIndex(stageStartX);
-	mapUI->SetPlayerYIndex(stageStartY);
 
 	currentMapSize = smallMapSize = maps[0]->GetMapSize();
 
@@ -295,12 +297,6 @@ void SceneGame::Enter()
 
 	beforeIndex = 0;
 
-	for (auto shading : shadings)
-	{
-		shading->SetScale({2.f, 2.f});
-		shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
-		shading->SetPosition(worldView.getCenter());
-	}
 	controls->SetScale({2.f, 2.f});
 	controls->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/controls.png").getSize()) * 0.5f);
 	controls->SetPosition(worldView.getCenter());
@@ -308,6 +304,13 @@ void SceneGame::Enter()
 	skillUI->SetPosition({60.f, 60.f});
 
 	FPS->SetPosition({150.f, 50.f});
+
+	clearDoor->GetSprite().setTextureRect(clearDoorclosedrect);
+	clearDoor->SetOrigin(Origins::MC);
+	clearDoor->SetScale({ 2.f,2.f });
+	clearDoor->SetActive(false);
+
+	currentMapIndex = 0;
 }
 
 void SceneGame::Update(float dt)
@@ -449,6 +452,22 @@ void SceneGame::Update(float dt)
 				nextSpawnPos = isaac->GetPosition() + door->GetDoorDirection() * 210.f;
 				break;
 			}
+		}
+
+		if (currentMap->GetType() == MapType::Boss && currentMap->CheckAllEnemyDead())
+		{
+			isBossClear = true;
+			clearDoor->SetActive(true);
+			clearDoor->SetPosition(worldView.getCenter() + sf::Vector2f(0, -100.f));
+		}
+	}
+
+	if (isBossClear)
+	{
+		doorOpenTime += dt;
+		if (doorOpenTime >= doorOpenTimeMax)
+		{
+			clearDoor->GetSprite().setTextureRect(clearDooropenrect);
 		}
 	}
 
@@ -592,7 +611,7 @@ void SceneGame::GoNextMap()
 	SOUND_MGR.StopAllSfx();
 	SOUND_MGR.StopBgm();
 
-	currentMapIndex = 0;
+	
 
 	SCENE_MGR.ChangeScene(SceneIds::Stage);
 }

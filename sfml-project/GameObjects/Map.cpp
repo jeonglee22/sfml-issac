@@ -32,6 +32,7 @@ void Map::SetPosition(const sf::Vector2f &pos)
 {
 	GameObject::SetPosition(pos);
 	center.setPosition(pos);
+	shading->SetPosition(pos);
 	for (auto monster : monsters)
 		monster->SetPosition(monster->GetPosition() + pos);
 	for (auto door : doors)
@@ -115,7 +116,10 @@ void Map::Release()
 		tearBoundary.clear();
 		items.clear();
 		chests.clear();
+		
+		sceneGame->RemoveGameObject(shading);
 	}
+	
 }
 
 void Map::Reset()
@@ -124,6 +128,25 @@ void Map::Reset()
 	{
 		sceneGame = (SceneGame *)SCENE_MGR.GetCurrentScene();
 		LoadStageField(filePath);
+		if (type == MapType::Large)
+		{
+			shading = (SpriteGo*)sceneGame->AddGameObject(new SpriteGo("graphics/shading_2x2.png"));
+		}
+		else if (type == MapType::Rectangle)
+		{
+			if(isRow)
+				shading = (SpriteGo*)sceneGame->AddGameObject(new SpriteGo("graphics/shading_2x1.png"));
+			else 
+				shading = (SpriteGo*)sceneGame->AddGameObject(new SpriteGo("graphics/shading_1x2.png"));
+		}
+		else
+		{
+			shading = (SpriteGo*)sceneGame->AddGameObject(new SpriteGo("graphics/shading.png"));
+			shading->sortingLayer = SortingLayers::Background;
+			shading->sortingOrder = 20;
+		}
+		shading->SetScale({ 2.f,2.f });
+		shading->SetOrigin(Origins::TL);
 	}
 }
 

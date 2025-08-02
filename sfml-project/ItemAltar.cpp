@@ -50,6 +50,7 @@ void ItemAltar::Init()
 
 void ItemAltar::Release()
 {
+	delete bible;
 }
 
 void ItemAltar::Reset()
@@ -123,7 +124,7 @@ void ItemAltar::Update(float dt)
 
 		if (skill != nullptr && skill->GetSkillPassive())
 		{
-		skill->SetActive(false);
+			skill->SetActive(false);
 		}
 		//isaac->GetiingItem(true);
 		IsGetSkill = false;
