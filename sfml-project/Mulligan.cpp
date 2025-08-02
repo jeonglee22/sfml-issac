@@ -17,7 +17,6 @@ void Mulligan::SetPosition(const sf::Vector2f& pos)
     position = pos;
     mulliganBody.setPosition(position);
     mulliganHead.setPosition(position.x, position.y - 60.f);
-
 }
 
 //void Monster::SetScale(const sf::Vector2f& s)
@@ -50,7 +49,7 @@ void Mulligan::Reset()
     bodyAnimator.SetTarget(&mulliganBody);
 
     SetHP(130);
-    SetSpeed(50.0f);
+    SetSpeed(30.0f);
     SetDetectionRange(200.0f);
     SetSkillCooldown(3.0f);
    
@@ -89,10 +88,5 @@ void Mulligan::SetInitialState()
 sf::FloatRect Mulligan::GetHitBoxMonster()
 {
     sf::FloatRect bodyGlobalBounds = mulliganHead.getGlobalBounds();
-    return {
-        bodyGlobalBounds.left + 25.f,
-        bodyGlobalBounds.top + 25.f,
-        18.f,
-        18.f
-    };
+    return { bodyGlobalBounds.left + 30.f, bodyGlobalBounds.top + 30.f, bodyGlobalBounds.width - 60.f, bodyGlobalBounds.height - 60.f };
 }

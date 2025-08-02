@@ -188,7 +188,7 @@ void Monster::TakeDamage(int damage)
 	if (currentHP <= 0)
 	{
 		currentHP = 0;
-		isDead = true;
+		//isDead = true;
 		velocity = { 0.f,0.f };
 
 		if(monsterType == Monsters::Fly || monsterType == Monsters::AttackFly || monsterType == Monsters::Pooter)
@@ -206,8 +206,13 @@ void Monster::TakeDamage(int damage)
 		if (monsterType == Monsters::Mulligan)
 		{
 			Mulligan* mulligan = static_cast<Mulligan*>(this);
-			mulligan->BodyAnimatorPlayEmpty();
-			animator.Play("animations/blood_small.csv");
+			if (!mulligan->IsInDeathSequence())
+			{
+				std::cout << "멀리건 DeathSequence 시작!" << std::endl;
+				mulligan->StartDeathSequence();
+				mulligan->ChangeToDeathState();
+				return;
+			}
 		}
 		if (monsterType == Monsters::Dingle)
 		{
@@ -217,6 +222,7 @@ void Monster::TakeDamage(int damage)
 		{
 			animator.Play("animations/blood.csv");
 		}
+		isDead = true;
 		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/death burst small.wav"));
 		SetOrigin(Origins::MC);
 	}

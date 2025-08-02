@@ -3,6 +3,7 @@
 #include "Monster.h"
 #include <cmath>
 #include "SpiderPatrolState.h"
+#include "Mulligan.h"
 
 WanderState::WanderState()
     :directionChangeTimer(0.0f)
@@ -19,6 +20,17 @@ void WanderState::Enter(Monster* monster)
 
 void WanderState::Update(Monster* monster, float dt)
 {
+    if (monster->GetMonsterType() == Monsters::Mulligan)
+    {
+        float distanceToPlayer = monster->GetDistanceToPlayer();
+        if (distanceToPlayer <= monster->GetDetectionRange())
+        {
+            Mulligan* mulligan = static_cast<Mulligan*>(monster);
+            mulligan->ChangeToFleeState();
+            return;
+        }
+    }
+
     directionChangeTimer += dt;
 
     if (directionChangeTimer >= directionChangeInterval) {

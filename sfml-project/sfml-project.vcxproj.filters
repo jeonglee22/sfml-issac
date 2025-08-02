@@ -273,6 +273,12 @@
     <ClCompile Include="MonstroSmallJumpState.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="MulliganFleeState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MulliganDeathState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\InputMgr.h">
@@ -534,6 +540,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MonstroSmallJumpState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MulliganFleeState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MulliganDeathState.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
