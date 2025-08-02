@@ -69,6 +69,8 @@ void HeartUI::Reset()
 	}
 
 	SetPosition({ 150.f, 60.f });
+
+	beforeHPCount = maxHPCount;
 }
 
 void HeartUI::Update(float dt)
