@@ -149,6 +149,8 @@ public:
 
 	HitBox GetHitBoxBody() const { return hitBoxBody; }
 	HitBox GetHitBoxHead() const { return hitBoxHead; }
+	sf::Sprite GetHeadSprite() const { return head; }
+	sf::Sprite GetBodySprite() const { return body; }
 	int GetCurrentHP() const { return currentHP; }
 	void SetCurrentHP(int hp) { currentHP = hp; }
 	int GetMaxHP() const { return maxHP; }

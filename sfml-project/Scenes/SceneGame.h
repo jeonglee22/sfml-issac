@@ -65,8 +65,10 @@ protected:
 	sf::IntRect clearDoorclosedrect = { 16,80,32,32 };
 	sf::IntRect clearDooropenrect = {16,16,32,32};
 	bool isBossClear = false;
-	float doorOpenTimeMax = .5f;
+	float doorOpenTimeMax = 1.f;
 	float doorOpenTime = 0.f;
+
+	bool isCanGoNext = false;
 
 public:
 	SceneGame();

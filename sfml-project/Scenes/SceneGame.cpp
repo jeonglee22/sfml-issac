@@ -468,8 +468,12 @@ void SceneGame::Update(float dt)
 		if (doorOpenTime >= doorOpenTimeMax)
 		{
 			clearDoor->GetSprite().setTextureRect(clearDooropenrect);
+			isCanGoNext = true;
 		}
 	}
+
+	if (isCanGoNext && Utils::CheckCollision(isaac->GetBodySprite(), clearDoor->GetSprite()))
+		GoNextMap();
 
 #ifdef DEF_DEV
 	if (InputMgr::GetKeyDown(sf::Keyboard::M))
@@ -611,7 +615,7 @@ void SceneGame::GoNextMap()
 	SOUND_MGR.StopAllSfx();
 	SOUND_MGR.StopBgm();
 
-	
+	isCanGoNext = false;
 
 	SCENE_MGR.ChangeScene(SceneIds::Stage);
 }
