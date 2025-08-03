@@ -71,6 +71,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/effects/effect_017_bombradius.png");
 	texIds.push_back("graphics/effects/effect_023_starflash.png");
 	texIds.push_back("graphics/additionals/grid_poop.png");
+	texIds.push_back("graphics/giantbook_001_necronomicon.png");
 	texIds.push_back("graphics/monster_044_hopperleaper.png");
 	texIds.push_back("graphics/monster_000_bodies02.png");
 	texIds.push_back("graphics/enemies/monster_029_horf.png");
@@ -492,7 +493,7 @@ void SceneGame::Update(float dt)
 		}
 	}
 
-	if (isBossClear)
+	if (isBossClear && !isClearAlterPossed)
 	{
 		doorOpenTime += dt;
 		if (doorOpenTime >= doorOpenTimeMax)
@@ -501,6 +502,7 @@ void SceneGame::Update(float dt)
 			clearAltar->SetActive(true);
 			clearAltar->SetPosition(worldView.getCenter() + sf::Vector2f(0, 100.f) - clearAltar->GetSprite().getLocalBounds().getSize() * 0.5f);
 			isCanGoNext = true;
+			isClearAlterPossed = true;
 		}
 	}
 
@@ -680,6 +682,9 @@ void SceneGame::GoNextMap()
 	finishShow = false;
 	finishStageShow = false;
 	stageEnter = false;
+	isStageMoving = true;
+	isBossClear = false;
+	isClearAlterPossed = false;
 
 	SCENE_MGR.ChangeScene(SceneIds::Stage);
 }

@@ -69,6 +69,7 @@ protected:
 	sf::IntRect clearDoorclosedrect = { 16,80,32,32 };
 	sf::IntRect clearDooropenrect = {16,16,32,32};
 	bool isBossClear = false;
+	bool isClearAlterPossed = false;
 	float doorOpenTimeMax = 1.f;
 	float doorOpenTime = 0.f;
 
@@ -76,8 +77,9 @@ protected:
 
 	int stageIndex = 1;
 	bool stageEnter = false;
+	bool isStageMoving = false;
 
-	float shownDelayMax = 2.f;
+	float shownDelayMax = 1.f;
 	float shownDelay = 0.f;
 	float explainUIShowTimeMax = 1.f;
 	float explainUIShowTime = 0.f;
@@ -125,6 +127,7 @@ public:
 	sf::Vector2i GetNeighboorMapIndexInRectangleMap(int x, int y);
 
 	sf::View GetWorldView() { return worldView; }
+	sf::View GetUiView() { return uiView; }
 
 	void AddSkillCooltimeAtClear();
 

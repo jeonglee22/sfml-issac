@@ -28,30 +28,24 @@ struct Necronomicon
 						}
 						monster->TakeDamage(400);
 					}
-					/*skill->GetEffectBody()->SetPosition(sceneGame->GetWorldView().getCenter());
-					std::cout << sceneGame->GetIsaac()->GetPosition().x << ", ";
-					std::cout << sceneGame->GetIsaac()->GetPosition().y << std::endl;
-					std::cout << sceneGame->GetWorldView().getCenter().x << ", ";
-					std::cout << sceneGame->GetWorldView().getCenter().y << std::endl;*/
 				}
 			});
 		skill->SetTotalSkillCooltime(4);
 		skill->SetSkillExplain("Mass room damage");
 		skill->SetSkillName("The Necronomicon");
-		/*skill->SetEffectId("graphics/giantbook_001_necronomicon.png");
+		skill->SetEffectId("graphics/giantbook_001_necronomicon.png");
 		skill->SetEffectBody();
 		SpriteGo* body = skill->GetEffectBody();
 		if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
 		{
 			SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 			body->SetOrigin(sf::Vector2f(body->GetSprite().getTexture()->getSize().x * 0.5f, body->GetSprite().getTexture()->getSize().y));
-			body->SetPosition(sceneGame->GetWorldView().getCenter());
+			body->SetPosition(sceneGame->GetUiView().getCenter());
 			body->SetScale({ 2.f,2.f });
-			body->sortingLayer = SortingLayers::Foreground;
+			body->sortingLayer = SortingLayers::UI;
 			body->sortingOrder = 10;
-			body->SetActive(false);
 			sceneGame->AddGameObject(body);
-		}*/
+		}
 
 		return skill;
 	};

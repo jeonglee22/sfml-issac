@@ -28,6 +28,7 @@ enum class SceneIds
 {
 	None = -1,
 	Editor,
+	Start,
 	Stage,
 	Animator,
 	Dev1,
