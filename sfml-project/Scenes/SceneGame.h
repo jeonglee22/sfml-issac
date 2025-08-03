@@ -87,7 +87,7 @@ protected:
 	bool stageEnter = false;
 	bool isStageMoving = false;
 
-	float shownDelayMax = 1.f;
+	float shownDelayMax = 1.5f;
 	float shownDelay = 0.f;
 	float explainUIShowTimeMax = 1.f;
 	float explainUIShowTime = 0.f;

@@ -9,9 +9,11 @@ protected:
 
 	std::unordered_map<SceneIds, Scene*> scenes;
 
-	SceneIds startScene = SceneIds::Stage;
+	SceneIds startScene = SceneIds::Start;
 	SceneIds currentScene = SceneIds::None;
 	SceneIds nextScene = SceneIds::None;
+
+	int clearedScene = 0;
 
 public:
 	void Init();
@@ -23,6 +25,9 @@ public:
 
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
+
+	void SetClearedScene(int s) { clearedScene = s; }
+	int GetClearedScene() { return clearedScene; }
 };
 
 #define SCENE_MGR (SceneMgr::Instance())

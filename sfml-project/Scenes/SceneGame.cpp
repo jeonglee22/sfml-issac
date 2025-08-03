@@ -555,19 +555,17 @@ void SceneGame::Update(float dt)
 
 		if (currentMap->GetType() == MapType::Boss)
 		{
+			bossHealthUI->SetActive(true);
+			for (auto& monster : GetMonsters())
 			{
-				bossHealthUI->SetActive(true);
-				for (auto& monster : GetMonsters())
+				if (monster->GetName() == "Dingle" ||
+					monster->GetName() == "Monstro")
 				{
-					if (monster->GetName() == "Dingle" ||
-						monster->GetName() == "Monstro")
-					{
-						float currenthp = monster->GetCurrentHP();
-						float maxhp = monster->GetMaxHP();
-						float ratio = currenthp / maxhp;
-						int barpos = bossBarSize * ratio;
-						bossHealthUI->SetBarPos(barpos);
-					}
+					float currenthp = monster->GetCurrentHP();
+					float maxhp = monster->GetMaxHP();
+					float ratio = currenthp / maxhp;
+					int barpos = bossBarSize * ratio;
+					bossHealthUI->SetBarPos(barpos);
 				}
 			}
 		}
@@ -680,7 +678,6 @@ void SceneGame::Update(float dt)
 				FRAMEWORK.SetTimeScale(1.f);
 				pauseUI->SetActive(false);
 			}
-			std::cout << isStop << std::endl;
 		}
 
 		if (isStop)
@@ -816,22 +813,30 @@ void SceneGame::GoNextMap()
 	mapUI->Release();
 	itemUI->Release();
 	heartUI->Release();
-	skillUI->Release();
+
+	if (clearAltar)
+		RemoveGameObject(clearAltar);
+	clearAltar = (ItemAltar*)AddGameObject(new ItemAltar("graphics/additionals/levelitem_001_itemaltar.png", "clearaltar"));
+	clearAltar->Init();
 
 	isCanGoNext = false;
 	stageIndex++;
 	shownDelay = 0.f;
 	explainUIShowTime = 0.f;
+	bossMapEnterShownTime = 0.f;
+	doorOpenTime = 0.f;
 	finishShow = false;
 	finishStageShow = false;
 	stageEnter = false;
 	isStageMoving = true;
 	isBossClear = false;
 	isClearAlterPossed = false;
+	isShownBoss = false;
 
 	SOUND_MGR.StopAllSfx();
 	SOUND_MGR.StopBgm();
-	SCENE_MGR.ChangeScene(SceneIds::Stage);
+	
+	SCENE_MGR.ChangeScene(SceneIds::Change);
 }
 
 void SceneGame::ResetStage()
@@ -854,15 +859,20 @@ void SceneGame::ResetStage()
 	stageIndex = 1;
 	shownDelay = 0.f;
 	explainUIShowTime = 0.f;
+	bossMapEnterShownTime = 0.f;
+	doorOpenTime = 0.f;
 	finishShow = false;
 	finishStageShow = false;
 	stageEnter = false;
 	isStageMoving = true;
 	isBossClear = false;
 	isClearAlterPossed = false;
+	isShownBoss = false;
 
 	SOUND_MGR.StopAllSfx();
 	SOUND_MGR.StopBgm();
+
+	SCENE_MGR.SetClearedScene(0);
 }
 
 void SceneGame::ExplainUIMove(float dt)

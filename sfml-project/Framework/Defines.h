@@ -30,6 +30,7 @@ enum class SceneIds
 	Editor,
 	Start,
 	Stage,
+	Change,
 	Animator,
 	Dev1,
 	Dev2,

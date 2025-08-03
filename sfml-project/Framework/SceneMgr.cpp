@@ -5,12 +5,14 @@
 #include "SceneEditor.h"
 #include "SceneStart.h"
 #include "SceneGame.h"
+#include "SceneChange.h"
 #include "SceneAnimator.h"
 
 void SceneMgr::Init()
 {
 	scenes.insert({ SceneIds::Dev1, new SceneDev1() });
 	scenes.insert({ SceneIds::Start, new SceneStart() });
+	scenes.insert({ SceneIds::Change, new SceneChange() });
 	scenes.insert({ SceneIds::Dev2, new SceneDev2() });
 	scenes.insert({ SceneIds::Editor, new SceneEditor() });
 	scenes.insert({ SceneIds::Stage, new SceneGame() });
