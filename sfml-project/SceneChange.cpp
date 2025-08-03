@@ -98,11 +98,17 @@ void SceneChange::Enter()
 
 	sceneDelayTime = 0.f;
 	iconMoveTime = 0.f;
+
 	SCENE_MGR.SetClearedScene(SCENE_MGR.GetClearedScene() + 1);
 }
 
 void SceneChange::Update(float dt)
 {
+	if (SCENE_MGR.GetClearedScene() == 5)
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Start);
+		return;
+	}
 	Scene::Update(dt);
 
 	sceneDelayTime += dt;
