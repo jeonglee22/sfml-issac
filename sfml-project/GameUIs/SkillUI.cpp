@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SkillUI.h"
+#include "SceneGame.h"
 
 SkillUI::SkillUI(const std::string& textureId, const std::string& name)
 	: cooltimeImageId(textureId), GameObject(name)
@@ -57,10 +58,6 @@ void SkillUI::Init()
 	sortingLayer = SortingLayers::UI;
 	sortingOrder = 0;
 
-	for (int i = 0; i < 3; i++)
-	{
-		skillCooltimeImages.push_back(new sf::Sprite());
-	}
 	skillCooltimeImageRect.push_back(sf::IntRect(4, 1, 8, 30));
 	skillCooltimeImageRect.push_back(sf::IntRect(20,2,8,24));
 	skillCooltimeImageRect.push_back(sf::IntRect(36,1,8,30));
@@ -73,10 +70,15 @@ void SkillUI::Init()
 
 void SkillUI::Release()
 {
+	skillCooltimeImages.clear();
 }
 
 void SkillUI::Reset()
 {
+	for (int i = 0; i < 3; i++)
+	{
+		skillCooltimeImages.push_back(new sf::Sprite());
+	}
 	imageCoolTime = 0;
 
 	for (int i = 0; i < 2; i++)
@@ -85,6 +87,9 @@ void SkillUI::Reset()
 		skillCooltimeImages[i]->setTextureRect(skillCooltimeImageRect[i]);
 		skillCooltimeImages[i]->setOrigin((sf::Vector2f)skillCooltimeImageRect[i].getSize() * 0.5f);
 	}
+
+	if (skill != nullptr)
+		haveSkill = true;
 }
 
 void SkillUI::Update(float dt)

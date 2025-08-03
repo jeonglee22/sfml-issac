@@ -47,19 +47,20 @@ void HeartUI::Init()
 {
 	sortingLayer = SortingLayers::UI;
 	sortingOrder = 0;
-
-	for (int i = 0; i < (maxHPCount + 1) / 2; i++)
-	{
-		hearts.push_back(new sf::Sprite());
-	}
 }
 
 void HeartUI::Release()
 {
+	hearts.clear();
 }
 
 void HeartUI::Reset()
 {
+	for (int i = 0; i < (maxHPCount + 1) / 2; i++)
+	{
+		hearts.push_back(new sf::Sprite());
+	}
+
 	for (int i = 0; i < (maxHPCount + 1) / 2; i++)
 	{
 		hearts[i]->setTexture(TEXTURE_MGR.Get(texId), true);
@@ -68,6 +69,8 @@ void HeartUI::Reset()
 	}
 
 	SetPosition({ 150.f, 60.f });
+
+	beforeHPCount = maxHPCount;
 }
 
 void HeartUI::Update(float dt)
@@ -78,8 +81,8 @@ void HeartUI::Update(float dt)
 		{
 			sf::Sprite* heart = new sf::Sprite();
 			heart->setTexture(TEXTURE_MGR.Get(texId), true);
-			heart->setTextureRect(fullHeart);
-			heart->setOrigin((sf::Vector2f)fullHeart.getSize() * 0.5f);
+			heart->setTextureRect(emptyHeart);
+			heart->setOrigin((sf::Vector2f)emptyHeart.getSize() * 0.5f);
 			heart->setScale({ 2.f,2.f });
 			hearts.push_back(heart);
 		}

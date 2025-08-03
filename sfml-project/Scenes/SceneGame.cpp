@@ -22,6 +22,7 @@
 #include "MapMaking.h"
 #include "TextGo.h"
 #include "Chest.h"
+#include "ItemAltar.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Stage)
@@ -52,7 +53,11 @@ void SceneGame::Init()
 	texIds.push_back("graphics/additionals/door_02_treasureroomdoor.png");
 	texIds.push_back("graphics/additionals/door_04_selfsacrificeroomdoor.png");
 	texIds.push_back("graphics/additionals/door_10_bossroomdoor.png");
+	texIds.push_back("graphics/door_11_trapdoor.png");
 	texIds.push_back("graphics/shading.png");
+	texIds.push_back("graphics/shading_1x2.png");
+	texIds.push_back("graphics/shading_2x1.png");
+	texIds.push_back("graphics/shading_2x2.png");
 	texIds.push_back("graphics/overlay_2.png");
 	texIds.push_back("graphics/effect_000_shopkeepers.png");
 	texIds.push_back("graphics/effect_002_bloodpoof_large1.png");
@@ -243,13 +248,6 @@ void SceneGame::Init()
 	for (auto &map : maps)
 		AddGameObject(map);
 
-	for (int i = 0; i < 1; i++)
-	{
-		shadings.push_back((SpriteGo *)AddGameObject(new SpriteGo("graphics/shading.png")));
-
-		shadings[i]->sortingLayer = SortingLayers::Background;
-		shadings[i]->sortingOrder = 20;
-	}
 	controls = (SpriteGo *)AddGameObject(new SpriteGo("graphics/controls.png"));
 	controls->sortingLayer = SortingLayers::Background;
 	controls->sortingOrder = 5;
@@ -267,6 +265,14 @@ void SceneGame::Init()
 	FPS->sortingLayer = SortingLayers::UI;
 	FPS->sortingOrder = 50;
 
+	clearDoor = (SpriteGo*)AddGameObject(new SpriteGo("graphics/door_11_trapdoor.png", "bosscleardoor"));
+	clearDoor->sortingLayer = SortingLayers::Foreground;
+	clearDoor->sortingOrder = 1;
+
+	clearAltar = (ItemAltar*)AddGameObject(new ItemAltar("graphics/additionals/levelitem_001_itemaltar.png", "clearaltar"));
+	clearAltar->sortingLayer = SortingLayers::Foreground;
+	clearAltar->sortingOrder = 1;
+
 	Scene::Init();
 }
 
@@ -279,16 +285,18 @@ void SceneGame::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(center);
 
+	mapUI->SetPlayerXIndex(stageStartX);
+	mapUI->SetPlayerYIndex(stageStartY);
+	mapUI->SetMapIndex(mapIndex);
+	mapUI->SetMapType(mapTypes);
+
 	Scene::Enter();
 
-	mapUI->SetScale({2.f, 2.f});
+	mapUI->SetScale({2.2f, 2.2f});
 	itemUI->SetScale({2.f, 2.f});
 	heartUI->SetScale({2.f, 2.f});
 
-	mapUI->SetMapIndex(mapIndex);
 	mapUI->SetPosition({uiView.getSize().x - 110.f, 100.f});
-	mapUI->SetPlayerXIndex(stageStartX);
-	mapUI->SetPlayerYIndex(stageStartY);
 
 	currentMapSize = smallMapSize = maps[0]->GetMapSize();
 
@@ -296,6 +304,7 @@ void SceneGame::Enter()
 	mapOffset = sf::Vector2f(currentMapSize.left, currentMapSize.top) * -1.f;
 
 	MapMaking::SetMapConnection(maps);
+	mapUI->SetMaps(maps);
 
 	worldView.setSize({currentMapSize.getSize().x * 1.1f, currentMapSize.getSize().y});
 	worldView.setCenter(maps[0]->GetPosition() + currentMapSize.getSize() * 0.5f);
@@ -303,12 +312,6 @@ void SceneGame::Enter()
 
 	beforeIndex = 0;
 
-	for (auto shading : shadings)
-	{
-		shading->SetScale({2.f, 2.f});
-		shading->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/shading.png").getSize()) * 0.5f);
-		shading->SetPosition(worldView.getCenter());
-	}
 	controls->SetScale({2.f, 2.f});
 	controls->SetOrigin(sf::Vector2f(TEXTURE_MGR.Get("graphics/controls.png").getSize()) * 0.5f);
 	controls->SetPosition(worldView.getCenter());
@@ -316,6 +319,18 @@ void SceneGame::Enter()
 	skillUI->SetPosition({60.f, 60.f});
 
 	FPS->SetPosition({150.f, 50.f});
+
+	clearDoor->GetSprite().setTextureRect(clearDoorclosedrect);
+	clearDoor->SetOrigin(Origins::MC);
+	clearDoor->SetScale({ 2.f,2.f });
+	clearDoor->SetActive(false);
+
+	clearAltar->GetSprite().setTextureRect({2,5,27,23});
+	clearAltar->SetOrigin(Origins::TL);
+	clearAltar->SetScale({ 2.f,2.f });
+	clearAltar->SetActive(false);
+
+	currentMapIndex = 0;
 }
 
 void SceneGame::Update(float dt)
@@ -336,6 +351,7 @@ void SceneGame::Update(float dt)
 		maps[currentMapIndex]->SetActiveAll(true);
 		maps[currentMapIndex]->DeleteEnemyAlreadyDead();
 		maps[currentMapIndex]->DeleteItemAlreadyGet();
+		mapUI->Update(dt);
 		if (isMapChanging)
 		{
 			worldView.setCenter(Utils::Lerp(worldView.getCenter(), nextMapViewStart, dt * 15));
@@ -458,7 +474,29 @@ void SceneGame::Update(float dt)
 				break;
 			}
 		}
+
+		if (currentMap->GetType() == MapType::Boss && currentMap->CheckAllEnemyDead())
+		{
+			isBossClear = true;
+			clearDoor->SetActive(true);
+			clearDoor->SetPosition(worldView.getCenter() + sf::Vector2f(0, -100.f));	
+		}
 	}
+
+	if (isBossClear)
+	{
+		doorOpenTime += dt;
+		if (doorOpenTime >= doorOpenTimeMax)
+		{
+			clearDoor->GetSprite().setTextureRect(clearDooropenrect);
+			clearAltar->SetActive(true);
+			clearAltar->SetPosition(worldView.getCenter() + sf::Vector2f(0, 100.f) - clearAltar->GetSprite().getLocalBounds().getSize() * 0.5f);
+			isCanGoNext = true;
+		}
+	}
+
+	if (isCanGoNext && Utils::CheckCollision(isaac->GetBodySprite(), clearDoor->GetSprite()))
+		GoNextMap();
 
 #ifdef DEF_DEV
 	if (InputMgr::GetKeyDown(sf::Keyboard::M))
@@ -596,8 +634,11 @@ void SceneGame::GoNextMap()
 	itemUI->Release();
 	heartUI->Release();
 	skillUI->Release();
-	if(skill)
-		skill->Release();
+
+	SOUND_MGR.StopAllSfx();
+	SOUND_MGR.StopBgm();
+
+	isCanGoNext = false;
 
 	SCENE_MGR.ChangeScene(SceneIds::Stage);
 }

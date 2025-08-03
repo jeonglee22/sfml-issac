@@ -15,6 +15,7 @@ class HeartUI;
 class SkillUI;
 class Skill;
 class TextGo;
+class ItemAltar;
 
 class SceneGame : public Scene
 {
@@ -40,7 +41,7 @@ protected:
 	sf::FloatRect currentMapSize;
 	sf::FloatRect smallMapSize;
 
-	std::vector<SpriteGo *> shadings;
+	SpriteGo * shadings;
 	SpriteGo *overlay;
 	SpriteGo *controls;
 
@@ -48,7 +49,6 @@ protected:
 	ItemUI *itemUI;
 	HeartUI *heartUI;
 	SkillUI *skillUI;
-	Skill *skill;
 
 	int currentMapIndex = 0;
 
@@ -61,6 +61,16 @@ protected:
 
 	float checkTimeMax = 0.3f;
 	float checkTime = 0;
+
+	SpriteGo* clearDoor;
+	ItemAltar* clearAltar;
+	sf::IntRect clearDoorclosedrect = { 16,80,32,32 };
+	sf::IntRect clearDooropenrect = {16,16,32,32};
+	bool isBossClear = false;
+	float doorOpenTimeMax = 1.f;
+	float doorOpenTime = 0.f;
+
+	bool isCanGoNext = false;
 
 public:
 	SceneGame();
@@ -85,10 +95,13 @@ public:
 	SkillUI* GetSkillUI() { return skillUI; }
 
 	int GetMapIndex(int xPos, int yPos) { return mapIndex[yPos][xPos]; }
+	int GetCurrentXIndex() const { return currentXIndex; }
+	int GetCurrentYIndex() const { return currentYIndex; }
 	std::vector<MapType> GetMapTypes() { return mapTypes; }
 	sf::FloatRect GetSmallMapSize() { return smallMapSize; }
 	Map* GetCurrentMap() { return maps[currentMapIndex]; }
 	Map* GetMap(int index) { return maps[index]; }
+	MapUI* GetMapUI() { return mapUI; }
 
 	std::vector<int> GetNeighboorMapIndex(int x, int y);
 	sf::Vector2i GetNeighboorMapIndexInRectangleMap(int x, int y);

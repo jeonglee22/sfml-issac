@@ -1,9 +1,10 @@
-    #include "stdafx.h"
+#include "stdafx.h"
 #include "Bomb.h"
 #include "SceneGame.h"
 #include "Monster.h"
 #include "SpriteGo.h"
 #include "Door.h"
+#include "MapUI.h"
 #include "Map.h"
 
 Bomb::Bomb(const std::string& name)
@@ -164,7 +165,9 @@ void Bomb::Explosion()
                 door->SetDoorHidden(false);
                 door->SetMapCleared(true);
                 sf::Vector2f doorDirection = door->GetDoorDirection();
-                int mapIndex = scene->GetMapIndex(scene->GetCurrentMap()->GetStageXIndex() + doorDirection.x, scene->GetCurrentMap()->GetStageYIndex() + doorDirection.y);
+                int mapIndex = scene->GetMapIndex(scene->GetCurrentXIndex() + doorDirection.x, scene->GetCurrentYIndex() + doorDirection.y);
+                MapUI* mapUI = scene->GetMapUI();
+                mapUI->SetMapStatus(scene->GetCurrentYIndex() + doorDirection.y, scene->GetCurrentXIndex() + doorDirection.x, 1);
                 SetHiddenNeighboorDoorOpen(scene->GetMap(mapIndex), doorDirection * -1.f);
             }
         }
@@ -175,7 +178,7 @@ void Bomb::SetHiddenNeighboorDoorOpen(Map* hiddenMap, sf::Vector2f doorDir)
 {
     std::vector<Door*> doors = hiddenMap->GetDoor();
 
-    for (auto door : doors)
+    for (auto& door : doors)
     {
         if (door->GetDoorDirection() == doorDir)
         {

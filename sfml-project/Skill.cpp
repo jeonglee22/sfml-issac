@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Skill.h"
+#include "SpriteGo.h"
 
 Skill::Skill(const std::string& textureId, const std::string& name)
 	: texId(textureId), GameObject(name)
@@ -60,6 +61,7 @@ void Skill::Update(float dt)
 		isUseSkill = true;
 		skillFunc();
 		currentCoolTime = 0;
+		//effectBody->SetActive(true);
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Z))
 	{
@@ -73,6 +75,7 @@ void Skill::Update(float dt)
 		{
 			skillActionTime = 0.f;
 			isUseSkill = false;
+			//effectBody->SetActive(false);
 		}
 	}
 }
@@ -81,14 +84,15 @@ void Skill::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
 
-	if(isUseSkill)
+	if(isUseSkill && effectBody)
 	{
-		window.draw(effectBody);
+		effectBody->Draw(window);
 	}
 }
 
 void Skill::SetEffectBody()
 {
 	TEXTURE_MGR.Load(effectId);
-	effectBody.setTexture(TEXTURE_MGR.Get(effectId));
+	effectBody = new SpriteGo(effectId);
+	effectBody->Reset();
 }

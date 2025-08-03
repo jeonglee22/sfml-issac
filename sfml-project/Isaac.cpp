@@ -159,7 +159,6 @@ void Isaac::Reset()
 
 	shootTimer = 0.0f;
 	wasKeyPressed = false;
-	currentHP = inventory.heartCount;
 
 	isGettingItem = false;
 	itemAnimationTime = 0.0f;

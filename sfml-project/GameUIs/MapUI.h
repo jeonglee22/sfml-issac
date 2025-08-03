@@ -1,7 +1,20 @@
 #pragma once
 #include "GameObject.h"
+
+class Map;
+
 class MapUI : public GameObject
 {
+public:
+	enum class Status
+	{
+		None = 0,
+		Dark,
+		Clear,
+		Current,
+		
+	};
+
 protected:
 	sf::Sprite body;
 	std::string texId;
@@ -15,8 +28,9 @@ protected:
 	sf::Vector2f oneRoomSize;
 
 	int mapIndex[11][11] = {};
-	std::string mapType[11][11] = {};
-	bool mapCleared[11][11] = {false};
+	std::vector<MapType> mapType;
+	std::vector<Map*> maps;
+	Status mapStatus[11][11];
 
 	int playerXIndex = 7;
 	int beforePlayerXIndex = -1;
@@ -40,13 +54,24 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 	void DrawPlates(sf::RenderWindow& window);
 	void DrawRooms(sf::RenderWindow& window);
+	void DrawIcons(sf::RenderWindow& window);
 
 	void SetMapIndex(int index[][11]);
-	void SetMapType(int index[][11]);
-	void SetMapCleared(bool b, int x, int y) { mapCleared[x][y] = b; }
+	void SetMapType(std::vector<MapType> types) { mapType = types; }
+	void SetMaps(std::vector<Map*> maps) { this->maps = maps; }
 	void SetPlayerXIndex(int x) { playerXIndex = x; }
 	void SetPlayerYIndex(int y) { playerYIndex = y; }
+	void SetMapStatus(int x, int y, int status) { mapStatus[x][y] = (Status)status; }
 
 	void LoadMapUITextures();
+	std::string MatchTypeIcon(MapType ty);
+
+	void ChangeBeforeRoomClear(int x, int y);
+	void ChangeCurrentRoomVisit(int x, int y);
+
+	void SetRoomStatus(int x, int y, MapType ty, Status status);
+	void SetLargeRoomStatus(int x, int y, Status status);
+	void SetRowRoomStatus(int x, int y, Status status);
+	void SetColumnRoomStatus(int x, int y, Status status);
 };
 

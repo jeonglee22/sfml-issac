@@ -1,13 +1,15 @@
 #pragma once
 #include "GameObject.h"
 
+class SpriteGo;
+
 class Skill : public GameObject
 {
 protected:
 	sf::Sprite body;
 	std::string texId;
 
-	sf::Sprite effectBody;
+	SpriteGo* effectBody;
 	std::string effectId;
 
 	int skillCoolTime = 0;
@@ -42,7 +44,7 @@ public:
 	void SetEffectId(const std::string& str) { effectId = str; }
 	std::string GetEffectId() const { return effectId; }
 	void SetEffectBody();
-	sf::Sprite& GetEffectBody() { return effectBody; }
+	SpriteGo* GetEffectBody() { return effectBody; }
 	int GetCurrentCooltime() const { return currentCoolTime; }
 	void AddSkillCooltime() { currentCoolTime = Utils::Clamp(++currentCoolTime, 0, skillCoolTime); }
 	void SetSkillFunc(const std::function<void()>& func) { skillFunc = func; }
