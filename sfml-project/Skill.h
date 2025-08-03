@@ -12,6 +12,9 @@ protected:
 	SpriteGo* effectBody;
 	std::string effectId;
 
+	std::string skillExplain;
+	std::string skillName;
+
 	int skillCoolTime = 0;
 	int currentCoolTime = 0;
 
@@ -41,13 +44,23 @@ public:
 
 	void SetTotalSkillCooltime(int c) { skillCoolTime = c; currentCoolTime = c; }
 	int GetTotalSkillCooltime() const { return skillCoolTime; }
+
 	void SetEffectId(const std::string& str) { effectId = str; }
 	std::string GetEffectId() const { return effectId; }
+
 	void SetEffectBody();
 	SpriteGo* GetEffectBody() { return effectBody; }
+
 	int GetCurrentCooltime() const { return currentCoolTime; }
 	void AddSkillCooltime() { currentCoolTime = Utils::Clamp(++currentCoolTime, 0, skillCoolTime); }
+
 	void SetSkillFunc(const std::function<void()>& func) { skillFunc = func; }
+
+	void SetSkillName(const std::string& str) { skillName = str; }
+	void SetSkillExplain(const std::string& str) { skillExplain = str; }
+	std::string GetSkillName() { return skillName; }
+	std::string GetSkillExplain() { return skillExplain; }
+
 	void SetSkillPassive(bool b) { isPassive = b; }
 	bool GetSkillPassive() { return isPassive; }
 	std::string GetTextId() const { return texId; };

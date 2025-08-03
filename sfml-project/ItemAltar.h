@@ -5,6 +5,7 @@ class Isaac;
 class Skill;
 class SkillUI;
 class SkillBible;
+class SceneGame;
 
 class ItemAltar : public Obstacles
 {
@@ -14,6 +15,8 @@ protected:
 	Skill* skill = nullptr;
 	SkillUI* skillUI = nullptr;
 	SkillBible* bible = nullptr;
+
+	SceneGame* sceneGame = nullptr;
 	
 	float getSkillTime = 0.0f;
 	float getSkillMaxTime = 1.0f;

@@ -17,7 +17,9 @@
 #include "MapUI.h"
 #include "ItemUI.h"
 #include "HeartUI.h"
+#include "ExplainUI.h"
 #include "SkillUI.h"
+#include "PauseUI.h"
 #include "Skill.h"
 #include "MapMaking.h"
 #include "TextGo.h"
@@ -70,6 +72,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/effects/effect_017_bombradius.png");
 	texIds.push_back("graphics/effects/effect_023_starflash.png");
 	texIds.push_back("graphics/additionals/grid_poop.png");
+	texIds.push_back("graphics/giantbook_001_necronomicon.png");
 	texIds.push_back("graphics/monster_044_hopperleaper.png");
 	texIds.push_back("graphics/monster_000_bodies02.png");
 	texIds.push_back("graphics/enemies/monster_029_horf.png");
@@ -97,10 +100,16 @@ void SceneGame::Init()
 	texIds.push_back("graphics/ui_hearts.png");
 	texIds.push_back("graphics/controls.png");
 	texIds.push_back("graphics/ui_chargebar.png");
+	texIds.push_back("graphics/effect_024_streak.png");
+	texIds.push_back("graphics/pausescreen.png");
+
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
+	fontIds.push_back("fonts/upheavtt.ttf");
+	fontIds.push_back("fonts/pf_tempesta_seven_condensed.ttf");
+	fontIds.push_back("fonts/pf_tempesta_seven_condensed_bold.ttf");
 
 	soundIds.push_back("sounds/splatter 2.wav");
 	soundIds.push_back("sounds/tear fire 4.wav");
@@ -263,14 +272,6 @@ void SceneGame::Init()
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
-	sf::Vector2i startPos = MapMaking::MapRandomMaking(10, mapIndex, mapTypes);
-	stageStartX = currentXIndex = startPos.x;
-	stageStartY = currentYIndex = startPos.y;
-
-	maps = MapMaking::SetMapInfo(mapIndex, 11, mapTypes);
-	for (auto &map : maps)
-		AddGameObject(map);
-
 	controls = (SpriteGo *)AddGameObject(new SpriteGo("graphics/controls.png"));
 	controls->sortingLayer = SortingLayers::Background;
 	controls->sortingOrder = 5;
@@ -296,6 +297,9 @@ void SceneGame::Init()
 	clearAltar->sortingLayer = SortingLayers::Foreground;
 	clearAltar->sortingOrder = 1;
 
+	explainUI = (ExplainUI*)AddGameObject(new ExplainUI("graphics/effect_024_streak.png", "explainUI"));
+	pauseUI = (PauseUI*)AddGameObject(new PauseUI("graphics/pausescreen.png", "pauseUI"));
+
 	Scene::Init();
 }
 
@@ -307,6 +311,14 @@ void SceneGame::Enter()
 	sf::Vector2f center{size.x * 0.5f, size.y * 0.5f};
 	uiView.setSize(size);
 	uiView.setCenter(center);
+
+	sf::Vector2i startPos = MapMaking::MapRandomMaking(10, mapIndex, mapTypes);
+	stageStartX = currentXIndex = startPos.x;
+	stageStartY = currentYIndex = startPos.y;
+
+	maps = MapMaking::SetMapInfo(mapIndex, 11, mapTypes);
+	for (auto& map : maps)
+		AddGameObject(map);
 
 	mapUI->SetPlayerXIndex(stageStartX);
 	mapUI->SetPlayerYIndex(stageStartY);
@@ -340,6 +352,7 @@ void SceneGame::Enter()
 	controls->SetPosition(worldView.getCenter());
 
 	skillUI->SetPosition({60.f, 60.f});
+	explainUI->SetPosition({ uiView.getCenter().x - smallMapSize.width, 100.f});
 
 	FPS->SetPosition({150.f, 50.f});
 
@@ -363,6 +376,7 @@ void SceneGame::Update(float dt)
 	SOUND_MGR.SetSfxVolume(100);
 	SOUND_MGR.SetBgmVolume(60);
 
+#ifdef DEF_DEV
 	FPSTime += dt;
 	frameCount++;
 	if (FPSTime >= 1.f)
@@ -371,6 +385,7 @@ void SceneGame::Update(float dt)
 		FPSTime = 0.f;
 		frameCount = 0.f;
 	}
+#endif // DEF_DEV
 
 	if (beforeIndex != currentMapIndex)
 	{
@@ -467,11 +482,6 @@ void SceneGame::Update(float dt)
 			}
 		}
 
-		if (InputMgr::GetKeyDown(sf::Keyboard::P))
-		{
-			maps[currentMapIndex]->SetCleared(!maps[currentMapIndex]->GetCleared());
-		}
-
 		Map *currentMap = maps[currentMapIndex];
 		beforeIndex = currentMapIndex;
 		std::vector<Door *> doors = currentMap->GetDoor();
@@ -509,7 +519,7 @@ void SceneGame::Update(float dt)
 		}
 	}
 
-	if (isBossClear)
+	if (isBossClear && !isClearAlterPossed)
 	{
 		doorOpenTime += dt;
 		if (doorOpenTime >= doorOpenTimeMax)
@@ -518,11 +528,38 @@ void SceneGame::Update(float dt)
 			clearAltar->SetActive(true);
 			clearAltar->SetPosition(worldView.getCenter() + sf::Vector2f(0, 100.f) - clearAltar->GetSprite().getLocalBounds().getSize() * 0.5f);
 			isCanGoNext = true;
+			isClearAlterPossed = true;
 		}
 	}
 
 	if (isCanGoNext && Utils::CheckCollision(isaac->GetBodySprite(), clearDoor->GetSprite()))
 		GoNextMap();
+
+	if(!finishStageShow)
+	{
+		shownDelay += dt;
+		if (shownDelay >= shownDelayMax && !stageEnter)
+		{
+			stageEnter = true;
+			explainUI->SetActive(true);
+			explainUI->SetActiveExplain(false);
+			explainUI->SetComment("Basement " + std::to_string(stageIndex));
+			explainUI->SetPosition({ uiView.getCenter().x - smallMapSize.width, 100.f });
+		}
+		if (stageEnter)
+		{
+			ExplainUIMove(dt);
+		}
+	}
+
+	if (isGetSkill)
+	{
+		ShowSkillExplainUI(dt);
+		if (!explainUI->GetActive())
+		{
+			isGetSkill = false;
+		}
+	}
 
 #ifdef DEF_DEV
 	if (InputMgr::GetKeyDown(sf::Keyboard::M))
@@ -530,6 +567,34 @@ void SceneGame::Update(float dt)
 		GoNextMap();
 	}
 #endif // DEF_DEV
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+	{
+		isStop = !isStop;
+		if (isStop)
+		{
+			FRAMEWORK.SetTimeScale(0.f);
+			pauseUI->SetActive(true);
+		}
+		else
+		{
+			FRAMEWORK.SetTimeScale(1.f);
+			pauseUI->SetActive(false);
+		}
+		std::cout << isStop << std::endl;
+	}
+
+	if (isStop)
+	{
+		bool restart = pauseUI->GetIsRestart();
+		if (restart)
+		{
+			ResetStage();
+			SCENE_MGR.ChangeScene(SceneIds::Start);
+			pauseUI->SetIsRestart(false);
+			pauseUI->SetActive(false);		
+		}
+	}
 }
 
 void SceneGame::Draw(sf::RenderWindow &window)
@@ -644,27 +709,92 @@ void SceneGame::SetItemUICount()
 
 void SceneGame::GoNextMap()
 {
-	sf::Vector2i startPos = MapMaking::MapRandomMaking(10, mapIndex, mapTypes);
-	stageStartX = currentXIndex = startPos.x;
-	stageStartY = currentYIndex = startPos.y;
-
 	for (auto& map : maps)
 		RemoveGameObject(map);
 	maps.clear();
-
-	maps = MapMaking::SetMapInfo(mapIndex, 11, mapTypes);
-	for (auto& map : maps)
-		AddGameObject(map);
 
 	mapUI->Release();
 	itemUI->Release();
 	heartUI->Release();
 	skillUI->Release();
 
+	isCanGoNext = false;
+	stageIndex++;
+	shownDelay = 0.f;
+	explainUIShowTime = 0.f;
+	finishShow = false;
+	finishStageShow = false;
+	stageEnter = false;
+	isStageMoving = true;
+	isBossClear = false;
+	isClearAlterPossed = false;
+
 	SOUND_MGR.StopAllSfx();
 	SOUND_MGR.StopBgm();
+	SCENE_MGR.ChangeScene(SceneIds::Stage);
+}
+
+void SceneGame::ResetStage()
+{
+	for (auto& map : maps)
+		RemoveGameObject(map);
+	maps.clear();
+
+	mapUI->Release();
+	itemUI->Release();
+	heartUI->Release();
+	skillUI->Release();
+	isaac->Release();
+	isaac->SetIsaacInitStat();
+
+	Tears::SetTearColor(sf::Color::White);
+	Tears::SetTearRangeInit();
 
 	isCanGoNext = false;
+	stageIndex = 1;
+	shownDelay = 0.f;
+	explainUIShowTime = 0.f;
+	finishShow = false;
+	finishStageShow = false;
+	stageEnter = false;
+	isStageMoving = true;
+	isBossClear = false;
+	isClearAlterPossed = false;
 
-	SCENE_MGR.ChangeScene(SceneIds::Stage);
+	SOUND_MGR.StopAllSfx();
+	SOUND_MGR.StopBgm();
+}
+
+void SceneGame::ExplainUIMove(float dt)
+{
+	float uiViewX = uiView.getCenter().x;
+	explainUI->SetPosition(explainUI->GetPosition() + sf::Vector2f(1.f, 0.f) * dt * 1800.f);
+
+	float explainX = explainUI->GetPosition().x;
+	if ((explainX >= uiViewX) && !finishShow)
+	{
+		explainUI->SetPosition({ uiViewX, explainUI->GetPosition().y });
+		explainUIShowTime += dt;
+		if (explainUIShowTime > explainUIShowTimeMax)
+			finishShow = true;
+	}
+	if (explainUI->GetPosition().x >= uiViewX + smallMapSize.width * 1.f)
+	{
+		stageEnter = false;
+		explainUI->SetActive(false);
+		finishStageShow = true;
+	}
+}
+
+void SceneGame::ShowSkillExplainUI(float dt)
+{
+	if(!explainUI->GetActive() && isGetSkill)
+	{
+		explainUI->SetActive(true);
+		explainUI->SetActiveExplain(true);
+		explainUI->SetPosition({ uiView.getCenter().x - smallMapSize.width, 100.f });
+		explainUIShowTime = 0.f;
+		finishShow = false;
+	}
+	ExplainUIMove(dt);
 }

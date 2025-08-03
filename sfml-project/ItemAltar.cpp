@@ -3,6 +3,7 @@
 #include "SkillBible.h"
 #include "Skill.h"
 #include "SkillUI.h"
+#include "ExplainUI.h"
 #include "Isaac.h"
 #include "SceneGame.h"
 
@@ -56,7 +57,7 @@ void ItemAltar::Init()
 {
 	bible = new SkillBible();
 	bible->LoadJsonFile("graphics/items/items.json");
-	
+
 	Obstacles::Init();
 }
 
@@ -82,6 +83,7 @@ void ItemAltar::Reset()
 
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
 	{
+		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 		isaac = ((SceneGame*)SCENE_MGR.GetCurrentScene())->GetIsaac();
 		skillUI = ((SceneGame*)SCENE_MGR.GetCurrentScene())->GetSkillUI();
 	}
@@ -106,6 +108,11 @@ void ItemAltar::Update(float dt)
 
 	if (Utils::CheckCollision(isaac->GetHitBoxBody().rect, hitBox->rect) && IsGetSkill && changeCoolTime > changeCoolTimeMax)
 	{
+		ExplainUI* explainUI = sceneGame->GetExplainUI();
+		explainUI->SetComment(skill->GetSkillName());
+		explainUI->SetExplain(skill->GetSkillExplain());
+		sceneGame->SetIsGetSkill(true);
+
 		if (skill != nullptr)
 		{
 			isaac->DisplayItem(skill->GetTextId());

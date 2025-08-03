@@ -13,6 +13,8 @@ class MapUI;
 class ItemUI;
 class HeartUI;
 class SkillUI;
+class ExplainUI;
+class PauseUI;
 class Skill;
 class TextGo;
 class ItemAltar;
@@ -49,6 +51,8 @@ protected:
 	ItemUI *itemUI;
 	HeartUI *heartUI;
 	SkillUI *skillUI;
+	ExplainUI* explainUI;
+	PauseUI* pauseUI;
 
 	int currentMapIndex = 0;
 
@@ -67,10 +71,25 @@ protected:
 	sf::IntRect clearDoorclosedrect = { 16,80,32,32 };
 	sf::IntRect clearDooropenrect = {16,16,32,32};
 	bool isBossClear = false;
+	bool isClearAlterPossed = false;
 	float doorOpenTimeMax = 1.f;
 	float doorOpenTime = 0.f;
 
 	bool isCanGoNext = false;
+
+	int stageIndex = 1;
+	bool stageEnter = false;
+	bool isStageMoving = false;
+
+	float shownDelayMax = 1.f;
+	float shownDelay = 0.f;
+	float explainUIShowTimeMax = 1.f;
+	float explainUIShowTime = 0.f;
+	bool finishStageShow = false;
+	bool finishShow = false;
+
+	bool isGetSkill = false;
+	bool isStop = false;
 
 public:
 	SceneGame();
@@ -102,11 +121,19 @@ public:
 	Map* GetCurrentMap() { return maps[currentMapIndex]; }
 	Map* GetMap(int index) { return maps[index]; }
 	MapUI* GetMapUI() { return mapUI; }
+	ExplainUI* GetExplainUI() { return explainUI; }
+
+	bool GetGameStop() const { return isStop; }
+	void SetGameStop(bool b) { isStop = b; }
+
+	void SetIsGetSkill(bool b) { isGetSkill = b; }
+	bool GetIsGetSkill() const { return isGetSkill; }
 
 	std::vector<int> GetNeighboorMapIndex(int x, int y);
 	sf::Vector2i GetNeighboorMapIndexInRectangleMap(int x, int y);
 
 	sf::View GetWorldView() { return worldView; }
+	sf::View GetUiView() { return uiView; }
 
 	void AddSkillCooltimeAtClear();
 
@@ -117,4 +144,8 @@ public:
 	void SetItemUICount();
 
 	void GoNextMap();
+	void ResetStage();
+
+	void ExplainUIMove(float dt);
+	void ShowSkillExplainUI(float dt);
 };

@@ -73,6 +73,10 @@ void ItemUI::Release()
 	coinCountSprites.clear();
 	bombCountSprites.clear();
 	keyCountSprites.clear();
+
+	coinCount = 0;
+	bombCount = 0;
+	keyCount = 0;
 }
 
 void ItemUI::Reset()

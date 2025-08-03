@@ -52,6 +52,8 @@ void HeartUI::Init()
 void HeartUI::Release()
 {
 	hearts.clear();
+	maxHPCount = 6;
+	currentHPCount = 6;
 }
 
 void HeartUI::Reset()
