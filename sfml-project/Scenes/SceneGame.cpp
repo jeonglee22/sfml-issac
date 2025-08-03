@@ -20,6 +20,8 @@
 #include "ExplainUI.h"
 #include "SkillUI.h"
 #include "GameOverUI.h"
+#include "BossHealthUI.h"
+#include "BossMapEnterUI.h"
 #include "PauseUI.h"
 #include "Skill.h"
 #include "MapMaking.h"
@@ -107,6 +109,14 @@ void SceneGame::Init()
 	texIds.push_back("graphics/backselectwidget.png");
 	texIds.push_back("graphics/esc.png");
 	texIds.push_back("graphics/space.png");
+	texIds.push_back("graphics/ui_bosshealthbar.png");
+	texIds.push_back("graphics/bgblack.png");
+	texIds.push_back("graphics/vsnames.png");
+	texIds.push_back("graphics/playerportrait_01_isaac.png");
+	texIds.push_back("graphics/playerspot.png");
+	texIds.push_back("graphics/portrait_261.0_dingle.png");
+	texIds.push_back("graphics/portrait_20.0_monstro.png");
+	texIds.push_back("graphics/bossspot.png");
 
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
@@ -305,6 +315,8 @@ void SceneGame::Init()
 	explainUI = (ExplainUI*)AddGameObject(new ExplainUI("graphics/effect_024_streak.png", "explainUI"));
 	pauseUI = (PauseUI*)AddGameObject(new PauseUI("graphics/pausescreen.png", "pauseUI"));
 	gameoverUI = (GameOverUI*)AddGameObject(new GameOverUI("gameOverUI"));
+	bossHealthUI = (BossHealthUI*)AddGameObject(new BossHealthUI("bossHealthUI"));
+	bossEnterUI = (BossMapEnterUI*)AddGameObject(new BossMapEnterUI("bossEnterUI"));
 
 	Scene::Init();
 }
@@ -375,6 +387,7 @@ void SceneGame::Enter()
 	SOUND_MGR.PlayBgm(SOUNDBUFFER_MGR.Get("sounds/music/diptera sonata(basement).ogg"));
 
 	currentMapIndex = 0;
+	maploadingTime = 0.f;
 }
 
 void SceneGame::Update(float dt)
@@ -382,7 +395,23 @@ void SceneGame::Update(float dt)
 	SOUND_MGR.SetSfxVolume(100);
 	SOUND_MGR.SetBgmVolume(20);
 
+	maploadingTime += dt;
+	if (maploadingTime < maploadingTimeMax)
+		return;
+
 #ifdef DEF_DEV
+	if (InputMgr::GetKeyDown(sf::Keyboard::O))
+	{
+		std::vector<std::string> bossName = { "Dingle", "Monstro" };
+		std::string pickedBoss = bossName[Utils::RandomRange(0, 2)];
+		bossEnterUI->SetPickedBoss(pickedBoss);
+		bossEnterUI->SetActive(true);
+	}
+	if (InputMgr::GetKeyUp(sf::Keyboard::O))
+	{
+		bossEnterUI->SetActive(false);
+	}
+
 	FPSTime += dt;
 	frameCount++;
 	if (FPSTime >= 1.f)
@@ -522,6 +551,48 @@ void SceneGame::Update(float dt)
 			isBossClear = true;
 			clearDoor->SetActive(true);
 			clearDoor->SetPosition(worldView.getCenter() + sf::Vector2f(0, -100.f));	
+		}
+
+		if (currentMap->GetType() == MapType::Boss)
+		{
+			{
+				bossHealthUI->SetActive(true);
+				for (auto& monster : GetMonsters())
+				{
+					if (monster->GetName() == "Dingle" ||
+						monster->GetName() == "Monstro")
+					{
+						float currenthp = monster->GetCurrentHP();
+						float maxhp = monster->GetMaxHP();
+						float ratio = currenthp / maxhp;
+						int barpos = bossBarSize * ratio;
+						bossHealthUI->SetBarPos(barpos);
+					}
+				}
+			}
+		}
+	}
+
+	if (beforeIndex != -1 && maps[currentMapIndex]->GetType() == MapType::Boss &&
+		maps[beforeIndex]->GetType() == MapType::Boss && !isShownBoss)
+	{
+		for (auto& monster : GetMonsters())
+		{
+			if (monster->GetName() == "Dingle" ||
+				monster->GetName() == "Monstro")
+			{
+				bossEnterUI->SetPickedBoss(monster->GetName());
+			}
+		}
+		FRAMEWORK.SetTimeScale(0.f);
+		bossEnterUI->SetActive(true);
+
+		bossMapEnterShownTime += FRAMEWORK.GetRealDeltaTime();
+		if (bossMapEnterShownTime >= bossMapEnterShownTimeMax)
+		{
+			FRAMEWORK.SetTimeScale(1.f);
+			isShownBoss = true;
+			bossEnterUI->SetActive(false);
 		}
 	}
 

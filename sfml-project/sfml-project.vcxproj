@@ -143,6 +143,8 @@
     <ClCompile Include="AttackFly.cpp" />
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="GameUIs\BossMapEnterUI.cpp" />
+    <ClCompile Include="GameUIs\BossHealthUI.cpp" />
     <ClCompile Include="ChaseState.cpp" />
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Dingle.cpp" />
@@ -235,6 +237,8 @@
     <ClInclude Include="AttackFly.h" />
     <ClInclude Include="Body.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="GameUIs\BossMapEnterUI.h" />
+    <ClInclude Include="GameUIs\BossHealthUI.h" />
     <ClInclude Include="ChaseState.h" />
     <ClInclude Include="Chest.h" />
     <ClInclude Include="Dingle.h" />

@@ -35,7 +35,7 @@ struct Necronomicon
 		skill->SetTotalSkillCooltime(4);
 		skill->SetSkillExplain("Mass room damage");
 		skill->SetSkillName("The Necronomicon");
-		skill->SetEffectId("graphics/giantbook_001_necronomicon.png");
+		/*skill->SetEffectId("graphics/giantbook_001_necronomicon.png");
 		skill->SetEffectBody();
 		SpriteGo* body = skill->GetEffectBody();
 		if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
@@ -48,7 +48,7 @@ struct Necronomicon
 			body->sortingOrder = 10;
 			body->SetActive(false);
 			sceneGame->AddGameObject(body);
-		}
+		}*/
 
 		return skill;
 	};
