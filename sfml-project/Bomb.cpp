@@ -129,6 +129,8 @@ void Bomb::Draw(sf::RenderWindow& window)
 
 void Bomb::Explosion()
 {
+    sf::Vector2f explosionCenter = sf::Vector2f(position.x - 30.f, position.y - 60.0f);
+
     SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
     if (scene)
     {
@@ -137,10 +139,9 @@ void Bomb::Explosion()
             if (!monster->GetActive() || monster->IsDead())
                 continue;
 
-            float dist = Utils::Distance(position, monster->GetPosition());
+            float dist = Utils::Distance(explosionCenter, monster->GetPosition());
             if (dist <= explosionDistance)
             {
-                SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/boss explosions 0.wav"));
                 monster->TakeDamage(60);
             }
         }
@@ -149,7 +150,7 @@ void Bomb::Explosion()
         {
             if (obj->GetName() == "rocks_basement" || obj->GetName() == "rocks_cracked")
             {
-                float dist = Utils::Distance(position, obj->GetPosition());
+                float dist = Utils::Distance(explosionCenter, obj->GetPosition());
                 if (dist <= explosionDistance)
                 {
                     obj->SetActive(false);
@@ -159,7 +160,7 @@ void Bomb::Explosion()
 
         for (auto& door : scene->GetMapDoor())
         {
-            float dist = Utils::Distance(position, door->GetPosition());
+            float dist = Utils::Distance(explosionCenter, door->GetPosition());
             bool currentMapCleared = scene->GetCurrentMap()->GetCleared();
             if (door->GetDoorType() == MapType::Hidden && dist <= explosionDistance && currentMapCleared && door->GetDoorHidden())
             {

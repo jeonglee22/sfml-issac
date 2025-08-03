@@ -16,9 +16,8 @@ void Spider::Reset()
 
     SetHP(130);
     SetSpeed(300.0f);
-    SetDetectionRange(150.0f);
+    SetDetectionRange(200.0f);
     SetSkillCooldown(3.0f);
-
 
     animator.Play("animations/spider_patrol.csv");
     SetScale({ 2.0f, 2.0f });

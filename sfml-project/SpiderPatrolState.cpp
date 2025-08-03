@@ -55,7 +55,7 @@ void SpiderPatrolState::Update(Monster* monster, float dt)
     float squaredDetectionRange = detectionRange * detectionRange;
 
     sf::Vector2f diff = monster->GetPosition() - monster->GetPlayerPosition();
-    float squaredDistance = diff.x * diff.y + diff.y * diff.y;
+    float squaredDistance = diff.x * diff.x + diff.y * diff.y;
 
     if (squaredDistance < squaredDetectionRange && monster->CanUseSkill())
     {
