@@ -20,7 +20,6 @@ void MulliganDeathState::Enter(Monster* monster)
 
     monster->SetVelocity(sf::Vector2f(0, 0));
     monster->GetAnimator().Play("animations/mulligan_dead.csv");
-    std::cout << "멀리건 데드애니메이션 엔터!" << std::endl;
 }
 
 void MulliganDeathState::Update(Monster* monster, float dt)

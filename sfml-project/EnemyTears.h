@@ -38,6 +38,7 @@ public:
     void Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d, float range = 200.0f);
     void Hit();
     void StartCrush();
+    sf::Sprite& GetSprite() { return sprite; }
 
     sf::FloatRect GetBounds() const { return sprite.getGlobalBounds(); }
     int GetDamage() const { return damage; }

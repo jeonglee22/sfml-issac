@@ -74,10 +74,10 @@ void Dingle::FireTear(const sf::Vector2f& direction)
     }
 
     EnemyTear->Reset();
-
     sf::Vector2f firePosition = position;
 
     EnemyTear->Fire(firePosition, direction, tearsSpeed, tearsDamage, 1000.f);
+    EnemyTear->SetColor();
     EnemyTearsList.push_back(EnemyTear);
 
     scene->AddGameObject(EnemyTear);
