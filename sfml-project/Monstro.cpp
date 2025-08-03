@@ -67,6 +67,7 @@ void Monstro::Update(float dt)
 {
     if (isReallyDead)
     {
+        SetActive(false);
         return;
     }
 
