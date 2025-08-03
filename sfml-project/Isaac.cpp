@@ -81,17 +81,6 @@ void Isaac::SetOrigin(const sf::Vector2f &newOrigin)
 
 void Isaac::Init()
 {
-	headAnimator.SetTarget(&head);
-	bodyAnimator.SetTarget(&body);
-	itemEffectAnimator.SetTarget(&itemEffectSprite);
-
-	additionalLayers.resize(5);
-	for (int i = 0; i < additionalLayers.size(); ++i)
-	{
-		additionalLayers[i].animator.SetTarget(&additionalLayers[i].sprite);
-	}
-
-	SetupAdditionalAnimations();
 }
 
 void Isaac::Release()
@@ -104,8 +93,10 @@ void Isaac::Release()
 	additionalAnimations.clear();
 
 	headAnimation.clear();
+	headAnimator.Stop();
 	headTearsAnimation.clear();
 	bodyAnimation.clear();
+	bodyAnimator.Stop();
 	additonalsAnimation.clear();
 
 	tearsList.clear();
@@ -122,12 +113,25 @@ void Isaac::Release()
 
 	maxHP = 6;
 	currentHP = 6;
+	isDead = false;
 
 	passiveSkill.clear();
 }
 
 void Isaac::Reset()
 {
+	headAnimator.SetTarget(&head);
+	bodyAnimator.SetTarget(&body);
+	itemEffectAnimator.SetTarget(&itemEffectSprite);
+
+	additionalLayers.resize(5);
+	for (int i = 0; i < additionalLayers.size(); ++i)
+	{
+		additionalLayers[i].animator.SetTarget(&additionalLayers[i].sprite);
+	}
+
+	SetupAdditionalAnimations();
+
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Dev2)
 	{
 		sceneGame = nullptr;

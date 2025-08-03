@@ -18,6 +18,7 @@ class PauseUI;
 class Skill;
 class TextGo;
 class ItemAltar;
+class GameOverUI;
 
 class SceneGame : public Scene
 {
@@ -53,6 +54,7 @@ protected:
 	SkillUI *skillUI;
 	ExplainUI* explainUI;
 	PauseUI* pauseUI;
+	GameOverUI* gameoverUI;
 
 	int currentMapIndex = 0;
 

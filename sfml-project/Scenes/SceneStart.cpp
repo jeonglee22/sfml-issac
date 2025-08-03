@@ -98,6 +98,11 @@ void SceneStart::Update(float dt)
 		rotationTime = 0.f;
 	}
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+	{
+		FRAMEWORK.GetWindow().close();
+	}
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space) || InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
 		sceneChanging = true;

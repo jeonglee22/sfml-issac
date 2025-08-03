@@ -19,6 +19,7 @@
 #include "HeartUI.h"
 #include "ExplainUI.h"
 #include "SkillUI.h"
+#include "GameOverUI.h"
 #include "PauseUI.h"
 #include "Skill.h"
 #include "MapMaking.h"
@@ -102,6 +103,10 @@ void SceneGame::Init()
 	texIds.push_back("graphics/ui_chargebar.png");
 	texIds.push_back("graphics/effect_024_streak.png");
 	texIds.push_back("graphics/pausescreen.png");
+	texIds.push_back("graphics/death portraits.png");
+	texIds.push_back("graphics/backselectwidget.png");
+	texIds.push_back("graphics/esc.png");
+	texIds.push_back("graphics/space.png");
 
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
@@ -299,6 +304,7 @@ void SceneGame::Init()
 
 	explainUI = (ExplainUI*)AddGameObject(new ExplainUI("graphics/effect_024_streak.png", "explainUI"));
 	pauseUI = (PauseUI*)AddGameObject(new PauseUI("graphics/pausescreen.png", "pauseUI"));
+	gameoverUI = (GameOverUI*)AddGameObject(new GameOverUI("gameOverUI"));
 
 	Scene::Init();
 }
@@ -374,7 +380,7 @@ void SceneGame::Enter()
 void SceneGame::Update(float dt)
 {
 	SOUND_MGR.SetSfxVolume(100);
-	SOUND_MGR.SetBgmVolume(60);
+	SOUND_MGR.SetBgmVolume(20);
 
 #ifdef DEF_DEV
 	FPSTime += dt;
@@ -567,32 +573,55 @@ void SceneGame::Update(float dt)
 		GoNextMap();
 	}
 #endif // DEF_DEV
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+	if (isaac->GetDead())
 	{
-		isStop = !isStop;
-		if (isStop)
-		{
-			FRAMEWORK.SetTimeScale(0.f);
-			pauseUI->SetActive(true);
-		}
-		else
-		{
-			FRAMEWORK.SetTimeScale(1.f);
-			pauseUI->SetActive(false);
-		}
-		std::cout << isStop << std::endl;
-	}
-
-	if (isStop)
-	{
-		bool restart = pauseUI->GetIsRestart();
-		if (restart)
+		SOUND_MGR.StopAllSfx();
+		gameoverUI->SetActive(true);
+		FRAMEWORK.SetTimeScale(0.f);
+		if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
 		{
 			ResetStage();
 			SCENE_MGR.ChangeScene(SceneIds::Start);
-			pauseUI->SetIsRestart(false);
-			pauseUI->SetActive(false);		
+			gameoverUI->SetActive(false);
+			FRAMEWORK.SetTimeScale(1.f);
+		}
+		else if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+		{
+			ResetStage();
+			SCENE_MGR.ChangeScene(SceneIds::Stage);
+			gameoverUI->SetActive(false);
+			FRAMEWORK.SetTimeScale(1.f);
+		}
+
+	}
+	else
+	{
+		if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+		{
+			isStop = !isStop;
+			if (isStop)
+			{
+				FRAMEWORK.SetTimeScale(0.f);
+				pauseUI->SetActive(true);
+			}
+			else
+			{
+				FRAMEWORK.SetTimeScale(1.f);
+				pauseUI->SetActive(false);
+			}
+			std::cout << isStop << std::endl;
+		}
+
+		if (isStop)
+		{
+			bool restart = pauseUI->GetIsRestart();
+			if (restart)
+			{
+				ResetStage();
+				SCENE_MGR.ChangeScene(SceneIds::Start);
+				pauseUI->SetIsRestart(false);
+				pauseUI->SetActive(false);
+			}
 		}
 	}
 }
