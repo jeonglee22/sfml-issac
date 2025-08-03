@@ -29,6 +29,8 @@ void SpiderJumpState::Enter(Monster* monster)
 
     monster->GetAnimator().Play("animations/spider_jump.csv");
     monster->SetVelocity(jumpVelocity);
+
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/spider spit roar 1.wav"));
 }
 
 void SpiderJumpState::Update(Monster* monster, float dt)

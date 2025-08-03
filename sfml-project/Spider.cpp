@@ -16,7 +16,7 @@ void Spider::Reset()
 
     SetHP(130);
     SetSpeed(300.0f);
-    SetDetectionRange(200.0f);
+    SetDetectionRange(150.0f);
     SetSkillCooldown(3.0f);
 
 

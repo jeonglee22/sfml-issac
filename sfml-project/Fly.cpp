@@ -20,6 +20,8 @@ void Fly::Reset()
     SetDetectionRange(120.0f);
     SetSkillCooldown(4.0f);
 
+    hasPlayedBuzzSound = false;
+
     animator.Play("animations/fly.csv");
     SetScale({ 2.0f, 2.0f });
     SetOrigin(Origins::MC);

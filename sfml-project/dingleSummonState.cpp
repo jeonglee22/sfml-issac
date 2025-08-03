@@ -8,6 +8,8 @@
 void DingleSummonState::Enter(Monster* monster)
 {
     monster->GetAnimator().Play("animations/dingle_summon.csv");
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/ding whistle whistle.wav"));
+
     summonTimer = 0.0f;
     hasSummoned = false;
 }

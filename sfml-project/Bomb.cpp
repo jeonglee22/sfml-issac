@@ -140,6 +140,7 @@ void Bomb::Explosion()
             float dist = Utils::Distance(position, monster->GetPosition());
             if (dist <= explosionDistance)
             {
+                SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/boss explosions 0.wav"));
                 monster->TakeDamage(60);
             }
         }
@@ -172,6 +173,7 @@ void Bomb::Explosion()
             }
         }
     }
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/boss explosions 0.wav"));
 }
 
 void Bomb::SetHiddenNeighboorDoorOpen(Map* hiddenMap, sf::Vector2f doorDir)

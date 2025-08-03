@@ -13,6 +13,7 @@ void MonstroJumpingState::Enter(Monster* monster)
 {
     jumpTimer = 0.0f;
     monster->GetAnimator().Play("animations/monstro_jump.csv");
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/monster grunt 4 b.wav"));
 
     Monstro* monstro = static_cast<Monstro*>(monster);
     monstro->SetInAir(true);

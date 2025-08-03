@@ -8,7 +8,9 @@ void PooterFireState::Enter(Monster* monster)
     shootTimer = 0.0f;
     hasShot = false;
     monster->GetAnimator().Play("animations/pooter_fire.csv");
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/blood fire.wav"));
     monster->SetVelocity(sf::Vector2f(0, 0));
+
 }
 
 void PooterFireState::Update(Monster* monster, float dt)

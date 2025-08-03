@@ -12,6 +12,8 @@ void ChaseState::Enter(Monster* monster)
 }
 void ChaseState::Update(Monster* monster, float dt)
 {
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/insect swarm.wav"));
+
     startPosition = monster->GetPosition();
     targetPosition = monster->GetPlayerPosition();
 

@@ -9,6 +9,7 @@ MulliganFleeState::MulliganFleeState()
 
 void MulliganFleeState::Enter(Monster* monster)
 {
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/baby hurt 3.wav"));
 }
 
 void MulliganFleeState::Update(Monster* monster, float dt)

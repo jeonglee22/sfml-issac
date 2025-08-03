@@ -14,6 +14,8 @@ void MonstroLandingState::Enter(Monster* monster)
     landingTimer = 0.0f;
     hasLanded = false;
     monster->GetAnimator().Play("animations/monstro_landing.csv");
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/monster grunt 4 b.wav"));
+
     monster->SetVelocity(sf::Vector2f(0, 0));
 
     Monstro* monstro = static_cast<Monstro*>(monster);

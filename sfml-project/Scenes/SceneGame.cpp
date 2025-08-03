@@ -111,6 +111,29 @@ void SceneGame::Init()
 	soundIds.push_back("sounds/death burst small.wav");
 	soundIds.push_back("sounds/door heavy open.wav");
 	soundIds.push_back("sounds/door heavy close.wav");
+	soundIds.push_back("sounds/boss explosions 0.wav");
+	soundIds.push_back("sounds/insect swarm.wav");
+	soundIds.push_back("sounds/blood fire.wav");
+	soundIds.push_back("sounds/spider spit roar 1.wav");
+	soundIds.push_back("sounds/isaac dies new 1.wav");
+	soundIds.push_back("sounds/monster grunt.wav");
+	soundIds.push_back("sounds/dime pick up.wav");
+	soundIds.push_back("sounds/choir.wav");
+	soundIds.push_back("sounds/unlock.wav");
+	soundIds.push_back("sounds/key pickup guantlet 4.wav");
+	soundIds.push_back("sounds/baby hurt 3.wav");
+	soundIds.push_back("sounds/chest open 1.wav");
+	soundIds.push_back("sounds/nickel pickup.wav");
+	soundIds.push_back("sounds/satan hurt.wav");
+	soundIds.push_back("sounds/vamp.wav");
+	soundIds.push_back("sounds/monster roar 5.wav");
+	soundIds.push_back("sounds/monster grunt 4 b.wav");
+	soundIds.push_back("sounds/ding whistle whistle.wav");
+	soundIds.push_back("sounds/boss lite sloppy roar.wav");
+	soundIds.push_back("sounds/fire rush.wav");
+
+	soundIds.push_back("sounds/music/diptera sonata(basement).ogg");
+
 
 	ANI_CLIP_MGR.Load("animations/key_insert.csv");
 	ANI_CLIP_MGR.Load("animations/idle.csv");
@@ -330,12 +353,15 @@ void SceneGame::Enter()
 	clearAltar->SetScale({ 2.f,2.f });
 	clearAltar->SetActive(false);
 
+	SOUND_MGR.PlayBgm(SOUNDBUFFER_MGR.Get("sounds/music/diptera sonata(basement).ogg"));
+
 	currentMapIndex = 0;
 }
 
 void SceneGame::Update(float dt)
 {
-	SOUND_MGR.SetSfxVolume(20);
+	SOUND_MGR.SetSfxVolume(100);
+	SOUND_MGR.SetBgmVolume(60);
 
 	FPSTime += dt;
 	frameCount++;

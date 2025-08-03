@@ -77,6 +77,17 @@ void Monster::Update(float dt)
 
 	if (isDead)
 	{
+	/*	if (monsterType == Monsters::Fly || monsterType == Monsters::AttackFly || monsterType == Monsters::Pooter)
+		{
+			static float buzzTimer = 0.0f;
+			buzzTimer += dt;
+			if (buzzTimer >= 0.5f)
+			{
+				SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/insect swarm.wav"));
+				buzzTimer = 0.0f;
+			}
+		}*/
+
 		animator.Update(dt);
 		deadTimer += dt;
 		if (deadTimer >= deadMaxTimer)
@@ -158,7 +169,7 @@ void Monster::TakeDamage(int damage)
 	currentHP -= damage;
 
 	body.setColor(sf::Color::Red);
-	
+
 	hitFlashTimer = 0.1f;
 
 	if (monsterType == Monsters::LarryJr)
@@ -191,7 +202,7 @@ void Monster::TakeDamage(int damage)
 		//isDead = true;
 		velocity = { 0.f,0.f };
 
-		if(monsterType == Monsters::Fly || monsterType == Monsters::AttackFly || monsterType == Monsters::Pooter)
+		if (monsterType == Monsters::Fly || monsterType == Monsters::AttackFly || monsterType == Monsters::Pooter)
 		{
 			animator.Play("animations/fly_dead.csv");
 		}
@@ -282,7 +293,7 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 			}
 		}
 
-		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::Dip ||monsterType == Monsters::Monstro))
+		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::Dip || monsterType == Monsters::Monstro))
 		{
 			for (auto sprite : scene->GetMapSprites())
 			{
@@ -310,7 +321,7 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 
 	if (velocity.x > 0)
 	{
-		SetScale({-2.0, 2.0});
+		SetScale({ -2.0, 2.0 });
 	}
 	else
 	{

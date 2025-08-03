@@ -11,6 +11,8 @@ protected:
 	WanderState wanderState;
 	SceneGame* sceneGame;
 
+	bool hasPlayedBuzzSound = false;
+
 public:
 	Fly(const std::string& name = "fly");
 	virtual ~Fly() override = default;

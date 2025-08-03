@@ -19,6 +19,8 @@ struct Necronomicon
 			{
 				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
 				{
+					SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/satan hurt.wav"));
+
 					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 					for (auto monster : sceneGame->GetMonsters())
 					{
@@ -313,6 +315,8 @@ struct YumHeart
 			{
 				if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Stage)
 				{
+					SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/vamp.wav"));
+
 					SceneGame* sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 					Isaac* isaac = sceneGame->GetIsaac();
 					isaac->SetCurrentHP(Utils::Clamp(isaac->GetCurrentHP() + 2, 0, isaac->GetMaxHP()));

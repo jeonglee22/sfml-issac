@@ -738,6 +738,8 @@ void Isaac::ChestCollision()
 
 		if (isaacBounds.intersects(chestBounds))
 		{
+			SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/chest open 1.wav"));
+
 			if (chest->GetChestType() == ChestType::Normal)
 			{
 				chest->ChestOpen();
@@ -795,10 +797,14 @@ void Isaac::SpritesPositionAtCollision(const sf::Vector2f& beforePos, HitBox* bo
 void Isaac::TakeDamage(int damage)
 {
 	currentHP -= damage;
-	SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/hurt grunt " + std::to_string(Utils::RandomRange(1, 3)) + ".wav"));
 	isHurt = true;
+	if (currentHP > 0)
+	{
+		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/hurt grunt " + std::to_string(Utils::RandomRange(1, 3)) + ".wav"));
+	}
 	if (currentHP <= 0)
 	{
+		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/isaac dies new 1.wav"));
 		currentHP = 0;
 		isDead = true;
 		PlayHeadAnimation("empty");
@@ -858,19 +864,24 @@ void Isaac::AddItem(Items itemType)
 	case Items::Heart:
 		currentHP = std::min(currentHP + 2, maxHP);
 		inventory.heartCount = currentHP;
+		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/vamp.wav"));
 		break;
 	case Items::Half_Heart:
 		currentHP = std::min(currentHP + 1, maxHP);
 		inventory.heartCount = currentHP;
+		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/vamp.wav"));
 		break;
 	case Items::Coin:
 		inventory.coinCount++;
+		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/dime pick up.wav"));
 		break;
 	case Items::Bomb:
 		inventory.bombCount++;
+		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/nickel pickup.wav"));
 		break;
 	case Items::Key:
 		inventory.keyCount++;
+		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/key pickup guantlet 4.wav"));
 		break;
 	}
 }
@@ -982,6 +993,7 @@ void Isaac::DisplayItem(const std::string& textureId)
 	itemDisplaySprite.setPosition(position + itemDisplayOffset);
 
 	itemEffectAnimator.Play("animations/star_effect.csv");
+	SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/choir.wav"));
 	Utils::SetOrigin(itemEffectSprite, Origins::MC);
 	itemEffectSprite.setScale({ 2.2f, 2.2f });
 	itemEffectSprite.setPosition(position + itemDisplayOffset);

@@ -8,6 +8,8 @@ void DingleFireState::Enter(Monster* monster)
 	fireTimer = 0.0f;
 	hasFire = false;
 	monster->GetAnimator().Play("animations/dingle_fire.csv");
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/boss lite sloppy roar.wav"));
+
 	monster->SetVelocity(sf::Vector2f(0, 0));
 
 }

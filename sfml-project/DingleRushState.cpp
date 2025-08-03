@@ -6,6 +6,7 @@
 void DingleRushState::Enter(Monster* monster)
 {
 	monster->GetAnimator().Play("animations/dingle_rush_charge.csv");
+
 	chargeTimer = 0.0f;
 	rushTimer = 0.0f;
     currentRush = 0;
@@ -55,6 +56,7 @@ void DingleRushState::Update(Monster* monster, float dt)
         {
             isRush = true;
             chargeTimer = 0.0f;
+            SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/fire rush.wav"));
 
             sf::Vector2f playerPos = monster->GetPlayerPosition();
             sf::Vector2f monsterPos = monster->GetPosition();

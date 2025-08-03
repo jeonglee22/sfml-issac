@@ -224,5 +224,6 @@ void Door::SetDoorDirection(int i)
 void Door::PlayUnlock()
 {
 	animator->Play("animations/key_insert.csv");
+	SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/unlock.wav"));
 	isStartKeyAnimation = true;
 }

@@ -8,7 +8,7 @@ Mulligan::Mulligan(const std::string& name)
 
 void Mulligan::Init()
 {
-    animator.SetTarget(&mulliganHead);
+    animator.SetTarget(&body);
     bodyAnimator.SetTarget(&mulliganBody);
 }
 
@@ -16,7 +16,7 @@ void Mulligan::SetPosition(const sf::Vector2f& pos)
 {
     position = pos;
     mulliganBody.setPosition(position);
-    mulliganHead.setPosition(position.x, position.y - 60.f);
+    body.setPosition(position.x, position.y - 60.f);
 }
 
 //void Monster::SetScale(const sf::Vector2f& s)
@@ -29,7 +29,7 @@ void Mulligan::SetPosition(const sf::Vector2f& pos)
 void Mulligan::Draw(sf::RenderWindow& window)
 {
     window.draw(mulliganBody);
-    window.draw(mulliganHead);
+    window.draw(body);
     headHitBox.Draw(window);
     bodyHitBox.Draw(window);
 
@@ -45,7 +45,7 @@ void Mulligan::Reset()
     animator.Play("animations/mulligan_idle.csv");
     bodyAnimator.Play("animations/isaac_run_height.csv");
 
-    animator.SetTarget(&mulliganHead);
+    animator.SetTarget(&body);
     bodyAnimator.SetTarget(&mulliganBody);
 
     SetHP(130);
@@ -55,7 +55,7 @@ void Mulligan::Reset()
    
     SetScale({ 2.0f, 2.0f });
     mulliganBody.setScale({ 2.0f, 2.0f });
-    mulliganHead.setScale({ 2.0f, 2.0f });
+    body.setScale({ 2.0f, 2.0f });
     SetOrigin(Origins::MC);
 
     canUseSkill = true;
@@ -72,7 +72,7 @@ void Mulligan::Update(float dt)
     headAnimator.Update(dt);
     bodyAnimator.Update(dt);
 
-    headHitBox.UpdateTransform(mulliganHead, mulliganHead.getLocalBounds());
+    headHitBox.UpdateTransform(body, body.getLocalBounds());
     bodyHitBox.UpdateTransform(mulliganBody, mulliganBody.getLocalBounds());
 }
 
@@ -87,6 +87,6 @@ void Mulligan::SetInitialState()
 
 sf::FloatRect Mulligan::GetHitBoxMonster()
 {
-    sf::FloatRect bodyGlobalBounds = mulliganHead.getGlobalBounds();
+    sf::FloatRect bodyGlobalBounds = body.getGlobalBounds();
     return { bodyGlobalBounds.left + 30.f, bodyGlobalBounds.top + 30.f, bodyGlobalBounds.width - 60.f, bodyGlobalBounds.height - 60.f };
 }

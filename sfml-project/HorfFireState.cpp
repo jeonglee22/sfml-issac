@@ -32,7 +32,7 @@ void HorfFireState::Update(Monster* monster, float dt)
         horf->FireTear(direction);
         hasFire = true;
 
-        SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/tear fire 4.wav"));
+        SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/monster grunt.wav"));
     }
 
     if (fireTimer >= fireDuration)

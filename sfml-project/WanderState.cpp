@@ -20,6 +20,11 @@ void WanderState::Enter(Monster* monster)
 
 void WanderState::Update(Monster* monster, float dt)
 {
+    if (monster->GetMonsterType() == Monsters::Fly)
+    {
+        SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/insect swarm.wav"));
+    }
+
     if (monster->GetMonsterType() == Monsters::Mulligan)
     {
         float distanceToPlayer = monster->GetDistanceToPlayer();

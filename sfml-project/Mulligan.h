@@ -14,7 +14,6 @@ protected:
 	MulliganDeathState deathState;
 
 	sf::Sprite mulliganBody;
-	sf::Sprite mulliganHead;
 
 	bool isDeathSequence = false;
 

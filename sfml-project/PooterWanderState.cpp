@@ -19,6 +19,8 @@ void PooterWanderState::Enter(Monster* monster)
 
 void PooterWanderState::Update(Monster* monster, float dt)
 {
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/insect swarm.wav"));
+
     Pooter* pooter = static_cast<Pooter*>(monster);
     pooter->UpdateProjectiles(dt);
 

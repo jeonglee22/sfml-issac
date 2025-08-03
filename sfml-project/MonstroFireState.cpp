@@ -15,6 +15,8 @@ void MonstroFireState::Enter(Monster* monster)
     hasFired = false;
     monster->SetVelocity(sf::Vector2f(0, 0));
     monster->GetAnimator().Play("animations/monstro_fire_charge.csv");
+    SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/monster roar 5.wav"));
+
     monster->SetOrigin(Origins::MC);
 
     Monstro* monstro = static_cast<Monstro*>(monster);
