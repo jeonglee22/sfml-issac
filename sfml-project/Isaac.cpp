@@ -420,11 +420,13 @@ void Isaac::Update(float dt)
 				head.setScale({ 2.f, 2.f });
 				head.setPosition(position.x, position.y - 19.f);
 				PlayHeadTearsAnimation("side");
+				UpdateAdditionalAnimations("tears_side");
 			}
 			else if (shootInput.x < 0.f)
 			{
 				head.setScale({ -2.f, 2.f });
 				PlayHeadTearsAnimation("side");
+				UpdateAdditionalAnimations("tears_side");
 				head.setPosition(position.x, position.y - 19.f);
 			}
 			else if (shootInput.y < 0.f)
@@ -432,12 +434,14 @@ void Isaac::Update(float dt)
 				head.setScale(body.getScale());
 				head.setPosition(position.x, position.y - 19.f);
 				PlayHeadTearsAnimation("rare");
+				UpdateAdditionalAnimations("tears_rare");
 			}
 			else if (shootInput.y > 0.f)
 			{
 				head.setScale(body.getScale());
 				head.setPosition(position.x, position.y - 19.f);
 				PlayHeadTearsAnimation("front");
+				UpdateAdditionalAnimations("tears_front");
 
 			}
 			if (abs(h) > 0.1f || abs(w) > 0.1f)
