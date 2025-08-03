@@ -195,7 +195,7 @@ void Monster::TakeDamage(int damage)
 		{
 			animator.Play("animations/fly_dead.csv");
 		}
-		if (monsterType == Monsters::Spider || monsterType == Monsters::Body || monsterType == Monsters::Horf)
+		if (monsterType == Monsters::Spider || monsterType == Monsters::Body || monsterType == Monsters::Horf || monsterType == Monsters::Hopper)
 		{
 			animator.Play("animations/blood_small.csv");
 		}
@@ -208,7 +208,6 @@ void Monster::TakeDamage(int damage)
 			Mulligan* mulligan = static_cast<Mulligan*>(this);
 			if (!mulligan->IsInDeathSequence())
 			{
-				std::cout << "멀리건 DeathSequence 시작!" << std::endl;
 				mulligan->StartDeathSequence();
 				mulligan->ChangeToDeathState();
 				return;

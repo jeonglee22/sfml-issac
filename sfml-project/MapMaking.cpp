@@ -2,9 +2,9 @@
 #include "rapidcsv.h"
 #include "MapMaking.h"
 
-int MapMaking::normalMapCount = 19;
-int MapMaking::startMapCount = 8;
-int MapMaking::treasureMapCount = 2;
+int MapMaking::normalMapCount = 10;
+int MapMaking::startMapCount = 2;
+int MapMaking::treasureMapCount = 4;
 int MapMaking::hiddenMapCount = 1;
 int MapMaking::shopMapCount = 1;
 int MapMaking::sacrificeMapCount = 1;

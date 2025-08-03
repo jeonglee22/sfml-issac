@@ -27,8 +27,6 @@ void DingleIdleState::Update(Monster* monster, float dt)
 
         int randomChoice = Utils::RandomRange(1, 4);
 
-        std::cout << "딩글 랜덤 선택: " << randomChoice;
-
         switch (randomChoice)
         {
         case 1:
