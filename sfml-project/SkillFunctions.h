@@ -36,6 +36,8 @@ struct Necronomicon
 				}
 			});
 		skill->SetTotalSkillCooltime(4);
+		skill->SetSkillExplain("Mass room damage");
+		skill->SetSkillName("The Necronomicon");
 		/*skill->SetEffectId("graphics/giantbook_001_necronomicon.png");
 		skill->SetEffectBody();
 		SpriteGo* body = skill->GetEffectBody();
@@ -50,6 +52,7 @@ struct Necronomicon
 			body->SetActive(false);
 			sceneGame->AddGameObject(body);
 		}*/
+
 		return skill;
 	};
 };
@@ -70,6 +73,8 @@ struct TheSadOnion
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("Tears up");
+		skill->SetSkillName("The Sad Onion");
 
 		return skill;
 	};
@@ -92,6 +97,8 @@ struct TheInnerEye
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("Triple shot");
+		skill->SetSkillName("The Inner Eye");
 
 		return skill;
 	};
@@ -113,6 +120,8 @@ struct CricketsHead
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("DMG up");
+		skill->SetSkillName("Cricket's head");
 
 		return skill;
 	};
@@ -136,6 +145,8 @@ struct NumberOne
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("Tears up");
+		skill->SetSkillName("Number One");
 
 		return skill;
 	};
@@ -158,6 +169,8 @@ struct BloodMartyr
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("DMG up");
+		skill->SetSkillName("Blood of the martyr");
 
 		return skill;
 	};
@@ -180,6 +193,8 @@ struct Boom
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("10 bombs");
+		skill->SetSkillName("Boom!");
 
 		return skill;
 	};
@@ -202,6 +217,8 @@ struct Lunch
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("HP up");
+		skill->SetSkillName("Lunch");
 
 		return skill;
 	};
@@ -224,6 +241,8 @@ struct Dinner
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("HP up");
+		skill->SetSkillName("Dinner");
 
 		return skill;
 	};
@@ -246,6 +265,8 @@ struct Dessert
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("HP up");
+		skill->SetSkillName("Dessert");
 
 		return skill;
 	};
@@ -268,6 +289,8 @@ struct Breakfast
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("HP up");
+		skill->SetSkillName("Breakfast");
 
 		return skill;
 	};
@@ -298,6 +321,8 @@ struct TammyHead
 				}
 			});
 		skill->SetTotalSkillCooltime(1);
+		skill->SetSkillExplain("Reusable tear burst");
+		skill->SetSkillName("Tammy's head");
 
 		return skill;
 	};
@@ -319,6 +344,8 @@ struct YumHeart
 				}
 			});
 		skill->SetTotalSkillCooltime(4);
+		skill->SetSkillExplain("Reusable regeneration");
+		skill->SetSkillName("Yum Heart");
 
 		return skill;
 	};
@@ -340,6 +367,8 @@ struct MomsEye
 				}
 			});
 		skill->SetSkillPassive(true);
+		skill->SetSkillExplain("Eye in the back of your head");
+		skill->SetSkillName("Mom's Eye");
 
 		return skill;
 	};

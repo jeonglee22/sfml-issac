@@ -13,6 +13,7 @@ class MapUI;
 class ItemUI;
 class HeartUI;
 class SkillUI;
+class ExplainUI;
 class Skill;
 class TextGo;
 class ItemAltar;
@@ -49,6 +50,7 @@ protected:
 	ItemUI *itemUI;
 	HeartUI *heartUI;
 	SkillUI *skillUI;
+	ExplainUI* explainUI;
 
 	int currentMapIndex = 0;
 
@@ -71,6 +73,18 @@ protected:
 	float doorOpenTime = 0.f;
 
 	bool isCanGoNext = false;
+
+	int stageIndex = 1;
+	bool stageEnter = false;
+
+	float shownDelayMax = 2.f;
+	float shownDelay = 0.f;
+	float explainUIShowTimeMax = 1.f;
+	float explainUIShowTime = 0.f;
+	bool finishStageShow = false;
+	bool finishShow = false;
+
+	bool isGetSkill = false;
 
 public:
 	SceneGame();
@@ -102,6 +116,10 @@ public:
 	Map* GetCurrentMap() { return maps[currentMapIndex]; }
 	Map* GetMap(int index) { return maps[index]; }
 	MapUI* GetMapUI() { return mapUI; }
+	ExplainUI* GetExplainUI() { return explainUI; }
+
+	void SetIsGetSkill(bool b) { isGetSkill = b; }
+	bool GetIsGetSkill() const { return isGetSkill; }
 
 	std::vector<int> GetNeighboorMapIndex(int x, int y);
 	sf::Vector2i GetNeighboorMapIndexInRectangleMap(int x, int y);
@@ -117,4 +135,7 @@ public:
 	void SetItemUICount();
 
 	void GoNextMap();
+
+	void ExplainUIMove(float dt);
+	void ShowSkillExplainUI(float dt);
 };

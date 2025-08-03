@@ -17,6 +17,7 @@
 #include "MapUI.h"
 #include "ItemUI.h"
 #include "HeartUI.h"
+#include "ExplainUI.h"
 #include "SkillUI.h"
 #include "Skill.h"
 #include "MapMaking.h"
@@ -97,10 +98,15 @@ void SceneGame::Init()
 	texIds.push_back("graphics/ui_hearts.png");
 	texIds.push_back("graphics/controls.png");
 	texIds.push_back("graphics/ui_chargebar.png");
+	texIds.push_back("graphics/effect_024_streak.png");
+
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
+	fontIds.push_back("fonts/upheavtt.ttf");
+	fontIds.push_back("fonts/pf_tempesta_seven_condensed.ttf");
+	fontIds.push_back("fonts/pf_tempesta_seven_condensed_bold.ttf");
 
 	soundIds.push_back("sounds/splatter 2.wav");
 	soundIds.push_back("sounds/tear fire 4.wav");
@@ -273,6 +279,8 @@ void SceneGame::Init()
 	clearAltar->sortingLayer = SortingLayers::Foreground;
 	clearAltar->sortingOrder = 1;
 
+	explainUI = (ExplainUI*)AddGameObject(new ExplainUI("graphics/effect_024_streak.png", "explainUI"));
+
 	Scene::Init();
 }
 
@@ -317,6 +325,7 @@ void SceneGame::Enter()
 	controls->SetPosition(worldView.getCenter());
 
 	skillUI->SetPosition({60.f, 60.f});
+	explainUI->SetPosition({ uiView.getCenter().x - smallMapSize.width, 100.f});
 
 	FPS->SetPosition({150.f, 50.f});
 
@@ -498,6 +507,32 @@ void SceneGame::Update(float dt)
 	if (isCanGoNext && Utils::CheckCollision(isaac->GetBodySprite(), clearDoor->GetSprite()))
 		GoNextMap();
 
+	if(!finishStageShow)
+	{
+		shownDelay += dt;
+		if (shownDelay >= shownDelayMax && !stageEnter)
+		{
+			stageEnter = true;
+			explainUI->SetActive(true);
+			explainUI->SetActiveExplain(false);
+			explainUI->SetComment("Basement " + std::to_string(stageIndex));
+			explainUI->SetPosition({ uiView.getCenter().x - smallMapSize.width, 100.f });
+		}
+		if (stageEnter)
+		{
+			ExplainUIMove(dt);
+		}
+	}
+
+	if (isGetSkill)
+	{
+		ShowSkillExplainUI(dt);
+		if (!explainUI->GetActive())
+		{
+			isGetSkill = false;
+		}
+	}
+
 #ifdef DEF_DEV
 	if (InputMgr::GetKeyDown(sf::Keyboard::M))
 	{
@@ -639,6 +674,46 @@ void SceneGame::GoNextMap()
 	SOUND_MGR.StopBgm();
 
 	isCanGoNext = false;
+	stageIndex++;
+	shownDelay = 0.f;
+	explainUIShowTime = 0.f;
+	finishShow = false;
+	finishStageShow = false;
+	stageEnter = false;
 
 	SCENE_MGR.ChangeScene(SceneIds::Stage);
+}
+
+void SceneGame::ExplainUIMove(float dt)
+{
+	float uiViewX = uiView.getCenter().x;
+	explainUI->SetPosition(explainUI->GetPosition() + sf::Vector2f(1.f, 0.f) * dt * 1800.f);
+
+	float explainX = explainUI->GetPosition().x;
+	if ((explainX >= uiViewX) && !finishShow)
+	{
+		explainUI->SetPosition({ uiViewX, explainUI->GetPosition().y });
+		explainUIShowTime += dt;
+		if (explainUIShowTime > explainUIShowTimeMax)
+			finishShow = true;
+	}
+	if (explainUI->GetPosition().x >= uiViewX + smallMapSize.width * 1.f)
+	{
+		stageEnter = false;
+		explainUI->SetActive(false);
+		finishStageShow = true;
+	}
+}
+
+void SceneGame::ShowSkillExplainUI(float dt)
+{
+	if(!explainUI->GetActive() && isGetSkill)
+	{
+		explainUI->SetActive(true);
+		explainUI->SetActiveExplain(true);
+		explainUI->SetPosition({ uiView.getCenter().x - smallMapSize.width, 100.f });
+		explainUIShowTime = 0.f;
+		finishShow = false;
+	}
+	ExplainUIMove(dt);
 }

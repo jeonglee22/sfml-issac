@@ -155,6 +155,7 @@
     <ClCompile Include="DipIdleState.cpp" />
     <ClCompile Include="DipMoveState.cpp" />
     <ClCompile Include="EnemyTears.cpp" />
+    <ClCompile Include="GameUIs\ExplainUI.cpp" />
     <ClCompile Include="GameObjects\Door.cpp" />
     <ClCompile Include="Framework\Button.cpp" />
     <ClCompile Include="GameUIs\EditBoxUI.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="DipIdleState.h" />
     <ClInclude Include="DipMoveState.h" />
     <ClInclude Include="EnemyTears.h" />
+    <ClInclude Include="GameUIs\ExplainUI.h" />
     <ClInclude Include="GameObjects\Door.h" />
     <ClInclude Include="Fly.h" />
     <ClInclude Include="Framework\AnimationClip.h" />
