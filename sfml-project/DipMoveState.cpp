@@ -6,7 +6,7 @@
 std::random_device DipMoveState::rd;
 
 DipMoveState::DipMoveState()
-	: jumpSpeed(200.0f), gen(rd()), angleDist(0.0f, 2.0f * 3.14159f), distanceDist(80.0f, 150.0f)
+	: jumpSpeed(200.0f), gen(rd()), angleDist(0.0f, 2.0f * 3.14159f), distanceDist(130.0f, 250.0f)
 {
 }
 

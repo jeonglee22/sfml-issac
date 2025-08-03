@@ -230,7 +230,9 @@ void Monster::TakeDamage(int damage)
 		}
 		if (monsterType == Monsters::Monstro)
 		{
-			animator.Play("animations/blood.csv");
+			Monstro* monstro = static_cast<Monstro*>(this);
+			monstro->StartDeathSequence();
+			return;
 		}
 		isDead = true;
 		SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/death burst small.wav"));

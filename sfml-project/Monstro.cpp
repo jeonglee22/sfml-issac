@@ -39,6 +39,10 @@ void Monstro::Reset()
     jumpProgress = 0.0f;
     isInAir = false;
 
+    isInDeathSequence = false;
+    deathExplosionCount = 0;
+    deathExplosionTimer = 0.0f;
+
     for (auto* EnemyTear : EnemyTearsList)
     {
         EnemyTear->SetActive(false);
@@ -61,6 +65,35 @@ void Monstro::SetInitialState()
 
 void Monstro::Update(float dt)
 {
+    if (isReallyDead)
+    {
+        return;
+    }
+
+    if (isInDeathSequence)
+    {
+        if (deathExplosionCount >= maxDeathExplosions)
+        {
+            isDead = true;
+            isReallyDead = true;
+            SOUND_MGR.PlaySfx(SOUNDBUFFER_MGR.Get("sounds/death burst small.wav"));
+            SetOrigin(Origins::MC);
+            return;
+        }
+
+        deathExplosionTimer += dt;
+
+        if (deathExplosionTimer >= deathExplosionInterval)
+        {
+            animator.Play("animations/blood.csv");
+            deathExplosionCount++;
+            deathExplosionTimer = 0.0f;
+        }
+
+        animator.Update(dt);
+        return;
+    }
+
     Monster::Update(dt);
     UpdateTears(dt);
 }
@@ -157,4 +190,14 @@ void Monstro::SetJumpTarget(const sf::Vector2f& target)
 {
     jumpTarget = target;
     jumpStartPos = position;
+}
+
+void Monstro::StartDeathSequence()
+{
+    isInDeathSequence = true;
+    deathExplosionCount = 0;
+    deathExplosionTimer = 0.0f;
+
+    FireBloodSplatter();
+    deathExplosionCount++;
 }

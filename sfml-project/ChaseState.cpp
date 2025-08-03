@@ -16,6 +16,7 @@ void ChaseState::Update(Monster* monster, float dt)
 
     startPosition = monster->GetPosition();
     targetPosition = monster->GetPlayerPosition();
+    targetPosition.y -= 30.0f;
 
     sf::Vector2f direction = targetPosition - startPosition;
     float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);

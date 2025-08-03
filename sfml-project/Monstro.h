@@ -28,6 +28,13 @@ protected:
     float jumpProgress = 0.0f;
     bool isInAir = false;
 
+    bool isInDeathSequence = false;
+    int deathExplosionCount = 0;
+    float deathExplosionTimer = 0.0f;
+    const float deathExplosionInterval = 0.5f;
+    const int maxDeathExplosions = 5;
+    bool isReallyDead = false;
+
 public:
     Monstro(const std::string& name = "Monstro");
     virtual ~Monstro() override = default;
@@ -60,6 +67,9 @@ public:
 
     void SetInAir(bool inAir) { isInAir = inAir; }
     bool IsInAir() const { return isInAir; }
+
+    void StartDeathSequence();
+    bool IsInDeathSequence() const { return isInDeathSequence; }
 
     const std::list<EnemyTears*>& GetTears() const { return EnemyTearsList; }
 };

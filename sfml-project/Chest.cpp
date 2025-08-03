@@ -149,11 +149,11 @@ void Chest::SpawnItems()
 			randomItem = Items::Key;
 
 		float angle = Utils::RandomRange(50.0f, 200.0f) * (3.14159f / 180.0f);
-		float speed = Utils::RandomRange(100.0f, 150.0f);
+		float speed = Utils::RandomRange(80.0f, 100.0f);
 
 		sf::Vector2f velocity;
 		velocity.x = cos(angle) * speed;
-		velocity.y = sin(angle) * speed - 150.0f;
+		velocity.y = sin(angle) * speed - 100.0f;
 
 		CreateDroppedItem(randomItem, position, velocity);
 	}

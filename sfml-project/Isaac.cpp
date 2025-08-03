@@ -60,6 +60,14 @@ void Isaac::SetScale(const sf::Vector2f &s)
 	{
 		sprite.setScale(scale);
 	}
+
+	for (auto& layer : additionalLayers)
+	{
+		if (layer.isActive)
+		{
+			layer.sprite.setScale(scale);
+		}
+	}
 }
 
 void Isaac::SetOrigin(Origins preset)
@@ -448,13 +456,13 @@ void Isaac::Update(float dt)
 				head.setScale({ 2.f, 2.f });
 				head.setPosition(position.x, position.y - 19.f);
 				PlayHeadTearsAnimation("side");
-				UpdateAdditionalAnimations("tears_side");
+				UpdateAdditionalScale();
 			}
 			else if (shootInput.x < 0.f)
 			{
 				head.setScale({ -2.f, 2.f });
 				PlayHeadTearsAnimation("side");
-				UpdateAdditionalAnimations("tears_side");
+				UpdateAdditionalScale();
 				head.setPosition(position.x, position.y - 19.f);
 			}
 			else if (shootInput.y < 0.f)
@@ -462,14 +470,14 @@ void Isaac::Update(float dt)
 				head.setScale(body.getScale());
 				head.setPosition(position.x, position.y - 19.f);
 				PlayHeadTearsAnimation("rare");
-				UpdateAdditionalAnimations("tears_rare");
+				UpdateAdditionalScale();
 			}
 			else if (shootInput.y > 0.f)
 			{
 				head.setScale(body.getScale());
 				head.setPosition(position.x, position.y - 19.f);
 				PlayHeadTearsAnimation("front");
-				UpdateAdditionalAnimations("tears_front");
+				UpdateAdditionalScale();
 
 			}
 			if (abs(h) > 0.1f || abs(w) > 0.1f)
@@ -1172,6 +1180,18 @@ void Isaac::UpdateAdditionalAnimations(const std::string& direction)
 
 			layer.sprite.setPosition(head.getPosition());
 			layer.sprite.setScale(head.getScale());
+		}
+	}
+}
+
+void Isaac::UpdateAdditionalScale()
+{
+	for (auto& layer : additionalLayers)
+	{
+		if (layer.isActive)
+		{
+			layer.sprite.setScale(head.getScale());
+			layer.sprite.setPosition(head.getPosition());
 		}
 	}
 }
