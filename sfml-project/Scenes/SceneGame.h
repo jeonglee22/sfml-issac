@@ -18,6 +18,9 @@ class PauseUI;
 class Skill;
 class TextGo;
 class ItemAltar;
+class GameOverUI;
+class BossHealthUI;
+class BossMapEnterUI;
 
 class SceneGame : public Scene
 {
@@ -53,6 +56,9 @@ protected:
 	SkillUI *skillUI;
 	ExplainUI* explainUI;
 	PauseUI* pauseUI;
+	GameOverUI* gameoverUI;
+	BossHealthUI* bossHealthUI;
+	BossMapEnterUI* bossEnterUI;
 
 	int currentMapIndex = 0;
 
@@ -90,6 +96,15 @@ protected:
 
 	bool isGetSkill = false;
 	bool isStop = false;
+
+	int bossBarSize = 131;
+
+	float maploadingTimeMax = 0.5f;
+	float maploadingTime = 0.f;
+
+	float bossMapEnterShownTimeMax = 3.f;
+	float bossMapEnterShownTime = 0.f;
+	bool isShownBoss = false;
 
 public:
 	SceneGame();

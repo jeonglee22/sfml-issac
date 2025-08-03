@@ -181,6 +181,8 @@ public:
 
 	void SetBackShoot(bool b) { isBackShoot = b; }
 
+	bool GetDead() const { return isDead; }
+
 	void ClampItemCounts();
 	void ChangeAnimation();
 

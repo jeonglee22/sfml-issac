@@ -143,6 +143,8 @@
     <ClCompile Include="AttackFly.cpp" />
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="GameUIs\BossMapEnterUI.cpp" />
+    <ClCompile Include="GameUIs\BossHealthUI.cpp" />
     <ClCompile Include="ChaseState.cpp" />
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Dingle.cpp" />
@@ -155,6 +157,7 @@
     <ClCompile Include="DipIdleState.cpp" />
     <ClCompile Include="DipMoveState.cpp" />
     <ClCompile Include="EnemyTears.cpp" />
+    <ClCompile Include="GameUIs\GameOverUI.cpp" />
     <ClCompile Include="GameUIs\ExplainUI.cpp" />
     <ClCompile Include="GameObjects\Door.cpp" />
     <ClCompile Include="Framework\Button.cpp" />
@@ -197,11 +200,11 @@
     <ClCompile Include="Mulligan.cpp" />
     <ClCompile Include="MulliganDeathState.cpp" />
     <ClCompile Include="MulliganFleeState.cpp" />
-    <ClCompile Include="PauseUI.cpp" />
+    <ClCompile Include="GameUIs\PauseUI.cpp" />
     <ClCompile Include="Pooter.cpp" />
     <ClCompile Include="PooterFireState.cpp" />
     <ClCompile Include="PooterWanderState.cpp" />
-    <ClCompile Include="SceneStart.cpp" />
+    <ClCompile Include="Scenes\SceneStart.cpp" />
     <ClCompile Include="Scenes\SceneAnimator.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
     <ClCompile Include="Scenes\SceneEditor.cpp" />
@@ -234,6 +237,8 @@
     <ClInclude Include="AttackFly.h" />
     <ClInclude Include="Body.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="GameUIs\BossMapEnterUI.h" />
+    <ClInclude Include="GameUIs\BossHealthUI.h" />
     <ClInclude Include="ChaseState.h" />
     <ClInclude Include="Chest.h" />
     <ClInclude Include="Dingle.h" />
@@ -246,6 +251,7 @@
     <ClInclude Include="DipIdleState.h" />
     <ClInclude Include="DipMoveState.h" />
     <ClInclude Include="EnemyTears.h" />
+    <ClInclude Include="GameUIs\GameOverUI.h" />
     <ClInclude Include="GameUIs\ExplainUI.h" />
     <ClInclude Include="GameObjects\Door.h" />
     <ClInclude Include="Fly.h" />
@@ -291,11 +297,11 @@
     <ClInclude Include="Mulligan.h" />
     <ClInclude Include="MulliganDeathState.h" />
     <ClInclude Include="MulliganFleeState.h" />
-    <ClInclude Include="PauseUI.h" />
+    <ClInclude Include="GameUIs\PauseUI.h" />
     <ClInclude Include="Pooter.h" />
     <ClInclude Include="PooterFireState.h" />
     <ClInclude Include="PooterWanderState.h" />
-    <ClInclude Include="SceneStart.h" />
+    <ClInclude Include="Scenes\SceneStart.h" />
     <ClInclude Include="Scenes\SceneAnimator.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\SceneEditor.h" />
