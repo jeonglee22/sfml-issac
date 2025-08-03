@@ -14,6 +14,7 @@ class ItemUI;
 class HeartUI;
 class SkillUI;
 class ExplainUI;
+class PauseUI;
 class Skill;
 class TextGo;
 class ItemAltar;
@@ -51,6 +52,7 @@ protected:
 	HeartUI *heartUI;
 	SkillUI *skillUI;
 	ExplainUI* explainUI;
+	PauseUI* pauseUI;
 
 	int currentMapIndex = 0;
 
@@ -87,6 +89,7 @@ protected:
 	bool finishShow = false;
 
 	bool isGetSkill = false;
+	bool isStop = false;
 
 public:
 	SceneGame();
@@ -120,6 +123,9 @@ public:
 	MapUI* GetMapUI() { return mapUI; }
 	ExplainUI* GetExplainUI() { return explainUI; }
 
+	bool GetGameStop() const { return isStop; }
+	void SetGameStop(bool b) { isStop = b; }
+
 	void SetIsGetSkill(bool b) { isGetSkill = b; }
 	bool GetIsGetSkill() const { return isGetSkill; }
 
@@ -138,6 +144,7 @@ public:
 	void SetItemUICount();
 
 	void GoNextMap();
+	void ResetStage();
 
 	void ExplainUIMove(float dt);
 	void ShowSkillExplainUI(float dt);

@@ -19,6 +19,7 @@
 #include "HeartUI.h"
 #include "ExplainUI.h"
 #include "SkillUI.h"
+#include "PauseUI.h"
 #include "Skill.h"
 #include "MapMaking.h"
 #include "TextGo.h"
@@ -100,6 +101,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/controls.png");
 	texIds.push_back("graphics/ui_chargebar.png");
 	texIds.push_back("graphics/effect_024_streak.png");
+	texIds.push_back("graphics/pausescreen.png");
 
 	for (int i = 0; i < 10; i++)
 		texIds.push_back("fonts/fontimage/" + std::to_string(i) + ".png");
@@ -247,14 +249,6 @@ void SceneGame::Init()
 
 	isaac = (Isaac *)AddGameObject(new Isaac());
 
-	sf::Vector2i startPos = MapMaking::MapRandomMaking(10, mapIndex, mapTypes);
-	stageStartX = currentXIndex = startPos.x;
-	stageStartY = currentYIndex = startPos.y;
-
-	maps = MapMaking::SetMapInfo(mapIndex, 11, mapTypes);
-	for (auto &map : maps)
-		AddGameObject(map);
-
 	controls = (SpriteGo *)AddGameObject(new SpriteGo("graphics/controls.png"));
 	controls->sortingLayer = SortingLayers::Background;
 	controls->sortingOrder = 5;
@@ -281,6 +275,7 @@ void SceneGame::Init()
 	clearAltar->sortingOrder = 1;
 
 	explainUI = (ExplainUI*)AddGameObject(new ExplainUI("graphics/effect_024_streak.png", "explainUI"));
+	pauseUI = (PauseUI*)AddGameObject(new PauseUI("graphics/pausescreen.png", "pauseUI"));
 
 	Scene::Init();
 }
@@ -293,6 +288,14 @@ void SceneGame::Enter()
 	sf::Vector2f center{size.x * 0.5f, size.y * 0.5f};
 	uiView.setSize(size);
 	uiView.setCenter(center);
+
+	sf::Vector2i startPos = MapMaking::MapRandomMaking(10, mapIndex, mapTypes);
+	stageStartX = currentXIndex = startPos.x;
+	stageStartY = currentYIndex = startPos.y;
+
+	maps = MapMaking::SetMapInfo(mapIndex, 11, mapTypes);
+	for (auto& map : maps)
+		AddGameObject(map);
 
 	mapUI->SetPlayerXIndex(stageStartX);
 	mapUI->SetPlayerYIndex(stageStartY);
@@ -347,6 +350,7 @@ void SceneGame::Update(float dt)
 {
 	SOUND_MGR.SetSfxVolume(20);
 
+#ifdef DEF_DEV
 	FPSTime += dt;
 	frameCount++;
 	if (FPSTime >= 1.f)
@@ -355,6 +359,7 @@ void SceneGame::Update(float dt)
 		FPSTime = 0.f;
 		frameCount = 0.f;
 	}
+#endif // DEF_DEV
 
 	if (beforeIndex != currentMapIndex)
 	{
@@ -451,11 +456,6 @@ void SceneGame::Update(float dt)
 			}
 		}
 
-		if (InputMgr::GetKeyDown(sf::Keyboard::P))
-		{
-			maps[currentMapIndex]->SetCleared(!maps[currentMapIndex]->GetCleared());
-		}
-
 		Map *currentMap = maps[currentMapIndex];
 		beforeIndex = currentMapIndex;
 		std::vector<Door *> doors = currentMap->GetDoor();
@@ -541,6 +541,34 @@ void SceneGame::Update(float dt)
 		GoNextMap();
 	}
 #endif // DEF_DEV
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+	{
+		isStop = !isStop;
+		if (isStop)
+		{
+			FRAMEWORK.SetTimeScale(0.f);
+			pauseUI->SetActive(true);
+		}
+		else
+		{
+			FRAMEWORK.SetTimeScale(1.f);
+			pauseUI->SetActive(false);
+		}
+		std::cout << isStop << std::endl;
+	}
+
+	if (isStop)
+	{
+		bool restart = pauseUI->GetIsRestart();
+		if (restart)
+		{
+			ResetStage();
+			SCENE_MGR.ChangeScene(SceneIds::Start);
+			pauseUI->SetIsRestart(false);
+			pauseUI->SetActive(false);		
+		}
+	}
 }
 
 void SceneGame::Draw(sf::RenderWindow &window)
@@ -655,25 +683,14 @@ void SceneGame::SetItemUICount()
 
 void SceneGame::GoNextMap()
 {
-	sf::Vector2i startPos = MapMaking::MapRandomMaking(10, mapIndex, mapTypes);
-	stageStartX = currentXIndex = startPos.x;
-	stageStartY = currentYIndex = startPos.y;
-
 	for (auto& map : maps)
 		RemoveGameObject(map);
 	maps.clear();
-
-	maps = MapMaking::SetMapInfo(mapIndex, 11, mapTypes);
-	for (auto& map : maps)
-		AddGameObject(map);
 
 	mapUI->Release();
 	itemUI->Release();
 	heartUI->Release();
 	skillUI->Release();
-
-	SOUND_MGR.StopAllSfx();
-	SOUND_MGR.StopBgm();
 
 	isCanGoNext = false;
 	stageIndex++;
@@ -686,7 +703,40 @@ void SceneGame::GoNextMap()
 	isBossClear = false;
 	isClearAlterPossed = false;
 
+	SOUND_MGR.StopAllSfx();
+	SOUND_MGR.StopBgm();
 	SCENE_MGR.ChangeScene(SceneIds::Stage);
+}
+
+void SceneGame::ResetStage()
+{
+	for (auto& map : maps)
+		RemoveGameObject(map);
+	maps.clear();
+
+	mapUI->Release();
+	itemUI->Release();
+	heartUI->Release();
+	skillUI->Release();
+	isaac->Release();
+	isaac->SetIsaacInitStat();
+
+	Tears::SetTearColor(sf::Color::White);
+	Tears::SetTearRangeInit();
+
+	isCanGoNext = false;
+	stageIndex = 1;
+	shownDelay = 0.f;
+	explainUIShowTime = 0.f;
+	finishShow = false;
+	finishStageShow = false;
+	stageEnter = false;
+	isStageMoving = true;
+	isBossClear = false;
+	isClearAlterPossed = false;
+
+	SOUND_MGR.StopAllSfx();
+	SOUND_MGR.StopBgm();
 }
 
 void SceneGame::ExplainUIMove(float dt)

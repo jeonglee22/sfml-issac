@@ -44,6 +44,7 @@ struct Necronomicon
 			body->SetScale({ 2.f,2.f });
 			body->sortingLayer = SortingLayers::UI;
 			body->sortingOrder = 10;
+			body->SetActive(false);
 			sceneGame->AddGameObject(body);
 		}
 

@@ -197,6 +197,7 @@
     <ClCompile Include="Mulligan.cpp" />
     <ClCompile Include="MulliganDeathState.cpp" />
     <ClCompile Include="MulliganFleeState.cpp" />
+    <ClCompile Include="PauseUI.cpp" />
     <ClCompile Include="Pooter.cpp" />
     <ClCompile Include="PooterFireState.cpp" />
     <ClCompile Include="PooterWanderState.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="Mulligan.h" />
     <ClInclude Include="MulliganDeathState.h" />
     <ClInclude Include="MulliganFleeState.h" />
+    <ClInclude Include="PauseUI.h" />
     <ClInclude Include="Pooter.h" />
     <ClInclude Include="PooterFireState.h" />
     <ClInclude Include="PooterWanderState.h" />

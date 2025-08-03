@@ -14,6 +14,7 @@ void SceneStart::Init()
 	texIds.push_back("graphics/mainmenu/menuoverlay.png");
 
 	soundIds.push_back("sounds/book page turn.wav");
+	soundIds.push_back("sounds/title screen.ogg");
 
 	background = (SpriteGo*)AddGameObject(new SpriteGo("graphics/mainmenu/titlemenu.png"));
 	background->sortingLayer = SortingLayers::Background;
@@ -48,6 +49,12 @@ void SceneStart::Enter()
 
 	Scene::Enter();
 
+	startIndex = 0;
+	pressChangeTime = 0.f;
+	rotationTime = 0.f;
+	rotationDir = 1.f;
+	sceneChanging = false;
+	
 	background->SetScale({ 2.f,2.f });
 
 	logo->GetSprite().setTextureRect(logoRect);
@@ -67,6 +74,9 @@ void SceneStart::Enter()
 	overlay->SetScale({ 2.f,2.f });
 
 	sceneChanging = false;
+
+	SOUND_MGR.SetBgmVolume(20);
+	SOUND_MGR.PlayBgm(SOUNDBUFFER_MGR.Get("sounds/title screen.ogg"));
 }
 
 void SceneStart::Update(float dt)
@@ -99,6 +109,7 @@ void SceneStart::Update(float dt)
 		if (worldView.getCenter().x >= FRAMEWORK.GetWindowSizeF().x * 1.5f)
 		{
 			SCENE_MGR.ChangeScene(SceneIds::Stage);
+			SOUND_MGR.StopBgm();
 		}
 	}
 }

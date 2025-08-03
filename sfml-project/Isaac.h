@@ -188,4 +188,6 @@ public:
 	void RemoveAdditionalItem(const std::string& itemId);
 	void UpdateAdditionalAnimations(const std::string& direction);
 	void SetupAdditionalAnimations();
+
+	void SetIsaacInitStat();
 };

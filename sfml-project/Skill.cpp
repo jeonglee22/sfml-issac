@@ -61,7 +61,7 @@ void Skill::Update(float dt)
 		isUseSkill = true;
 		skillFunc();
 		currentCoolTime = 0;
-		//effectBody->SetActive(true);
+		effectBody->SetActive(true);
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Z))
 	{
@@ -75,7 +75,7 @@ void Skill::Update(float dt)
 		{
 			skillActionTime = 0.f;
 			isUseSkill = false;
-			//effectBody->SetActive(false);
+			effectBody->SetActive(false);
 		}
 	}
 }
@@ -83,11 +83,6 @@ void Skill::Update(float dt)
 void Skill::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
-
-	if(isUseSkill && effectBody)
-	{
-		effectBody->Draw(window);
-	}
 }
 
 void Skill::SetEffectBody()

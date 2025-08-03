@@ -71,6 +71,11 @@ void SkillUI::Init()
 void SkillUI::Release()
 {
 	skillCooltimeImages.clear();
+	if(skill)
+	{
+		delete skill;
+	}
+	skill = nullptr;
 }
 
 void SkillUI::Reset()

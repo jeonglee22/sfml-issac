@@ -61,6 +61,7 @@ public:
 	static void SetTearIdleAni(const std::string& idleAni) { Tears::tearIdle = idleAni; }
 	static void SetTearBoomAni(const std::string& boomAni) { Tears::tearBoom = boomAni; }
 	static void SetTearColor(const sf::Color& c) { Tears::tearColor = c; }
+	static void SetTearRangeInit() { Tears::maxRange = 300.f; }
 	static void AddTearRange(float t) { Tears::maxRange = Utils::Clamp(Tears::maxRange + t, 50.f, 1000.f); }
 };
 

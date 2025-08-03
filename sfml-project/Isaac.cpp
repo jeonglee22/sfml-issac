@@ -96,6 +96,34 @@ void Isaac::Init()
 
 void Isaac::Release()
 {
+	headAdditionals.clear();
+	additionalsAnimator.clear();
+	additionalLayers.clear();
+	itemToLayerIndex.clear();
+		
+	additionalAnimations.clear();
+
+	headAnimation.clear();
+	headTearsAnimation.clear();
+	bodyAnimation.clear();
+	additonalsAnimation.clear();
+
+	tearsList.clear();
+	tearsPool.clear();
+	bombsList.clear();
+	bombsPool.clear();
+
+	sceneDev2 = nullptr;
+	sceneGame = nullptr;
+
+	SetCoinCount(0);
+	SetBombCount(1);
+	SetKeyCount(0);
+
+	maxHP = 6;
+	currentHP = 6;
+
+	passiveSkill.clear();
 }
 
 void Isaac::Reset()
@@ -1046,6 +1074,25 @@ void Isaac::SetupAdditionalAnimations()
 	{"tears_rare", "animations/isaac_head_front_sadonion.csv"},
 	};
 
+}
+
+void Isaac::SetIsaacInitStat()
+{
+	velocity = { 0.f, 0.f };
+	speed = 250.f;
+
+	isGettingItem = false;
+
+	maxHP = 6;
+	currentHP = 6;
+
+	tearCount = 1;
+
+	isDead = false;
+	isBackShoot = false;
+
+	tearDamage = 35.f;
+	tearSpeed = 250.f;
 }
 
 void Isaac::AddAdditionalItem(const std::string& itemId)
