@@ -295,7 +295,7 @@ bool Monster::WillCollideAt(const sf::Vector2f& testPos)
 			}
 		}
 
-		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::Dip || monsterType == Monsters::Monstro))
+		if (!willCollide && (monsterType == Monsters::Spider || monsterType == Monsters::Hopper || monsterType == Monsters::Body || monsterType == Monsters::Dip || monsterType == Monsters::Monstro || monsterType == Monsters::Mulligan))
 		{
 			for (auto sprite : scene->GetMapSprites())
 			{
